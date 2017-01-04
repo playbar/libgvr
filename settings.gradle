@@ -1,2 +1,3 @@
-include ':hello-jniCallback'
-include ':hello-libs','gen-libs'
+include ':jnicallback'
+//include ':libs','gen-libs'
+include ':gvr'

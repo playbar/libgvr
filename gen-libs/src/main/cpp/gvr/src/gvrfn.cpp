@@ -34,7 +34,7 @@ void DetachCurrentThreadJNI()
 }
 
 
-jint JNI_OnLoad( JavaVM* vm, void *reserved){
+jint JNI_OnLoad_Test( JavaVM* vm, void *reserved){
     gs_jvm = vm;
 
     jint result = JNI_VERSION_1_6;

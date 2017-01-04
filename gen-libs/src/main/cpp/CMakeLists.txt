@@ -5,7 +5,7 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 
 set(lib_src_DIR ${CMAKE_SOURCE_DIR})
 
-set(lib_build_DIR $ENV{HOME}/tmp)
+set(lib_build_DIR $ENV{TMP}/tmp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 
