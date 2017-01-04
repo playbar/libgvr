@@ -1,2 +1,2 @@
-include ':testapp'
-include ':gvr'
+include ':hello-jniCallback'
+include ':hello-libs','gen-libs'
