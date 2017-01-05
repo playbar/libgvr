@@ -614,11 +614,450 @@ public:
     int GvrApi_nativeUserPrefsGetControllerHandedness(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeResume(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferViewportDestroy(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferViewportGetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
+    void GvrApi_nativeBufferViewportSetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat1, jfloat paramFloat2,
+                                                jfloat paramFloat3, jfloat paramFloat4);
+    void GvrApi_nativeBufferViewportGetSourceFov(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
+    void GvrApi_nativeBufferViewportSetSourceFov(JNIEnv* env, jobject obj,  jlong paramLong, jfloat paramFloat1, jfloat paramFloat2,
+                                                 jfloat paramFloat3, jfloat paramFloat4);
+    void GvrApi_nativeBufferViewportGetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat);
+    void GvrApi_nativeBufferViewportSetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat);
+    int GvrApi_nativeBufferViewportGetTargetEye(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferViewportSetTargetEye(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    int GvrApi_nativeBufferViewportGetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferViewportSetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    int GvrApi_nativeBufferViewportGetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferViewportSetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    int GvrApi_nativeBufferViewportGetReprojection(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferViewportSetReprojection(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    bool GvrApi_nativeBufferViewportEqual(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
+    long GvrApi_nativeBufferSpecCreate(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferSpecDestroy(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferSpecGetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint);
+    void GvrApi_nativeBufferSpecSetSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jint paramInt2);
+    int GvrApi_nativeBufferSpecGetSamples(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong);
+    int GvrApi_nativeSwapChainGetBufferCount(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeSwapChainGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
+    void GvrApi_nativeSwapChainResizeBuffer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jint paramInt3);
+    long GvrApi_nativeSwapChainAcquireFrame(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeFrameBindBuffer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeFrameUnbind(JNIEnv* env, jobject obj, jlong paramLong);
+    int GvrApi_nativeFrameGetFramebufferObject(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeFrameGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
+    void GvrApi_nativeFrameSubmit(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat);
+    void GvrApi_nativeResumeTracking(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+    bool GvrApi_nativeSetDefaultViewerProfile(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString);
+    bool GvrApi_nativeSetViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+    long GvrApi_nativeSwapChainCreate(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
+    long GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+                             jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
+    jfloatArray GvrApi_nativeComputeDistortedPoint(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
+    jstring GvrApi_nativeGetErrorString(JNIEnv* env, jobject obj, jint paramInt);
+    jstring GvrApi_nativeGetViewerVendor(JNIEnv* env, jobject obj, jlong paramLong);
+    jstring GvrApi_nativeGetViewerModel( JNIEnv* env, jobject obj, jlong paramLong);
+    jbyteArray GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong paramLong);
+    jintArray GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong);
+    void buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
+    void swap_chain_destroy(gvr_swap_chain **swap_chain);
+    void destroy(gvr_context **gvr);
+    void buffer_viewport_destroy(gvr_buffer_viewport **viewport);
+    gvr_swap_chain* swap_chain_create( gvr_context *gvr, const gvr_buffer_spec **buffers, int32_t count);
+    void bind_default_framebuffer(gvr_context *gvr);
+    gvr_sizei get_maximum_effective_render_target_size(const gvr_context *gvr);
+    void buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples);
+    void buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format);
+    void buffer_spec_set_size( gvr_buffer_spec *spec, gvr_sizei size);
+    gvr_buffer_spec* buffer_spec_create( gvr_context *gvr);
+    void initialize_gl(gvr_context *gvr);
+    void distort_to_screen(gvr_context *gvr,
+                           int32_t texture_id,
+                           const gvr_buffer_viewport_list *viewport_list,
+                           gvr_mat4f head_space_from_start_space,
+                           gvr_clock_time_point target_presentation_time);
+    void get_time_point_now();
+    int set_viewer_params(int *a1, const void *a2, size_t a3);
+    int set_display_metrics(int *a1, int a2, int a3, int a4, int a5, int a6);
+    void buffer_spec_destroy(gvr_buffer_spec **spec);
+    gvr_mat4f get_eye_from_head_matrix( const gvr_context *gvr,
+                                        const int32_t eye);
+    gvr_sizei swap_chain_get_buffer_size( gvr_swap_chain *swap_chain, int32_t index);
+    int set_error(int a1, int a2);
+    void compute_distorted_point(  const gvr_context *gvr,
+                                   const int32_t eye,
+                                   const gvr_vec2f uv_in,
+                                   gvr_vec2f uv_out[3]);
+
+    void get_recommended_buffer_viewports(  const gvr_context *gvr,
+                                            gvr_buffer_viewport_list *viewport_list);
+    bool buffer_viewport_equal( const gvr_buffer_viewport *a,
+                                const gvr_buffer_viewport *b);
+    void buffer_viewport_list_get_item(  const gvr_buffer_viewport_list *viewport_list,
+                                         size_t index,
+                                         gvr_buffer_viewport *viewport);
+    gvr_sizei buffer_spec_get_size(const gvr_buffer_spec *spec);
+    int32_t buffer_viewport_get_target_eye( const gvr_buffer_viewport *viewport);
+    int32_t buffer_spec_get_samples(const gvr_buffer_spec *spec);
+    gvr_rectf buffer_viewport_get_source_fov(const gvr_buffer_viewport *viewport);
+    int32_t swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain);
+    int32_t buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport);
+    void buffer_viewport_set_reprojection(  gvr_buffer_viewport *viewport,
+                                            int32_t reprojection);
+    void buffer_viewport_set_source_uv(  gvr_buffer_viewport *viewport,
+                                         gvr_rectf uv);
+    void buffer_viewport_list_set_item(  gvr_buffer_viewport_list *viewport_list,
+                                         size_t index,
+                                         const gvr_buffer_viewport *viewport);
+    int32_t user_prefs_get_controller_handedness(const gvr_user_prefs *user_prefs);
+    void get_screen_buffer_viewports(  const gvr_context *gvr,
+                                       gvr_buffer_viewport_list *viewport_list);
+    gvr_sizei get_screen_target_size(const gvr_context *gvr);
+    gvr_rectf buffer_viewport_get_source_uv(const gvr_buffer_viewport *viewport);
+    gvr_recti get_window_bounds(const gvr_context *gvr);
+
+    gvr_mat4f get_head_space_from_start_space_rotation( const gvr_context *gvr, const gvr_clock_time_point time);
+
+    gvr_mat4f apply_neck_model(  const gvr_context *gvr,
+                                               gvr_mat4f head_space_from_start_space_rotation,
+                                               float factor);
+    gvr_frame* swap_chain_acquire_frame(gvr_swap_chain *swap_chain);
+    gvr_context create(  JNIEnv *env, jobject app_context, jobject class_loader);
+
+    void frame_bind_buffer(  gvr_frame *frame, int32_t index);
+
+    void frame_unbind(gvr_frame *frame);
+    void frame_submit(  gvr_frame **frame,
+                                      const gvr_buffer_viewport_list *list,
+                                      gvr_mat4f head_space_from_start_space);
+
+    void swap_chain_resize_buffer(  gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
+
+    gvr_buffer_viewport_list * buffer_viewport_list_create( const gvr_context *gvr);
+
+    const gvr_user_prefs * get_user_prefs(gvr_context *gvr);
+
+    gvr_buffer_viewport * buffer_viewport_create(gvr_context *gvr);
+
+    int set_back_gesture_event_handler(int a1, int a2, int a3);
+    gvr_version get_version();
+
+    const char * get_viewer_vendor(const gvr_context *gvr);
+    const char * get_version_string();
+    const char * get_viewer_model(const gvr_context *gvr);
+    int32_t get_error(gvr_context *gvr);
+    int32_t get_viewer_type(const gvr_context *gvr);
+    int32_t clear_error(gvr_context *gvr);
+    const char * get_error_string(int32_t error_code);
+    int32_t buffer_viewport_get_source_buffer_index(const gvr_buffer_viewport *viewport);
+    bool get_async_reprojection_enabled(const gvr_context *gvr);
+    void buffer_viewport_set_source_buffer_index( gvr_buffer_viewport *viewport,
+                                                                int32_t buffer_index);
+
+    size_t buffer_viewport_list_get_size( const gvr_buffer_viewport_list *viewport_list);
+    int32_t buffer_viewport_get_external_surface_id( const gvr_buffer_viewport *viewport);
+    void buffer_viewport_set_external_surface_id(  gvr_buffer_viewport *viewport,
+                                                                 int32_t external_surface_id);
+
+    void set_surface_size( gvr_context *gvr, gvr_sizei surface_size_pixels);
+
+    gvr_mat4f buffer_viewport_get_transform(const gvr_buffer_viewport *viewport);
+
+    void buffer_spec_set_color_format(  gvr_buffer_spec *spec, int32_t color_format);
+
+    void buffer_viewport_set_transform(gvr_buffer_viewport *viewport,
+                                                     gvr_mat4f transform);
+    void buffer_viewport_set_target_eye(  gvr_buffer_viewport *viewport, int32_t index);
+
+    gvr_sizei frame_get_buffer_size(  const gvr_frame *frame, int32_t index);
+
+    int32_t frame_get_framebuffer_object(  const gvr_frame *frame, int32_t index);
+
+    void pause_tracking( gvr_context *gvr);
+    void buffer_viewport_set_source_fov( gvr_buffer_viewport *viewport, gvr_rectf fov);
+
+    void resume_tracking(gvr_context *gvr);
+    void reset_tracking(gvr_context *gvr);
+
+    void recenter_tracking(gvr_context *gvr);
+
+    bool set_default_viewer_profile(  gvr_context *gvr, const char *viewer_profile_uri);
+
+    void refresh_viewer_profile(gvr_context *gvr);
+
+    int display_synchronizer_create();
+    int display_synchronizer_destroy(int *a1);
+    int gvr_get_border_size_meters(void *a1);
+    int check_surface_size_changed(int a1);
+    int get_surface_size(int a1, int a2, int a3);
+    int set_display_output_rotation(void *a1, int a2);
+    int reconnect_sensors(void *a1);
+    int set_lens_offset(int *a1, int a2, int a3);
+    int resume(int a1);
+    int dump_debug_data(void *a1);
+    int32_t controller_get_default_options();
+    int using_vr_display_service(int a1);
+    int tracker_state_get_buffer_size(int a1);
+    gvr_controller_context *controller_create_and_init(int32_t options,gvr_context *context);
+    int tracker_state_get_buffer(int a1);
+    int pause(int a1);
+    gvr_controller_context * controller_create_and_init_android(  JNIEnv *env,
+                                                                                jobject android_context,
+                                                                                jobject class_loader,
+                                                                                int32_t options,
+                                                                                gvr_context *context);
+    void controller_destroy( gvr_controller_context **api);
+
+    int  set_display_synchronizer(int *a1, int a2);
+    void controller_pause(gvr_controller_context *api);
+    int set_ignore_manual_tracker_pause_resume(void *a1, int a2);
+    void controller_resume(gvr_controller_context *api);
+    int display_synchronizer_reset(void *a1);
+
+    const char* controller_api_status_to_string( int32_t status);
+
+    const char* controller_connection_state_to_string(int32_t state);
+    int display_synchronizer_update(int *a1, int a2, int64_t a3, int a4);
+    const char * controller_button_to_string( int32_t button);
+    gvr_controller_state * controller_state_create();
+    void controller_state_destroy(gvr_controller_state **state);
+    void controller_state_update(  gvr_controller_context *api,
+                                                 int32_t flags,
+                                                 gvr_controller_state *out_state);
+    int32_t controller_state_get_api_status(const gvr_controller_state *state);
+    int32_t controller_state_get_connection_state(const gvr_controller_state *state);
+    gvr_quatf controller_state_get_orientation(const gvr_controller_state *state);
+
+    gvr_vec3f controller_state_get_gyro(const gvr_controller_state *state);
+
+    gvr_vec3f controller_state_get_accel( const gvr_controller_state *state);
+
+    bool controller_state_is_touching( const gvr_controller_state *state);
+    gvr_vec2f controller_state_get_touch_pos(const gvr_controller_state *state);
+
+    bool controller_state_get_touch_down(const gvr_controller_state *state);
+    bool controller_state_get_touch_up(const gvr_controller_state *state);
+    bool controller_state_get_recentered(const gvr_controller_state *state);
+    bool controller_state_get_recentering(const gvr_controller_state *state);
+    int on_pause_reprojection_thread(int a1);
+    bool controller_state_get_button_state(  const gvr_controller_state *state,
+                                                           int32_t button);
+    int update_surface_reprojection_thread(int *a1, int a2, int a3, int a4, int64_t a5,
+                                                         int a6, int a7, int a8, int a9, int a10, int a11,
+                                                         int a12, int a13, int a14, int a15, int a16, int a17,
+                                                         int a18, int a19, int a20, int a21);
+    bool controller_state_get_button_down( const gvr_controller_state *state,
+                                                         int32_t button);
+
+    bool controller_state_get_button_up(const gvr_controller_state *state,
+                                                      int32_t button);
+    int remove_all_surfaces_reprojection_thread(void *a1);
+    int64_t controller_state_get_last_orientation_timestamp(const gvr_controller_state *state);
+    int64_t controller_state_get_last_gyro_timestamp(const gvr_controller_state *state);
+    int set_async_reprojection_enabled(int a1, int a2);
+    int64_t controller_state_get_last_accel_timestamp(const gvr_controller_state *state);
+    int on_surface_created_reprojection_thread(int a1);
+    int64_t controller_state_get_last_touch_timestamp(const gvr_controller_state *state);
+    int render_reprojection_thread(int a1);
+    int64_t controller_state_get_last_button_timestamp(const gvr_controller_state *state);
+    int tracker_state_destroy(int *a1);
+    int resume_tracking_set_state(int a1, int a2, int a3);
+    int pause_tracking_get_state(void *a1);
+    int tracker_state_create(int a1, int a2);
+    int create_with_tracker_for_testing(int a1, int a2);
 
 private:
     void * m_hDLL;
     bool m_bInit;
 
+    DEF_VARIABLES(create_with_tracker_for_testing);
+    DEF_VARIABLES(tracker_state_create);
+    DEF_VARIABLES(pause_tracking_get_state);
+    DEF_VARIABLES(resume_tracking_set_state);
+    DEF_VARIABLES(tracker_state_destroy);
+    DEF_VARIABLES(controller_state_get_last_button_timestamp);
+    DEF_VARIABLES(render_reprojection_thread);
+    DEF_VARIABLES(controller_state_get_last_touch_timestamp);
+    DEF_VARIABLES(on_surface_created_reprojection_thread);
+    DEF_VARIABLES(controller_state_get_last_accel_timestamp);
+    DEF_VARIABLES(set_async_reprojection_enabled);
+    DEF_VARIABLES(controller_state_get_last_gyro_timestamp);
+    DEF_VARIABLES(controller_state_get_last_orientation_timestamp);
+    DEF_VARIABLES(remove_all_surfaces_reprojection_thread);
+    DEF_VARIABLES(controller_state_get_button_up);
+    DEF_VARIABLES(controller_state_get_button_down);
+    DEF_VARIABLES(update_surface_reprojection_thread);
+    DEF_VARIABLES(controller_state_get_button_state);
+    DEF_VARIABLES(on_pause_reprojection_thread);
+    DEF_VARIABLES(controller_state_get_recentering);
+    DEF_VARIABLES(controller_state_get_recentered);
+    DEF_VARIABLES(controller_state_get_touch_up);
+    DEF_VARIABLES(controller_state_get_touch_down);
+    DEF_VARIABLES(controller_state_get_touch_pos);
+    DEF_VARIABLES(controller_state_is_touching);
+    DEF_VARIABLES(controller_state_get_accel);
+    DEF_VARIABLES(controller_state_get_gyro);
+    DEF_VARIABLES(controller_state_get_orientation);
+    DEF_VARIABLES(controller_state_get_connection_state);
+    DEF_VARIABLES(controller_state_get_api_status);
+    DEF_VARIABLES(controller_state_update);
+    DEF_VARIABLES(controller_state_destroy);
+    DEF_VARIABLES(controller_state_create);
+    DEF_VARIABLES(controller_button_to_string);
+    DEF_VARIABLES(display_synchronizer_update);
+    DEF_VARIABLES(controller_connection_state_to_string);
+    DEF_VARIABLES(controller_api_status_to_string);
+    DEF_VARIABLES(display_synchronizer_reset);
+    DEF_VARIABLES(controller_resume);
+    DEF_VARIABLES(set_ignore_manual_tracker_pause_resume);
+    DEF_VARIABLES(controller_pause);
+    DEF_VARIABLES(set_display_synchronizer);
+    DEF_VARIABLES(controller_destroy);
+    DEF_VARIABLES(controller_create_and_init_android);
+    DEF_VARIABLES(pause);
+    DEF_VARIABLES(tracker_state_get_buffer);
+    DEF_VARIABLES(controller_create_and_init);
+    DEF_VARIABLES(tracker_state_get_buffer_size);
+    DEF_VARIABLES(using_vr_display_service);
+    DEF_VARIABLES(controller_get_default_options);
+    DEF_VARIABLES(dump_debug_data);
+    DEF_VARIABLES(resume);
+    DEF_VARIABLES(set_lens_offset);
+    DEF_VARIABLES(reconnect_sensors);
+    DEF_VARIABLES(set_display_output_rotation);
+    DEF_VARIABLES(get_surface_size);
+    DEF_VARIABLES(check_surface_size_changed);
+    DEF_VARIABLES(gvr_get_border_size_meters);
+    DEF_VARIABLES(display_synchronizer_destroy);
+    DEF_VARIABLES(display_synchronizer_create);
+    DEF_VARIABLES(refresh_viewer_profile);
+    DEF_VARIABLES(set_default_viewer_profile);
+    DEF_VARIABLES(recenter_tracking);
+    DEF_VARIABLES(reset_tracking);
+    DEF_VARIABLES(resume_tracking);
+    DEF_VARIABLES(buffer_viewport_set_source_fov);
+    DEF_VARIABLES(pause_tracking);
+    DEF_VARIABLES(frame_get_framebuffer_object);
+    DEF_VARIABLES(frame_get_buffer_size);
+    DEF_VARIABLES(buffer_viewport_set_target_eye);
+    DEF_VARIABLES(buffer_viewport_set_transform);
+    DEF_VARIABLES(buffer_spec_set_color_format);
+    DEF_VARIABLES(buffer_viewport_get_transform);
+    DEF_VARIABLES(set_surface_size);
+    DEF_VARIABLES(buffer_viewport_set_external_surface_id);
+    DEF_VARIABLES(buffer_viewport_get_external_surface_id);
+    DEF_VARIABLES(buffer_viewport_list_get_size);
+    DEF_VARIABLES(buffer_viewport_set_source_buffer_index);
+    DEF_VARIABLES(get_async_reprojection_enabled);
+    DEF_VARIABLES(buffer_viewport_get_source_buffer_index);
+    DEF_VARIABLES(get_error_string);
+    DEF_VARIABLES(clear_error);
+    DEF_VARIABLES(get_viewer_type);
+    DEF_VARIABLES(get_error);
+    DEF_VARIABLES(get_viewer_model);
+    DEF_VARIABLES(get_version_string);
+    DEF_VARIABLES(get_viewer_vendor);
+    DEF_VARIABLES(get_version);
+    DEF_VARIABLES(set_back_gesture_event_handler);
+    DEF_VARIABLES(buffer_viewport_create);
+    DEF_VARIABLES(get_user_prefs);
+    DEF_VARIABLES(buffer_viewport_list_create);
+    DEF_VARIABLES(swap_chain_resize_buffer);
+    DEF_VARIABLES(frame_submit);
+    DEF_VARIABLES(frame_unbind);
+    DEF_VARIABLES(frame_bind_buffer);
+    DEF_VARIABLES(create);
+    DEF_VARIABLES(swap_chain_acquire_frame);
+    DEF_VARIABLES(apply_neck_model);
+    DEF_VARIABLES(get_head_space_from_start_space_rotation);
+    DEF_VARIABLES(get_window_bounds);
+    DEF_VARIABLES(buffer_viewport_get_source_uv);
+    DEF_VARIABLES(get_screen_target_size);
+    DEF_VARIABLES(get_screen_buffer_viewports);
+    DEF_VARIABLES(user_prefs_get_controller_handedness);
+    DEF_VARIABLES(buffer_viewport_list_set_item);
+    DEF_VARIABLES(buffer_viewport_set_source_uv);
+    DEF_VARIABLES(buffer_viewport_set_reprojection);
+    DEF_VARIABLES(buffer_viewport_get_reprojection);
+    DEF_VARIABLES(swap_chain_get_buffer_count);
+    DEF_VARIABLES(buffer_viewport_get_source_fov);
+    DEF_VARIABLES(buffer_spec_get_samples);
+    DEF_VARIABLES(buffer_viewport_get_target_eye);
+    DEF_VARIABLES(buffer_spec_get_size);
+    DEF_VARIABLES(buffer_viewport_list_get_item);
+    DEF_VARIABLES(buffer_viewport_equal);
+    DEF_VARIABLES(get_recommended_buffer_viewports);
+    DEF_VARIABLES(compute_distorted_point);
+    DEF_VARIABLES(set_error);
+    DEF_VARIABLES(swap_chain_get_buffer_size);
+    DEF_VARIABLES(get_eye_from_head_matrix);
+    DEF_VARIABLES(buffer_spec_destroy);
+    DEF_VARIABLES(set_display_metrics);
+    DEF_VARIABLES(set_viewer_params);
+    DEF_VARIABLES(get_time_point_now);
+    DEF_VARIABLES(distort_to_screen);
+    DEF_VARIABLES(initialize_gl);
+    DEF_VARIABLES(buffer_spec_create);
+    DEF_VARIABLES(buffer_spec_set_size);
+    DEF_VARIABLES(buffer_spec_set_depth_stencil_format);
+    DEF_VARIABLES(buffer_spec_set_samples);
+    DEF_VARIABLES(get_maximum_effective_render_target_size);
+    DEF_VARIABLES(bind_default_framebuffer);
+    DEF_VARIABLES(swap_chain_create);
+    DEF_VARIABLES(buffer_viewport_destroy);
+    DEF_VARIABLES(destroy);
+    DEF_VARIABLES(swap_chain_destroy);
+    DEF_VARIABLES(buffer_viewport_list_destroy);
+    DEF_VARIABLES(GvrApi_nativeGetWindowBounds);
+    DEF_VARIABLES(GvrApi_nativePauseTracking);
+    DEF_VARIABLES(GvrApi_nativeGetViewerModel);
+    DEF_VARIABLES(GvrApi_nativeGetViewerVendor);
+    DEF_VARIABLES(GvrApi_nativeGetErrorString);
+    DEF_VARIABLES(GvrApi_nativeComputeDistortedPoint);
+    DEF_VARIABLES(GvrApi_nativeCreate);
+    DEF_VARIABLES(GvrApi_nativeSwapChainCreate);
+    DEF_VARIABLES(GvrApi_nativeSetViewerParams);
+    DEF_VARIABLES(GvrApi_nativeSetDefaultViewerProfile);
+    DEF_VARIABLES(GvrApi_nativeResumeTracking);
+    DEF_VARIABLES(GvrApi_nativeFrameSubmit);
+    DEF_VARIABLES(GvrApi_nativeFrameGetBufferSize);
+    DEF_VARIABLES(GvrApi_nativeFrameGetFramebufferObject);
+    DEF_VARIABLES(GvrApi_nativeFrameUnbind);
+    DEF_VARIABLES(GvrApi_nativeFrameBindBuffer);
+    DEF_VARIABLES(GvrApi_nativeSwapChainAcquireFrame);
+    DEF_VARIABLES(GvrApi_nativeSwapChainResizeBuffer);
+    DEF_VARIABLES(GvrApi_nativeSwapChainGetBufferSize);
+    DEF_VARIABLES(GvrApi_nativeSwapChainGetBufferCount);
+    DEF_VARIABLES(GvrApi_nativeSwapChainDestroy);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetDepthStencilFormat);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetColorFormat);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetSamples);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecGetSamples);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetSize);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecGetSize);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecDestroy);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecCreate);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportEqual);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetReprojection);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetReprojection);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetExternalSurfaceId);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetExternalSurfaceId);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceBufferIndex);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceBufferIndex);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetTargetEye);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetTargetEye);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetTransform);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetTransform);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceFov);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceFov);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceUv);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceUv);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportDestroy);
+    DEF_VARIABLES(GvrApi_nativeReleaseGvrContext);
     DEF_VARIABLES(GvrApi_nativeResume);
     DEF_VARIABLES(GvrApi_nativePause);
     DEF_VARIABLES(GvrApi_nativeUserPrefsGetControllerHandedness);
