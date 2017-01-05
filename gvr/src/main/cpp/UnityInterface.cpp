@@ -3,13 +3,16 @@
 //
 
 #include "UnityInterface.h"
+#include "gvrfn.h"
 
+CGVRAPI gCGVRAPI;
 
 //ClassLoader paramClassLoader, Context paramContext)
 JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState(
         JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
 {
-    return 0;
+    long re = gCGVRAPI.CardboardViewNativeImpl_nativeSetApplicationState( env,obj, paramClassLoader, paramContext);
+    return re;
 }
 JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetScreenParams(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1,
