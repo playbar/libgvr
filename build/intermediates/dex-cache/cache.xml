@@ -21,30 +21,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
-        <dex dex="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_86f57093f4a7d7037f5707f8b4337690eb2f672e.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.3"
         sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
         <dex dex="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_cb74256bcaa1cbfe7de1065dd6018284cc918a93.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
-        <dex dex="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_289e8b66c96d13a2de338a1fbb3c170c0124e5d3.jar" />
     </item>
     <item
         is-multidex="false"
@@ -63,6 +45,24 @@
         revision="23.0.3"
         sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
         <dex dex="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.4.0_6fc3753ba43d26fc57599ff4051d2cc443ee2f15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_86f57093f4a7d7037f5707f8b4337690eb2f672e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="D:\MyWorks\Baofeng\UnityInterface\libgvr\gvr\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_289e8b66c96d13a2de338a1fbb3c170c0124e5d3.jar" />
     </item>
     <item
         is-multidex="false"

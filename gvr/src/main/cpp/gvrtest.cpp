@@ -14,8 +14,7 @@ TickContext g_ctx;
 JNIEXPORT jstring JNICALL Java_com_example_hellojnicallback_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz )
 {
 #define ABI "armeabi-v7a"
-    CGVRAPI gvrApi;
-    gvrApi.Init();
+    gGvrApi.Init();
     return env->NewStringUTF("Hello from JNI !  Compiled with ABI " ABI ".");
 }
 

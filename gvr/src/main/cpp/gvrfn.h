@@ -354,7 +354,7 @@ typedef gvr_mat4f (*FP_apply_neck_model)(  const gvr_context *gvr,
                                            gvr_mat4f head_space_from_start_space_rotation,
                                            float factor);
 typedef gvr_frame* (*FP_swap_chain_acquire_frame)(gvr_swap_chain *swap_chain);
-typedef gvr_context *(FP_create)(  JNIEnv *env,
+typedef gvr_context *(*FP_create)(  JNIEnv *env,
                                    jobject app_context,
                                    jobject class_loader);
 
@@ -431,7 +431,7 @@ typedef void (*FP_refresh_viewer_profile)(gvr_context *gvr);
 
 typedef int (*FP_display_synchronizer_create)();
 typedef int (*FP_display_synchronizer_destroy)(int *a1);
-typedef int (*FP_gvr_get_border_size_meters)(void *a1);
+typedef int (*FP_get_border_size_meters)(void *a1);
 typedef int (*FP_check_surface_size_changed)(int a1);
 typedef int (*FP_get_surface_size)(int a1, int a2, int a3);
 typedef int (*FP_set_display_output_rotation)(void *a1, int a2);
@@ -726,7 +726,7 @@ public:
                                                gvr_mat4f head_space_from_start_space_rotation,
                                                float factor);
     gvr_frame* swap_chain_acquire_frame(gvr_swap_chain *swap_chain);
-    gvr_context create(  JNIEnv *env, jobject app_context, jobject class_loader);
+    gvr_context* create(  JNIEnv *env, jobject app_context, jobject class_loader);
 
     void frame_bind_buffer(  gvr_frame *frame, int32_t index);
 
@@ -791,7 +791,7 @@ public:
 
     int display_synchronizer_create();
     int display_synchronizer_destroy(int *a1);
-    int gvr_get_border_size_meters(void *a1);
+    int get_border_size_meters(void *a1);
     int check_surface_size_changed(int a1);
     int get_surface_size(int a1, int a2, int a3);
     int set_display_output_rotation(void *a1, int a2);
@@ -931,7 +931,7 @@ private:
     DEF_VARIABLES(set_display_output_rotation);
     DEF_VARIABLES(get_surface_size);
     DEF_VARIABLES(check_surface_size_changed);
-    DEF_VARIABLES(gvr_get_border_size_meters);
+    DEF_VARIABLES(get_border_size_meters);
     DEF_VARIABLES(display_synchronizer_destroy);
     DEF_VARIABLES(display_synchronizer_create);
     DEF_VARIABLES(refresh_viewer_profile);
@@ -1138,5 +1138,7 @@ private:
     DEF_VARIABLES(CardboardViewNativeImpl_nativeUndistortTexture);
 
 };
+
+extern CGVRAPI gGvrApi;
 
 #endif //TRUNK_VIEWCORE_H

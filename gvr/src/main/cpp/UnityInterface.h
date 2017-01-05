@@ -287,7 +287,8 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainCreate(
 
 
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
-        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
+        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+        jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
 JNIEXPORT jfloatArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
 
@@ -307,339 +308,159 @@ JNIEXPORT jintArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetWindowBo
                 JNIEnv* env, jobject obj, jlong paramLong);
 
 
-void gvr_buffer_viewport_list_destroy(
-  gvr_buffer_viewport_list **viewport_list
-);
+void gvr_buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
        
-void gvr_swap_chain_destroy(
-  gvr_swap_chain **swap_chain
-);
+void gvr_swap_chain_destroy(gvr_swap_chain **swap_chain);
 
-void gvr_destroy(
-  gvr_context **gvr
-);
+void gvr_destroy(gvr_context **gvr);
 
-void gvr_buffer_viewport_destroy(
-  gvr_buffer_viewport **viewport
-);
+void gvr_buffer_viewport_destroy(gvr_buffer_viewport **viewport);
 
-gvr_swap_chain * gvr_swap_chain_create(
-  gvr_context *gvr,
-  const gvr_buffer_spec **buffers,
-  int32_t count
-);
+gvr_swap_chain * gvr_swap_chain_create(gvr_context *gvr, const gvr_buffer_spec **buffers, int32_t count);
 
-void gvr_bind_default_framebuffer(
-  gvr_context *gvr
-);
+void gvr_bind_default_framebuffer(gvr_context *gvr);
 
-gvr_sizei gvr_get_maximum_effective_render_target_size(
-  const gvr_context *gvr
-);
+gvr_sizei gvr_get_maximum_effective_render_target_size(const gvr_context *gvr);
 
-void gvr_buffer_spec_set_samples(
-  gvr_buffer_spec *spec,
-  int32_t num_samples
-);
+void gvr_buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples);
 
-void gvr_buffer_spec_set_depth_stencil_format(
-  gvr_buffer_spec *spec,
-  int32_t depth_stencil_format
-);
+void gvr_buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format);
 
-void gvr_buffer_spec_set_size(
-  gvr_buffer_spec *spec,
-  gvr_sizei size
-);
+void gvr_buffer_spec_set_size(gvr_buffer_spec *spec, gvr_sizei size);
 
-gvr_buffer_spec * gvr_buffer_spec_create(
-  gvr_context *gvr
-);
+gvr_buffer_spec * gvr_buffer_spec_create(gvr_context *gvr);
 
-void gvr_initialize_gl(
-  gvr_context *gvr
-);
+void gvr_initialize_gl(gvr_context *gvr);
 
 void gvr_distort_to_screen(
   gvr_context *gvr,
   int32_t texture_id,
   const gvr_buffer_viewport_list *viewport_list,
   gvr_mat4f head_space_from_start_space,
-  gvr_clock_time_point target_presentation_time
-);
+  gvr_clock_time_point target_presentation_time);
 
 gvr_clock_time_point gvr_get_time_point_now();
 
 
-void gvr_buffer_spec_destroy(
-  gvr_buffer_spec **spec
-);
+void gvr_buffer_spec_destroy(gvr_buffer_spec **spec);
 
-gvr_mat4f gvr_get_eye_from_head_matrix(
-  const gvr_context *gvr,
-  const int32_t eye
-);
+gvr_mat4f gvr_get_eye_from_head_matrix(const gvr_context *gvr, const int32_t eye);
 
-gvr_sizei gvr_swap_chain_get_buffer_size(
-  gvr_swap_chain *swap_chain,
-  int32_t index
-);
+gvr_sizei gvr_swap_chain_get_buffer_size(gvr_swap_chain *swap_chain, int32_t index);
 
-void gvr_compute_distorted_point(
-  const gvr_context *gvr,
-  const int32_t eye,
-  const gvr_vec2f uv_in,
-  gvr_vec2f uv_out[3]
-);
+void gvr_compute_distorted_point(const gvr_context *gvr, const int32_t eye, const gvr_vec2f uv_in, gvr_vec2f uv_out[3]);
 
-void gvr_get_recommended_buffer_viewports(
-  const gvr_context *gvr,
-  gvr_buffer_viewport_list *viewport_list
-);
+void gvr_get_recommended_buffer_viewports(const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list);
 
-bool gvr_buffer_viewport_equal(
-  const gvr_buffer_viewport *a,
-  const gvr_buffer_viewport *b
-);
+bool gvr_buffer_viewport_equal(const gvr_buffer_viewport *a, const gvr_buffer_viewport *b);
 
-void gvr_buffer_viewport_list_get_item(
-  const gvr_buffer_viewport_list *viewport_list,
-  size_t index,
-  gvr_buffer_viewport *viewport
-);
+void gvr_buffer_viewport_list_get_item(const gvr_buffer_viewport_list *viewport_list, size_t index, gvr_buffer_viewport *viewport);
 
-gvr_sizei gvr_buffer_spec_get_size(
-  const gvr_buffer_spec *spec
-);
+gvr_sizei gvr_buffer_spec_get_size(const gvr_buffer_spec *spec);
 
-int32_t gvr_buffer_viewport_get_target_eye(
-  const gvr_buffer_viewport *viewport
-);
+int32_t gvr_buffer_viewport_get_target_eye(const gvr_buffer_viewport *viewport);
 
-int32_t gvr_buffer_spec_get_samples(
-  const gvr_buffer_spec *spec
-);
+int32_t gvr_buffer_spec_get_samples(const gvr_buffer_spec *spec);
 
-gvr_rectf gvr_buffer_viewport_get_source_fov(
-  const gvr_buffer_viewport *viewport
-);
+gvr_rectf gvr_buffer_viewport_get_source_fov(const gvr_buffer_viewport *viewport);
 
-int32_t gvr_swap_chain_get_buffer_count(
-  const gvr_swap_chain *swap_chain
-);
+int32_t gvr_swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain);
         
-int32_t gvr_buffer_viewport_get_reprojection(
-  const gvr_buffer_viewport *viewport
-);
+int32_t gvr_buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport);
 
-void gvr_buffer_viewport_set_reprojection(
-  gvr_buffer_viewport *viewport,
-  int32_t reprojection
-);
+void gvr_buffer_viewport_set_reprojection(gvr_buffer_viewport *viewport, int32_t reprojection);
 
-void gvr_buffer_viewport_set_source_uv(
-  gvr_buffer_viewport *viewport,
-  gvr_rectf uv
-);
+void gvr_buffer_viewport_set_source_uv(gvr_buffer_viewport *viewport, gvr_rectf uv);
 
-void gvr_buffer_viewport_list_set_item(
-  gvr_buffer_viewport_list *viewport_list,
-  size_t index,
-  const gvr_buffer_viewport *viewport
-);
+void gvr_buffer_viewport_list_set_item(gvr_buffer_viewport_list *viewport_list, size_t index, const gvr_buffer_viewport *viewport);
 
-int32_t gvr_user_prefs_get_controller_handedness(
-  const gvr_user_prefs *user_prefs
-);
+int32_t gvr_user_prefs_get_controller_handedness(const gvr_user_prefs *user_prefs);
 
-void gvr_get_screen_buffer_viewports(
-  const gvr_context *gvr,
-  gvr_buffer_viewport_list *viewport_list
-);
+void gvr_get_screen_buffer_viewports(const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list);
 
-gvr_sizei gvr_get_screen_target_size(
-  const gvr_context *gvr
-);
+gvr_sizei gvr_get_screen_target_size(const gvr_context *gvr);
 
-gvr_rectf gvr_buffer_viewport_get_source_uv(
-  const gvr_buffer_viewport *viewport
-);
+gvr_rectf gvr_buffer_viewport_get_source_uv(const gvr_buffer_viewport *viewport);
 
-gvr_recti gvr_get_window_bounds(
-  const gvr_context *gvr
-);
+gvr_recti gvr_get_window_bounds(const gvr_context *gvr);
 
-gvr_mat4f gvr_get_head_space_from_start_space_rotation(
-  const gvr_context *gvr,
-  const gvr_clock_time_point time
-);
+gvr_mat4f gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr, const gvr_clock_time_point time);
        
-gvr_mat4f gvr_apply_neck_model(
-  const gvr_context *gvr,
-  gvr_mat4f head_space_from_start_space_rotation,
-  float factor
-);
+gvr_mat4f gvr_apply_neck_model(const gvr_context *gvr, gvr_mat4f head_space_from_start_space_rotation, float factor);
 
-gvr_frame * gvr_swap_chain_acquire_frame(
-  gvr_swap_chain *swap_chain
-);
+gvr_frame * gvr_swap_chain_acquire_frame(gvr_swap_chain *swap_chain);
       
-gvr_context * gvr_create(
-  JNIEnv *env,
-  jobject app_context,
-  jobject class_loader
-);
+gvr_context * gvr_create(JNIEnv *env, jobject app_context, jobject class_loader);
 
-void gvr_frame_bind_buffer(
-  gvr_frame *frame,
-  int32_t index
-);
+void gvr_frame_bind_buffer(gvr_frame *frame, int32_t index);
 
-void gvr_frame_unbind(
-  gvr_frame *frame
-);
+void gvr_frame_unbind(gvr_frame *frame);
 
-void gvr_frame_submit(
-  gvr_frame **frame,
-  const gvr_buffer_viewport_list *list,
-  gvr_mat4f head_space_from_start_space
-);
+void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 
-void gvr_swap_chain_resize_buffer(
-  gvr_swap_chain *swap_chain,
-  int32_t index,
-  gvr_sizei size
-);
+void gvr_swap_chain_resize_buffer(gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
 
-gvr_buffer_viewport_list * gvr_buffer_viewport_list_create(
-  const gvr_context *gvr
-);
+gvr_buffer_viewport_list * gvr_buffer_viewport_list_create(const gvr_context *gvr);
        
-const gvr_user_prefs * gvr_get_user_prefs(
-  gvr_context *gvr
-);
+const gvr_user_prefs * gvr_get_user_prefs(gvr_context *gvr);
 
-gvr_buffer_viewport * gvr_buffer_viewport_create(
-  gvr_context *gvr
-);
+gvr_buffer_viewport * gvr_buffer_viewport_create(gvr_context *gvr);
 
 gvr_version gvr_get_version();
 
-const char * gvr_get_viewer_vendor(
-  const gvr_context *gvr
-);
+const char * gvr_get_viewer_vendor(const gvr_context *gvr);
 
 const char * gvr_get_version_string();
 
-const char * gvr_get_viewer_model(
-  const gvr_context *gvr
-);
+const char * gvr_get_viewer_model(const gvr_context *gvr);
 
-int32_t gvr_get_error(
-  gvr_context *gvr
-);
+int32_t gvr_get_error(gvr_context *gvr);
 
-int32_t gvr_get_viewer_type(
-  const gvr_context *gvr
-);
+int32_t gvr_get_viewer_type(const gvr_context *gvr);
 
-int32_t gvr_clear_error(
-  gvr_context *gvr
-);
+int32_t gvr_clear_error(gvr_context *gvr);
        
-const char * gvr_get_error_string(
-  int32_t error_code
-);
+const char * gvr_get_error_string(int32_t error_code);
 
-int32_t gvr_buffer_viewport_get_source_buffer_index(
-  const gvr_buffer_viewport *viewport
-);
+int32_t gvr_buffer_viewport_get_source_buffer_index(const gvr_buffer_viewport *viewport);
         
-bool gvr_get_async_reprojection_enabled(
-  const gvr_context *gvr
-);
+bool gvr_get_async_reprojection_enabled(const gvr_context *gvr);
 
-void gvr_buffer_viewport_set_source_buffer_index(
-  gvr_buffer_viewport *viewport,
-  int32_t buffer_index
-);
+void gvr_buffer_viewport_set_source_buffer_index(gvr_buffer_viewport *viewport, int32_t buffer_index);
 
-size_t gvr_buffer_viewport_list_get_size(
-  const gvr_buffer_viewport_list *viewport_list
-);
+size_t gvr_buffer_viewport_list_get_size(const gvr_buffer_viewport_list *viewport_list);
 
-int32_t gvr_buffer_viewport_get_external_surface_id(
-  const gvr_buffer_viewport *viewport
-);
+int32_t gvr_buffer_viewport_get_external_surface_id(const gvr_buffer_viewport *viewport);
 
-void gvr_buffer_viewport_set_external_surface_id(
-  gvr_buffer_viewport *viewport,
-  int32_t external_surface_id
-);
+void gvr_buffer_viewport_set_external_surface_id(gvr_buffer_viewport *viewport, int32_t external_surface_id);
 
-void gvr_set_surface_size(
-  gvr_context *gvr,
-  gvr_sizei surface_size_pixels
-);
+void gvr_set_surface_size(gvr_context *gvr, gvr_sizei surface_size_pixels);
 
-gvr_mat4f gvr_buffer_viewport_get_transform(
-  const gvr_buffer_viewport *viewport
-);
+gvr_mat4f gvr_buffer_viewport_get_transform(const gvr_buffer_viewport *viewport);
 
-void gvr_buffer_spec_set_color_format(
-  gvr_buffer_spec *spec,
-  int32_t color_format
-);
+void gvr_buffer_spec_set_color_format(gvr_buffer_spec *spec, int32_t color_format);
 
-void gvr_buffer_viewport_set_transform(
-  gvr_buffer_viewport *viewport,
-  gvr_mat4f transform
-);
+void gvr_buffer_viewport_set_transform(gvr_buffer_viewport *viewport, gvr_mat4f transform);
 
-void gvr_buffer_viewport_set_target_eye(
-  gvr_buffer_viewport *viewport,
-  int32_t index
-);
+void gvr_buffer_viewport_set_target_eye(gvr_buffer_viewport *viewport, int32_t index);
 
-gvr_sizei gvr_frame_get_buffer_size(
-  const gvr_frame *frame,
-  int32_t index
-);
+gvr_sizei gvr_frame_get_buffer_size(const gvr_frame *frame, int32_t index);
 
-int32_t gvr_frame_get_framebuffer_object(
-  const gvr_frame *frame,
-  int32_t index
-);
+int32_t gvr_frame_get_framebuffer_object(const gvr_frame *frame, int32_t index);
 
-void gvr_pause_tracking(
-  gvr_context *gvr
-);
+void gvr_pause_tracking(gvr_context *gvr);
 
-void gvr_buffer_viewport_set_source_fov(
-  gvr_buffer_viewport *viewport,
-  gvr_rectf fov
-);
+void gvr_buffer_viewport_set_source_fov(gvr_buffer_viewport *viewport, gvr_rectf fov);
        
-void gvr_resume_tracking(
-  gvr_context *gvr
-);
+void gvr_resume_tracking(gvr_context *gvr);
 
-void gvr_reset_tracking(
-  gvr_context *gvr
-);
+void gvr_reset_tracking(gvr_context *gvr);
 
-void gvr_recenter_tracking(
-  gvr_context *gvr
-);
+void gvr_recenter_tracking(gvr_context *gvr);
 
-bool gvr_set_default_viewer_profile(
-  gvr_context *gvr,
-  const char *viewer_profile_uri
-);
+bool gvr_set_default_viewer_profile(gvr_context *gvr, const char *viewer_profile_uri);
 
-void gvr_refresh_viewer_profile(
-  gvr_context *gvr
-);
+void gvr_refresh_viewer_profile(gvr_context *gvr);
 
 
 gvr_controller_context * gvr_controller_create_and_init(int32_t options,gvr_context *context);
@@ -649,16 +470,11 @@ gvr_controller_context * gvr_controller_create_and_init_android(
   jobject android_context,
   jobject class_loader,
   int32_t options,
-  gvr_context *context
-);
+  gvr_context *context);
 
-void gvr_controller_destroy(
-  gvr_controller_context **api
-);
+void gvr_controller_destroy(gvr_controller_context **api);
 
-void gvr_controller_pause(
-  gvr_controller_context *api
-);
+void gvr_controller_pause(gvr_controller_context *api);
 
 void gvr_controller_resume( gvr_controller_context *api);
 
@@ -666,96 +482,51 @@ const char * gvr_controller_api_status_to_string(  int32_t status);
 
 const char * gvr_controller_connection_state_to_string(int32_t state);
 
-const char * gvr_controller_button_to_string(
-  int32_t button
-);
+const char * gvr_controller_button_to_string(int32_t button);
 
 gvr_controller_state * gvr_controller_state_create();
 
-void gvr_controller_state_destroy(
-  gvr_controller_state **state
-);
+void gvr_controller_state_destroy(gvr_controller_state **state);
 
-void gvr_controller_state_update(
-  gvr_controller_context *api,
-  int32_t flags,
-  gvr_controller_state *out_state);
+void gvr_controller_state_update(gvr_controller_context *api, int32_t flags, gvr_controller_state *out_state);
 
-int32_t gvr_controller_state_get_api_status(
-  const gvr_controller_state *state
-);
+int32_t gvr_controller_state_get_api_status(const gvr_controller_state *state);
 
-int32_t gvr_controller_state_get_connection_state(
-  const gvr_controller_state *state);
+int32_t gvr_controller_state_get_connection_state(const gvr_controller_state *state);
 
-gvr_quatf gvr_controller_state_get_orientation(
-  const gvr_controller_state *state);
+gvr_quatf gvr_controller_state_get_orientation(const gvr_controller_state *state);
         
-gvr_vec3f gvr_controller_state_get_gyro(
-  const gvr_controller_state *state
-);
+gvr_vec3f gvr_controller_state_get_gyro(const gvr_controller_state *state);
 
-gvr_vec3f gvr_controller_state_get_accel(
-  const gvr_controller_state *state
-);
+gvr_vec3f gvr_controller_state_get_accel(const gvr_controller_state *state);
 
-bool gvr_controller_state_is_touching(
-  const gvr_controller_state *state
-);
+bool gvr_controller_state_is_touching(const gvr_controller_state *state);
 
-gvr_vec2f gvr_controller_state_get_touch_pos(
-  const gvr_controller_state *state
-);
+gvr_vec2f gvr_controller_state_get_touch_pos(const gvr_controller_state *state);
 
-bool gvr_controller_state_get_touch_down(
-  const gvr_controller_state *state
-);
+bool gvr_controller_state_get_touch_down(const gvr_controller_state *state);
 
-bool gvr_controller_state_get_touch_up(
-  const gvr_controller_state *state
-);
+bool gvr_controller_state_get_touch_up(const gvr_controller_state *state);
        
-bool gvr_controller_state_get_recentered(
-  const gvr_controller_state *state
-);
+bool gvr_controller_state_get_recentered(const gvr_controller_state *state);
 
-bool gvr_controller_state_get_recentering(
-  const gvr_controller_state *state
-);
+bool gvr_controller_state_get_recentering(const gvr_controller_state *state);
 
-bool gvr_controller_state_get_button_state(
-  const gvr_controller_state *state,
-  int32_t button
-);
+bool gvr_controller_state_get_button_state(const gvr_controller_state *state, int32_t button);
 
-bool gvr_controller_state_get_button_down(
-  const gvr_controller_state *state,
-  int32_t button
-);
+bool gvr_controller_state_get_button_down(const gvr_controller_state *state, int32_t button);
 
-bool gvr_controller_state_get_button_up(
-  const gvr_controller_state *state,
-  int32_t button
-);
+bool gvr_controller_state_get_button_up(const gvr_controller_state *state, int32_t button);
 
-int64_t gvr_controller_state_get_last_orientation_timestamp(
-  const gvr_controller_state *state
-);
-int64_t gvr_controller_state_get_last_gyro_timestamp(
-  const gvr_controller_state *state
-);
+int64_t gvr_controller_state_get_last_orientation_timestamp(const gvr_controller_state *state);
 
-int64_t gvr_controller_state_get_last_accel_timestamp(
-  const gvr_controller_state *state
-);
+int64_t gvr_controller_state_get_last_gyro_timestamp(const gvr_controller_state *state);
+
+int64_t gvr_controller_state_get_last_accel_timestamp(const gvr_controller_state *state);
         
-int64_t gvr_controller_state_get_last_touch_timestamp(
-  const gvr_controller_state *state
-);
+int64_t gvr_controller_state_get_last_touch_timestamp(const gvr_controller_state *state);
 
-int64_t gvr_controller_state_get_last_button_timestamp(
-  const gvr_controller_state *state
-);
+int64_t gvr_controller_state_get_last_button_timestamp(const gvr_controller_state *state);
 
 int32_t gvr_controller_get_default_options();
        
