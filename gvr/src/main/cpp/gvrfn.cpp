@@ -2821,119 +2821,602 @@ const char * CGVRAPI::get_error_string(int32_t error_code)
     else
         return NULL;
 }
-int32_t CGVRAPI::buffer_viewport_get_source_buffer_index(const gvr_buffer_viewport *viewport);
-bool CGVRAPI::get_async_reprojection_enabled(const gvr_context *gvr);
-void CGVRAPI::buffer_viewport_set_source_buffer_index( gvr_buffer_viewport *viewport,
-                                              int32_t buffer_index);
+int32_t CGVRAPI::buffer_viewport_get_source_buffer_index(const gvr_buffer_viewport *viewport)
+{
+    Init();
+    if( m_fpbuffer_viewport_get_source_buffer_index)
+        return m_fpbuffer_viewport_get_source_buffer_index( viewport);
+    else
+        return 0;
+}
+bool CGVRAPI::get_async_reprojection_enabled(const gvr_context *gvr)
+{
+    Init();
+    if(m_fpget_async_reprojection_enabled)
+        return m_fpget_async_reprojection_enabled( gvr);
+    return false;
+}
+void CGVRAPI::buffer_viewport_set_source_buffer_index( gvr_buffer_viewport *viewport, int32_t buffer_index)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_source_buffer_index)
+        m_fpbuffer_viewport_set_source_buffer_index(viewport, buffer_index);
+    return;
+}
 
-size_t CGVRAPI::buffer_viewport_list_get_size( const gvr_buffer_viewport_list *viewport_list);
-int32_t CGVRAPI::buffer_viewport_get_external_surface_id( const gvr_buffer_viewport *viewport);
-void CGVRAPI::buffer_viewport_set_external_surface_id(  gvr_buffer_viewport *viewport,
-                                               int32_t external_surface_id);
+size_t CGVRAPI::buffer_viewport_list_get_size( const gvr_buffer_viewport_list *viewport_list)
+{
+    Init();
+    if(m_fpbuffer_viewport_list_get_size)
+        return m_fpbuffer_viewport_list_get_size(viewport_list);
+    return 0;
+}
+int32_t CGVRAPI::buffer_viewport_get_external_surface_id( const gvr_buffer_viewport *viewport)
+{
+    Init();
+    if(m_fpbuffer_viewport_get_external_surface_id)
+        return m_fpbuffer_viewport_get_external_surface_id( viewport);
+    return 0;
+}
+void CGVRAPI::buffer_viewport_set_external_surface_id(  gvr_buffer_viewport *viewport, int32_t external_surface_id)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_external_surface_id)
+        m_fpbuffer_viewport_set_external_surface_id( viewport, external_surface_id );
+    return;
+}
 
-void CGVRAPI::set_surface_size( gvr_context *gvr, gvr_sizei surface_size_pixels);
+void CGVRAPI::set_surface_size( gvr_context *gvr, gvr_sizei surface_size_pixels)
+{
+    Init();
+    if(m_fpset_surface_size)
+        m_fpset_surface_size( gvr, surface_size_pixels);
+    return;
+}
 
-gvr_mat4f CGVRAPI::buffer_viewport_get_transform(const gvr_buffer_viewport *viewport);
+gvr_mat4f CGVRAPI::buffer_viewport_get_transform(const gvr_buffer_viewport *viewport)
+{
+    Init();
+    gvr_mat4f re;
+    if(m_fpbuffer_viewport_get_transform)
+        re = m_fpbuffer_viewport_get_transform( viewport);
+    return re;
+}
 
-void CGVRAPI::buffer_spec_set_color_format(  gvr_buffer_spec *spec, int32_t color_format);
+void CGVRAPI::buffer_spec_set_color_format(  gvr_buffer_spec *spec, int32_t color_format)
+{
+    Init();
+    if(m_fpbuffer_spec_set_color_format)
+        m_fpbuffer_spec_set_color_format( spec, color_format);
+    return;
+}
 
-void CGVRAPI::buffer_viewport_set_transform(gvr_buffer_viewport *viewport,
-                                   gvr_mat4f transform);
-void CGVRAPI::buffer_viewport_set_target_eye(  gvr_buffer_viewport *viewport, int32_t index);
+void CGVRAPI::buffer_viewport_set_transform(gvr_buffer_viewport *viewport, gvr_mat4f transform)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_transform)
+        m_fpbuffer_viewport_set_transform( viewport, transform);
+    return;
+}
+void CGVRAPI::buffer_viewport_set_target_eye(  gvr_buffer_viewport *viewport, int32_t index)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_target_eye)
+        m_fpbuffer_viewport_set_target_eye(viewport, index);
+    return;
+}
 
-gvr_sizei CGVRAPI::frame_get_buffer_size(  const gvr_frame *frame, int32_t index);
+gvr_sizei CGVRAPI::frame_get_buffer_size(  const gvr_frame *frame, int32_t index)
+{
+    Init();
+    gvr_sizei re;
+    if(m_fpframe_get_buffer_size)
+        re = m_fpframe_get_buffer_size(frame, index);
+    return re;
+}
 
-int32_t CGVRAPI::frame_get_framebuffer_object(  const gvr_frame *frame, int32_t index);
+int32_t CGVRAPI::frame_get_framebuffer_object(  const gvr_frame *frame, int32_t index)
+{
+    Init();
+    if(m_fpframe_get_framebuffer_object)
+        return m_fpframe_get_framebuffer_object(frame, index);
+    return 0;
+}
 
-void CGVRAPI::pause_tracking( gvr_context *gvr);
-void CGVRAPI::buffer_viewport_set_source_fov( gvr_buffer_viewport *viewport, gvr_rectf fov);
+void CGVRAPI::pause_tracking( gvr_context *gvr)
+{
+    Init();
+    if(m_fppause_tracking)
+        m_fppause_tracking( gvr);
+    return;
+}
+void CGVRAPI::buffer_viewport_set_source_fov( gvr_buffer_viewport *viewport, gvr_rectf fov)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_source_fov)
+        m_fpbuffer_viewport_set_source_fov( viewport, fov);
+    return;
+}
 
-void CGVRAPI::resume_tracking(gvr_context *gvr);
-void CGVRAPI::reset_tracking(gvr_context *gvr);
+void CGVRAPI::resume_tracking(gvr_context *gvr)
+{
+    Init();
+    if(m_fpresume_tracking)
+        m_fpresume_tracking(gvr);
+    return;
+}
+void CGVRAPI::reset_tracking(gvr_context *gvr)
+{
+    Init();
+    if(m_fpreset_tracking)
+        m_fpreset_tracking(gvr);
+    return;
+}
 
-void CGVRAPI::recenter_tracking(gvr_context *gvr);
+void CGVRAPI::recenter_tracking(gvr_context *gvr)
+{
+    Init();
+    if(m_fprecenter_tracking)
+        m_fprecenter_tracking( gvr);
+    return;
+}
 
-bool CGVRAPI::set_default_viewer_profile(  gvr_context *gvr, const char *viewer_profile_uri);
+bool CGVRAPI::set_default_viewer_profile(  gvr_context *gvr, const char *viewer_profile_uri)
+{
+    Init();
+    if(m_fpset_default_viewer_profile)
+        return m_fpset_default_viewer_profile( gvr, viewer_profile_uri );
+    return false;
+}
 
-void CGVRAPI::refresh_viewer_profile(gvr_context *gvr);
+void CGVRAPI::refresh_viewer_profile(gvr_context *gvr)
+{
+    Init();
+    if(m_fprefresh_viewer_profile)
+        m_fprefresh_viewer_profile( gvr);
+    return;
+}
 
-int CGVRAPI::display_synchronizer_create();
-int CGVRAPI::display_synchronizer_destroy(int *a1);
-int CGVRAPI::get_border_size_meters(void *a1);
-int CGVRAPI::check_surface_size_changed(int a1);
-int CGVRAPI::get_surface_size(int a1, int a2, int a3);
-int CGVRAPI::set_display_output_rotation(void *a1, int a2);
-int CGVRAPI::reconnect_sensors(void *a1);
-int CGVRAPI::set_lens_offset(int *a1, int a2, int a3);
-int CGVRAPI::resume(int a1);
-int CGVRAPI::dump_debug_data(void *a1);
-int32_t CGVRAPI::controller_get_default_options();
-int CGVRAPI::using_vr_display_service(int a1);
-int CGVRAPI::tracker_state_get_buffer_size(int a1);
-gvr_controller_context *CGVRAPI::controller_create_and_init(int32_t options,gvr_context *context);
-int CGVRAPI::tracker_state_get_buffer(int a1);
-int CGVRAPI::pause(int a1);
+int CGVRAPI::display_synchronizer_create()
+{
+    Init();
+    if(m_fpdisplay_synchronizer_create)
+        return m_fpdisplay_synchronizer_create();
+    return 0;
+}
+int CGVRAPI::display_synchronizer_destroy(int *a1)
+{
+    Init();
+    if(m_fpdisplay_synchronizer_destroy)
+        return m_fpdisplay_synchronizer_destroy(a1);
+    return 0;
+}
+int CGVRAPI::get_border_size_meters(void *a1)
+{
+    Init();
+    if(m_fpget_border_size_meters)
+        return m_fpget_border_size_meters( a1);
+    return 0;
+}
+int CGVRAPI::check_surface_size_changed(int a1)
+{
+    Init();
+    if(m_fpcheck_surface_size_changed)
+        return m_fpcheck_surface_size_changed( a1);
+    return 0;
+}
+
+int CGVRAPI::get_surface_size(int a1, int a2, int a3)
+{
+    Init();
+    if(m_fpget_surface_size)
+        return m_fpget_surface_size( a1, a2, a3);
+    return 0;
+}
+
+int CGVRAPI::set_display_output_rotation(void *a1, int a2)
+{
+    Init();
+    if(m_fpset_display_output_rotation)
+        return m_fpset_display_output_rotation( a1, a2);
+    return 0;
+}
+
+int CGVRAPI::reconnect_sensors(void *a1)
+{
+    Init();
+    if(m_fpreconnect_sensors)
+        return m_fpreconnect_sensors(a1);
+    return 0;
+}
+int CGVRAPI::set_lens_offset(int *a1, int a2, int a3)
+{
+    Init();
+    if(m_fpset_lens_offset)
+        return m_fpset_lens_offset( a1, a2, a3);
+    return 0;
+}
+
+int CGVRAPI::resume(int a1)
+{
+    Init();
+    if(m_fpresume)
+        return m_fpresume(a1);
+    return 0;
+}
+int CGVRAPI::dump_debug_data(void *a1)
+{
+    Init();
+    if(m_fpdump_debug_data)
+        return m_fpdump_debug_data( a1);
+    return 0;
+}
+int32_t CGVRAPI::controller_get_default_options()
+{
+    Init();
+    if(m_fpcontroller_get_default_options)
+        return m_fpcontroller_get_default_options();
+    return 0;
+}
+int CGVRAPI::using_vr_display_service(int a1)
+{
+    Init();
+    if(m_fpusing_vr_display_service)
+        return m_fpusing_vr_display_service(a1);
+    return 0;
+}
+int CGVRAPI::tracker_state_get_buffer_size(int a1)
+{
+    Init();
+    if(m_fptracker_state_get_buffer_size)
+        return m_fptracker_state_get_buffer_size(a1);
+    return 0;
+}
+gvr_controller_context *CGVRAPI::controller_create_and_init(int32_t options,gvr_context *context)
+{
+    Init();
+    if(m_fpcontroller_create_and_init)
+        return m_fpcontroller_create_and_init( options, context);
+    return NULL;
+}
+int CGVRAPI::tracker_state_get_buffer(int a1)
+{
+    Init();
+    if( m_fptracker_state_get_buffer)
+        return m_fptracker_state_get_buffer(a1);
+    return 0;
+}
+int CGVRAPI::pause(int a1)
+{
+    Init();
+    if(m_fppause)
+        return m_fppause(a1);
+    return 0;
+}
 gvr_controller_context * CGVRAPI::controller_create_and_init_android(  JNIEnv *env,
                                                               jobject android_context,
                                                               jobject class_loader,
                                                               int32_t options,
-                                                              gvr_context *context);
-void CGVRAPI::controller_destroy( gvr_controller_context **api);
+                                                              gvr_context *context)
+{
+    Init();
+    if( m_fpcontroller_create_and_init_android)
+        return m_fpcontroller_create_and_init_android( env, android_context, class_loader, options, context );
+    return NULL;
+}
+void CGVRAPI::controller_destroy( gvr_controller_context **api)
+{
+    Init();
+    if(m_fpcontroller_destroy)
+        m_fpcontroller_destroy(api);
+    return;
+}
 
-int  CGVRAPI::set_display_synchronizer(int *a1, int a2);
-void CGVRAPI::controller_pause(gvr_controller_context *api);
-int CGVRAPI::set_ignore_manual_tracker_pause_resume(void *a1, int a2);
-void CGVRAPI::controller_resume(gvr_controller_context *api);
-int CGVRAPI::display_synchronizer_reset(void *a1);
+int  CGVRAPI::set_display_synchronizer(int *a1, int a2)
+{
+    Init();
+    if(m_fpset_display_synchronizer)
+        return m_fpset_display_synchronizer(a1, a2);
+    return 0;
+}
+void CGVRAPI::controller_pause(gvr_controller_context *api)
+{
+    Init();
+    if(m_fpcontroller_pause)
+        m_fpcontroller_pause( api);
+    return;
+}
+int CGVRAPI::set_ignore_manual_tracker_pause_resume(void *a1, int a2)
+{
+    Init();
+    if(m_fpset_ignore_manual_tracker_pause_resume)
+        return m_fpset_ignore_manual_tracker_pause_resume(a1, a2);
+    return 0;
+}
+void CGVRAPI::controller_resume(gvr_controller_context *api)
+{
+    Init();
+    if( m_fpcontroller_resume)
+        m_fpcontroller_resume(api);
+    return;
+}
+int CGVRAPI::display_synchronizer_reset(void *a1)
+{
+    Init();
+    if(m_fpdisplay_synchronizer_reset)
+        return m_fpdisplay_synchronizer_reset(a1);
+    return 0;
+}
 
-const char* CGVRAPI::controller_api_status_to_string( int32_t status);
+const char* CGVRAPI::controller_api_status_to_string( int32_t status)
+{
+    Init();
+    if(m_fpcontroller_api_status_to_string)
+        return m_fpcontroller_api_status_to_string(status);
+    return NULL;
+}
 
-const char* CGVRAPI::controller_connection_state_to_string(int32_t state);
-int CGVRAPI::display_synchronizer_update(int *a1, int a2, int64_t a3, int a4);
-const char * CGVRAPI::controller_button_to_string( int32_t button);
-gvr_controller_state * CGVRAPI::controller_state_create();
-void CGVRAPI::controller_state_destroy(gvr_controller_state **state);
-void CGVRAPI::controller_state_update(  gvr_controller_context *api,
-                               int32_t flags,
-                               gvr_controller_state *out_state);
-int32_t CGVRAPI::controller_state_get_api_status(const gvr_controller_state *state);
-int32_t CGVRAPI::controller_state_get_connection_state(const gvr_controller_state *state);
-gvr_quatf CGVRAPI::controller_state_get_orientation(const gvr_controller_state *state);
+const char* CGVRAPI::controller_connection_state_to_string(int32_t state)
+{
+    Init();
+    if(m_fpcontroller_connection_state_to_string)
+        return m_fpcontroller_connection_state_to_string(state);
+    return nullptr;
+}
+int CGVRAPI::display_synchronizer_update(int *a1, int a2, int64_t a3, int a4)
+{
+    Init();
+    if( m_fpdisplay_synchronizer_update)
+        return m_fpdisplay_synchronizer_update(a1, a2, a3, a4);
+    return 0;
+}
+const char * CGVRAPI::controller_button_to_string( int32_t button)
+{
+    Init();
+    if(m_fpcontroller_button_to_string)
+        return m_fpcontroller_button_to_string( button);
+    return nullptr;
+}
+gvr_controller_state * CGVRAPI::controller_state_create()
+{
+    Init();
+    if(m_fpcontroller_state_create)
+        return m_fpcontroller_state_create();
+    return nullptr;
+}
+void CGVRAPI::controller_state_destroy(gvr_controller_state **state)
+{
+    Init();
+    if(m_fpcontroller_state_destroy)
+        m_fpcontroller_state_destroy( state);
+    return;;
+}
+void CGVRAPI::controller_state_update(  gvr_controller_context *api, int32_t flags, gvr_controller_state *out_state)
+{
+    Init();
+    if(m_fpcontroller_state_update)
+        m_fpcontroller_state_update(api, flags, out_state);
+    return;
+}
+int32_t CGVRAPI::controller_state_get_api_status(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_api_status)
+        return m_fpcontroller_state_get_api_status( state);
+    return 0;
+}
+int32_t CGVRAPI::controller_state_get_connection_state(const gvr_controller_state *state)
+{
+    Init();
+    if( m_fpcontroller_state_get_connection_state)
+        return m_fpcontroller_state_get_connection_state( state);
+    return 0;
+}
+gvr_quatf CGVRAPI::controller_state_get_orientation(const gvr_controller_state *state)
+{
+    Init();
+    gvr_quatf re;
+    if( m_fpcontroller_state_get_orientation)
+        re = m_fpcontroller_state_get_orientation(state);
+    return re;
+}
 
-gvr_vec3f CGVRAPI::controller_state_get_gyro(const gvr_controller_state *state);
+gvr_vec3f CGVRAPI::controller_state_get_gyro(const gvr_controller_state *state)
+{
+    Init();
+    gvr_vec3f re;
+    if(m_fpcontroller_state_get_gyro)
+        re = m_fpcontroller_state_get_gyro( state);
+    return re;
+}
 
-gvr_vec3f CGVRAPI::controller_state_get_accel( const gvr_controller_state *state);
+gvr_vec3f CGVRAPI::controller_state_get_accel( const gvr_controller_state *state)
+{
+    Init();
+    gvr_vec3f re;
+    if(m_fpcontroller_state_get_accel)
+        re = m_fpcontroller_state_get_accel(state);
+    return re;
+}
 
-bool CGVRAPI::controller_state_is_touching( const gvr_controller_state *state);
-gvr_vec2f CGVRAPI::controller_state_get_touch_pos(const gvr_controller_state *state);
+bool CGVRAPI::controller_state_is_touching( const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_is_touching)
+        return m_fpcontroller_state_is_touching(state);
+    return false;
+}
+gvr_vec2f CGVRAPI::controller_state_get_touch_pos(const gvr_controller_state *state)
+{
+    Init();
+    gvr_vec2f re;
+    if( m_fpcontroller_state_get_touch_pos)
+        re = m_fpcontroller_state_get_touch_pos(state);
+    return re;
+}
 
-bool CGVRAPI::controller_state_get_touch_down(const gvr_controller_state *state);
-bool CGVRAPI::controller_state_get_touch_up(const gvr_controller_state *state);
-bool CGVRAPI::controller_state_get_recentered(const gvr_controller_state *state);
-bool CGVRAPI::controller_state_get_recentering(const gvr_controller_state *state);
-int CGVRAPI::on_pause_reprojection_thread(int a1);
-bool CGVRAPI::controller_state_get_button_state(  const gvr_controller_state *state,
-                                         int32_t button);
+bool CGVRAPI::controller_state_get_touch_down(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_touch_down)
+        return m_fpcontroller_state_get_touch_down(state);
+    return false;
+}
+bool CGVRAPI::controller_state_get_touch_up(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_touch_up)
+        return m_fpcontroller_state_get_touch_up(state);
+    return false;
+}
+bool CGVRAPI::controller_state_get_recentered(const gvr_controller_state *state)
+{
+    Init();
+    if( m_fpcontroller_state_get_recentered)
+        return m_fpcontroller_state_get_recentered(state);
+    return false;
+}
+bool CGVRAPI::controller_state_get_recentering(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_recentering)
+        return m_fpcontroller_state_get_recentering( state);
+    return false;
+}
+int CGVRAPI::on_pause_reprojection_thread(int a1)
+{
+    Init();
+    if(m_fpon_pause_reprojection_thread)
+        return m_fpon_pause_reprojection_thread( a1);
+    return 0;
+}
+bool CGVRAPI::controller_state_get_button_state(  const gvr_controller_state *state, int32_t button)
+{
+    Init();
+    if( m_fpcontroller_state_get_button_state)
+        return m_fpcontroller_state_get_button_state( state, button);
+    return false;
+}
 int CGVRAPI::update_surface_reprojection_thread(int *a1, int a2, int a3, int a4, int64_t a5,
                                        int a6, int a7, int a8, int a9, int a10, int a11,
                                        int a12, int a13, int a14, int a15, int a16, int a17,
-                                       int a18, int a19, int a20, int a21);
-bool CGVRAPI::controller_state_get_button_down( const gvr_controller_state *state,
-                                       int32_t button);
+                                       int a18, int a19, int a20, int a21)
+{
+    Init();
+    if( m_fpupdate_surface_reprojection_thread)
+        return m_fpupdate_surface_reprojection_thread(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21);
+    return 0;
+}
+bool CGVRAPI::controller_state_get_button_down( const gvr_controller_state *state, int32_t button)
+{
+    Init();
+    if( m_fpcontroller_state_get_button_down)
+        return m_fpcontroller_state_get_button_down(state, button);
+    return false;
+}
 
-bool CGVRAPI::controller_state_get_button_up(const gvr_controller_state *state,
-                                    int32_t button);
-int CGVRAPI::remove_all_surfaces_reprojection_thread(void *a1);
-int64_t CGVRAPI::controller_state_get_last_orientation_timestamp(const gvr_controller_state *state);
-int64_t CGVRAPI::controller_state_get_last_gyro_timestamp(const gvr_controller_state *state);
-int CGVRAPI::set_async_reprojection_enabled(int a1, int a2);
-int64_t CGVRAPI::controller_state_get_last_accel_timestamp(const gvr_controller_state *state);
-int CGVRAPI::on_surface_created_reprojection_thread(int a1);
-int64_t CGVRAPI::controller_state_get_last_touch_timestamp(const gvr_controller_state *state);
-int CGVRAPI::render_reprojection_thread(int a1);
-int64_t CGVRAPI::controller_state_get_last_button_timestamp(const gvr_controller_state *state);
-int CGVRAPI::tracker_state_destroy(int *a1);
-int CGVRAPI::resume_tracking_set_state(int a1, int a2, int a3);
-int CGVRAPI::pause_tracking_get_state(void *a1);
-int CGVRAPI::tracker_state_create(int a1, int a2);
-int CGVRAPI::create_with_tracker_for_testing(int a1, int a2);
+bool CGVRAPI::controller_state_get_button_up(const gvr_controller_state *state, int32_t button)
+{
+    Init();
+    if(m_fpcontroller_state_get_button_up)
+        return m_fpcontroller_state_get_button_up( state, button);
+    return false;
+}
+int CGVRAPI::remove_all_surfaces_reprojection_thread(void *a1)
+{
+    Init();
+    if(m_fpremove_all_surfaces_reprojection_thread)
+        return m_fpremove_all_surfaces_reprojection_thread( a1);
+    return 0;
+}
+int64_t CGVRAPI::controller_state_get_last_orientation_timestamp(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_last_orientation_timestamp)
+        return m_fpcontroller_state_get_last_orientation_timestamp(state);
+    return 0;
+}
+int64_t CGVRAPI::controller_state_get_last_gyro_timestamp(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_last_gyro_timestamp)
+        return m_fpcontroller_state_get_last_gyro_timestamp(state);
+    return 0;
+}
+int CGVRAPI::set_async_reprojection_enabled(int a1, int a2)
+{
+    Init();
+    if(m_fpset_async_reprojection_enabled)
+        return m_fpset_async_reprojection_enabled(a1, a2);
+    return 0;
+}
+int64_t CGVRAPI::controller_state_get_last_accel_timestamp(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_last_accel_timestamp)
+        return m_fpcontroller_state_get_last_accel_timestamp(state);
+    return 0;
+}
+int CGVRAPI::on_surface_created_reprojection_thread(int a1)
+{
+    Init();
+    if(m_fpon_surface_created_reprojection_thread)
+        return m_fpon_surface_created_reprojection_thread(a1);
+    return 0;
+}
+int64_t CGVRAPI::controller_state_get_last_touch_timestamp(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_last_touch_timestamp)
+        return m_fpcontroller_state_get_last_touch_timestamp( state);
+    return 0;
+}
+int CGVRAPI::render_reprojection_thread(int a1)
+{
+    Init();
+    if(m_fprender_reprojection_thread)
+        return m_fprender_reprojection_thread( a1);
+    return 0;
+}
+int64_t CGVRAPI::controller_state_get_last_button_timestamp(const gvr_controller_state *state)
+{
+    Init();
+    if(m_fpcontroller_state_get_last_button_timestamp)
+        return m_fpcontroller_state_get_last_button_timestamp(state);
+    return 0;
+}
+int CGVRAPI::tracker_state_destroy(int *a1)
+{
+    Init();
+    if(m_fptracker_state_destroy)
+        return m_fptracker_state_destroy( a1);
+    return 0;
+}
+int CGVRAPI::resume_tracking_set_state(int a1, int a2, int a3)
+{
+    Init();
+    if(m_fpresume_tracking_set_state)
+        return m_fpresume_tracking_set_state( a1, a2, a3);
+    return 0;
+}
+int CGVRAPI::pause_tracking_get_state(void *a1)
+{
+    Init();
+    if(m_fppause_tracking_get_state)
+        return m_fppause_tracking_get_state(a1);
+    return 0;
+}
+int CGVRAPI::tracker_state_create(int a1, int a2)
+{
+    Init();
+    if(m_fptracker_state_create)
+        return m_fptracker_state_create( a1,a2);
+    return 0;
+}
+int CGVRAPI::create_with_tracker_for_testing(int a1, int a2)
+{
+    Init();
+    if(m_fpcreate_with_tracker_for_testing)
+        return m_fpcreate_with_tracker_for_testing(a1, a2);
+    return 0;
+}
