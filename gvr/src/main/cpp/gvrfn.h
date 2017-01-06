@@ -287,7 +287,7 @@ typedef void (*FP_distort_to_screen)( gvr_context *gvr,
                                        gvr_mat4f head_space_from_start_space,
                                        gvr_clock_time_point target_presentation_time);
 
-typedef void (*FP_get_time_point_now)();
+typedef gvr_clock_time_point (*FP_get_time_point_now)();
 
 typedef int (*FP_set_viewer_params)(int *a1, const void *a2, size_t a3);
 
@@ -680,7 +680,7 @@ public:
                            const gvr_buffer_viewport_list *viewport_list,
                            gvr_mat4f head_space_from_start_space,
                            gvr_clock_time_point target_presentation_time);
-    void get_time_point_now();
+    gvr_clock_time_point get_time_point_now();
     int set_viewer_params(int *a1, const void *a2, size_t a3);
     int set_display_metrics(int *a1, int a2, int a3, int a4, int a5, int a6);
     void buffer_spec_destroy(gvr_buffer_spec **spec);

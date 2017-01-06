@@ -2153,6 +2153,7 @@ void CGVRAPI::GvrApi_nativeBufferSpecDestroy(JNIEnv* env, jobject obj, jlong par
         m_fpGvrApi_nativeBufferSpecDestroy( env, obj, paramLong );
     return;
 }
+
 void CGVRAPI::GvrApi_nativeBufferSpecGetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint)
 {
     Init();
@@ -2455,12 +2456,13 @@ void CGVRAPI::distort_to_screen(gvr_context *gvr,
         m_fpdistort_to_screen( gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
     return;
 }
-void CGVRAPI::get_time_point_now()
+gvr_clock_time_point CGVRAPI::get_time_point_now()
 {
     Init();
+    gvr_clock_time_point re;
     if(m_fpget_time_point_now)
-        m_fpget_time_point_now( );
-    return;
+        re = m_fpget_time_point_now( );
+    return re;
 }
 int CGVRAPI::set_viewer_params(int *a1, const void *a2, size_t a3)
 {
