@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     static
     {
-        System.loadLibrary("gvrimpl");
+//        System.loadLibrary("gvrimpl");
         System.loadLibrary("gvr");
     }
     public native  String stringFromJNI();

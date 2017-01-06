@@ -4,6 +4,7 @@
 
 #include "UnityInterface.h"
 #include "gvrfn.h"
+#include "gvrtest.h"
 
 //ClassLoader paramClassLoader, Context paramContext)
 JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState(
@@ -633,6 +634,7 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
         JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker)
 {
+    LOGE("Java_com_google_vr_ndk_base_GvrApi_nativeCreate");
     return gGvrApi.GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
 }
 JNIEXPORT jfloatArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint(

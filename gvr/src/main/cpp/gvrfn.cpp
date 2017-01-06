@@ -337,8 +337,10 @@ bool CGVRAPI::Init()
         return m_bInit;
 //    try
     {
-        is_file_exist("/sdcard/gvrimpl.so");
-        m_hDLL = dlopen("/data/data/com.mj.test/lib/gvrimpl.so", RTLD_LAZY);
+//        const char *filename = "/data/data/com.mj.test/lib/libgvrimpl.so";
+        const char *filename = "/data/data/com.Company.GvrProject13/lib/libgvrimpl.so";
+        is_file_exist(filename);
+        m_hDLL = dlopen(filename, RTLD_LAZY);
         if( m_hDLL == nullptr)
         {
             LOGE( "dlopen err:%s.\n",dlerror());
@@ -875,6 +877,7 @@ bool CGVRAPI::Init()
                 && m_fpCardboardViewNativeImpl_nativeUndistortTexture!= NULL)
             {
                  m_bInit = true;
+                LOGI("dlopen success");
 //                MOJING_TRACE(g_APIlogger , "svrApi init OK");
             }
             else
