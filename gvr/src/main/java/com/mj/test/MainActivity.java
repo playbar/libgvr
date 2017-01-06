@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.hellojnicallback;
+package com.mj.test;
 
 import android.support.annotation.Keep;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.os.Environment;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,50 +34,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String strPath = getSDPath();
+        Log.e("MainActivity", strPath);
+
         tickView = (TextView) findViewById(R.id.tickView);
     }
+
+    public String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED);//判断sd卡是否存在
+        if(sdCardExist)
+        {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir.toString();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         hour = minute = second = 0;
         ((TextView)findViewById(R.id.hellojniMsg)).setText(stringFromJNI());
-        startTicks();
     }
 
     @Override
     public void onPause () {
         super.onPause();
-        StopTicks();
     }
 
-    /*
-     * A function calling from JNI to update current timer
-     */
-    @Keep
-    private void updateTimer() {
-        ++second;
-        if(second >= 60) {
-            ++minute;
-            second -= 60;
-            if(minute >= 60) {
-                ++hour;
-                minute -= 60;
-            }
-        }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String ticks = "" + MainActivity.this.hour + ":" +
-                        MainActivity.this.minute + ":" +
-                        MainActivity.this.second;
-                MainActivity.this.tickView.setText(ticks);
-            }
-        });
-    }
-    static {
+    static
+    {
+        System.loadLibrary("gvrimpl");
         System.loadLibrary("gvr");
     }
     public native  String stringFromJNI();
-    public native void startTicks();
-    public native void StopTicks();
 }

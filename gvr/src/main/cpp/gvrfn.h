@@ -257,7 +257,7 @@ typedef jbyteArray (*FP_GvrApi_nativePauseTracking)( JNIEnv* env, jobject obj, j
 
 typedef jintArray (*FP_GvrApi_nativeGetWindowBounds)(JNIEnv* env, jobject obj, jlong paramLong);
 
-
+typedef jint (*FP_JNI_OnLoad)();
 
 typedef void (*FP_buffer_viewport_list_destroy)( gvr_buffer_viewport_list **viewport_list);
 typedef void (*FP_swap_chain_destroy)(gvr_swap_chain **swap_chain);
@@ -510,10 +510,6 @@ typedef int (*FP_pause_tracking_get_state)(void *a1);
 typedef int (*FP_tracker_state_create)(int a1, int a2);
 typedef int (*FP_create_with_tracker_for_testing)(int a1, int a2);
 
-
-
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "hell-libs::", __VA_ARGS__))
-
 #define DEF_VARIABLES(name) FP_##name m_fp##name
 
 extern JavaVM *gs_jvm;
@@ -663,6 +659,7 @@ public:
     jstring GvrApi_nativeGetViewerModel( JNIEnv* env, jobject obj, jlong paramLong);
     jbyteArray GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong paramLong);
     jintArray GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong);
+    jint JNI_OnLoad1();
     void buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
     void swap_chain_destroy(gvr_swap_chain **swap_chain);
     void destroy(gvr_context **gvr);
@@ -1011,6 +1008,7 @@ private:
     DEF_VARIABLES(buffer_viewport_destroy);
     DEF_VARIABLES(destroy);
     DEF_VARIABLES(swap_chain_destroy);
+    DEF_VARIABLES(JNI_OnLoad);
     DEF_VARIABLES(buffer_viewport_list_destroy);
     DEF_VARIABLES(GvrApi_nativeGetWindowBounds);
     DEF_VARIABLES(GvrApi_nativePauseTracking);

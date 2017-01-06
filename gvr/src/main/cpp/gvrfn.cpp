@@ -5,6 +5,7 @@
 #include "gvrfn.h"
 #include <dlfcn.h>
 #include "gvrtest.h"
+#include <unistd.h>
 
 JavaVM *gs_jvm=0;
 static int gneedDetach = 0;
@@ -136,7 +137,7 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeGetViewerModel          "Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerModel"
 #define FN_GvrApi_nativePauseTracking  "Java_com_google_vr_ndk_base_GvrApi_nativePauseTracking"
 #define FN_GvrApi_nativeGetWindowBounds         "Java_com_google_vr_ndk_base_GvrApi_nativeGetWindowBounds"
-
+#define FN_JNI_OnLoad "JNI_OnLoad"
 
 #define FN_buffer_viewport_list_destroy         "gvr_buffer_viewport_list_destroy"
 #define FN_swap_chain_destroy                    "gvr_swap_chain_destroy"
@@ -309,14 +310,6 @@ void DetachCurrentThreadJNI()
 }
 
 
-jint JNI_OnLoad_Test( JavaVM* vm, void *reserved){
-    gs_jvm = vm;
-
-    jint result = JNI_VERSION_1_6;
-    return  result;
-
-}
-
 CGVRAPI::CGVRAPI()
 {
     m_bInit = false;
@@ -327,13 +320,29 @@ CGVRAPI::~CGVRAPI()
     m_bInit = false;
 }
 
+int is_file_exist(const char *file_path)
+{
+    if(file_path == nullptr )
+    {
+        return  -1;
+    }
+    if( access(file_path, F_OK) == 0 )
+        return 0;
+    return -1;
+}
+
 bool CGVRAPI::Init()
 {
     if( m_bInit )
         return m_bInit;
 //    try
     {
-        m_hDLL = dlopen("/sdcard/gvrimpl.so", RTLD_LAZY);
+        is_file_exist("/sdcard/gvrimpl.so");
+        m_hDLL = dlopen("/data/data/com.mj.test/lib/gvrimpl.so", RTLD_LAZY);
+        if( m_hDLL == nullptr)
+        {
+            LOGE( "dlopen err:%s.\n",dlerror());
+        }
         if (m_hDLL)
         {
 
@@ -474,6 +483,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_destroy);
             GET_DLL_FUNCION(m_hDLL,destroy);
             GET_DLL_FUNCION(m_hDLL,swap_chain_destroy);
+            GET_DLL_FUNCION(m_hDLL, JNI_OnLoad);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_list_destroy);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetWindowBounds);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativePauseTracking);
@@ -737,6 +747,7 @@ bool CGVRAPI::Init()
                 && m_fpbuffer_viewport_destroy!= NULL
                 && m_fpdestroy!= NULL
                 && m_fpswap_chain_destroy!= NULL
+                && m_fpJNI_OnLoad != NULL
                 && m_fpbuffer_viewport_list_destroy!= NULL
                 && m_fpGvrApi_nativeGetWindowBounds!= NULL
                 && m_fpGvrApi_nativePauseTracking!= NULL
@@ -1006,6 +1017,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(buffer_viewport_destroy);
                 GET_DLL_FUNCION_ERR(destroy);
                 GET_DLL_FUNCION_ERR(swap_chain_destroy);
+                GET_DLL_FUNCION_ERR(JNI_OnLoad);
                 GET_DLL_FUNCION_ERR(buffer_viewport_list_destroy);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetWindowBounds);
                 GET_DLL_FUNCION_ERR(GvrApi_nativePauseTracking);
@@ -1289,6 +1301,7 @@ void CGVRAPI::Release()
     m_fpbuffer_viewport_destroy = NULL;
     m_fpdestroy = NULL;
     m_fpswap_chain_destroy = NULL;
+    m_fpJNI_OnLoad = NULL;
     m_fpbuffer_viewport_list_destroy = NULL;
     m_fpGvrApi_nativeGetWindowBounds = NULL;
     m_fpGvrApi_nativePauseTracking = NULL;
@@ -2358,6 +2371,15 @@ jintArray CGVRAPI::GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong 
         re = m_fpGvrApi_nativeGetWindowBounds(env, obj, paramLong );
     return re;
 }
+
+jint CGVRAPI::JNI_OnLoad1()
+{
+    Init();
+    if(m_fpJNI_OnLoad)
+        return m_fpJNI_OnLoad();
+    return 0;
+}
+
 void CGVRAPI::buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list)
 {
     Init();
