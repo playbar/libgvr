@@ -1508,217 +1508,1319 @@ void CGVRAPI::CardboardViewNativeImpl_nativeSetDistortionCorrectionScale(JNIEnv*
         m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale(env, obj, paramLong, paramFloat);
     return;
 }
-void CGVRAPI::CardboardViewNativeImpl_nativeSetMultisampling(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::CardboardViewNativeImpl_nativeSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::CardboardViewNativeImpl_nativeUndistortTexture(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::CardboardViewNativeImpl_nativeLogEvent(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::CardboardViewNativeImpl_nativeSetGvrViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
-void CGVRAPI::CardboardViewNativeImpl_nativeSetStereoRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramStereoRenderer);
-void CGVRAPI::CardboardViewNativeImpl_nativeSetRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRenderer);
-void CGVRAPI::CardboardViewNativeImpl_nativeGetCurrentEyeParams(JNIEnv* env, jobject obj, jlong paramLong, jobject paramHeadTransform, jobject paramEye1,
-                                                       jobject paramEye2, jobject paramEye3, jobject paramEye4, jobject paramEye5);
-long CGVRAPI::CardboardViewNativeImpl_nativeInit(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::NativeCallbacks_handleStateChanged(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2);
+
+void CGVRAPI::CardboardViewNativeImpl_nativeSetMultisampling(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetMultisampling)
+        m_fpCardboardViewNativeImpl_nativeSetMultisampling(env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat)
+        m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat(env,obj, paramLong, paramInt);
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeUndistortTexture(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeUndistortTexture)
+        m_fpCardboardViewNativeImpl_nativeUndistortTexture( env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeLogEvent(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeLogEvent)
+        m_fpCardboardViewNativeImpl_nativeLogEvent( env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetGvrViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetGvrViewerParams)
+        m_fpCardboardViewNativeImpl_nativeSetGvrViewerParams(env, obj, paramLong, paramArrayOfByte);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetStereoRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramStereoRenderer)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeSetStereoRenderer)
+        m_fpCardboardViewNativeImpl_nativeSetStereoRenderer(env, obj, paramLong, paramStereoRenderer );
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRenderer)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetRenderer)
+        m_fpCardboardViewNativeImpl_nativeSetRenderer(env, obj, paramLong, paramRenderer);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeGetCurrentEyeParams(JNIEnv* env, jobject obj, jlong paramLong, jobject paramHeadTransform,
+                                                                jobject paramEye1, jobject paramEye2, jobject paramEye3,
+                                                                jobject paramEye4, jobject paramEye5)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeGetCurrentEyeParams) {
+        m_fpCardboardViewNativeImpl_nativeGetCurrentEyeParams(env, obj, paramLong,
+                                                              paramHeadTransform, paramEye1,
+                                                              paramEye2, paramEye3,
+                                                              paramEye4, paramEye5);
+    }
+    return;
+}
+long CGVRAPI::CardboardViewNativeImpl_nativeInit(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpCardboardViewNativeImpl_nativeInit)
+        re = m_fpCardboardViewNativeImpl_nativeInit(env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::NativeCallbacks_handleStateChanged(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleStateChanged)
+        m_fpNativeCallbacks_handleStateChanged(env, obj, paramLong, paramInt1, paramInt2 );
+    return;
+}
 void CGVRAPI::NativeCallbacks_handleControllerRecentered(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1,
-                                                jfloat paramFloat2, jfloat paramFloat3, jfloat paramFloat4);
+                                                jfloat paramFloat2, jfloat paramFloat3, jfloat paramFloat4)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleControllerRecentered)
+        m_fpNativeCallbacks_handleControllerRecentered(env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3, paramFloat4);
+    return;
+}
 void CGVRAPI::NativeCallbacks_handleTouchEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt,
-                                      jfloat paramFloat1, jfloat paramFloat2);
-void CGVRAPI::NativeCallbacks_handleOrientationEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2,
-                                            jfloat paramFloat3, jfloat paramFloat4);
-void CGVRAPI::NativeCallbacks_handleButtonEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean);
-void CGVRAPI::NativeCallbacks_handleAccelEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
-void CGVRAPI::NativeCallbacks_handleGyroEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
-void CGVRAPI::NativeCallbacks_handleServiceInitFailed(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::NativeCallbacks_handleServiceFailed(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::NativeCallbacks_handleServiceUnavailable(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::NativeCallbacks_handleServiceConnected(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::NativeCallbacks_handleServiceDisconnected(JNIEnv* env, jobject obj, jlong paramLong);
-int CGVRAPI::MirthNet_setHttpProxy(int a1);
-void CGVRAPI::VrParamsProviderJni_nativeUpdateNativePhoneParamsPointer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2);
-void CGVRAPI::GvrApi_nativeRecenterTracking(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeGetEyeFromHeadMatrix(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
-int CGVRAPI::GvrApi_nativeGetViewerType(JNIEnv* env, jobject obj, jlong paramLong);
-bool CGVRAPI::GvrApi_nativeSetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool);
-void CGVRAPI::GvrApi_nativeGetHeadSpaceFromStartSpaceRotation(JNIEnv* env, jobject obj, jlong paramLong1, jfloatArray paramArrayOfFloat, jlong paramLong2);
-void CGVRAPI::GvrApi_nativeSetIgnoreManualPauseResumeTracker(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
-void CGVRAPI::GvrApi_nativeResetTracking(JNIEnv* env, jobject obj, jlong paramLong);
-jobject CGVRAPI::GvrApi_nativeRenderReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeOnPauseReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeSetDefaultFramebufferActive(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeGetScreenBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
-void CGVRAPI::GvrApi_nativeGetMaximumEffectiveRenderTargetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint);
-void CGVRAPI::GvrApi_nativeGetScreenTargetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint);
+                                      jfloat paramFloat1, jfloat paramFloat2)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleTouchEvent)
+        m_fpNativeCallbacks_handleTouchEvent( env, obj, paramLong1, paramLong2, paramInt, paramFloat1, paramFloat2);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleOrientationEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1,
+                                                     jfloat paramFloat2, jfloat paramFloat3, jfloat paramFloat4)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleOrientationEvent)
+        m_fpNativeCallbacks_handleOrientationEvent(env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3, paramFloat4);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleButtonEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleButtonEvent)
+        m_fpNativeCallbacks_handleButtonEvent( env, obj, paramLong1, paramLong2, paramInt, paramBoolean);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleAccelEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleAccelEvent)
+        m_fpNativeCallbacks_handleAccelEvent( env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleGyroEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleGyroEvent)
+        m_fpNativeCallbacks_handleGyroEvent( env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3);
+    return;
+}
+
+void CGVRAPI::NativeCallbacks_handleServiceInitFailed(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleServiceInitFailed)
+        m_fpNativeCallbacks_handleServiceInitFailed( env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleServiceFailed(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleServiceFailed)
+        m_fpNativeCallbacks_handleServiceFailed( env, obj, paramLong);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleServiceUnavailable(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleServiceUnavailable)
+        m_fpNativeCallbacks_handleServiceUnavailable( env, obj, paramLong);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleServiceConnected(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleServiceConnected)
+        m_fpNativeCallbacks_handleServiceConnected(env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::NativeCallbacks_handleServiceDisconnected(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpNativeCallbacks_handleServiceDisconnected)
+        m_fpNativeCallbacks_handleServiceDisconnected( env, obj, paramLong);
+    return;
+}
+int CGVRAPI::MirthNet_setHttpProxy(int a1)
+{
+    Init();
+    int re = 0;
+    if( m_fpMirthNet_setHttpProxy)
+        re = m_fpMirthNet_setHttpProxy( a1);
+    return re;
+}
+void CGVRAPI::VrParamsProviderJni_nativeUpdateNativePhoneParamsPointer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2)
+{
+    Init();
+    if( m_fpVrParamsProviderJni_nativeUpdateNativePhoneParamsPointer)
+        m_fpVrParamsProviderJni_nativeUpdateNativePhoneParamsPointer( env, obj, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2);
+    return;
+}
+void CGVRAPI::GvrApi_nativeRecenterTracking(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeRecenterTracking)
+        m_fpGvrApi_nativeRecenterTracking( env, obj, paramLong);
+    return;
+}
+void CGVRAPI::GvrApi_nativeGetEyeFromHeadMatrix(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat)
+{
+    Init();
+    if(m_fpGvrApi_nativeGetEyeFromHeadMatrix)
+        m_fpGvrApi_nativeGetEyeFromHeadMatrix( env, obj, paramLong, paramInt, paramArrayOfFloat);
+    return;
+}
+
+int CGVRAPI::GvrApi_nativeGetViewerType(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if(m_fpGvrApi_nativeGetViewerType)
+        re =m_fpGvrApi_nativeGetViewerType( env, obj, paramLong);
+    return re;
+}
+
+bool CGVRAPI::GvrApi_nativeSetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
+{
+    Init();
+    bool b = false;
+    if( m_fpGvrApi_nativeSetAsyncReprojectionEnabled)
+        b = m_fpGvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+    return b;
+}
+void CGVRAPI::GvrApi_nativeGetHeadSpaceFromStartSpaceRotation(JNIEnv* env, jobject obj, jlong paramLong1, jfloatArray paramArrayOfFloat, jlong paramLong2)
+{
+    Init();
+    if( m_fpGvrApi_nativeGetHeadSpaceFromStartSpaceRotation)
+        m_fpGvrApi_nativeGetHeadSpaceFromStartSpaceRotation( env, obj, paramLong1, paramArrayOfFloat, paramLong2);
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeSetIgnoreManualPauseResumeTracker(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
+{
+    Init();
+    if( m_fpGvrApi_nativeSetIgnoreManualPauseResumeTracker)
+        m_fpGvrApi_nativeSetIgnoreManualPauseResumeTracker(env, obj, paramLong, paramBoolean);
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeResetTracking(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeResetTracking)
+        m_fpGvrApi_nativeResetTracking( env, obj, paramLong);
+    return;
+}
+jobject CGVRAPI::GvrApi_nativeRenderReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jobject re = NULL;
+    if(m_fpGvrApi_nativeRenderReprojectionThread)
+        re = m_fpGvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
+    return  re;
+}
+
+void CGVRAPI::GvrApi_nativeOnPauseReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpGvrApi_nativeOnPauseReprojectionThread)
+        m_fpGvrApi_nativeOnPauseReprojectionThread(env, obj, paramLong);
+    return;
+}
+void CGVRAPI::GvrApi_nativeSetDefaultFramebufferActive(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeSetDefaultFramebufferActive)
+        m_fpGvrApi_nativeSetDefaultFramebufferActive( env, obj, paramLong);
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeGetScreenBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2)
+{
+    Init();
+    if(m_fpGvrApi_nativeGetScreenBufferViewports)
+        m_fpGvrApi_nativeGetScreenBufferViewports(env, obj, paramLong1, paramLong2);
+    return;
+}
+void CGVRAPI::GvrApi_nativeGetMaximumEffectiveRenderTargetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint)
+{
+    Init();
+    if(m_fpGvrApi_nativeGetMaximumEffectiveRenderTargetSize)
+        m_fpGvrApi_nativeGetMaximumEffectiveRenderTargetSize( env, obj, paramLong, paramPoint);
+    return;
+}
+void CGVRAPI::GvrApi_nativeGetScreenTargetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint)
+{
+    Init();
+    if(m_fpGvrApi_nativeGetScreenTargetSize)
+        m_fpGvrApi_nativeGetScreenTargetSize( env, obj, paramLong, paramPoint);
+    return;
+}
 void CGVRAPI::GvrApi_nativeDistortToScreen(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt, jlong paramLong2,
-                                  jfloatArray paramArrayOfFloat, jlong paramLong3);
-int CGVRAPI::GvrApi_nativeBufferViewportListGetSize(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportListGetItem(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt, jlong paramLong2);
-void CGVRAPI::GvrApi_nativeBufferViewportListSetItem(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt, jlong paramLong2);
-long CGVRAPI::GvrApi_nativeBufferViewportCreate(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeRemoveAllSurfacesReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
-bool CGVRAPI::GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong);
-long CGVRAPI::GvrApi_nativeBufferViewportListCreate(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportListDestroy(JNIEnv* env, jobject obj, jlong paramLong);
-float CGVRAPI::GvrApi_nativeGetBorderSizeMeters(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeSetSurfaceSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2);
-void CGVRAPI::GvrApi_nativeSetLensOffset(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat1, jfloat paramFloat2);
-void CGVRAPI::GvrApi_nativeUpdateSurfaceReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat);
-bool CGVRAPI::GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong paramLong);
+                                  jfloatArray paramArrayOfFloat, jlong paramLong3)
+{
+    Init();
+    if( m_fpGvrApi_nativeDistortToScreen)
+        m_fpGvrApi_nativeDistortToScreen( env, obj, paramLong1, paramInt, paramLong2, paramArrayOfFloat, paramLong3);
+    return;
+}
+int CGVRAPI::GvrApi_nativeBufferViewportListGetSize(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeBufferViewportListGetSize)
+        re = m_fpGvrApi_nativeBufferViewportListGetSize(env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportListGetItem(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt, jlong paramLong2)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportListGetItem)
+        m_fpGvrApi_nativeBufferViewportListGetItem( env, obj, paramLong1, paramInt, paramLong2);
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeBufferViewportListSetItem(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt, jlong paramLong2)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportListSetItem)
+        m_fpGvrApi_nativeBufferViewportListSetItem( env, obj, paramLong1, paramInt, paramLong2);
+    return;
+}
+long CGVRAPI::GvrApi_nativeBufferViewportCreate(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeBufferViewportCreate)
+        re = m_fpGvrApi_nativeBufferViewportCreate( env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativeRemoveAllSurfacesReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread)
+        m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread( env, obj, paramLong);
+    return;
+}
+bool CGVRAPI::GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    bool re = 0;
+    if( m_fpGvrApi_nativeUsingVrDisplayService)
+        m_fpGvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
+    return re;
+}
+long CGVRAPI::GvrApi_nativeBufferViewportListCreate(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeBufferViewportListCreate)
+        re = m_fpGvrApi_nativeBufferViewportListCreate(env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportListDestroy(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportListDestroy)
+        m_fpGvrApi_nativeBufferViewportListDestroy( env, obj, paramLong);
+    return;
+}
+float CGVRAPI::GvrApi_nativeGetBorderSizeMeters(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    float  re = 0;
+    if( m_fpGvrApi_nativeGetBorderSizeMeters)
+        re = m_fpGvrApi_nativeGetBorderSizeMeters( env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativeSetSurfaceSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2)
+{
+    Init();
+    if(m_fpGvrApi_nativeSetSurfaceSize)
+        m_fpGvrApi_nativeSetSurfaceSize( env, obj, paramLong, paramInt1, paramInt2);
+    return;
+}
+void CGVRAPI::GvrApi_nativeSetLensOffset(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat1, jfloat paramFloat2)
+{
+    Init();
+    if( m_fpGvrApi_nativeSetLensOffset)
+        m_fpGvrApi_nativeSetLensOffset( env, obj, paramLong, paramFloat1, paramFloat2);
+    return;
+}
+void CGVRAPI::GvrApi_nativeUpdateSurfaceReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat)
+{
+    Init();
+    if(m_fpGvrApi_nativeUpdateSurfaceReprojectionThread)
+        m_fpGvrApi_nativeUpdateSurfaceReprojectionThread( env, obj, paramLong1, paramInt1, paramInt2, paramLong2, paramArrayOfFloat);
+    return;
+}
+bool CGVRAPI::GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    bool re = false;
+    if( m_fpGvrApi_nativeGetAsyncReprojectionEnabled)
+        re = m_fpGvrApi_nativeGetAsyncReprojectionEnabled( env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeReconnectSensors)
+        m_fpGvrApi_nativeReconnectSensors( env, obj, paramLong);
+    return;
+}
 void CGVRAPI::GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2,
-                                    jfloat paramFloat1, jfloat paramFloat2);
-void CGVRAPI::DisplaySynchronizer_nativeReset(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3);
-void CGVRAPI::DisplaySynchronizer_nativeUpdate(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
-long CGVRAPI::DisplaySynchronizer_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
-void CGVRAPI::DisplaySynchronizer_nativeDestroy(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeDumpDebugData(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeInitializeGl(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeOnSurfaceCreatedReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeGetRecommendedBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
-int CGVRAPI::GvrApi_nativeGetError(JNIEnv* env, jobject obj, jlong paramLong);
-int CGVRAPI::GvrApi_nativeClearError( JNIEnv* env, jobject obj, jlong paramLong);
-long CGVRAPI::GvrApi_nativeGetUserPrefs(JNIEnv* env, jobject obj, jlong paramLong);
-int CGVRAPI::GvrApi_nativeUserPrefsGetControllerHandedness(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeResume(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportDestroy(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportGetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
+                                    jfloat paramFloat1, jfloat paramFloat2)
+{
+    Init();
+    if( m_fpGvrApi_nativeSetDisplayMetrics)
+        m_fpGvrApi_nativeSetDisplayMetrics( env, obj, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2);
+    return;
+}
+void CGVRAPI::DisplaySynchronizer_nativeReset(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3)
+{
+    Init();
+    if( m_fpDisplaySynchronizer_nativeReset)
+        m_fpDisplaySynchronizer_nativeReset( env, obj, paramLong1, paramLong2, paramLong3);
+    return;
+}
+void CGVRAPI::DisplaySynchronizer_nativeUpdate(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt)
+{
+    Init();
+    if( m_fpDisplaySynchronizer_nativeUpdate)
+        m_fpDisplaySynchronizer_nativeUpdate(env, obj, paramLong1, paramLong2, paramInt);
+    return;
+}
+
+long CGVRAPI::DisplaySynchronizer_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
+{
+    Init();
+    long re = 0;
+    if( m_fpDisplaySynchronizer_nativeCreate)
+        re = m_fpDisplaySynchronizer_nativeCreate( env, obj, paramClassLoader, paramContext);
+    return re;
+}
+void CGVRAPI::DisplaySynchronizer_nativeDestroy(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpDisplaySynchronizer_nativeDestroy)
+        m_fpDisplaySynchronizer_nativeDestroy( env, obj, paramLong);
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeDumpDebugData(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpGvrApi_nativeDumpDebugData)
+        m_fpGvrApi_nativeDumpDebugData( env, obj, paramLong );
+    return;
+}
+void CGVRAPI::GvrApi_nativeInitializeGl(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpGvrApi_nativeInitializeGl)
+        m_fpGvrApi_nativeInitializeGl(env, obj, paramLong);
+    return;
+}
+void CGVRAPI::GvrApi_nativeOnSurfaceCreatedReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread)
+        m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread(env, obj, paramLong);
+    return;
+}
+void CGVRAPI::GvrApi_nativeGetRecommendedBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2)
+{
+    Init();
+    if( m_fpGvrApi_nativeGetRecommendedBufferViewports)
+        m_fpGvrApi_nativeGetRecommendedBufferViewports( env, obj, paramLong1, paramLong2);
+    return;
+}
+int CGVRAPI::GvrApi_nativeGetError(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeGetError)
+        re = m_fpGvrApi_nativeGetError( env, obj, paramLong);
+    return re;
+}
+int CGVRAPI::GvrApi_nativeClearError( JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeClearError)
+        re = m_fpGvrApi_nativeClearError(env, obj, paramLong );
+    return re;
+}
+long CGVRAPI::GvrApi_nativeGetUserPrefs(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeGetUserPrefs)
+        re = m_fpGvrApi_nativeGetUserPrefs(env, obj, paramLong );
+    return re;
+}
+int CGVRAPI::GvrApi_nativeUserPrefsGetControllerHandedness(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeUserPrefsGetControllerHandedness)
+        re = m_fpGvrApi_nativeUserPrefsGetControllerHandedness( env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativePause)
+        m_fpGvrApi_nativePause(env, obj, paramLong );
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeResume(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeResume)
+        m_fpGvrApi_nativeResume(env, obj, paramLong );
+    return;
+}
+void CGVRAPI::GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeReleaseGvrContext)
+        m_fpGvrApi_nativeReleaseGvrContext( env, obj, paramLong );
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeBufferViewportDestroy(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportDestroy)
+        m_fpGvrApi_nativeBufferViewportDestroy( env, obj, paramLong);
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportGetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportGetSourceUv)
+        m_fpGvrApi_nativeBufferViewportGetSourceUv(env, obj, paramLong, paramRectF );
+    return;
+}
 void CGVRAPI::GvrApi_nativeBufferViewportSetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat1, jfloat paramFloat2,
-                                            jfloat paramFloat3, jfloat paramFloat4);
-void CGVRAPI::GvrApi_nativeBufferViewportGetSourceFov(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
+                                            jfloat paramFloat3, jfloat paramFloat4)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportSetSourceUv)
+        m_fpGvrApi_nativeBufferViewportSetSourceUv( env, obj, paramLong, paramFloat1, paramFloat2, paramFloat3, paramFloat4 );
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportGetSourceFov(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportGetSourceFov)
+        m_fpGvrApi_nativeBufferViewportGetSourceFov( env, obj, paramLong, paramRectF );
+    return;
+}
 void CGVRAPI::GvrApi_nativeBufferViewportSetSourceFov(JNIEnv* env, jobject obj,  jlong paramLong, jfloat paramFloat1, jfloat paramFloat2,
-                                             jfloat paramFloat3, jfloat paramFloat4);
-void CGVRAPI::GvrApi_nativeBufferViewportGetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat);
-void CGVRAPI::GvrApi_nativeBufferViewportSetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat);
-int CGVRAPI::GvrApi_nativeBufferViewportGetTargetEye(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportSetTargetEye(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-int CGVRAPI::GvrApi_nativeBufferViewportGetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportSetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-int CGVRAPI::GvrApi_nativeBufferViewportGetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportSetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-int CGVRAPI::GvrApi_nativeBufferViewportGetReprojection(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferViewportSetReprojection(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-bool CGVRAPI::GvrApi_nativeBufferViewportEqual(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
-long CGVRAPI::GvrApi_nativeBufferSpecCreate(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferSpecDestroy(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferSpecGetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint);
-void CGVRAPI::GvrApi_nativeBufferSpecSetSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jint paramInt2);
-int CGVRAPI::GvrApi_nativeBufferSpecGetSamples(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong);
-int CGVRAPI::GvrApi_nativeSwapChainGetBufferCount(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeSwapChainGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
-void CGVRAPI::GvrApi_nativeSwapChainResizeBuffer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jint paramInt3);
-long CGVRAPI::GvrApi_nativeSwapChainAcquireFrame(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::GvrApi_nativeFrameBindBuffer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::GvrApi_nativeFrameUnbind(JNIEnv* env, jobject obj, jlong paramLong);
-int CGVRAPI::GvrApi_nativeFrameGetFramebufferObject(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
-void CGVRAPI::GvrApi_nativeFrameGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
-void CGVRAPI::GvrApi_nativeFrameSubmit(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat);
-void CGVRAPI::GvrApi_nativeResumeTracking(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
-bool CGVRAPI::GvrApi_nativeSetDefaultViewerProfile(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString);
-bool CGVRAPI::GvrApi_nativeSetViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
-long CGVRAPI::GvrApi_nativeSwapChainCreate(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
+                                             jfloat paramFloat3, jfloat paramFloat4)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportSetSourceFov)
+        m_fpGvrApi_nativeBufferViewportSetSourceFov( env, obj, paramLong, paramFloat1, paramFloat2, paramFloat3, paramFloat4 );
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeBufferViewportGetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportGetTransform)
+        m_fpGvrApi_nativeBufferViewportGetTransform( env, obj, paramLong, paramArrayOffloat);
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportSetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferViewportSetTransform)
+        m_fpGvrApi_nativeBufferViewportSetTransform(env, obj, paramLong, paramArrayOfFloat );
+    return;
+}
+int CGVRAPI::GvrApi_nativeBufferViewportGetTargetEye(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeBufferViewportGetTargetEye)
+        re = m_fpGvrApi_nativeBufferViewportGetTargetEye( env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportSetTargetEye(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportSetTargetEye)
+        m_fpGvrApi_nativeBufferViewportSetTargetEye( env, obj, paramLong, paramInt );
+    return;
+}
+int CGVRAPI::GvrApi_nativeBufferViewportGetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if(m_fpGvrApi_nativeBufferViewportGetSourceBufferIndex)
+        re = m_fpGvrApi_nativeBufferViewportGetSourceBufferIndex( env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportSetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportSetSourceBufferIndex)
+        m_fpGvrApi_nativeBufferViewportSetSourceBufferIndex( env, obj, paramLong, paramInt );
+    return;
+}
+int CGVRAPI::GvrApi_nativeBufferViewportGetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeBufferViewportGetExternalSurfaceId)
+        re = m_fpGvrApi_nativeBufferViewportGetExternalSurfaceId( env, obj, paramLong );
+    return re;
+}
+
+void CGVRAPI::GvrApi_nativeBufferViewportSetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferViewportSetExternalSurfaceId)
+        m_fpGvrApi_nativeBufferViewportSetExternalSurfaceId( env, obj, paramLong, paramInt );
+    return;
+}
+int CGVRAPI::GvrApi_nativeBufferViewportGetReprojection(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeBufferViewportGetReprojection)
+        re = m_fpGvrApi_nativeBufferViewportGetReprojection( env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportSetReprojection(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportSetReprojection)
+        m_fpGvrApi_nativeBufferViewportSetReprojection( env, obj, paramLong, paramInt );
+    return;
+}
+
+bool CGVRAPI::GvrApi_nativeBufferViewportEqual(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2)
+{
+    Init();
+    bool re = false;
+    if( m_fpGvrApi_nativeBufferViewportEqual)
+        re = m_fpGvrApi_nativeBufferViewportEqual( env, obj, paramLong1, paramLong2 );
+    return re;
+}
+long CGVRAPI::GvrApi_nativeBufferSpecCreate(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeBufferSpecCreate)
+        re = m_fpGvrApi_nativeBufferSpecCreate( env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecDestroy(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferSpecDestroy)
+        m_fpGvrApi_nativeBufferSpecDestroy( env, obj, paramLong );
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecGetSize(JNIEnv* env, jobject obj, jlong paramLong, jobject paramPoint)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferSpecGetSize)
+        m_fpGvrApi_nativeBufferSpecGetSize( env, obj, paramLong, paramPoint );
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecSetSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jint paramInt2)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferSpecSetSize)
+        m_fpGvrApi_nativeBufferSpecSetSize( env, obj, paramLong, paramInt, paramInt2 );
+    return;
+}
+int CGVRAPI::GvrApi_nativeBufferSpecGetSamples(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeBufferSpecGetSamples)
+        re = m_fpGvrApi_nativeBufferSpecGetSamples(env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferSpecSetSamples)
+        m_fpGvrApi_nativeBufferSpecSetSamples( env, obj, paramLong, paramInt );
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferSpecSetColorFormat)
+        m_fpGvrApi_nativeBufferSpecSetColorFormat( env, obj, paramLong, paramInt );
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat)
+        m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat(env, obj, paramLong, paramInt );
+    return;
+}
+void CGVRAPI::GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpGvrApi_nativeSwapChainDestroy)
+        m_fpGvrApi_nativeSwapChainDestroy(env, obj, paramLong );
+    return;
+}
+int CGVRAPI::GvrApi_nativeSwapChainGetBufferCount(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeSwapChainGetBufferCount)
+        re = m_fpGvrApi_nativeSwapChainGetBufferCount( env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeSwapChainGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint)
+{
+    Init();
+    if( m_fpGvrApi_nativeSwapChainGetBufferSize)
+        m_fpGvrApi_nativeSwapChainGetBufferSize( env, obj, paramLong, paramInt, paramPoint );
+    return;
+}
+void CGVRAPI::GvrApi_nativeSwapChainResizeBuffer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jint paramInt3)
+{
+    Init();
+    if( m_fpGvrApi_nativeSwapChainResizeBuffer)
+        m_fpGvrApi_nativeSwapChainResizeBuffer( env, obj, paramLong, paramInt1, paramInt2, paramInt3 );
+    return;
+}
+long CGVRAPI::GvrApi_nativeSwapChainAcquireFrame(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeSwapChainAcquireFrame)
+        re = m_fpGvrApi_nativeSwapChainAcquireFrame( env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeFrameBindBuffer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpGvrApi_nativeFrameBindBuffer)
+        m_fpGvrApi_nativeFrameBindBuffer( env, obj, paramLong, paramInt );
+    return;
+}
+void CGVRAPI::GvrApi_nativeFrameUnbind(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeFrameUnbind)
+        m_fpGvrApi_nativeFrameUnbind( env, obj, paramLong );
+    return;
+}
+int CGVRAPI::GvrApi_nativeFrameGetFramebufferObject(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    int re = 0;
+    if( m_fpGvrApi_nativeFrameGetFramebufferObject)
+        re = m_fpGvrApi_nativeFrameGetFramebufferObject( env, obj, paramLong, paramInt );
+    return re;
+}
+void CGVRAPI::GvrApi_nativeFrameGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint)
+{
+    Init();
+    if( m_fpGvrApi_nativeFrameGetBufferSize)
+        m_fpGvrApi_nativeFrameGetBufferSize( env, obj, paramLong, paramInt, paramPoint);
+    return;
+}
+void CGVRAPI::GvrApi_nativeFrameSubmit(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat)
+{
+    Init();
+    if(m_fpGvrApi_nativeFrameSubmit)
+        m_fpGvrApi_nativeFrameSubmit( env, obj, paramLong1, paramLong2, paramArrayOfFloat);
+    return;
+}
+void CGVRAPI::GvrApi_nativeResumeTracking(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
+{
+    Init();
+    if( m_fpGvrApi_nativeResumeTracking)
+        m_fpGvrApi_nativeResumeTracking( env, obj, paramLong, paramArrayOfByte );
+    return;
+}
+bool CGVRAPI::GvrApi_nativeSetDefaultViewerProfile(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString)
+{
+    Init();
+    bool re = false;
+    if( m_fpGvrApi_nativeSetDefaultViewerProfile)
+        re = m_fpGvrApi_nativeSetDefaultViewerProfile( env, obj, paramLong, paramString );
+    return re;
+}
+bool CGVRAPI::GvrApi_nativeSetViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
+{
+    Init();
+    bool re = false;
+    if( m_fpGvrApi_nativeSetViewerParams)
+        re = m_fpGvrApi_nativeSetViewerParams( env, obj, paramLong, paramArrayOfByte );
+    return re;
+}
+long CGVRAPI::GvrApi_nativeSwapChainCreate(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeSwapChainCreate)
+        re = m_fpGvrApi_nativeSwapChainCreate( env, obj, paramLong, paramArrayOfLong );
+    return re;
+}
 long CGVRAPI::GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
-                         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
-jfloatArray CGVRAPI::GvrApi_nativeComputeDistortedPoint(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
-jstring CGVRAPI::GvrApi_nativeGetErrorString(JNIEnv* env, jobject obj, jint paramInt);
-jstring CGVRAPI::GvrApi_nativeGetViewerVendor(JNIEnv* env, jobject obj, jlong paramLong);
-jstring CGVRAPI::GvrApi_nativeGetViewerModel( JNIEnv* env, jobject obj, jlong paramLong);
-jbyteArray CGVRAPI::GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong paramLong);
-jintArray CGVRAPI::GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong);
-void CGVRAPI::buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
-void CGVRAPI::swap_chain_destroy(gvr_swap_chain **swap_chain);
-void CGVRAPI::destroy(gvr_context **gvr);
-void CGVRAPI::buffer_viewport_destroy(gvr_buffer_viewport **viewport);
-gvr_swap_chain* CGVRAPI::swap_chain_create( gvr_context *gvr, const gvr_buffer_spec **buffers, int32_t count);
-void CGVRAPI::bind_default_framebuffer(gvr_context *gvr);
-gvr_sizei CGVRAPI::get_maximum_effective_render_target_size(const gvr_context *gvr);
-void CGVRAPI::buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples);
-void CGVRAPI::buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format);
-void CGVRAPI::buffer_spec_set_size( gvr_buffer_spec *spec, gvr_sizei size);
-gvr_buffer_spec* CGVRAPI::buffer_spec_create( gvr_context *gvr);
-void CGVRAPI::initialize_gl(gvr_context *gvr);
+                         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeCreate)
+        re = m_fpGvrApi_nativeCreate( env, obj, paramClassLoader, paramContext, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
+    return re;
+}
+jfloatArray CGVRAPI::GvrApi_nativeComputeDistortedPoint(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat)
+{
+    Init();
+    jfloatArray re = 0;
+    if( m_fpGvrApi_nativeComputeDistortedPoint)
+        re = m_fpGvrApi_nativeComputeDistortedPoint( env, obj, paramLong, paramInt, paramArrayOfFloat );
+    return re;
+}
+jstring CGVRAPI::GvrApi_nativeGetErrorString(JNIEnv* env, jobject obj, jint paramInt)
+{
+    Init();
+    jstring re = 0;
+    if( m_fpGvrApi_nativeGetErrorString)
+        re = m_fpGvrApi_nativeGetErrorString( env,obj, paramInt );
+    return re;
+}
+jstring CGVRAPI::GvrApi_nativeGetViewerVendor(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jstring  re = 0;
+    if( m_fpGvrApi_nativeGetViewerVendor)
+        re = m_fpGvrApi_nativeGetViewerVendor(env, obj, paramLong);
+    return re;
+}
+jstring CGVRAPI::GvrApi_nativeGetViewerModel( JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jstring  re = 0;
+    if( m_fpGvrApi_nativeGetViewerModel)
+        re = m_fpGvrApi_nativeGetViewerModel(env, obj, paramLong);
+    return re;
+}
+jbyteArray CGVRAPI::GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jbyteArray re = 0;
+    if( m_fpGvrApi_nativePauseTracking)
+        re = m_fpGvrApi_nativePauseTracking( env, obj, paramLong);
+    return re;
+}
+jintArray CGVRAPI::GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jintArray re = 0;
+    if( m_fpGvrApi_nativeGetWindowBounds)
+        re = m_fpGvrApi_nativeGetWindowBounds(env, obj, paramLong );
+    return re;
+}
+void CGVRAPI::buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list)
+{
+    Init();
+    if( m_fpbuffer_viewport_list_destroy)
+        m_fpbuffer_viewport_list_destroy( viewport_list);
+    return;
+}
+void CGVRAPI::swap_chain_destroy(gvr_swap_chain **swap_chain)
+{
+    Init();
+    if( m_fpswap_chain_destroy)
+        m_fpswap_chain_destroy( swap_chain);
+    return;
+}
+void CGVRAPI::destroy(gvr_context **gvr)
+{
+    Init();
+    if(m_fpdestroy)
+        m_fpdestroy( gvr);
+    return;
+}
+void CGVRAPI::buffer_viewport_destroy(gvr_buffer_viewport **viewport)
+{
+    Init();
+    if(m_fpbuffer_viewport_destroy)
+        m_fpbuffer_viewport_destroy(viewport);
+    return;
+}
+gvr_swap_chain* CGVRAPI::swap_chain_create( gvr_context *gvr, const gvr_buffer_spec **buffers, int32_t count)
+{
+    Init();
+    gvr_swap_chain *re = NULL;
+    if( m_fpswap_chain_create)
+        re = m_fpswap_chain_create( gvr, buffers, count );
+    return re;
+}
+void CGVRAPI::bind_default_framebuffer(gvr_context *gvr)
+{
+    Init();
+    if( m_fpbind_default_framebuffer)
+        m_fpbind_default_framebuffer(gvr);
+    return;
+}
+gvr_sizei CGVRAPI::get_maximum_effective_render_target_size(const gvr_context *gvr)
+{
+    Init();
+    gvr_sizei re;
+    if( m_fpget_maximum_effective_render_target_size)
+        re = m_fpget_maximum_effective_render_target_size( gvr);
+    return re;
+}
+void CGVRAPI::buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples)
+{
+    Init();
+    if(m_fpbuffer_spec_set_samples)
+        m_fpbuffer_spec_set_samples(spec, num_samples );
+    return;
+}
+void CGVRAPI::buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format)
+{
+    Init();
+    if( m_fpbuffer_spec_set_depth_stencil_format)
+        m_fpbuffer_spec_set_depth_stencil_format(spec, depth_stencil_format);
+    return;
+}
+void CGVRAPI::buffer_spec_set_size( gvr_buffer_spec *spec, gvr_sizei size)
+{
+    Init();
+    if(m_fpbuffer_spec_set_size)
+        m_fpbuffer_spec_set_size( spec, size);
+    return;
+}
+gvr_buffer_spec* CGVRAPI::buffer_spec_create( gvr_context *gvr)
+{
+    Init();
+    gvr_buffer_spec *re = NULL;
+    if(m_fpbuffer_spec_create)
+        re = m_fpbuffer_spec_create( gvr );
+    return re;
+}
+void CGVRAPI::initialize_gl(gvr_context *gvr)
+{
+    Init();
+    if(m_fpinitialize_gl)
+        m_fpinitialize_gl( gvr);
+    return;
+}
 void CGVRAPI::distort_to_screen(gvr_context *gvr,
                        int32_t texture_id,
                        const gvr_buffer_viewport_list *viewport_list,
                        gvr_mat4f head_space_from_start_space,
-                       gvr_clock_time_point target_presentation_time);
-void CGVRAPI::get_time_point_now();
-int CGVRAPI::set_viewer_params(int *a1, const void *a2, size_t a3);
-int CGVRAPI::set_display_metrics(int *a1, int a2, int a3, int a4, int a5, int a6);
-void CGVRAPI::buffer_spec_destroy(gvr_buffer_spec **spec);
+                       gvr_clock_time_point target_presentation_time)
+{
+    Init();
+    if(m_fpdistort_to_screen)
+        m_fpdistort_to_screen( gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
+    return;
+}
+void CGVRAPI::get_time_point_now()
+{
+    Init();
+    if(m_fpget_time_point_now)
+        m_fpget_time_point_now( );
+    return;
+}
+int CGVRAPI::set_viewer_params(int *a1, const void *a2, size_t a3)
+{
+    Init();
+    int re = 0;
+    if( m_fpset_viewer_params)
+        re = m_fpset_viewer_params( a1, a2, a3);
+    return re;
+}
+int CGVRAPI::set_display_metrics(int *a1, int a2, int a3, int a4, int a5, int a6)
+{
+    Init();
+    int re = 0;
+    if(m_fpset_display_metrics)
+        re = m_fpset_display_metrics( a1, a2, a3, a4, a5, a6);
+    return re;
+}
+void CGVRAPI::buffer_spec_destroy(gvr_buffer_spec **spec)
+{
+    Init();
+    if(m_fpbuffer_spec_destroy)
+        m_fpbuffer_spec_destroy( spec);
+    return;
+}
 gvr_mat4f CGVRAPI::get_eye_from_head_matrix( const gvr_context *gvr,
-                                    const int32_t eye);
-gvr_sizei CGVRAPI::swap_chain_get_buffer_size( gvr_swap_chain *swap_chain, int32_t index);
-int CGVRAPI::set_error(int a1, int a2);
+                                    const int32_t eye)
+{
+    Init();
+    gvr_mat4f re;
+    if(m_fpget_eye_from_head_matrix)
+        re = m_fpget_eye_from_head_matrix( gvr, eye);
+    return re;
+}
+gvr_sizei CGVRAPI::swap_chain_get_buffer_size( gvr_swap_chain *swap_chain, int32_t index)
+{
+    Init();
+    gvr_sizei re;
+    if( m_fpswap_chain_get_buffer_size)
+        re = m_fpswap_chain_get_buffer_size( swap_chain, index);
+    return re;
+}
+int CGVRAPI::set_error(int a1, int a2)
+{
+    Init();
+    int re = 0;
+    if(m_fpset_error)
+        re = m_fpset_error( a1, a2);
+    return re;
+}
 void CGVRAPI::compute_distorted_point(  const gvr_context *gvr,
                                const int32_t eye,
                                const gvr_vec2f uv_in,
-                               gvr_vec2f uv_out[3]);
+                               gvr_vec2f uv_out[3])
+{
+    Init();
+    if( m_fpcompute_distorted_point)
+        m_fpcompute_distorted_point( gvr, eye, uv_in, uv_out);
+    return;
+}
 
 void CGVRAPI::get_recommended_buffer_viewports(  const gvr_context *gvr,
-                                        gvr_buffer_viewport_list *viewport_list);
+                                        gvr_buffer_viewport_list *viewport_list)
+{
+    Init();
+    if(m_fpget_recommended_buffer_viewports)
+        m_fpget_recommended_buffer_viewports( gvr, viewport_list);
+    return;
+}
 bool CGVRAPI::buffer_viewport_equal( const gvr_buffer_viewport *a,
-                            const gvr_buffer_viewport *b);
+                            const gvr_buffer_viewport *b)
+{
+    Init();
+    bool re = false;
+    if(m_fpbuffer_viewport_equal)
+        re = m_fpbuffer_viewport_equal( a, b);
+    return re;
+}
 void CGVRAPI::buffer_viewport_list_get_item(  const gvr_buffer_viewport_list *viewport_list,
                                      size_t index,
-                                     gvr_buffer_viewport *viewport);
-gvr_sizei CGVRAPI::buffer_spec_get_size(const gvr_buffer_spec *spec);
-int32_t CGVRAPI::buffer_viewport_get_target_eye( const gvr_buffer_viewport *viewport);
-int32_t CGVRAPI::buffer_spec_get_samples(const gvr_buffer_spec *spec);
-gvr_rectf CGVRAPI::buffer_viewport_get_source_fov(const gvr_buffer_viewport *viewport);
-int32_t CGVRAPI::swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain);
-int32_t CGVRAPI::buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport);
-void CGVRAPI::buffer_viewport_set_reprojection(  gvr_buffer_viewport *viewport,
-                                        int32_t reprojection);
-void CGVRAPI::buffer_viewport_set_source_uv(  gvr_buffer_viewport *viewport,
-                                     gvr_rectf uv);
-void CGVRAPI::buffer_viewport_list_set_item(  gvr_buffer_viewport_list *viewport_list,
-                                     size_t index,
-                                     const gvr_buffer_viewport *viewport);
-int32_t CGVRAPI::user_prefs_get_controller_handedness(const gvr_user_prefs *user_prefs);
-void CGVRAPI::get_screen_buffer_viewports(  const gvr_context *gvr,
-                                   gvr_buffer_viewport_list *viewport_list);
-gvr_sizei CGVRAPI::get_screen_target_size(const gvr_context *gvr);
-gvr_rectf CGVRAPI::buffer_viewport_get_source_uv(const gvr_buffer_viewport *viewport);
-gvr_recti CGVRAPI::get_window_bounds(const gvr_context *gvr);
+                                     gvr_buffer_viewport *viewport)
+{
+    Init();
+    if(m_fpbuffer_viewport_list_get_item)
+        m_fpbuffer_viewport_list_get_item( viewport_list, index, viewport );
+    return;
+}
+gvr_sizei CGVRAPI::buffer_spec_get_size(const gvr_buffer_spec *spec)
+{
+    Init();
+    gvr_sizei re;
+    if(m_fpbuffer_spec_get_size)
+        re = m_fpbuffer_spec_get_size( spec);
+    return re;
+}
+int32_t CGVRAPI::buffer_viewport_get_target_eye( const gvr_buffer_viewport *viewport)
+{
+    Init();
+    int32_t re = 0;
+    if(m_fpbuffer_viewport_get_target_eye)
+        re = m_fpbuffer_viewport_get_target_eye( viewport);
+    return re;
+}
+int32_t CGVRAPI::buffer_spec_get_samples(const gvr_buffer_spec *spec)
+{
+    Init();
+    int32_t re = 0;
+    if(m_fpbuffer_spec_get_samples)
+        re = m_fpbuffer_spec_get_samples( spec );
+    return re;
+}
+gvr_rectf CGVRAPI::buffer_viewport_get_source_fov(const gvr_buffer_viewport *viewport)
+{
+    Init();
+    gvr_rectf re;
+    if(m_fpbuffer_viewport_get_source_fov)
+        re = m_fpbuffer_viewport_get_source_fov(viewport);
+    return re;
+}
+int32_t CGVRAPI::swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain)
+{
+    Init();
+    int32_t re = 0;
+    if( m_fpswap_chain_get_buffer_count)
+        re = m_fpswap_chain_get_buffer_count( swap_chain);
+    return re;
+}
+int32_t CGVRAPI::buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport)
+{
+    Init();
+    int32_t re = 0;
+    if(m_fpbuffer_viewport_get_reprojection)
+        re = m_fpbuffer_viewport_get_reprojection( viewport);
+    return re;
+}
+void CGVRAPI::buffer_viewport_set_reprojection(  gvr_buffer_viewport *viewport, int32_t reprojection)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_reprojection)
+        m_fpbuffer_viewport_set_reprojection( viewport, reprojection );
+    return;
+}
+void CGVRAPI::buffer_viewport_set_source_uv(  gvr_buffer_viewport *viewport, gvr_rectf uv)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_source_uv)
+        m_fpbuffer_viewport_set_source_uv( viewport, uv);
+    return;
+}
+void CGVRAPI::buffer_viewport_list_set_item(  gvr_buffer_viewport_list *viewport_list, size_t index, const gvr_buffer_viewport *viewport)
+{
+    Init();
+    if(m_fpbuffer_viewport_list_set_item)
+        m_fpbuffer_viewport_list_set_item( viewport_list, index, viewport );
+    return;
+}
+int32_t CGVRAPI::user_prefs_get_controller_handedness(const gvr_user_prefs *user_prefs)
+{
+    Init();
+    int32_t re = 0;
+    if( m_fpuser_prefs_get_controller_handedness)
+        re = m_fpuser_prefs_get_controller_handedness( user_prefs);
+    return re;
+}
+void CGVRAPI::get_screen_buffer_viewports(  const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list)
+{
+    Init();
+    if(m_fpget_screen_buffer_viewports)
+        m_fpget_screen_buffer_viewports( gvr, viewport_list);
+    return;
+}
+gvr_sizei CGVRAPI::get_screen_target_size(const gvr_context *gvr)
+{
+    Init();
+    gvr_sizei re;
+    if(m_fpget_screen_target_size)
+        re = m_fpget_screen_target_size( gvr);
+    return re;
+}
+gvr_rectf CGVRAPI::buffer_viewport_get_source_uv(const gvr_buffer_viewport *viewport)
+{
+    Init();
+    gvr_rectf re;
+    if(m_fpbuffer_viewport_get_source_uv)
+        re = m_fpbuffer_viewport_get_source_uv( viewport);
+    return re;
+}
+gvr_recti CGVRAPI::get_window_bounds(const gvr_context *gvr)
+{
+    Init();
+    gvr_recti re;
+    if(m_fpget_window_bounds)
+        re = m_fpget_window_bounds( gvr);
+    return re;
+}
 
-gvr_mat4f CGVRAPI::get_head_space_from_start_space_rotation( const gvr_context *gvr, const gvr_clock_time_point time);
+gvr_mat4f CGVRAPI::get_head_space_from_start_space_rotation( const gvr_context *gvr, const gvr_clock_time_point time)
+{
+    Init();
+    gvr_mat4f re;
+    if(m_fpget_head_space_from_start_space_rotation)
+        re = m_fpget_head_space_from_start_space_rotation( gvr, time);
+    return re;
+}
 
-gvr_mat4f CGVRAPI::apply_neck_model(  const gvr_context *gvr,
-                             gvr_mat4f head_space_from_start_space_rotation,
-                             float factor);
-gvr_frame* CGVRAPI::swap_chain_acquire_frame(gvr_swap_chain *swap_chain);
-gvr_context* CGVRAPI::create(  JNIEnv *env, jobject app_context, jobject class_loader);
+gvr_mat4f CGVRAPI::apply_neck_model(  const gvr_context *gvr, gvr_mat4f head_space_from_start_space_rotation, float factor)
+{
+    Init();
+    gvr_mat4f re;
+    if(m_fpapply_neck_model)
+        re = m_fpapply_neck_model( gvr, head_space_from_start_space_rotation, factor);
+    return re;
+}
+gvr_frame* CGVRAPI::swap_chain_acquire_frame(gvr_swap_chain *swap_chain)
+{
+    Init();
+    gvr_frame *re = NULL;
+    if(m_fpswap_chain_acquire_frame)
+        re = m_fpswap_chain_acquire_frame( swap_chain);
+    return re;
+}
+gvr_context* CGVRAPI::create(  JNIEnv *env, jobject app_context, jobject class_loader)
+{
+    Init();
+    gvr_context *re = NULL;
+    if(m_fpcreate)
+        re = m_fpcreate(env, app_context, class_loader );
+    return re;
+}
 
-void CGVRAPI::frame_bind_buffer(  gvr_frame *frame, int32_t index);
+void CGVRAPI::frame_bind_buffer(  gvr_frame *frame, int32_t index)
+{
+    Init();
+    if(m_fpframe_bind_buffer)
+        m_fpframe_bind_buffer(frame, index);
+    return;
+}
 
-void CGVRAPI::frame_unbind(gvr_frame *frame);
-void CGVRAPI::frame_submit(  gvr_frame **frame,
-                    const gvr_buffer_viewport_list *list,
-                    gvr_mat4f head_space_from_start_space);
+void CGVRAPI::frame_unbind(gvr_frame *frame)
+{
+    Init();
+    if(m_fpframe_unbind)
+        m_fpframe_unbind(frame);
+    return;
+}
+void CGVRAPI::frame_submit(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
+{
+    Init();
+    if(m_fpframe_submit)
+        m_fpframe_submit(frame, list, head_space_from_start_space );
+    return;
+}
 
-void CGVRAPI::swap_chain_resize_buffer(  gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
+void CGVRAPI::swap_chain_resize_buffer(  gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size)
+{
+    Init();
+    if(m_fpswap_chain_resize_buffer)
+        m_fpswap_chain_resize_buffer( swap_chain, index, size);
+    return;
+}
 
-gvr_buffer_viewport_list * CGVRAPI::buffer_viewport_list_create( const gvr_context *gvr);
+gvr_buffer_viewport_list * CGVRAPI::buffer_viewport_list_create( const gvr_context *gvr)
+{
+    Init();
+    gvr_buffer_viewport_list *re = NULL;
+    if( m_fpbuffer_viewport_list_create)
+        re = m_fpbuffer_viewport_list_create( gvr);
+    return re;
+}
 
-const gvr_user_prefs * CGVRAPI::get_user_prefs(gvr_context *gvr);
+const gvr_user_prefs * CGVRAPI::get_user_prefs(gvr_context *gvr)
+{
+    Init();
+    if( m_fpget_user_prefs)
+        return m_fpget_user_prefs( gvr);
+    else
+        return NULL;
+}
 
-gvr_buffer_viewport * CGVRAPI::buffer_viewport_create(gvr_context *gvr);
+gvr_buffer_viewport * CGVRAPI::buffer_viewport_create(gvr_context *gvr)
+{
+    Init();
+    if(m_fpbuffer_viewport_create)
+        return m_fpbuffer_viewport_create( gvr);
+    else
+        return NULL;
+}
 
-int CGVRAPI::set_back_gesture_event_handler(int a1, int a2, int a3);
-gvr_version CGVRAPI::get_version();
+int CGVRAPI::set_back_gesture_event_handler(int a1, int a2, int a3)
+{
+    Init();
+    if(m_fpset_back_gesture_event_handler)
+        return m_fpset_back_gesture_event_handler( a1, a2, a3);
+    else
+        return 0;
+}
+gvr_version CGVRAPI::get_version()
+{
+    Init();
+    gvr_version re;
+    if(m_fpget_version)
+        re = m_fpget_version();
+    return re;
+}
 
-const char * CGVRAPI::get_viewer_vendor(const gvr_context *gvr);
-const char * CGVRAPI::get_version_string();
-const char * CGVRAPI::get_viewer_model(const gvr_context *gvr);
-int32_t CGVRAPI::get_error(gvr_context *gvr);
-int32_t CGVRAPI::get_viewer_type(const gvr_context *gvr);
-int32_t CGVRAPI::clear_error(gvr_context *gvr);
-const char * CGVRAPI::get_error_string(int32_t error_code);
+const char * CGVRAPI::get_viewer_vendor(const gvr_context *gvr)
+{
+    Init();
+    if( m_fpget_viewer_vendor)
+        return m_fpget_viewer_vendor( gvr);
+    else
+        return NULL;
+}
+const char * CGVRAPI::get_version_string()
+{
+    Init();
+    if(m_fpget_version_string)
+        return m_fpget_version_string();
+    else
+        return NULL;
+}
+const char * CGVRAPI::get_viewer_model(const gvr_context *gvr)
+{
+    Init();
+    if(m_fpget_viewer_model)
+        return m_fpget_viewer_model( gvr);
+    else
+        return NULL;
+}
+int32_t CGVRAPI::get_error(gvr_context *gvr)
+{
+    Init();
+    if(m_fpget_error)
+        return m_fpget_error(gvr);
+    else
+        return 0;
+}
+int32_t CGVRAPI::get_viewer_type(const gvr_context *gvr)
+{
+    Init();
+    if(m_fpget_viewer_type)
+        return m_fpget_viewer_type( gvr);
+    else
+        return 0;
+}
+int32_t CGVRAPI::clear_error(gvr_context *gvr)
+{
+    Init();
+    if(m_fpclear_error)
+        return m_fpclear_error( gvr);
+    else
+        return 0;
+}
+const char * CGVRAPI::get_error_string(int32_t error_code)
+{
+    Init();
+    if(m_fpget_error_string)
+        return m_fpget_error_string( error_code );
+    else
+        return NULL;
+}
 int32_t CGVRAPI::buffer_viewport_get_source_buffer_index(const gvr_buffer_viewport *viewport);
 bool CGVRAPI::get_async_reprojection_enabled(const gvr_context *gvr);
 void CGVRAPI::buffer_viewport_set_source_buffer_index( gvr_buffer_viewport *viewport,
