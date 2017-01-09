@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.Company.GvrProject13" android:versionName="1.0" android:versionCode="1" android:installLocation="preferExternal">
-  <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:anyDensity="true" />
-  <application android:icon="@drawable/app_icon" android:label="@string/app_name" android:debuggable="false" android:isGame="true" android:banner="@drawable/app_banner" android:theme="@style/VrActivityTheme">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.Company.GvrProject13"
+    android:versionName="1.0"
+    android:versionCode="1"
+    android:installLocation="preferExternal">
+  <supports-screens android:smallScreens="true"
+      android:normalScreens="true"
+      android:largeScreens="true"
+      android:xlargeScreens="true"
+      android:anyDensity="true" />
+  <application android:icon="@drawable/app_icon"
+      android:label="@string/app_name"
+      android:debuggable="false"
+      android:isGame="true"
+      android:banner="@drawable/app_banner"
+      android:theme="@style/VrActivityTheme">
     <activity android:label="@string/app_name" 
         android:screenOrientation="landscape" 
         android:launchMode="singleTask" 
         android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale" 
         android:enableVrMode="@string/gvr_vr_mode_component" 
         android:resizeableActivity="false"
-         android:name="com.Company.GvrProject13.UnityPlayerActivity">
+        android:name="UnityPlayerActivity"
+        >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
