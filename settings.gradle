@@ -1,3 +1,4 @@
 include ':jnicallback'
-//include ':libs','gen-libs'
+include ':gvrIn'
 include ':gvr'
+include ':unity'
