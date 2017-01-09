@@ -5,11 +5,13 @@
 #include "UnityInterface.h"
 #include "gvrfn.h"
 #include "gvrtest.h"
+#include "LogMessage.h"
 
 //ClassLoader paramClassLoader, Context paramContext)
 JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState(
         JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
 {
+    CLogMessage msg(__FUNCTION__);
     long re = gGvrApi.CardboardViewNativeImpl_nativeSetApplicationState( env,obj, paramClassLoader, paramContext);
     return re;
 }
