@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 //JNIEXPORT jint JNICALL JNI_OnLoad();
-JNIEXPORT jstring JNICALL Java_com_mj_test_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
+JNIEXPORT jstring JNICALL Java_com_Company_GvrProject13_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
 
 #ifdef __cplusplus
 }
