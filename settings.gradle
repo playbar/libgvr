@@ -1,5 +1,5 @@
-include ':jnicallback'
 include ':gvrIn'
 include ':gvr'
 include ':unity'
 include ':controllerpaint'
+include ':treasurehunt'
