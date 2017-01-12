@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.vr.sdk.samples.treasurehunt;
+package com.mj.vr;
 
 import android.content.Context;
 import android.opengl.GLES20;

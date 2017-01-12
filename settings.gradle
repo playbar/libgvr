@@ -1,5 +1,6 @@
-include ':gvrIn'
+include ':gvrIn', ':sdk-audio'
 include ':gvr'
 include ':unity'
 include ':controllerpaint'
 include ':treasurehunt'
+include ':sdk-audio'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.vr.sdk.samples.treasurehunt;
+package com.mj.vr;
 
 /**
  * Contains vertex, normal and color data.
