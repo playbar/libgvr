@@ -30,11 +30,17 @@ android {
         }
     }
 
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+
 }
 
 
 dependencies {
-    compile project(':gvr')
+//    compile project(':gvr')
 //    compile project(':sdk-audio')
 //    compile(name:'sdk-audio-1.10.0', ext:'aar')
     compile(name:'sdk-base-1.10.0', ext:'aar')
