@@ -1,0 +1,72 @@
+Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState
+
+
+Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType  -->直接放回0
+Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled  --> 直接修改返回true
+
+--->Java_com_google_vr_ndk_base_GvrApi_nativeSetIgnoreManualPauseResumeTracker
+
+
+
+DaydreamUtils  isDaydreamPhone -->直接返回true
+
+    static int getComponentDaydreamCompatibility(Context var0, PackageManager var1, ComponentName var2) {
+        Intent var3;
+        (var3 = new Intent()).setPackage(var2.getPackageName());
+        var3.addCategory("com.google.intent.category.DAYDREAM");
+        if(!canResolveIntent(var1, var2, var3)) {
+            return 0;
+        } else {
+            Intent var4;
+            (var4 = new Intent()).setPackage(var2.getPackageName());
+            var4.addCategory("com.google.intent.category.CARDBOARD");
+            return canResolveIntent(var1, var2, var4)?1:2;
+        }
+    }
+
+
+--->Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled
+--->Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService
+
+GvrLayout
+    public boolean setAsyncReprojectionEnabled(boolean var1) {
+        if(Looper.getMainLooper() != Looper.myLooper()) {
+            throw new IllegalStateException("setAsyncReprojectionEnabled may only be called from the UI thread");
+        } else if(this.scanlineRacingView != null && !var1) {
+            throw new UnsupportedOperationException("Async reprojection cannot be disabled once enabled");
+        } else if(var1 && !this.daydreamUtils.isDaydreamPhone(this.getContext())) {
+            return false;
+        } else {
+            boolean var2 = this.gvrApi.setAsyncReprojectionEnabled(var1);
+            if(var1) {
+                if(var2) {
+                    if(!this.gvrApi.usingVrDisplayService()) {
+                        this.addScanlineRacingView();
+                    }
+                } else {
+                    Log.e("GvrLayout", "Failed to initialize async reprojection, unsupported device.");
+                    this.isAsyncReprojectionVideoEnabled = false;
+                    this.scanlineRacingRenderer = null;
+                }
+            }
+
+            return var2;
+        }
+    }
+
+
+
+    public static boolean isDaydreamPhone(Context var0) {
+        return sDaydreamPhoneOverrideForTesting?true:(VERSION.SDK_INT < 24?false:var0.getPackageManager().hasSystemFeature("android.hardware.vr.high_performance"));
+    }
+
+
+---> Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread
+
+ScanlineRacingRenderer
+onSurfaceCreated
+
+
+
+
+

@@ -24,8 +24,8 @@ public class DaydreamUtils {
     private static boolean sDaydreamPhoneOverrideForTesting;
 
     public static boolean isDaydreamPhone(Context var0) {
-        return true;
-//        return sDaydreamPhoneOverrideForTesting?true:(VERSION.SDK_INT < 24?false:var0.getPackageManager().hasSystemFeature("android.hardware.vr.high_performance"));
+//        return true;
+        return sDaydreamPhoneOverrideForTesting?true:(VERSION.SDK_INT < 24?false:var0.getPackageManager().hasSystemFeature("android.hardware.vr.high_performance"));
     }
 
     public static boolean isDaydreamViewer(DeviceParams var0) {
