@@ -2,7 +2,7 @@
 // Created by houguoli on 2017/1/3.
 //
 
-#include "UnityInterface.h"
+#include "gvrInter.h"
 #include "gvrfn.h"
 #include "gvrtest.h"
 #include "LogMessage.h"

@@ -67,6 +67,7 @@ ScanlineRacingRenderer
 onSurfaceCreated
 
 
-
+GvrLayout->addScanlineRacingView
+ this.eglFactory.setUsePriorityContext(false);
 
 
