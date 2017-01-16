@@ -310,7 +310,7 @@ public class GvrSurfaceView extends SurfaceView implements Callback2 {
                 this.guardedRun();
                 return;
             } catch (InterruptedException var6) {
-                ;
+                Log.e("SurfaceView", "exception:" + var6.getMessage());
             } finally {
                 this.mGLThreadManager.threadExiting(this);
             }
@@ -1042,7 +1042,14 @@ public class GvrSurfaceView extends SurfaceView implements Callback2 {
 
         public ComponentSizeChooser(int var2, int var3, int var4, int var5, int var6, int var7) {
 //            super( new int[] {  var2, var3, var4, var5, var6, var7});
-            super(new int[] { 12324, var2, 12323, var3, 12322, var4, 12321, var5, 12325, var6, 12326, var7, 12344 });
+            super(new int[] {
+                    EGL10.EGL_RED_SIZE, var2,
+                    EGL10.EGL_GREEN_SIZE, var3,
+                    EGL10.EGL_BLUE_SIZE, var4,
+                    EGL10.EGL_ALPHA_SIZE, var5,
+                    EGL10.EGL_DEPTH_SIZE, var6,
+                    EGL10.EGL_STENCIL_SIZE, var7,
+                    EGL10.EGL_NONE });
             this.mRedSize = var2;
             this.mGreenSize = var3;
             this.mBlueSize = var4;
@@ -1055,15 +1062,16 @@ public class GvrSurfaceView extends SurfaceView implements Callback2 {
             EGLConfig[] var4 = var3;
             int var5 = var3.length;
 
-            for(int var6 = 0; var6 < var5; ++var6) {
+            for(int var6 = 0; var6 < var5; ++var6)
+            {
                 EGLConfig var7 = var4[var6];
-                int var8 = this.findConfigAttrib(var1, var2, var7, 12325, 0);
-                int var9 = this.findConfigAttrib(var1, var2, var7, 12326, 0);
+                int var8 = this.findConfigAttrib(var1, var2, var7, EGL10.EGL_DEPTH_SIZE, 0);
+                int var9 = this.findConfigAttrib(var1, var2, var7, EGL10.EGL_STENCIL_SIZE, 0);
                 if(var8 >= this.mDepthSize && var9 >= this.mStencilSize) {
-                    int var10 = this.findConfigAttrib(var1, var2, var7, 12324, 0);
-                    int var11 = this.findConfigAttrib(var1, var2, var7, 12323, 0);
-                    int var12 = this.findConfigAttrib(var1, var2, var7, 12322, 0);
-                    int var13 = this.findConfigAttrib(var1, var2, var7, 12321, 0);
+                    int var10 = this.findConfigAttrib(var1, var2, var7, EGL10.EGL_RED_SIZE, 0);
+                    int var11 = this.findConfigAttrib(var1, var2, var7, EGL10.EGL_GREEN_SIZE, 0);
+                    int var12 = this.findConfigAttrib(var1, var2, var7, EGL10.EGL_BLUE_SIZE, 0);
+                    int var13 = this.findConfigAttrib(var1, var2, var7, EGL10.EGL_ALPHA_SIZE, 0);
                     if(var10 == this.mRedSize && var11 == this.mGreenSize && var12 == this.mBlueSize && var13 == this.mAlphaSize) {
                         return var7;
                     }

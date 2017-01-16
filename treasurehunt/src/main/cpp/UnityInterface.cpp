@@ -240,7 +240,7 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType(
     CLogMessage msg(__FUNCTION__);
     int re = 0;
     re = gGvrApi.GvrApi_nativeGetViewerType(env, obj, paramLong);
-    return 0;
+    return 1;
 }
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(
         JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
