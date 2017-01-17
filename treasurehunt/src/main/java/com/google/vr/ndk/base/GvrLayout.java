@@ -122,7 +122,7 @@ public class GvrLayout extends FrameLayout {
                         this.addView(this.fadeOverlayView, 2);
                     }
 
-                    this.vrCoreSdkClient = this.createVrCoreSdkClient(this.getContext(), var1, var4, this.fadeOverlayView);
+//                    this.vrCoreSdkClient = this.createVrCoreSdkClient(this.getContext(), var1, var4, this.fadeOverlayView);
                 }
             } finally {
                 TraceCompat.endSection();
@@ -340,7 +340,7 @@ public class GvrLayout extends FrameLayout {
     private void addScanlineRacingView() {
         if(this.scanlineRacingView == null) {
             this.eglFactory = new EglFactory();
-            this.eglFactory.setUsePriorityContext(true);
+            this.eglFactory.setUsePriorityContext(false);
             this.eglFactory.setUseProtectedBuffers(this.isAsyncReprojectionUsingProtectedBuffers);
             this.eglFactory.setEGLContextClientVersion(2);
             this.scanlineRacingView = new GvrSurfaceView(this.getContext());

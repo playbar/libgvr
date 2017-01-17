@@ -69,7 +69,9 @@ import com.google.vr.sdk.base.GvrViewerParams;
 import com.google.vr.sdk.base.CardboardViewNativeImpl;
 import com.google.vr.ndk.base.GvrApi;
 import com.google.vr.ndk.base.GvrLayout;
-
+import com.google.vr.cardboard.PerfMonitor;
+import com.google.vr.ndk.base.DaydreamApi;
+import com.google.vr.internal.controller.ServiceBridge;
 /**
  * A Google VR sample application.
  *

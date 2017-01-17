@@ -1968,8 +1968,11 @@ void CGVRAPI::GvrApi_nativeInitializeGl(JNIEnv* env, jobject obj, jlong paramLon
 void CGVRAPI::GvrApi_nativeOnSurfaceCreatedReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
-    if(m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread)
-        m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread(env, obj, paramLong);
+//    if(m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread)
+//        m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread(env, obj, paramLong);
+    if(m_fpon_surface_created_reprojection_thread)
+        m_fpon_surface_created_reprojection_thread(paramLong);
+
     return;
 }
 void CGVRAPI::GvrApi_nativeGetRecommendedBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2)
