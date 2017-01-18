@@ -12,9 +12,9 @@ JNIEXPORT jstring JNICALL Java_com_Company_GvrProject13_MainActivity_stringFromJ
 }
 
 
-JNIEXPORT jint JNICALL JNI_OnLoad()
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 {
-    return gGvrApi.JNI_OnLoad1();
+    return gGvrApi.JNI_OnLoad(vm, reserved);
 //    return  JNI_VERSION_1_6;
 }
 

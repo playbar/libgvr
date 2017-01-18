@@ -18,7 +18,7 @@ static const char* kTAG = "gvr";
 extern "C" {
 #endif
 
-//JNIEXPORT jint JNICALL JNI_OnLoad();
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved = nullptr);
 JNIEXPORT jstring JNICALL Java_com_Company_GvrProject13_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
 
 #ifdef __cplusplus

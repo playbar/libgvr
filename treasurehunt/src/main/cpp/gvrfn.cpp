@@ -2380,11 +2380,11 @@ jintArray CGVRAPI::GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong 
     return re;
 }
 
-jint CGVRAPI::JNI_OnLoad1()
+jint CGVRAPI::JNI_OnLoad(JavaVM* vm, void* reserved)
 {
     Init();
     if(m_fpJNI_OnLoad)
-        return m_fpJNI_OnLoad();
+        return m_fpJNI_OnLoad(vm, reserved);
     return JNI_VERSION_1_6;
 }
 

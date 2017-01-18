@@ -257,7 +257,7 @@ typedef jbyteArray (*FP_GvrApi_nativePauseTracking)( JNIEnv* env, jobject obj, j
 
 typedef jintArray (*FP_GvrApi_nativeGetWindowBounds)(JNIEnv* env, jobject obj, jlong paramLong);
 
-typedef jint (*FP_JNI_OnLoad)();
+typedef jint (*FP_JNI_OnLoad)(JavaVM* vm, void* reserved);
 
 typedef void (*FP_buffer_viewport_list_destroy)( gvr_buffer_viewport_list **viewport_list);
 typedef void (*FP_swap_chain_destroy)(gvr_swap_chain **swap_chain);
@@ -659,7 +659,7 @@ public:
     jstring GvrApi_nativeGetViewerModel( JNIEnv* env, jobject obj, jlong paramLong);
     jbyteArray GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong paramLong);
     jintArray GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong);
-    jint JNI_OnLoad1();
+    jint JNI_OnLoad(JavaVM* vm, void* reserved);
     void buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
     void swap_chain_destroy(gvr_swap_chain **swap_chain);
     void destroy(gvr_context **gvr);
