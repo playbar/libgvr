@@ -240,7 +240,7 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType(
     CLogMessage msg(__FUNCTION__);
     int re = 0;
     re = gGvrApi.GvrApi_nativeGetViewerType(env, obj, paramLong);
-    return 1;
+    return re;
 }
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(
         JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
@@ -248,7 +248,7 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
     CLogMessage msg(__FUNCTION__);
     bool re = false;
     re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
-    return true;
+    return re;
 }
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetHeadSpaceFromStartSpaceRotation(
