@@ -1,4 +1,4 @@
-#include "gvrtest.h"
+#include "gvrglobal.h"
 #include "gvrfn.h"
 #include "LogMessage.h"
 

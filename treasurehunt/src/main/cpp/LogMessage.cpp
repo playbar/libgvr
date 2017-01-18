@@ -1,6 +1,6 @@
 #include "LogMessage.h"
 
-#include "gvrtest.h"
+#include "gvrglobal.h"
 
 CLogMessage::CLogMessage(const char *funname)
 {

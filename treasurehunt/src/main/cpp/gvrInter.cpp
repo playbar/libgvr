@@ -4,7 +4,7 @@
 
 #include "gvrInter.h"
 #include "gvrfn.h"
-#include "gvrtest.h"
+#include "gvrglobal.h"
 #include "LogMessage.h"
 
 //ClassLoader paramClassLoader, Context paramContext)
