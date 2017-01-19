@@ -8,6 +8,7 @@ add_library(gvr SHARED
             gvrInter.cpp
             gvrfn.cpp
             LogMessage.cpp
+            gvrsource.cpp
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc
             )

@@ -1,6 +1,6 @@
-include ':gvrIn', ':sdk-audio'
+include ':gvrIn'
 include ':gvr'
 include ':unity'
 include ':controllerpaint'
 include ':treasurehunt'
-include ':sdk-audio'
+include ':hello-jni'

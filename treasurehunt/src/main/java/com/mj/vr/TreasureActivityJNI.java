@@ -20,6 +20,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +32,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 /** A Gvr API sample application. */
 public class TreasureActivityJNI extends Activity {
+  private final String TAG = "TreasureActivityJNI";
   private GvrLayout gvrLayout;
   private long nativeTreasureHuntRenderer;
   private GLSurfaceView surfaceView;
@@ -45,7 +47,7 @@ public class TreasureActivityJNI extends Activity {
       };
 
   static {
-    System.loadLibrary("gvr");
+//    System.loadLibrary("gvr");
     System.loadLibrary("gvr_audio");
   }
 
@@ -69,11 +71,7 @@ public class TreasureActivityJNI extends Activity {
 
     // Initialize GvrLayout and the native renderer.
     gvrLayout = new GvrLayout(this);
-    nativeTreasureHuntRenderer =
-        nativeCreateRenderer(
-            getClass().getClassLoader(),
-            this.getApplicationContext(),
-            gvrLayout.getGvrApi().getNativeGvrContext());
+    nativeTreasureHuntRenderer = nativeCreateRenderer(getClass().getClassLoader(), this.getApplicationContext(), gvrLayout.getGvrApi().getNativeGvrContext());
 
     // Add the GLSurfaceView to the GvrLayout.
     surfaceView = new GLSurfaceView(this);
@@ -143,6 +141,7 @@ public class TreasureActivityJNI extends Activity {
     gvrLayout.onResume();
     surfaceView.onResume();
     surfaceView.queueEvent(refreshViewerProfileRunnable);
+//    nativeTestGvrCreate(this.getApplicationContext(), getClassLoader());
   }
 
   @Override
@@ -166,11 +165,75 @@ public class TreasureActivityJNI extends Activity {
   @Override
   public boolean dispatchKeyEvent(KeyEvent event) {
     // Avoid accidental volume key presses while the phone is in the VR headset.
-    if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP
-        || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+    if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
       return true;
     }
     return super.dispatchKeyEvent(event);
+  }
+
+  @Override
+  public boolean dispatchTouchEvent(MotionEvent ev) {
+    int action = ev.getAction();
+
+    switch (action) {
+      case MotionEvent.ACTION_DOWN:
+        Log.d(TAG, "dispatchTouchEvent action:ACTION_DOWN");
+        break;
+      case MotionEvent.ACTION_MOVE:
+        Log.d(TAG, "dispatchTouchEvent action:ACTION_MOVE");
+        break;
+      case MotionEvent.ACTION_UP:
+        Log.d(TAG, "dispatchTouchEvent action:ACTION_UP");
+        break;
+      case MotionEvent.ACTION_CANCEL:
+        Log.d(TAG, "dispatchTouchEvent action:ACTION_CANCEL");
+        break;
+    }
+
+    return super.dispatchTouchEvent(ev);
+  }
+
+//  @Override
+//  public boolean onInterceptTouchEvent(MotionEvent ev) {
+//    int action = ev.getAction();
+//
+//    switch (action) {
+//      case MotionEvent.ACTION_DOWN:
+//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_DOWN");
+//        break;
+//      case MotionEvent.ACTION_MOVE:
+//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_MOVE");
+//        break;
+//      case MotionEvent.ACTION_UP:
+//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_UP");
+//        break;
+//      case MotionEvent.ACTION_CANCEL:
+//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_CANCEL");
+//        break;
+//    }
+//    return false;
+//  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent ev) {
+    int action = ev.getAction();
+
+    switch (action) {
+      case MotionEvent.ACTION_DOWN:
+        Log.d(TAG, "---onTouchEvent action:ACTION_DOWN");
+        break;
+      case MotionEvent.ACTION_MOVE:
+        Log.d(TAG, "---onTouchEvent action:ACTION_MOVE");
+        break;
+      case MotionEvent.ACTION_UP:
+        Log.d(TAG, "---onTouchEvent action:ACTION_UP");
+        break;
+      case MotionEvent.ACTION_CANCEL:
+        Log.d(TAG, "---onTouchEvent action:ACTION_CANCEL");
+        break;
+    }
+
+    return true;
   }
 
   private void setImmersiveSticky() {
@@ -185,8 +248,9 @@ public class TreasureActivityJNI extends Activity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
   }
 
-  private native long nativeCreateRenderer(
-      ClassLoader appClassLoader, Context context, long nativeGvrContext);
+  private native long nativeTestGvrCreate(Context ctx, ClassLoader classLoader);
+
+  private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
 
   private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
 
@@ -199,4 +263,5 @@ public class TreasureActivityJNI extends Activity {
   private native void nativeOnPause(long nativeTreasureHuntRenderer);
 
   private native void nativeOnResume(long nativeTreasureHuntRenderer);
+
 }

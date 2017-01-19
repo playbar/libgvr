@@ -22,16 +22,17 @@
 
 #include <memory>
 #include <string>
-#include <thread>  // NOLINT
+#include <thread>
 #include <vector>
 
 #include "gvr.h"
 #include "gvr_audio.h"
 #include "gvr_controller.h"
 #include "gvr_types.h"
-#include "world_layout_data.h"  // NOLINT
+#include "world_layout_data.h"
 
-class TreasureHuntRenderer {
+class TreasureHuntRenderer
+{
  public:
   /**
    * Create a TreasureHuntRenderer using a given |gvr_context|.
@@ -39,8 +40,7 @@ class TreasureHuntRenderer {
    * @param gvr_api The (non-owned) gvr_context.
    * @param gvr_audio_api The (owned) gvr::AudioApi context.
    */
-  TreasureHuntRenderer(gvr_context* gvr_context,
-                       std::unique_ptr<gvr::AudioApi> gvr_audio_api);
+  TreasureHuntRenderer(gvr_context* gvr_context, std::unique_ptr<gvr::AudioApi> gvr_audio_api);
 
   /**
    * Destructor.
@@ -73,7 +73,7 @@ class TreasureHuntRenderer {
    */
   void OnResume();
 
- private:
+private:
   int CreateTexture(int width, int height, int textureFormat, int textureType);
 
   /*
