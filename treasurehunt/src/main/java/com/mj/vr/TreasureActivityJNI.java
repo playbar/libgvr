@@ -46,10 +46,11 @@ public class TreasureActivityJNI extends Activity {
         }
       };
 
-  static {
-//    System.loadLibrary("gvr");
-    System.loadLibrary("gvr_audio");
-  }
+  //todo hgl
+//  static {
+////    System.loadLibrary("gvr");
+//    System.loadLibrary("gvr_audio");
+//  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

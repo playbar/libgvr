@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.mj.vr"
+      android:debuggable="true"
       android:versionCode="161121053"
       android:versionName="1.10.0">
 
@@ -21,12 +22,11 @@
 
     <application
             android:allowBackup="true"
-            android:debuggable="true"
             android:supportsRtl="true"
-            android:label="TreasureHuntActivity"
+            android:label="Treasure"
             android:theme="@style/VrActivityTheme">
         <activity
-                android:name=".TreasureActivityJNI"
+                android:name=".MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="landscape"
                 android:configChanges="orientation|keyboardHidden|screenSize"
@@ -41,14 +41,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="com.google.intent.category.CARDBOARD" />
-
-                <!-- The DAYDREAM category should only be declared by Activities that are Daydream
-                     compatible. Daydream compatible apps should typically use the Daydream
-                     controller APIs directly, however in this sample app we instead rely on
-                     Cardboard trigger emulation. -->
                 <category android:name="com.google.intent.category.DAYDREAM" />
             </intent-filter>
         </activity>
+        <activity android:name=".TreasureActivityJNI"></activity>
     </application>
 
 </manifest>

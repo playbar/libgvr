@@ -524,13 +524,14 @@ public class GvrApi {
 
     private native boolean nativeUsingVrDisplayService(long var1);
 
-    static {
-        try {
-            System.loadLibrary("gvr");
-        } catch (UnsatisfiedLinkError var0) {
-            ;
-        }
-    }
+    //todo hgl
+//    static {
+//        try {
+//            System.loadLibrary("gvr");
+//        } catch (UnsatisfiedLinkError var0) {
+//            ;
+//        }
+//    }
 
     public abstract static class ViewerType {
         public static final int CARDBOARD = 0;
