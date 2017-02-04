@@ -36,12 +36,15 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    public native  String stringFromJNI();
+
     public void Btn1_Click(View view)
     {
         String str = "---->" + count;
-        textView.setText(str);
-        startActivity(new Intent(MainActivity.this, TreasureActivityJNI.class));
-        count++;
+        str = stringFromJNI();
+//        textView.setText(str);
+//        startActivity(new Intent(MainActivity.this, TreasureActivityJNI.class));
+//        count++;
     }
 
 }

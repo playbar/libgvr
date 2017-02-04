@@ -338,9 +338,9 @@ bool CGVRAPI::Init()
 //    try
     {
 //        const char *filename = "/data/data/com.mj.test/lib/libgvrimpl.so";
-//        const char *filename = "/data/data/com.Company.GvrProject13/lib/libgvrimpl.so";
+        const char *filename = "/data/data/com.Company.GvrProject13/lib/libgvrimpl.so";
 //        const char *filename = "/data/data/com.mj.vr/lib/libgvrimpl.so";
-        const char *filename = "/sdcard/libgvrimpl.so";
+//        const char *filename = "/sdcard/libgvrimpl.so";
         is_file_exist(filename);
         m_hDLL = dlopen(filename, RTLD_LAZY);
         if( m_hDLL == nullptr)
