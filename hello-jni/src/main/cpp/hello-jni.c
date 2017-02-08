@@ -4,6 +4,7 @@
 #include <android/log.h>
 #include <pthread.h>
 #include <stdio.h>
+#include<stdlib.h>
 
 #define ABI "armeabi-v7a"
 
@@ -56,34 +57,46 @@ void close_thread_log (void* thread_log)
 
 //const char *filename = "/data/data/com.mj.test/lib/libgvrimpl.so";
 
-void* thread_function (void* args)
+void thread_function (void* args)
 {
-    char thread_log_filename[20];
+    char thread_log_filename[256];
     FILE* thread_log;
     sprintf (thread_log_filename, "/sdcard/tmp/thread-%d.log", (int) pthread_self ());
     thread_log = fopen (thread_log_filename, "w");
     pthread_setspecific (thread_log_key, thread_log);
     write_to_thread_log ("Thread starting.");
-    return NULL;
+    return;
 }
 
+#define THREAD_NUM 1
 void createThread()
 {
     int i;
-    pthread_t threads[5];
+    pthread_t threads[THREAD_NUM];
     pthread_key_create (&thread_log_key, close_thread_log);
 
-    for (i = 0; i < 5; ++i)
-        pthread_create (&(threads[i]), NULL, thread_function, NULL);
+    for (i = 0; i < THREAD_NUM; ++i)
+        pthread_create (&(threads[i]), NULL, (void*)thread_function, NULL);
 
-    for (i = 0; i < 5; ++i)
+    for (i = 0; i < THREAD_NUM; ++i)
         pthread_join (threads[i], NULL);
+    return;
 }
 
 struct StDemo demo;
 
 jstring Java_com_mj_test_HelloJni_stringFromJNI( JNIEnv* env, jobject thiz )
 {
+    long addr = 0;
+    char *pch = 0;
+    char line[1024] = "71b51000-71b54000 r-xp 00000000 b3:28 600325     /data/app-lib/com.mj.test-1/libmjtest.so";
+
+    if(strstr(line,"libmjtest.so"))
+    {
+        pch = strtok(line,"-");
+        addr = strtoul(pch,NULL,16);
+    }
+
     struct A a;
     a.b.c = 10;
     LOGE("%d", a.b.c);
@@ -91,7 +104,7 @@ jstring Java_com_mj_test_HelloJni_stringFromJNI( JNIEnv* env, jobject thiz )
     demo.mY = 3;
     demo.funcX = add1; //
     demo.funcY = add2;
-//    createThread();
+    createThread();
     LOGE("func(3,4)=%d\n", demo.funcX(&demo, 4));
     LOGE("func(3,4)=%d\n", demo.funcY(&demo, 3, 4));
     return (*env)->NewStringUTF(env, "Hello from JNI !  Compiled with ABI " ABI ".");

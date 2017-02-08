@@ -15,24 +15,40 @@
  */
 package com.mj.test;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class HelloJni extends AppCompatActivity {
+public class HelloJni extends Activity {
+
+    private Button button;
+    private TextView textView;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TextView tv = new TextView(this);
-        tv.setText( stringFromJNI() );
-        setContentView(tv);
+        setContentView(R.layout.activity_main);
+        button = (Button)findViewById(R.id.button1);
+        textView = (TextView)findViewById(R.id.textview);
+        textView.setText(stringFromJNI());
     }
 
     public native String  stringFromJNI();
 
+    public void Btn1_Click(View view)
+    {
+        String str = "---->" + count;
+        str = stringFromJNI();
+        str += count;
+        textView.setText(str);
+        count++;
+    }
+
     public native String  unimplementedStringFromJNI();
     static {
-        System.loadLibrary("hello-jni");
+        System.loadLibrary("mjtest");
     }
 }
