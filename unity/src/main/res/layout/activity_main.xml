@@ -13,35 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
-        android:id="@+id/hellojniMsg"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="222dp"
-        app:layout_constraintLeft_toLeftOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintLeft_creator="0"
-        app:layout_constraintTop_toTopOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintTop_creator="0"
-        app:layout_constraintRight_toRightOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintRight_creator="0"
-        tools:layout_constraintBottom_creator="0"
-        app:layout_constraintHorizontal_bias="0.42"
-        app:layout_constraintVertical_bias="0.45" />
+        android:id="@+id/hellojniMsg" />
 
     <TextView
         android:text="00:00:00"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="222dp"
-        android:id="@+id/tickView"
-        android:textAppearance="@android:style/TextAppearance.Material.Large"
-        app:layout_constraintLeft_toLeftOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintLeft_creator="0"
-        app:layout_constraintTop_toTopOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintTop_creator="0"
-        app:layout_constraintRight_toRightOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintRight_creator="0"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_hello_jnicallback"
-        tools:layout_constraintBottom_creator="0" />
+        android:id="@+id/tickView" />
 
 
 </android.support.constraint.ConstraintLayout>

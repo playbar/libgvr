@@ -42,9 +42,9 @@ public class MainActivity extends Activity {
     {
         String str = "---->" + count;
         str = stringFromJNI();
-//        textView.setText(str);
-//        startActivity(new Intent(MainActivity.this, TreasureActivityJNI.class));
-//        count++;
+        textView.setText(str);
+        startActivity(new Intent(MainActivity.this, TreasureActivityJNI.class));
+        count++;
     }
 
 }

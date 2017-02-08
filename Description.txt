@@ -1,12 +1,10 @@
 Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState
 
 
-Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType  -->直接放回1
-Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled  --> 直接修改返回true
+Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType  -->直接返回1
+Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled  --> 直接返回true
 
 --->Java_com_google_vr_ndk_base_GvrApi_nativeSetIgnoreManualPauseResumeTracker
-
-
 
 DaydreamUtils  isDaydreamPhone -->直接返回true
 

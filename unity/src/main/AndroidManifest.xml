@@ -21,8 +21,7 @@
         android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale" 
         android:enableVrMode="@string/gvr_vr_mode_component" 
         android:resizeableActivity="false"
-        android:name=".UnityPlayerActivity"
-        >
+         android:name="com.Company.GvrProject13.UnityPlayerActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
