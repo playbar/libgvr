@@ -4,7 +4,7 @@
 
 #include "gvrfn.h"
 #include <dlfcn.h>
-#include "gvrtest.h"
+#include "gvrglobal.h"
 #include <unistd.h>
 
 JavaVM *gs_jvm=0;

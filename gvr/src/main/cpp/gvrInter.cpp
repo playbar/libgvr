@@ -2,9 +2,9 @@
 // Created by houguoli on 2017/1/3.
 //
 
-#include "UnityInterface.h"
+#include "gvrInter.h"
 #include "gvrfn.h"
-#include "gvrtest.h"
+#include "gvrglobal.h"
 #include "LogMessage.h"
 
 //ClassLoader paramClassLoader, Context paramContext)
@@ -835,6 +835,7 @@ gvr_swap_chain * gvr_swap_chain_create(gvr_context *gvr, const gvr_buffer_spec *
 void gvr_bind_default_framebuffer(gvr_context *gvr)
 {
     CLogMessage msg(__FUNCTION__);
+    getimagebase();
     gGvrApi.bind_default_framebuffer(gvr);
 }
 

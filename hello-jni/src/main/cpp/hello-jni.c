@@ -87,6 +87,10 @@ struct StDemo demo;
 
 jstring Java_com_mj_test_HelloJni_stringFromJNI( JNIEnv* env, jobject thiz )
 {
+//    FILE *fw = fopen("/storage/emulated/0/maps.txt", "w");
+//    fwrite("test", 4, 1, fw);
+//    fclose(fw);
+//    int result = system("cp /sdcard/inject /data/local/tmp/");
     long addr = 0;
     char *pch = 0;
     char line[1024] = "71b51000-71b54000 r-xp 00000000 b3:28 600325     /data/app-lib/com.mj.test-1/libmjtest.so";
