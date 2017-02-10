@@ -28,6 +28,7 @@ public class MutableEglConfigChooser implements EGLConfigChooser {
                 EGL10.EGL_STENCIL_SIZE, 0,
                 EGL10.EGL_RENDERABLE_TYPE, 64,
                 EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
+//                EGL10.EGL_SURFACE_TYPE, 0x1004,
                 EGL10.EGL_NONE
         };
         int[] var4 = new int[1];

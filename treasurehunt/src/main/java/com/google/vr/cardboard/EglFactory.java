@@ -52,7 +52,7 @@ public class EglFactory implements EGLContextFactory, EGLWindowSurfaceFactory {
         }
 
         while(var4.hasRemaining()) {
-            var4.put(12344);
+            var4.put(EGL10.EGL_NONE);
         }
 
         EGLContext var5;

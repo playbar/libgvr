@@ -45,6 +45,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TreasureActivityJNI"></activity>
+        <activity android:name=".TreasureHuntActivity"></activity>
     </application>
 
 </manifest>

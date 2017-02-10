@@ -36,6 +36,7 @@ public class TreasureActivityJNI extends Activity {
   private GvrLayout gvrLayout;
   private long nativeTreasureHuntRenderer;
   private GLSurfaceView surfaceView;
+  public static int cout = 0;
 
   // This is done on the GL thread because refreshViewerProfile isn't thread-safe.
   private final Runnable refreshViewerProfileRunnable =
@@ -48,7 +49,7 @@ public class TreasureActivityJNI extends Activity {
 
   //todo hgl
 //  static {
-////    System.loadLibrary("gvr");
+//    System.loadLibrary("gvr");
 //    System.loadLibrary("gvr_audio");
 //  }
 

@@ -1,0 +1,41 @@
+
+调试思路：
+调试该函数，查看gvr_create创建情况
+     
+adb shell am start -n "com.mj.vr/.MainActivity"
+adb shell am force-stop "com.mj.vr"
+
+var5.xdpi = 704.0
+var5.ydpi = 704.0
+this.nativeGvrContext = 0
+var5.widthPixels = 2880 0xB40
+var5.heightPixels = 1440  0x540
+
+Java_com_google_vr_ndk_base_GvrApi_nativeCreate
+Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType
+Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeInit
+Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoRenderer
+Java_com_google_vr_ndk_base_GvrApi_nativeResume
+Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType
+Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking
+Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetScreenParams
+Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetGvrViewerParams
+Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate
+Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread
+
+
+
+
+02-10 11:58:30.152 26538-26538/? A/DEBUG: pid: 26450, tid: 26518, name: GLThread 349  >>> com.mj.vr <<<
+02-10 11:58:30.153 26538-26538/? A/DEBUG: signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0xd0
+02-10 11:58:30.153 26538-26538/? A/DEBUG:     r0 00000000  r1 cf7fe908  r2 56e736b4  r3 eda9f008
+02-10 11:58:30.153 26538-26538/? A/DEBUG:     r4 00000000  r5 ce61c620  r6 cf7fe908  r7 cf7fe9f0
+02-10 11:58:30.153 26538-26538/? A/DEBUG:     r8 eda9f008  r9 d280d300  sl 00000000  fp cf7fe9bc
+02-10 11:58:30.153 26538-26538/? A/DEBUG:     ip eda9a948  sp cf7fe7f0  lr d1a00a15  pc d1a1410e  cpsr 600f0030
+02-10 11:58:30.155 26538-26538/? A/DEBUG: backtrace:
+02-10 11:58:30.155 26538-26538/? A/DEBUG:     #00 pc 0019110e  /data/app/com.google.vr.vrcore-1/lib/arm/libvrcore_native.so
+02-10 11:58:30.155 26538-26538/? A/DEBUG:     #01 pc 0017da11  /data/app/com.google.vr.vrcore-1/lib/arm/libvrcore_native.so
+02-10 11:58:30.155 26538-26538/? A/DEBUG:     #02 pc 0017a735  /data/app/com.google.vr.vrcore-1/lib/arm/libvrcore_native.so (gvr_on_surface_created_reprojection_thread+24)
+02-10 11:58:30.155 26538-26538/? A/DEBUG:     #03 pc 0001cf05  /data/app/com.mj.vr-2/lib/arm/libgvr.so (gvr_on_surface_created_reprojection_thread+24)
+02-10 11:58:30.155 26538-26538/? A/DEBUG:     #04 pc 000ce00f  /data/app/com.mj.vr-2/oat/arm/base.odex (offset 0xc8000)
+

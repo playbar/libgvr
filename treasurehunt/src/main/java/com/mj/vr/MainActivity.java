@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = (Button)findViewById(R.id.button1);
+//        int i = TreasureActivityJNI.cout;
         textView = (TextView)findViewById(R.id.textView1);
     }
 
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
         System.loadLibrary("gvr");
         System.loadLibrary("gvr_audio");
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -41,9 +43,9 @@ public class MainActivity extends Activity {
     public void Btn1_Click(View view)
     {
         String str = "---->" + count;
-        str = stringFromJNI();
+//        str = stringFromJNI();
         textView.setText(str);
-        startActivity(new Intent(MainActivity.this, TreasureActivityJNI.class));
+        startActivity(new Intent(MainActivity.this, TreasureHuntActivity.class));
         count++;
     }
 

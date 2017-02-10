@@ -835,7 +835,7 @@ gvr_swap_chain * gvr_swap_chain_create(gvr_context *gvr, const gvr_buffer_spec *
 void gvr_bind_default_framebuffer(gvr_context *gvr)
 {
     CLogMessage msg(__FUNCTION__);
-    getimagebase();
+//    getimagebase();
     gGvrApi.bind_default_framebuffer(gvr);
 }
 
