@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "com.Company.GvrProject13"
+        applicationId "com.mj.nt"
         minSdkVersion 19
         targetSdkVersion 24
         externalNativeBuild {

@@ -1,4 +1,4 @@
-package com.Company.GvrProject13;
+package com.mj.nt;
 
 import com.unity3d.player.*;
 import android.app.NativeActivity;

@@ -1,4 +1,4 @@
-package com.Company.GvrProject13;
+package com.mj.nt;
 
 import com.unity3d.player.*;
 import android.app.Activity;
@@ -16,7 +16,7 @@ public class UnityPlayerProxyActivity extends Activity
 		Log.w("Unity", "UnityPlayerNativeActivity has been deprecated, please update your AndroidManifest to use UnityPlayerActivity instead");
 		super.onCreate(savedInstanceState);
 
-		Intent intent = new Intent(this, com.Company.GvrProject13.UnityPlayerActivity.class);
+		Intent intent = new Intent(this, com.mj.nt.UnityPlayerActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
