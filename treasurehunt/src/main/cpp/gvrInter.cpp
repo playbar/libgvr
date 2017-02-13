@@ -274,6 +274,7 @@ JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRenderReproje
         JNIEnv* env, jobject obj, jlong paramLong)
 {
     CLogMessage msg(__FUNCTION__);
+    getimagebase();
     return gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
 }
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnPauseReprojectionThread(

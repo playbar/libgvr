@@ -1,4 +1,3 @@
-include ':gvrIn'
 include ':gvr'
 include ':unity'
 include ':controllerpaint'

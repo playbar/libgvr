@@ -18,6 +18,7 @@ static const char* kTAG = "gvr";
 extern "C" {
 #endif
 
+long getimagebase();
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved = nullptr);
 JNIEXPORT jstring JNICALL Java_com_mj_vr_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
 

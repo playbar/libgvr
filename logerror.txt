@@ -11,6 +11,9 @@ this.nativeGvrContext = 0
 var5.widthPixels = 2880 0xB40
 var5.heightPixels = 1440  0x540
 
+
+nativeSetAsyncReprojectionEnabled
+
 Java_com_google_vr_ndk_base_GvrApi_nativeCreate
 Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType
 Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeInit
@@ -23,7 +26,7 @@ Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetGvrViewerParams
 Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate
 Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread
 
-
+unk_7656889C
 
 
 02-10 11:58:30.152 26538-26538/? A/DEBUG: pid: 26450, tid: 26518, name: GLThread 349  >>> com.mj.vr <<<
@@ -39,3 +42,35 @@ Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread
 02-10 11:58:30.155 26538-26538/? A/DEBUG:     #03 pc 0001cf05  /data/app/com.mj.vr-2/lib/arm/libgvr.so (gvr_on_surface_created_reprojection_thread+24)
 02-10 11:58:30.155 26538-26538/? A/DEBUG:     #04 pc 000ce00f  /data/app/com.mj.vr-2/oat/arm/base.odex (offset 0xc8000)
 
+
+
+GvrApi    boolean setAsyncReprojectionEnabled(boolean var1)
+
+
+
+
+单独gvr.so 地址：2D544
+
+
+Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint+16E79
+
+
+unk_76576544
+
+
+76576544
+
+
+1EF00019
+
+BEF752B8
+
+
+错误是地址,基址：76549000
+765765A2
+
+
+2D5A2
+
+
+76568C9F

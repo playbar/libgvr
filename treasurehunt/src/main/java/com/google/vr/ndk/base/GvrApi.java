@@ -308,8 +308,10 @@ public class GvrApi {
     }
 
     boolean setAsyncReprojectionEnabled(boolean var1) {
-        return true;
-//        return this.nativeSetAsyncReprojectionEnabled(this.nativeGvrContext, var1);
+//        return true;
+        boolean re = this.nativeSetAsyncReprojectionEnabled(this.nativeGvrContext, var1);
+        re = true;
+        return re;
     }
 
     public boolean getAsyncReprojectionEnabled() {
@@ -352,8 +354,9 @@ public class GvrApi {
     }
 
     boolean usingVrDisplayService() {
-        return false;
-//        return this.nativeUsingVrDisplayService(this.nativeGvrContext);
+//        return false;
+        boolean re = this.nativeUsingVrDisplayService(this.nativeGvrContext);
+        return re;
     }
 
     private native long nativeBufferViewportListCreate(long var1);

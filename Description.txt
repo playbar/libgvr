@@ -100,30 +100,3 @@ MutableEglConfigChooser
     }
 
 
-调试思路：
-调试该函数，查看gvr_create创建情况
-     
-adb shell am start -n "com.mj.vr/.MainActivity"
-adb shell am force-stop "com.mj.vr"
-
-var5.xdpi = 704.0
-var5.ydpi = 704.0
-this.nativeGvrContext = 0
-var5.widthPixels = 2880 0xB40
-var5.heightPixels = 1440  0x540
-
-Java_com_google_vr_ndk_base_GvrApi_nativeCreate
-Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType
-Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeInit
-Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoRenderer
-Java_com_google_vr_ndk_base_GvrApi_nativeResume
-Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType
-Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking
-Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetScreenParams
-Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetGvrViewerParams
-Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate
-Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread
-
-
-
-
