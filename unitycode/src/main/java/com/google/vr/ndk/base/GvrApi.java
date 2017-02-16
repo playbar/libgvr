@@ -279,7 +279,9 @@ public class GvrApi {
     }
 
     public int getViewerType() {
-        return this.nativeGetViewerType(this.nativeGvrContext);
+        int re = nativeGetViewerType(this.nativeGvrContext);
+        re = 1;
+        return re;
     }
 
     /** @deprecated */
@@ -313,7 +315,9 @@ public class GvrApi {
     }
 
     boolean setAsyncReprojectionEnabled(boolean var1) {
-        return this.nativeSetAsyncReprojectionEnabled(this.nativeGvrContext, var1);
+        boolean re = this.nativeSetAsyncReprojectionEnabled(this.nativeGvrContext, var1);
+//        re = true;
+        return re;
     }
 
     public boolean getAsyncReprojectionEnabled() {

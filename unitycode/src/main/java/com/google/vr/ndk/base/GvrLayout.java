@@ -325,7 +325,7 @@ public class GvrLayout extends FrameLayout {
                 }
             }
 
-            return var2;
+            return true;
         }
     }
 
@@ -345,7 +345,7 @@ public class GvrLayout extends FrameLayout {
     private void addScanlineRacingView() {
         if(this.scanlineRacingView == null) {
             this.eglFactory = new EglFactory();
-            this.eglFactory.setUsePriorityContext(true);
+            this.eglFactory.setUsePriorityContext(false);
             this.eglFactory.setUseProtectedBuffers(this.isAsyncReprojectionUsingProtectedBuffers);
             this.eglFactory.setEGLContextClientVersion(2);
             this.scanlineRacingView = new GvrSurfaceView(this.getContext());
