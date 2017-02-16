@@ -1,5 +1,6 @@
 include ':gvr'
 include ':unity'
+include ':unitycode'
 include ':controllerpaint'
 include ':treasurehunt'
 include ':hello-jni'
