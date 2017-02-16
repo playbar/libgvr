@@ -38,6 +38,7 @@ public final class b implements c {
             var1.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
                 public final void onSystemUiVisibilityChange(int var1x) {
                     b.this.a(var1);
+//                    b.a(b.this, var1);
                 }
             });
         }

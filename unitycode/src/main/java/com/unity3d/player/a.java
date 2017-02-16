@@ -88,7 +88,7 @@ final class a {
                 this.b(var1);
             }
 
-            if(i.a && i.f.a(this.a)) {
+            if(ClsI.a && ClsI.f.a(this.a)) {
                 this.a.startPreview();
             }
         }

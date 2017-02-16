@@ -145,7 +145,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         a(this.k.getApplicationInfo());
         if(!ClsL.c()) {
             AlertDialog var2;
-            (var2 = (new Builder(this.k)).setTitle("Failure to initialize!").setPositiveButton("OK", new OnClickListener() {
+            (var2 = (new Builder(this.k)).setTitle("Failure to initialize!").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public final void onClick(DialogInterface var1, int var2) {
                     UnityPlayer.this.c();
                 }
@@ -180,15 +180,15 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         (var1 = new SurfaceView(this.k)).getHolder().setFormat(2);
         var1.getHolder().addCallback(new Callback() {
             public final void surfaceCreated(SurfaceHolder var1) {
-                UnityPlayer.a(UnityPlayer.this, var1.getSurface());
+                a( var1.getSurface());
             }
 
             public final void surfaceChanged(SurfaceHolder var1, int var2, int var3, int var4) {
-                UnityPlayer.a(UnityPlayer.this, var1.getSurface());
+                a(var1.getSurface());
             }
 
             public final void surfaceDestroyed(SurfaceHolder var1) {
-                UnityPlayer.a(UnityPlayer.this, (Surface)null);
+                a((Surface)null);
             }
         });
         var1.setFocusable(true);
@@ -196,7 +196,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         return var1;
     }
 
-    private void a(int var1, Surface var2) {
+    private void a( Surface var2) {
         if(!this.c) {
             this.b(0, var2);
         }
@@ -424,7 +424,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                     this.c(new Runnable() {
                         public final void run() {
                             if(UnityPlayer.this.nativePause()) {
-                                UnityPlayer.i(UnityPlayer.this);
+                                UnityPlayer.i();
                                 UnityPlayer.this.g();
                                 var1.release(2);
                             } else {
@@ -455,8 +455,8 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     }
 
     public void resume() {
-        if(i.a) {
-            i.f.b(this);
+        if(ClsI.a) {
+            ClsI.f.b(this);
         }
 
         this.h.b(false);
@@ -475,7 +475,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
             } else {
                 this.h.c(true);
                 this.e();
-                if(l.c()) {
+                if(ClsL.c()) {
                     this.m();
                 }
 
@@ -582,27 +582,27 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
 
     private static void a(ApplicationInfo var0) {
         if(m && NativeLoader.load(var0.nativeLibraryDir)) {
-            l.a();
+            ClsL.a();
         }
 
     }
 
     private static void i() {
-        if(l.c()) {
+        if(ClsL.c()) {
             if(!NativeLoader.unload()) {
                 throw new UnsatisfiedLinkError("Unable to unload libraries from libmain.so");
             } else {
-                l.b();
+                ClsL.b();
             }
         }
     }
 
     protected void setFullscreen(final boolean var1) {
         this.d = var1;
-        if(i.a) {
+        if(ClsI.a) {
             this.b(new Runnable() {
                 public final void run() {
-                    i.f.a(UnityPlayer.this, var1);
+                    ClsI.f.a(UnityPlayer.this, var1);
                 }
             });
         }
@@ -628,8 +628,8 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
 
             }
         };
-        if(i.d) {
-            this.a(new UnityPlayer.c((byte)0) {
+        if(ClsI.d) {
+            this.a(new UnityPlayer.c() {
                 public final void a() {
                     UnityPlayer.this.b(var1);
                 }
@@ -655,10 +655,10 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
             this.hideSoftInput();
         }
 
-        this.a(new UnityPlayer.c((byte)0) {
+        this.a(new UnityPlayer.c() {
             public final void a() {
                 if(var3) {
-                    UnityPlayer.n(UnityPlayer.this);
+                    n();
                 } else if(var1 != null) {
                     UnityPlayer.this.nativeSetInputString(var1);
                 }
@@ -708,7 +708,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     public void onCameraFrame(final com.unity3d.player.a var1, final byte[] var2) {
         final int var3 = var1.a();
         final Size var4 = var1.b();
-        this.a(new UnityPlayer.c((byte)0) {
+        this.a(new UnityPlayer.c() {
             public final void a() {
                 UnityPlayer.this.nativeVideoFrameCallback(var3, var2, var4.width, var4.height);
                 var1.a(var2);
@@ -988,7 +988,8 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     }
 
     private boolean l() {
-        return !i.a?false:this.k.getPackageManager().hasSystemFeature("android.hardware.camera") || this.k.getPackageManager().hasSystemFeature("android.hardware.camera.front");
+        return !ClsI.a?false:this.k.getPackageManager().hasSystemFeature("android.hardware.camera") ||
+                this.k.getPackageManager().hasSystemFeature("android.hardware.camera.front");
     }
 
     protected int getSplashMode() {
@@ -1004,11 +1005,11 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     }
 
     protected void disableLogger() {
-        g.a = true;
+        ClsG.a = true;
     }
 
     private void c(Runnable var1) {
-        if(l.c()) {
+        if(ClsL.c()) {
             if(Thread.currentThread() == this.a) {
                 var1.run();
             } else {
@@ -1195,19 +1196,19 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                     if(var1.what != 2269) {
                         return false;
                     } else {
-                        UnityPlayer.a var2;
-                        if((var2 = (UnityPlayer.a)var1.obj) == UnityPlayer.a.c) {
+                        UnityPlayer.Ea var2;
+                        if((var2 = (UnityPlayer.Ea)var1.obj) == UnityPlayer.Ea.c) {
                             Looper.myLooper().quit();
-                        } else if(var2 == UnityPlayer.a.b) {
+                        } else if(var2 == UnityPlayer.Ea.b) {
                             b.this.b = true;
-                        } else if(var2 == UnityPlayer.a.a) {
+                        } else if(var2 == UnityPlayer.Ea.a) {
                             b.this.b = false;
                             UnityPlayer.this.executeGLThreadJobs();
-                        } else if(var2 == UnityPlayer.a.e) {
+                        } else if(var2 == UnityPlayer.Ea.e) {
                             if(!b.this.b) {
                                 UnityPlayer.this.executeGLThreadJobs();
                             }
-                        } else if(var2 == UnityPlayer.a.f) {
+                        } else if(var2 == UnityPlayer.Ea.f) {
                             UnityPlayer.this.executeGLThreadJobs();
                             if(!UnityPlayer.this.isFinishing() && !UnityPlayer.this.nativeRender()) {
                                 UnityPlayer.this.c();
@@ -1215,7 +1216,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                         }
 
                         if(b.this.b) {
-                            Message.obtain(b.this.a, 2269, UnityPlayer.a.f).sendToTarget();
+                            Message.obtain(b.this.a, 2269, UnityPlayer.Ea.f).sendToTarget();
                         }
 
                         return true;
@@ -1226,27 +1227,27 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         }
 
         public final void a() {
-            this.a(UnityPlayer.a.c);
+            this.a(UnityPlayer.Ea.c);
         }
 
         public final void b() {
-            this.a(UnityPlayer.a.b);
+            this.a(UnityPlayer.Ea.b);
         }
 
         public final void c() {
-            this.a(UnityPlayer.a.a);
+            this.a(UnityPlayer.Ea.a);
         }
 
         public final void a(boolean var1) {
-            this.a(var1?UnityPlayer.a.d:UnityPlayer.a.e);
+            this.a(var1?UnityPlayer.Ea.d:UnityPlayer.Ea.e);
         }
 
-        private void a(UnityPlayer.a var1) {
+        private void a(UnityPlayer.Ea var1) {
             Message.obtain(this.a, 2269, var1).sendToTarget();
         }
     }
 
-    static enum a {
+    static enum Ea {
         a,
         b,
         c,
@@ -1254,7 +1255,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         e,
         f;
 
-        private a() {
+        private Ea() {
         }
     }
 }
