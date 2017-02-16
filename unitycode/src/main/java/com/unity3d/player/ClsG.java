@@ -7,7 +7,7 @@ package com.unity3d.player;
 
 import android.util.Log;
 
-final class g {
+final class ClsG {
     protected static boolean a = false;
 
     protected static void Log(int var0, String var1) {

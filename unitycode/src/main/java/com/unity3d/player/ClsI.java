@@ -13,15 +13,15 @@ import com.unity3d.player.e;
 import com.unity3d.player.f;
 import com.unity3d.player.h;
 
-public final class i {
+public final class ClsI {
     static final boolean a;
     static final boolean b;
     static final boolean c;
     static final boolean d;
     static final boolean e;
-    static final c f;
-    static final d g;
-    static final e h;
+    static final b f;
+    static final f g;
+    static final h h;
 
     static {
         a = VERSION.SDK_INT >= 11;

@@ -5,8 +5,6 @@
 
 package com.unity3d.player;
 
-import com.unity3d.player.g;
-import com.unity3d.player.i;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,7 +39,7 @@ class UnityWebRequest implements Runnable {
     private static volatile SSLSocketFactory f;
 
     private static SSLSocketFactory getSSLSocketFactory() {
-        if(i.d) {
+        if(ClsI.d) {
             return null;
         } else if(f != null) {
             return f;
@@ -62,7 +60,7 @@ class UnityWebRequest implements Runnable {
                             (var5 = SSLContext.getInstance(var4)).init((KeyManager[])null, (TrustManager[])null, (SecureRandom)null);
                             var10000 = f = var5.getSocketFactory();
                         } catch (Exception var6) {
-                            g.Log(5, "UnityWebRequest: No support for " + var4 + " (" + var6.getMessage() + ")");
+                            ClsG.Log(5, "UnityWebRequest: No support for " + var4 + " (" + var6.getMessage() + ")");
                             ++var3;
                             continue;
                         }

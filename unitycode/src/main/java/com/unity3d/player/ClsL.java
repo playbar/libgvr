@@ -5,17 +5,15 @@
 
 package com.unity3d.player;
 
-import com.unity3d.player.i;
-
-final class l {
+final class ClsL {
     private static boolean a = false;
     private boolean b;
     private boolean c;
     private boolean d;
     private boolean e;
 
-    l() {
-        this.b = !i.e;
+    ClsL() {
+        this.b = !ClsI.e;
         this.c = false;
         this.d = false;
         this.e = true;

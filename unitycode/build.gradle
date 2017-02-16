@@ -31,6 +31,6 @@ android {
 dependencies {
     compile project(':gvr')
     compile files('libs/libprotobuf-java-nano.jar')
-    compile files('libs/unity-classes.jar')
+//    compile files('libs/unity-classes.jar')
     compile files('libs/gvr.jar')
 }

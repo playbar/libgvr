@@ -5,7 +5,6 @@
 
 package com.unity3d.player;
 
-import com.unity3d.player.g;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -280,7 +279,7 @@ final class ReflectionHelper {
                         return Array.newInstance(a(var0, var1), 0).getClass();
                     }
 
-                    g.Log(5, "! parseType; " + var2 + " is not known!");
+                    ClsG.Log(5, "! parseType; " + var2 + " is not known!");
                 }
             }
 

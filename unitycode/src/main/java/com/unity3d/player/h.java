@@ -15,8 +15,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageItemInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import com.unity3d.player.e;
-import com.unity3d.player.g;
+
 import java.util.LinkedList;
 
 public final class h implements e {
@@ -64,8 +63,8 @@ public final class h implements e {
                             var15.add(var8);
                         }
                     } catch (NameNotFoundException var9) {
-                        g.Log(5, "Failed to get permission info for " + var8 + ", manifest likely missing custom permission declaration");
-                        g.Log(5, "Permission " + var8 + " ignored");
+                        ClsG.Log(5, "Failed to get permission info for " + var8 + ", manifest likely missing custom permission declaration");
+                        ClsG.Log(5, "Permission " + var8 + " ignored");
                     }
                 }
 
@@ -82,7 +81,7 @@ public final class h implements e {
                         public final void onRequestPermissionsResult(int var1, String[] var2x, int[] var3) {
                             if(var1 == 15881) {
                                 for(var1 = 0; var1 < var2x.length && var1 < var3.length; ++var1) {
-                                    g.Log(4, var2x[var1] + (var3[var1] == 0?" granted":" denied"));
+                                    ClsG.Log(4, var2x[var1] + (var3[var1] == 0?" granted":" denied"));
                                 }
 
                                 FragmentTransaction var4;
@@ -97,7 +96,7 @@ public final class h implements e {
                     var17.commit();
                 }
             } catch (Exception var10) {
-                g.Log(6, "Unable to query for permission: " + var10.getMessage());
+                ClsG.Log(6, "Unable to query for permission: " + var10.getMessage());
             }
         }
     }
