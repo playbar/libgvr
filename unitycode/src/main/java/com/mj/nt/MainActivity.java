@@ -16,15 +16,20 @@
 package com.mj.nt;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+
+import com.unity3d.player.UnityPlayer;
 
 import java.io.File;
 
 public class MainActivity extends Activity {
 
+    int count = 0;
     int hour = 0;
     int minute = 0;
     int second = 0;
@@ -38,6 +43,15 @@ public class MainActivity extends Activity {
         Log.e("MainActivity", strPath);
 
         tickView = (TextView) findViewById(R.id.tickView);
+    }
+
+    public void Btn1_Click(View view)
+    {
+        String str = "---->" + count;
+//        str = stringFromJNI();
+        tickView.setText(str);
+        startActivity(new Intent(MainActivity.this, UnityPlayerActivity.class));
+        count++;
     }
 
     public String getSDPath(){
@@ -55,7 +69,7 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         hour = minute = second = 0;
-        ((TextView)findViewById(R.id.hellojniMsg)).setText(stringFromJNI());
+//        ((TextView)findViewById(R.id.hellojniMsg)).setText(stringFromJNI());
     }
 
     @Override
@@ -63,10 +77,20 @@ public class MainActivity extends Activity {
         super.onPause();
     }
 
-    static
-    {
-//        System.loadLibrary("gvrimpl");
+//    static
+//    {
+////        System.loadLibrary("gvrimpl");
+//        System.loadLibrary("gvr");
+//    }
+
+    static {
+//        (new CExceptionHandler()).isSameExceptionHandler();
         System.loadLibrary("gvr");
+        System.loadLibrary("mono");
+        System.loadLibrary("unity");
+        UnityPlayer.m = false;
+        UnityPlayer.m = UnityPlayer.loadLibraryStatic("main");
     }
-    public native  String stringFromJNI();
+
+//    public native  String stringFromJNI();
 }

@@ -72,7 +72,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     UnityPlayer.b a = new UnityPlayer.b();
     private ContextWrapper k;
     private SurfaceView l;
-    private static boolean m;
+    public static boolean m;
     private boolean n;
     private Bundle o = new Bundle();
     private List p = new ArrayList();
@@ -519,7 +519,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         this.h();
     }
 
-    protected static boolean loadLibraryStatic(String var0) {
+    public static boolean loadLibraryStatic(String var0) {
         try {
             System.loadLibrary(var0);
             return true;
@@ -1120,9 +1120,9 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     }
 
     private void n() {
-        if(this.k instanceof Activity) {
-            ((Activity)this.k).getWindow().setFlags(1024, 1024);
-        }
+//        if(this.k instanceof Activity) {
+//            ((Activity)this.k).getWindow().setFlags(1024, 1024);
+//        }
 
     }
 
