@@ -26,10 +26,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
     }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
 }
 
 dependencies {
-    compile project(':gvr')
+    compile project(':gvrres')
     compile files('libs/libprotobuf-java-nano.jar')
 //    compile files('libs/unity-classes.jar')
     compile files('libs/gvr.jar')

@@ -1,5 +1,6 @@
 include ':gvr'
 include ':unity'
+include ':gvrres'
 include ':unitycode'
 include ':controllerpaint'
 include ':treasurehunt'
