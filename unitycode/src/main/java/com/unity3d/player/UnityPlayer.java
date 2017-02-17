@@ -26,6 +26,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -77,7 +78,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     private Bundle o = new Bundle();
     private List p = new ArrayList();
     private m q;
-    j b = null;
+    JDialog mDialog = null;
     private ProgressBar r = null;
     private Runnable s = new Runnable() {
         public final void run() {
@@ -502,7 +503,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
 
     public void windowFocusChanged(final boolean var1) {
         this.h.a(var1);
-        if(var1 && this.b != null) {
+        if(var1 && this.mDialog != null) {
             this.reportSoftInputStr((String)null, 1, false);
         }
 
@@ -612,8 +613,8 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     protected void showSoftInput(final String var1, final int var2, final boolean var3, final boolean var4, final boolean var5, final boolean var6, final String var7) {
         this.b(new Runnable() {
             public final void run() {
-                UnityPlayer.this.b = new j(UnityPlayer.this.k, UnityPlayer.this, var1, var2, var3, var4, var5, var7);
-                UnityPlayer.this.b.show();
+                UnityPlayer.this.mDialog = new JDialog(UnityPlayer.this.k, UnityPlayer.this, var1, var2, var3, var4, var5, var7);
+                UnityPlayer.this.mDialog.show();
             }
         });
     }
@@ -621,9 +622,9 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     protected void hideSoftInput() {
         final Runnable var1 = new Runnable() {
             public final void run() {
-                if(UnityPlayer.this.b != null) {
-                    UnityPlayer.this.b.dismiss();
-                    UnityPlayer.this.b = null;
+                if(UnityPlayer.this.mDialog != null) {
+                    UnityPlayer.this.mDialog.dismiss();
+                    UnityPlayer.this.mDialog = null;
                 }
 
             }
@@ -642,8 +643,8 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     protected void setSoftInputStr(final String var1) {
         this.b(new Runnable() {
             public final void run() {
-                if(UnityPlayer.this.b != null && var1 != null) {
-                    UnityPlayer.this.b.a(var1);
+                if(UnityPlayer.this.mDialog != null && var1 != null) {
+                    UnityPlayer.this.mDialog.a(var1);
                 }
 
             }
@@ -1158,6 +1159,11 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     public boolean onGenericMotionEvent(MotionEvent var1) {
         ClsG.Log(4, "Handling onGenericMotionEvent");
         return this.injectEvent(var1);
+    }
+
+    public void nativeEnsureAppLaunchesWithGVR()
+    {
+        Log.e("UnityPlayer", "nativeEnsureAppLaunchesWithGVR");
     }
 
     static {

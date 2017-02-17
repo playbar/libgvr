@@ -22,15 +22,14 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import com.unity3d.player.UnityPlayer;
 
-public final class j extends Dialog implements TextWatcher, OnClickListener {
+public final class JDialog extends Dialog implements TextWatcher, OnClickListener {
     private Context a = null;
     private UnityPlayer b = null;
     private static int c = 1627389952;
     private static int d = -1;
 
-    public j(Context var1, UnityPlayer var2, String var3, int var4, boolean var5, boolean var6, boolean var7, String var8) {
+    public JDialog(Context var1, UnityPlayer var2, String var3, int var4, boolean var5, boolean var6, boolean var7, String var8) {
         super(var1);
         this.a = var1;
         this.b = var2;
@@ -47,7 +46,7 @@ public final class j extends Dialog implements TextWatcher, OnClickListener {
         var9.setOnFocusChangeListener(new OnFocusChangeListener() {
             public final void onFocusChange(View var1, boolean var2) {
                 if(var2) {
-                    j.this.getWindow().setSoftInputMode(5);
+                    JDialog.this.getWindow().setSoftInputMode(5);
                 }
 
             }
@@ -108,7 +107,7 @@ public final class j extends Dialog implements TextWatcher, OnClickListener {
         EditText var3 = new EditText(this.a) {
             public final boolean onKeyPreIme(int var1, KeyEvent var2) {
                 if(var1 == 4) {
-                    j.this.a(j.this.a(), true);
+                    JDialog.this.a(JDialog.this.a(), true);
                     return true;
                 } else {
                     return var1 == 84?true:super.onKeyPreIme(var1, var2);
@@ -118,7 +117,7 @@ public final class j extends Dialog implements TextWatcher, OnClickListener {
             public final void onWindowFocusChanged(boolean var1) {
                 super.onWindowFocusChanged(var1);
                 if(var1) {
-                    ((InputMethodManager)j.this.a.getSystemService("input_method")).showSoftInput(this, 0);
+                    ((InputMethodManager)JDialog.this.a.getSystemService("input_method")).showSoftInput(this, 0);
                 }
 
             }
@@ -140,7 +139,7 @@ public final class j extends Dialog implements TextWatcher, OnClickListener {
         ((EditText)var1.findViewById(1057292289)).setOnEditorActionListener(new OnEditorActionListener() {
             public final boolean onEditorAction(TextView var1, int var2, KeyEvent var3) {
                 if(var2 == 6) {
-                    j.this.a(j.this.a(), false);
+                    JDialog.this.a(JDialog.this.a(), false);
                 }
 
                 return false;
