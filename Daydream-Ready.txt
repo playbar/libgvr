@@ -1,0 +1,26 @@
+Daydream-Ready的标准详情如下：
+
+1：设备必须至少两个物理内核
+2：设备必须支持安卓VR模式
+3：设备必须提供专属的CPU核心为前台应用提供支持，这个核心绝不允许其他用户空间进程运行（用于设备驱动的应用程序除外），但可能允许一些必要内核进程运行。
+4：设备必须支持持续性能模式
+5：设备必须支持OpenGL ES 3.2
+6：设备必须支持Vulkan硬件级别0，推荐支持Vulkan硬件级别1
+7：设备必须实现EGL_KHR_mutable_render_buffer、EGL_ANDROID_front_buffer_auto_refresh、EGL_ANDROID_create_native_client_buffer、EGL_KHR_fence_sync和EGL_KHR_wait_sync，以便用于共享缓冲模式（Shared Buffer Mode）和读取EGL可用扩展列表
+8：设备的GPU和显示屏必须能够同步访问共享缓冲区，稳定的输出帧率达到60fps
+9：设备必须实现 EGL_IMG_context_priority和读取EGL可用扩展列表
+10：设备必须实现GL_EXT_multisampled_render_to_texture，GL_OVR_multiview, GL_OVR_multiview2 和 GL_OVR_multiview_multisampled_render_to_texture并读取可用的GL扩展列表
+11：设备必须实现 EGL_EXT_protected_content 和 GL_EXT_protected_textures。以支持多媒体本地播放和读取EGL和GL可用扩展列表
+12：设备必须支持至少3840 X 2160 @30fps-40Mbps的 H.264 解码（相当于4 个 1920×1080@30fps-10Mbps 或者 2 个1920×1080@60fps-20Mbps）
+13：设备必须支持HEVC和VP9，必须支持至少1920×1080@30fps-10Mbps的解码，应当能支持 3840×2160@30fps-20Mbps的解码 （相当于4 个1920×1080@30fps-5Mbps）
+14：设备强烈推荐支持 android.hardware.sensor.hifi_sensors 功能，必须满足android.hardware.hifi_sensors对陀螺仪、加速度计和磁力计相关的要求。
+15：设备必须HardwarePropertiesManager.getDeviceTemperatures API并可精确返回设备壁面温度值
+16：设备必须有一个嵌入式屏幕，屏幕的分辨率必须至少全高清（1080p）强烈建议 QuadHD （1440p）或更高
+17：设备屏幕尺寸范围必须在4.7英寸至6英寸之间
+18：设备在VR模式下刷新率必须达到60Hz
+19：设备显示屏延迟灰到灰、白到黑和黑到白的切换时间必须小于或等于3ms
+20：设备显示屏必须支持低持续模式，持续时间小于或等于5ms。持续的定义是一个发光像素的视觉暂留时间。
+21：设备必须支持蓝牙4.2和蓝牙低功耗数据长度扩展
+
+总的来说，对于Daydream VR手机，谷歌只宣布了 Pixel 和 Pixel Plus 符合 Daydream-Ready 认证。对于其他厂商的设备，暂时并未获得谷歌官方的 Daydream-Ready 认可。VR科技网将为大家持续关注。
+

@@ -70,6 +70,7 @@ GvrLayout->addScanlineRacingView
 
 
 
+EGL_MUTABLE_RENDER_BUFFER_BIT_KHR
 
 MutableEglConfigChooser
     private static EGLConfig chooseConfig(EGL10 var0, EGLDisplay var1, EGLConfig[] var2, boolean var3) {
