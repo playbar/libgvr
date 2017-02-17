@@ -1,10 +1,6 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package com.google.vr.cardboard;
 
+import android.opengl.EGLExt;
 import android.opengl.GLSurfaceView.EGLConfigChooser;
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -43,9 +39,9 @@ public class MutableEglConfigChooser implements EGLConfigChooser {
                 EGL10.EGL_DEPTH_SIZE, 0,
                 EGL10.EGL_STENCIL_SIZE, 0,
                 EGL10.EGL_RENDERABLE_TYPE, 64,
-                EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
-//                EGL10.EGL_MUTABLE_RENDER_BUFFER_BIT_KHR,
-//                EGL10.EGL_SURFACE_TYPE, 0x1004,
+//                EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
+//                EGLExt.EGL_MUTABLE_RENDER_BUFFER_BIT_KHR,
+                EGL10.EGL_SURFACE_TYPE, 0x1004,
                 EGL10.EGL_NONE
         };
         int[] configsize = new int[1];

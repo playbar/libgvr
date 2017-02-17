@@ -274,7 +274,9 @@ public class GvrApi {
     }
 
     public int getViewerType() {
-        return this.nativeGetViewerType(this.nativeGvrContext);
+        int re = nativeGetViewerType(this.nativeGvrContext);
+        Log.e("mjgvr", "getViewerType re=" + re);
+        return re;
     }
 
     /** @deprecated */

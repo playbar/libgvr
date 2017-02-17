@@ -280,7 +280,8 @@ public class GvrApi {
 
     public int getViewerType() {
         int re = nativeGetViewerType(this.nativeGvrContext);
-        re = 1;
+        Log.e("mjgvr", "getViewerType int re=" + re);
+//        re = 1;
         return re;
     }
 
@@ -316,6 +317,7 @@ public class GvrApi {
 
     boolean setAsyncReprojectionEnabled(boolean var1) {
         boolean re = this.nativeSetAsyncReprojectionEnabled(this.nativeGvrContext, var1);
+        Log.e("mjgvr", "bool val=" + re);
 //        re = true;
         return re;
     }

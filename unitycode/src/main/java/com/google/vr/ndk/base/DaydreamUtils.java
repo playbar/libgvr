@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build.VERSION;
+import android.util.Log;
+
 import com.google.vrtoolkit.cardboard.proto.nano.CardboardDevice.DeviceParams;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +27,9 @@ public class DaydreamUtils {
 
     public static boolean isDaydreamPhone(Context var0) {
 //        return true;
-        return sDaydreamPhoneOverrideForTesting?true:(VERSION.SDK_INT < 24?false:var0.getPackageManager().hasSystemFeature("android.hardware.vr.high_performance"));
+        boolean re = sDaydreamPhoneOverrideForTesting?true:(VERSION.SDK_INT < 24?false:var0.getPackageManager().hasSystemFeature("android.hardware.vr.high_performance"));
+        Log.e("mjgvr", "isDaydreamPhone boolean re=" + re);
+        return re;
     }
 
     public static boolean isDaydreamViewer(DeviceParams var0) {
