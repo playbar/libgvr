@@ -44,8 +44,16 @@
                 <category android:name="com.google.intent.category.DAYDREAM" />
             </intent-filter>
         </activity>
-        <activity android:name=".TreasureActivityJNI"></activity>
-        <activity android:name=".TreasureHuntActivity"></activity>
+        <activity android:name=".TreasureActivityJNI"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:enableVrMode="@string/gvr_vr_mode_component"
+            android:resizeableActivity="false"></activity>
+        <activity android:name=".TreasureHuntActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:enableVrMode="@string/gvr_vr_mode_component"
+            android:resizeableActivity="false"></activity>
     </application>
 
 </manifest>
