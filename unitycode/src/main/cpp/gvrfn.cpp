@@ -879,7 +879,7 @@ bool CGVRAPI::Init()
                 && m_fpCardboardViewNativeImpl_nativeUndistortTexture!= NULL)
             {
                  m_bInit = true;
-                LOGI("dlopen success");
+                LOGI("dlopen success, %s", __FUNCTION__ );
 //                MOJING_TRACE(g_APIlogger , "svrApi init OK");
             }
             else

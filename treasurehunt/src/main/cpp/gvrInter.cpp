@@ -240,7 +240,8 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType(
     CLogMessage msg(__FUNCTION__);
     int re = 0;
     re = gGvrApi.GvrApi_nativeGetViewerType(env, obj, paramLong);
-    return 1;
+    LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
+    return re;
 }
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(
         JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
@@ -248,7 +249,9 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
     CLogMessage msg(__FUNCTION__);
     bool re = false;
     re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
-    return true;
+//    re = true;
+    LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
+    return re;
 }
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetHeadSpaceFromStartSpaceRotation(
@@ -274,7 +277,6 @@ JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRenderReproje
         JNIEnv* env, jobject obj, jlong paramLong)
 {
     CLogMessage msg(__FUNCTION__);
-    getimagebase();
     return gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
 }
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnPauseReprojectionThread(
@@ -350,7 +352,10 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplaySe
         JNIEnv* env, jobject obj, jlong paramLong)
 {
     CLogMessage msg(__FUNCTION__);
-    return gGvrApi.GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
+    bool re = false;
+    re = gGvrApi.GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
+    LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
+    return re;
 }
 
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListCreate(
@@ -839,6 +844,7 @@ gvr_swap_chain * gvr_swap_chain_create(gvr_context *gvr, const gvr_buffer_spec *
 void gvr_bind_default_framebuffer(gvr_context *gvr)
 {
     CLogMessage msg(__FUNCTION__);
+//    getimagebase();
     gGvrApi.bind_default_framebuffer(gvr);
 }
 
