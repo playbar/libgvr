@@ -313,12 +313,16 @@ public class GvrLayout extends FrameLayout {
             return false;
         } else {
             boolean var2 = this.gvrApi.setAsyncReprojectionEnabled(var1);
-            if(var1) {
-                if(var2) {
+            if(var1)
+            {
+                if(var2)
+                {
                     if(!this.gvrApi.usingVrDisplayService()) {
                         this.addScanlineRacingView();
                     }
-                } else {
+                }
+                else
+                {
                     Log.e("GvrLayout", "Failed to initialize async reprojection, unsupported device.");
                     this.isAsyncReprojectionVideoEnabled = false;
                     this.scanlineRacingRenderer = null;
