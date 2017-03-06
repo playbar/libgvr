@@ -24,3 +24,24 @@ Daydream-Ready的标准详情如下：
 
 总的来说，对于Daydream VR手机，谷歌只宣布了 Pixel 和 Pixel Plus 符合 Daydream-Ready 认证。对于其他厂商的设备，暂时并未获得谷歌官方的 Daydream-Ready 认可。VR科技网将为大家持续关注。
 
+How to spoof Daydream compatibility to get apps directly from Google Play?
+Get or enable root on your phone (with root for ADB) and run following commands.
+
+# Connect to the phone terminal
+adb shell
+# Switch to root
+su
+
+# The rest can be executed in one go
+mount -o rw,remount /system
+echo '<?xml version="1.0" encoding="utf-8"?><permissions><feature name="android.hardware.vr.high_performance" /></permissions>' > /system/etc/permissions/android.hardware.vr.high_performance.xml
+echo '<?xml version="1.0" encoding="utf-8"?><permissions><feature name="android.software.vr.mode" /></permissions>' > /system/etc/permissions/android.software.vr.mode.xml
+chmod 644 /system/etc/permissions/android.hardware.vr.high_performance.xml
+chmod 644 /system/etc/permissions/android.software.vr.mode.xml
+mount -o ro,remount /system
+pm clear com.google.android.gms
+pm clear com.android.vending
+reboot
+
+
+

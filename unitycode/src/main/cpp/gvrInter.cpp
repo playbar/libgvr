@@ -238,6 +238,7 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerType(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
     CLogMessage msg(__FUNCTION__);
+    LOGI("mjgvr env:%0x, obj:%0X, paramLong:%lld", env, obj, paramLong);
     int re = 0;
     re = gGvrApi.GvrApi_nativeGetViewerType(env, obj, paramLong);
     LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
@@ -247,6 +248,7 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
         JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
 {
     CLogMessage msg(__FUNCTION__);
+    LOGI("mjgvr env:%0x, obj:%0X, paramLong:%lld, paramBool:%d", env, obj, paramLong, paramBool);
     bool re = false;
     re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
 //    re = true;
@@ -264,6 +266,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetIgnoreManualP
         JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
 {
     CLogMessage msg(__FUNCTION__);
+    LOGI("mjgvr env:%0x, obj:%0X, paramLong:%lld, paramBoolean:%d", env, obj, paramLong, paramBoolean);
     gGvrApi.GvrApi_nativeSetIgnoreManualPauseResumeTracker(env, obj, paramLong, paramBoolean);
 }
 
@@ -763,6 +766,12 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
 {
 //    LOGE("Java_com_google_vr_ndk_base_GvrApi_nativeCreate");
     CLogMessage msg(__FUNCTION__);
+    int i1 = paramInt1;
+    int i2 = paramInt2;
+    float f1 = paramFloat1;
+    float f2 = paramFloat2;
+    LOGI("mjgvr env:%0x, obj:%0X, paramClassLoader:%0X, paramContext:%0X, paramLong:%lld paramInt1:%d, paramInt2:%d, paramFloat1:%f, paramFloat2:%f, paramPoseTracker:%0X",
+         env, obj, paramClassLoader,paramContext, paramLong, i1, i2, f1, f2, paramPoseTracker  );
     return gGvrApi.GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
 }
 JNIEXPORT jfloatArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint(
