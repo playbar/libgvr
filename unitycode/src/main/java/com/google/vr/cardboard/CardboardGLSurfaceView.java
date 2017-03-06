@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import com.google.vr.cardboard.EglFactory;
 import com.google.vr.ndk.base.GvrSurfaceView;
 import java.util.ArrayList;
+import com.google.vr.cardboard.VrParamsProviderJni;
 
 public class CardboardGLSurfaceView extends GvrSurfaceView {
     private static final String TAG = CardboardGLSurfaceView.class.getSimpleName();
