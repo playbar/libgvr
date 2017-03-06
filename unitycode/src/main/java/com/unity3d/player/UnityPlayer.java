@@ -92,7 +92,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                     UnityPlayer.this.addView(UnityPlayer.this.r);
                 }
 
-                UnityPlayer.this.r.setVisibility(0);
+                UnityPlayer.this.r.setVisibility(View.VISIBLE);
                 UnityPlayer.this.bringChildToFront(UnityPlayer.this.r);
             }
 
@@ -101,7 +101,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     private Runnable t = new Runnable() {
         public final void run() {
             if(UnityPlayer.this.r != null) {
-                UnityPlayer.this.r.setVisibility(8);
+                UnityPlayer.this.r.setVisibility(View.GONE);
                 UnityPlayer.this.removeView(UnityPlayer.this.r);
                 UnityPlayer.this.r = null;
             }
@@ -331,7 +331,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
             this.g = true;
             Intent var1;
             (var1 = new Intent("android.intent.action.MAIN")).addCategory("android.intent.category.HOME");
-            var1.setFlags(268435456);
+            var1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             currentActivity.startActivity(var1);
         }
 

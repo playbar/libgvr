@@ -28,7 +28,7 @@
             android:label="Treasure"
             android:theme="@style/VrActivityTheme">
         <activity
-                android:name=".MainActivity"
+                android:name=".TreasureHuntActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="landscape"
                 android:configChanges="orientation|keyboardHidden|screenSize"
@@ -51,11 +51,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:enableVrMode="@string/gvr_vr_mode_component"
             android:resizeableActivity="false"></activity>
-        <activity android:name=".TreasureHuntActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:enableVrMode="@string/gvr_vr_mode_component"
-            android:resizeableActivity="false"></activity>
+        <!--<activity android:name=".TreasureHuntActivity"-->
+            <!--android:screenOrientation="landscape"-->
+            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+            <!--android:enableVrMode="@string/gvr_vr_mode_component"-->
+            <!--android:resizeableActivity="false"></activity>-->
     </application>
 
 </manifest>
