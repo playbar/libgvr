@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back_button_content_description">返回</string>
+    <string name="cancel_button">取消</string>
+    <string name="dialog_button_got_it">知道了</string>
+    <string name="dialog_button_open_help_center">開啟說明中心</string>
+    <string name="dialog_message_incompatible_phone">必須使用兼容 Daydream 的手機。如要瞭解詳情，請前往「說明中心」。</string>
+    <string name="dialog_message_no_cardboard">取得 Cardboard 應用程式，以設定您的虛擬眼鏡。</string>
+    <string name="dialog_message_setup">設定您的虛擬眼鏡，以獲取最佳體驗。</string>
+    <string name="dialog_title">設定</string>
+    <string name="dialog_title_incompatible_phone">不兼容此手機</string>
+    <string name="dialog_title_vr_core_not_enabled">需要執行設定</string>
+    <string name="dialog_title_vr_core_not_installed">需要安裝</string>
+    <string name="dialog_title_warning">警告</string>
+    <string name="dialog_vr_core_not_enabled">若未啟用「Google 虛擬現實服務」，此應用程式可能無法正常運作。請在手機「設定」中啟用「Google 虛擬現實服務」，然後繼續操作。</string>
+    <string name="dialog_vr_core_not_installed">在沒有「Google 虛擬現實服務」情況下，此應用程式可能無法正常運作。請前往「Play 商店」安裝「Google 虛擬現實服務」，然後繼續操作。</string>
+    <string name="go_to_playstore_button">前往 Play 商店</string>
+    <string name="go_to_vr_listeners_settings_button">前往「設定」</string>
+    <string name="no_browser_text">沒有可以開啟網站的瀏覽器</string>
+    <string name="place_your_phone_into_cardboard">將手機放入 Cardboard 虛擬眼鏡中</string>
+    <string name="place_your_viewer_into_viewer_format">將手機放入「%s」虛擬眼鏡中</string>
+    <string name="settings_button_content_description">設定</string>
+    <string name="setup_button">設定</string>
+    <string name="switch_viewer_action">切換</string>
+    <string name="switch_viewer_prompt">正在使用其他虛擬眼鏡嗎？</string>
+</resources>
