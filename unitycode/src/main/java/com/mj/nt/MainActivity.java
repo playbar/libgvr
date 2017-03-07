@@ -27,6 +27,7 @@ import com.unity3d.player.UnityPlayer;
 
 import java.io.File;
 import com.google.vr.cardboard.UiLayer;
+import com.google.vr.cardboard.PackageUtils;
 
 public class MainActivity extends Activity {
 

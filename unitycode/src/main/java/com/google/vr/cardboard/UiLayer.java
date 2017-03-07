@@ -46,6 +46,7 @@ public class UiLayer {
         this.initializeViewsWithLayoutId(var1?layout.ui_layer_with_portrait_support:layout.ui_layer);
     }
 
+
     private void initializeViewsWithLayoutId(int var1) {
         this.rootLayout = (RelativeLayout)LayoutInflater.from(this.context).inflate(var1, (ViewGroup)null, false);
         this.settingsButtonRunnable = new Runnable() {
