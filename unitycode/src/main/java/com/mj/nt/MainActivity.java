@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.unity3d.player.UnityPlayer;
 
 import java.io.File;
-import com.google.vr.cardboard.ConfigUtils;
+import com.google.vr.cardboard.UiLayer;
 
 public class MainActivity extends Activity {
 
