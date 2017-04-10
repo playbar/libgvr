@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="preferExternal"
+    package="com.mj.nt"
+    android:debuggable="false"
+    platformBuildVersionCode="23"
+    platformBuildVersionName="6.0-2438415">
+
+    <uses-feature android:glEsVersion="0x20000" android:required="true"/>
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true"/>
+    <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true"/>
+    <uses-feature android:name="android.hardware.vr.high_performance" android:required="true"/>
+    <uses-feature android:name="android.software.vr.mode" android:required="true"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false"/>
+    <uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <supports-gl-texture android:name="GL_KHR_texture_compression_astc_ldr"/>
+
+    <application
+        android:icon="@drawable/app_icon"
+        android:isGame="true"
+        android:label="@string/app_name"
+        android:theme="@style/VrActivityTheme">
+        <activity
+            android:configChanges="locale|fontScale|keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
+            android:enableVrMode="@string/gvr_vr_mode_component"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:name="com.mj.nt.UnityPlayerActivity"
+            android:resizeableActivity="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/VrActivityTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="com.google.intent.category.DAYDREAM"/>
+                <category android:name="com.google.intent.category.DAYDREAM"/>
+            </intent-filter>
+            <meta-data android:name="unityplayer.UnityActivity" android:value="true"/>
+            <meta-data android:name="com.google.android.vr.icon" android:resource="@drawable/vr_icon_front"/>
+            <meta-data android:name="com.google.android.vr.icon_background" android:resource="@drawable/vr_icon_back"/>
+        </activity>
+        <activity android:configChanges="locale|fontScale|keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode" android:name="com.unity.purchasing.googleplay.PurchaseActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+        <activity android:configChanges="orientation|screenSize" android:enableVrMode="com.google.vr.vrcore/com.google.vr.vrcore.common.VrCoreListenerService" android:label="@string/app_name" android:name="com.google.gvr.permissionsupport.TransitionVRActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="com.google.intent.category.DAYDREAM"/>
+            </intent-filter>
+        </activity>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/app_name"
+            android:name="com.google.vr.sdk.samples.permissions.PermissionsDialogActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:configChanges="orientation|screenSize" android:enableVrMode="@string/gvr_vr_mode_component"
+            android:label="@string/app_name"
+            android:name="com.google.vr.sdk.samples.permissions.TransitionVRActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="com.google.intent.category.DAYDREAM"/>
+            </intent-filter>
+        </activity>
+        <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="true"/>
+    </application>
+
+</manifest>
