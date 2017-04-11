@@ -40,6 +40,14 @@ long getimagebase()
 
 }
 
+uint64_t GetTimeNano()
+{
+    struct timespec t;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    uint64_t result = t.tv_sec * 1000000000LL + t.tv_nsec;
+    return result;
+}
+
 JNIEXPORT jstring JNICALL Java_com_Company_GvrProject13_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz )
 {
 #define ABI "armeabi-v7a"

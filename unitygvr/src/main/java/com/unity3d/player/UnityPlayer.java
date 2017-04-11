@@ -1189,6 +1189,8 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
     private class b extends Thread {
         Handler a;
         boolean b;
+        long prevTime = System.nanoTime() / 1000000;
+        int frameCounter = 0;
 
         private b() {
             this.b = false;
@@ -1215,10 +1217,21 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                                 UnityPlayer.this.executeGLThreadJobs();
                             }
                         } else if(var2 == UnityPlayer.Ea.f) {
+                            long currentTime = System.nanoTime() / 1000000;
+                            ++frameCounter;
+                            if( currentTime - prevTime > 2000 ){
+                                float elapsedSec = (float)(currentTime - prevTime) / 1000.0f;
+                                float currentFPS = (float)frameCounter / elapsedSec;
+                                Log.e("mjgvr", "render, FPS: " + currentFPS);
+                                frameCounter = 0;
+                                prevTime = currentTime;
+                            }
                             UnityPlayer.this.executeGLThreadJobs();
+                            Log.e("mjgvr", "-------->nativeRender begin");
                             if(!UnityPlayer.this.isFinishing() && !UnityPlayer.this.nativeRender()) {
                                 UnityPlayer.this.c();
                             }
+                            Log.e("mjgvr", "-------->nativeRender end");
                         }
 
                         if(b.this.b) {

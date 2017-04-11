@@ -24,5 +24,5 @@
     <string name="setup_button">Setup</string>
     <string name="switch_viewer_action">Switch</string>
     <string name="switch_viewer_prompt">Using a different viewer?</string>
-<string name="app_name">Unitycode</string>
+<string name="app_name">UnityGVR</string>
 </resources>
