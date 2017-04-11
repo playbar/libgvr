@@ -22,6 +22,8 @@ long getimagebase();
 
 uint64_t GetTimeNano();
 
+void ShowFPS();
+
 //JNIEXPORT jint JNICALL JNI_OnLoad();
 JNIEXPORT jstring JNICALL Java_com_Company_GvrProject13_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
 

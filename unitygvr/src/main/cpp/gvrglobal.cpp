@@ -48,6 +48,39 @@ uint64_t GetTimeNano()
     return result;
 }
 
+void ShowFPS()
+{
+#define INTERVALTIME 1000
+    static unsigned int frameCounter = 0;
+    static unsigned int prevTimeMs = 0;
+    static unsigned int lastTimeMS = 0;
+    static float maxFPS = 0;
+    static float minFPS = 0;
+
+    unsigned int currentTimeMs = GetTimeNano() * 1e-6;
+    float everyFPS =  1000.0f / (float)(currentTimeMs - lastTimeMS);
+    if( everyFPS > maxFPS ){
+        maxFPS = everyFPS;
+    }
+    if( everyFPS < minFPS )
+    {
+        minFPS = everyFPS;
+    }
+    lastTimeMS = currentTimeMs;
+    frameCounter++;
+    if (currentTimeMs - prevTimeMs > INTERVALTIME)
+    {
+        float elapsedSec = (float)(currentTimeMs - prevTimeMs) / 1000.0f;
+        float currentFPS = (float)frameCounter / elapsedSec;
+        LOGI("submit, FPS: %0.2f, maxFPS: %0.2f, minFPS: %0.2f",  currentFPS, maxFPS, minFPS);
+
+        minFPS = currentFPS;
+        maxFPS = currentFPS;
+        frameCounter = 0;
+        prevTimeMs = currentTimeMs;
+    }
+}
+
 JNIEXPORT jstring JNICALL Java_com_Company_GvrProject13_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz )
 {
 #define ABI "armeabi-v7a"
