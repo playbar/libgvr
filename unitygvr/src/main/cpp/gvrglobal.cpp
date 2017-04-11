@@ -50,7 +50,7 @@ uint64_t GetTimeNano()
 
 void ShowFPS()
 {
-#define INTERVALTIME 1000
+#define INTERVALTIME 10000
     static unsigned int frameCounter = 0;
     static unsigned int prevTimeMs = 0;
     static unsigned int lastTimeMS = 0;

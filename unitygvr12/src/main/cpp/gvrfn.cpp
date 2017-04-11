@@ -70,6 +70,7 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativePause  "Java_com_google_vr_ndk_base_GvrApi_nativePause"
 #define FN_GvrApi_nativeResume         "Java_com_google_vr_ndk_base_GvrApi_nativeResume"
 #define FN_GvrApi_nativeReleaseGvrContext  "Java_com_google_vr_ndk_base_GvrApi_nativeReleaseGvrContext"
+#define FN_GvrApi_nativeGetCardboardApi     "Java_com_google_vr_ndk_base_GvrApi_nativeGetCardboardApi"
 #define FN_GvrApi_nativeBufferViewportDestroy         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportDestroy"
 #define FN_GvrApi_nativeBufferViewportGetSourceUv  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetSourceUv"
 #define FN_GvrApi_nativeBufferViewportSetSourceUv         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceUv"
@@ -496,6 +497,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetSourceUv);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportDestroy);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeReleaseGvrContext);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetCardboardApi);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeResume);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativePause);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeUserPrefsGetControllerHandedness);
@@ -728,6 +730,7 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeBufferViewportGetSourceUv!= NULL
                 && m_fpGvrApi_nativeBufferViewportDestroy!= NULL
                 && m_fpGvrApi_nativeReleaseGvrContext!= NULL
+                && m_fpGvrApi_nativeGetCardboardApi != NULL
                 && m_fpGvrApi_nativeResume!= NULL
                 && m_fpGvrApi_nativePause!= NULL
                 && m_fpGvrApi_nativeUserPrefsGetControllerHandedness!= NULL
@@ -968,6 +971,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetSourceUv);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportDestroy);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeReleaseGvrContext);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeGetCardboardApi);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeResume);
                 GET_DLL_FUNCION_ERR(GvrApi_nativePause);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeUserPrefsGetControllerHandedness);
@@ -1221,6 +1225,7 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeBufferViewportGetSourceUv = NULL;
     m_fpGvrApi_nativeBufferViewportDestroy = NULL;
     m_fpGvrApi_nativeReleaseGvrContext = NULL;
+    m_fpGvrApi_nativeGetCardboardApi = NULL;
     m_fpGvrApi_nativeResume = NULL;
     m_fpGvrApi_nativePause = NULL;
     m_fpGvrApi_nativeUserPrefsGetControllerHandedness = NULL;
@@ -1708,6 +1713,14 @@ void CGVRAPI::GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong par
     Init();
     if( m_fpGvrApi_nativeReleaseGvrContext)
         m_fpGvrApi_nativeReleaseGvrContext( env, obj, paramLong );
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeGetCardboardApi(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeGetCardboardApi)
+        m_fpGvrApi_nativeGetCardboardApi( env, obj, paramLong );
     return;
 }
 

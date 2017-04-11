@@ -125,6 +125,8 @@ typedef void (*FP_GvrApi_nativeResume)(JNIEnv* env, jobject obj, jlong paramLong
 
 typedef void (*FP_GvrApi_nativeReleaseGvrContext)(JNIEnv* env, jobject obj, jlong paramLong);
 
+typedef void (*FP_GvrApi_nativeGetCardboardApi)(JNIEnv* env, jobject obj, jlong paramLong);
+
 typedef void (*FP_GvrApi_nativeBufferViewportDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferViewportGetSourceUv)(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
@@ -530,6 +532,7 @@ public:
     void GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeResume(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeGetCardboardApi(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferViewportDestroy(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferViewportGetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
     void GvrApi_nativeBufferViewportSetSourceUv(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat1, jfloat paramFloat2,
@@ -955,6 +958,7 @@ private:
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceUv);
     DEF_VARIABLES(GvrApi_nativeBufferViewportDestroy);
     DEF_VARIABLES(GvrApi_nativeReleaseGvrContext);
+    DEF_VARIABLES(GvrApi_nativeGetCardboardApi);
     DEF_VARIABLES(GvrApi_nativeResume);
     DEF_VARIABLES(GvrApi_nativePause);
     DEF_VARIABLES(GvrApi_nativeUserPrefsGetControllerHandedness);

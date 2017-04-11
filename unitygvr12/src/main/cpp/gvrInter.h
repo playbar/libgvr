@@ -139,6 +139,9 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResume(
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeReleaseGvrContext(
         JNIEnv* env, jobject obj, jlong paramLong);
 
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetCardboardApi(
+        JNIEnv* env, jobject obj, jlong paramLong);
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportDestroy(
         JNIEnv* env, jobject obj, jlong paramLong);
 

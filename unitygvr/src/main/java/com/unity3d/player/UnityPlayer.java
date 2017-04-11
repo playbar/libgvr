@@ -1190,7 +1190,36 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
         Handler a;
         boolean b;
         long prevTime = System.nanoTime() / 1000000;
+        long lastTime = 0;
         int frameCounter = 0;
+        float maxFPS = 0;
+        float minFPS = 0;
+
+
+        private void showFPS()
+        {
+            long currentTime = System.nanoTime() / 1000000;
+            float everyFPS = 1000.0f /(currentTime - lastTime);
+            if( everyFPS > maxFPS )
+            {
+                maxFPS = everyFPS;
+            }
+            if( everyFPS < minFPS )
+            {
+                minFPS = everyFPS;
+            }
+            lastTime = currentTime;
+            ++frameCounter;
+            if( currentTime - prevTime > 10000 ){
+                float elapsedSec = (float)(currentTime - prevTime) / 1000.0f;
+                float currentFPS = (float)frameCounter / elapsedSec;
+                Log.i("mjgvr", "render, FPS: " + currentFPS + ", maxFPS: " + maxFPS + ", minFPS: "+minFPS);
+                minFPS = currentFPS;
+                maxFPS = currentFPS;
+                frameCounter = 0;
+                prevTime = currentTime;
+            }
+        }
 
         private b() {
             this.b = false;
@@ -1217,21 +1246,13 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                                 UnityPlayer.this.executeGLThreadJobs();
                             }
                         } else if(var2 == UnityPlayer.Ea.f) {
-                            long currentTime = System.nanoTime() / 1000000;
-                            ++frameCounter;
-                            if( currentTime - prevTime > 2000 ){
-                                float elapsedSec = (float)(currentTime - prevTime) / 1000.0f;
-                                float currentFPS = (float)frameCounter / elapsedSec;
-                                Log.e("mjgvr", "render, FPS: " + currentFPS);
-                                frameCounter = 0;
-                                prevTime = currentTime;
-                            }
+                            showFPS();
                             UnityPlayer.this.executeGLThreadJobs();
-                            Log.e("mjgvr", "-------->nativeRender begin");
+//                            Log.e("mjgvr", "-------->nativeRender begin");
                             if(!UnityPlayer.this.isFinishing() && !UnityPlayer.this.nativeRender()) {
                                 UnityPlayer.this.c();
                             }
-                            Log.e("mjgvr", "-------->nativeRender end");
+//                            Log.e("mjgvr", "-------->nativeRender end");
                         }
 
                         if(b.this.b) {

@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.Company.GvrProject12"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 25
         externalNativeBuild {
             cmake {
                 abiFilters 'armeabi-v7a'
@@ -27,11 +27,11 @@ android {
         }
     }
 
-//    externalNativeBuild {
-//        cmake {
-//            path "src/main/cpp/CMakeLists.txt"
-//        }
-//    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
 }
 
 dependencies {
