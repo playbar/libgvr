@@ -1028,7 +1028,6 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
 
 
     protected boolean isFinishing() {
-        ShowFPS.showFPS();
         return this.n || (this.n = this.k instanceof Activity && ((Activity)this.k).isFinishing());
     }
 
@@ -1219,6 +1218,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.a.ai 
                         } else if(var2 == UnityPlayer.Ea.f) {
 
                             UnityPlayer.this.executeGLThreadJobs();
+                            ShowFPS.showFPS();
 //                            Log.e("mjgvr", "-------->nativeRender begin");
                             if(!UnityPlayer.this.isFinishing() && !UnityPlayer.this.nativeRender()) {
                                 UnityPlayer.this.c();
