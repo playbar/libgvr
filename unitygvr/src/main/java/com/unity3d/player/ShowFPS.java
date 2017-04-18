@@ -38,7 +38,7 @@ public class ShowFPS {
             String strCurFPS = decimalFormat.format(currentFPS);
             String strMin = decimalFormat.format(minFPS);
             String strMax = decimalFormat.format(maxFPS);
-            Log.i("------ MJDD", "---MojingTest--- AvgFPS = " + strCurFPS + ", Frame = [" + strMin + ",  "+ strMax + "] (ms)");
+            Log.i("MJDD", "---MojingTest--- AvgFPS = " + strCurFPS + ", Frame = [" + strMin + ",  "+ strMax + "] (ms)");
             minFPS = currentFPS;
             maxFPS = currentFPS;
             frameCounter = 0;
