@@ -337,7 +337,7 @@ bool CGVRAPI::Init()
         return m_bInit;
 //    try
     {
-//        const char *filename = "/data/data/com.lucidsight.highwayrage/lib/libgvrimpl.so";
+//        const char *filename = "/data/data/com.mojingsdk.DaydreamDemo_test_0417/lib/libgvr_v13.so";
         const char *filename = "/data/data/com.mj.nt/lib/libgvrimpl.so";
 //        const char *filename = "/data/data/com.mj.vr/lib/libgvrimpl.so";
 //        const char *filename = "/storage/emulated/0/libgvrimpl.so";

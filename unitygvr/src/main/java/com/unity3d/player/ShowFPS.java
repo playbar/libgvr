@@ -12,20 +12,20 @@ public class ShowFPS {
     static long prevTime = System.nanoTime();
     static long lastTime = System.nanoTime();
     static int frameCounter = 0;
-    static float maxFPS = 0;
-    static float minFPS = 0;
+    static float maxIntervalTime = 0;
+    static float minIntervalTime = 0;
 
     public static void showFPS()
     {
         long currentTime = System.nanoTime();
-        float everyFPS = (currentTime - lastTime)/1000000;
-        if( everyFPS > maxFPS )
+        float everyIntervalTime = (currentTime - lastTime)/1000000;
+        if( everyIntervalTime > maxIntervalTime)
         {
-            maxFPS = everyFPS;
+            maxIntervalTime = everyIntervalTime;
         }
-        if( everyFPS < minFPS )
+        if( everyIntervalTime < minIntervalTime)
         {
-            minFPS = everyFPS;
+            minIntervalTime = everyIntervalTime;
         }
         lastTime = currentTime;
         ++frameCounter;
@@ -36,11 +36,11 @@ public class ShowFPS {
             //------ MJDD ---MojingTest--- AvgFPS = %3.2f , Frame = [%3.2f , %3.2f] (ms)
             DecimalFormat decimalFormat=new DecimalFormat("000.00");
             String strCurFPS = decimalFormat.format(currentFPS);
-            String strMin = decimalFormat.format(minFPS);
-            String strMax = decimalFormat.format(maxFPS);
+            String strMin = decimalFormat.format(minIntervalTime);
+            String strMax = decimalFormat.format(maxIntervalTime);
             Log.i("MJDD", "---MojingTest--- AvgFPS = " + strCurFPS + ", Frame = [" + strMin + ",  "+ strMax + "] (ms)");
-            minFPS = currentFPS;
-            maxFPS = currentFPS;
+            minIntervalTime = currentFPS;
+            maxIntervalTime = currentFPS;
             frameCounter = 0;
             prevTime = currentTime;
         }

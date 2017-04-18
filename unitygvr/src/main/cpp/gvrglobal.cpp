@@ -51,31 +51,34 @@ uint64_t GetTimeNano()
 void ShowFPS()
 {
 #define INTERVALTIME 10000
+    static unsigned int prevTimeMs = GetTimeNano();
+    static unsigned int lastTimeMS = GetTimeNano();
     static unsigned int frameCounter = 0;
-    static unsigned int prevTimeMs = 0;
-    static unsigned int lastTimeMS = 0;
-    static float maxFPS = 0;
-    static float minFPS = 0;
+    static float maxTime = 0;
+    static float minTime = 0;
 
-    unsigned int currentTimeMs = GetTimeNano() * 1e-6;
-    float everyFPS =  1000.0f / (float)(currentTimeMs - lastTimeMS);
-    if( everyFPS > maxFPS ){
-        maxFPS = everyFPS;
+    unsigned int currentTimeMs = GetTimeNano();
+    float everyInterTime = (float)(currentTimeMs - lastTimeMS) * 1e-6;
+    if( everyInterTime > maxTime ){
+        maxTime = everyInterTime;
     }
-    if( everyFPS < minFPS )
+    if( everyInterTime < minTime )
     {
-        minFPS = everyFPS;
+        minTime = everyInterTime;
     }
     lastTimeMS = currentTimeMs;
     frameCounter++;
-    if (currentTimeMs - prevTimeMs > INTERVALTIME)
+    float totalTime = (currentTimeMs - prevTimeMs) * 1e-6;
+    if (totalTime > INTERVALTIME)
     {
-        float elapsedSec = (float)(currentTimeMs - prevTimeMs) / 1000.0f;
+        float elapsedSec = (float)totalTime / 1000.0f;
         float currentFPS = (float)frameCounter / elapsedSec;
-        LOGI("submit, FPS: %0.2f, maxFPS: %0.2f, minFPS: %0.2f",  currentFPS, maxFPS, minFPS);
+//        LOGI("submit, FPS: %0.2f, maxIntervalTime: %0.2f, minIntervalTime: %0.2f",  currentFPS, maxTime, minTime);
+        __android_log_print(ANDROID_LOG_INFO, "MJDD", "---MojingTest--- AvgFPS = %06.2f , Frame = [%06.2f , %06.2f] (ms)",
+                            currentFPS, minTime, maxTime);
 
-        minFPS = currentFPS;
-        maxFPS = currentFPS;
+        minTime = currentFPS;
+        maxTime = currentFPS;
         frameCounter = 0;
         prevTimeMs = currentTimeMs;
     }
