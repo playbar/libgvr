@@ -32,6 +32,15 @@ JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_ha
     CLogMessage msg(__FUNCTION__);
     gGvrApi.NativeCallbacks_handleOrientationEvent(env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 }
+
+JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handlePositionEvent(
+        JNIEnv* env, jobject obj, jlong arv1, jlong var3, jlong var5, jlong var6, jfloat var7)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.NativeCallbacks_handlePositionEvent(env, obj, arv1, var3, var5, var6, var7);
+    return;
+}
+
 JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handleButtonEvent(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean)
 {
@@ -117,7 +126,7 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
     LOGI("mjgvr env:%0x, obj:%0X, paramLong:%lld, paramBool:%d", env, obj, paramLong, paramBool);
     bool re = false;
     re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
-    re = true;
+//    re = true;
     LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
     return re;
 }
@@ -148,6 +157,15 @@ JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRenderReproje
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
 }
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRequestContextSharing(
+        JNIEnv* env, jobject obj, jlong var1, jobject var3)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeRequestContextSharing(env, obj, var1, var3);
+    return;
+}
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnPauseReprojectionThread(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
@@ -274,6 +292,15 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDisplayMetric
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeSetDisplayMetrics(env, obj, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2);
 }
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDynamicLibraryLoadingEnabled(
+        JNIEnv* env, jobject obj, jboolean var1)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeSetDynamicLibraryLoadingEnabled(env, obj, var1);
+    return;
+}
+
 JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeReset(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3)
 {
@@ -306,6 +333,14 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeDumpDebugData(
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeDumpDebugData(env, obj, paramLong);
 }
+
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.GvrApi_nativeUsingVrDisplayServic(env, obj, paramLong);
+//    return true;
+};
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeInitializeGl(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
@@ -556,7 +591,7 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetFramebuff
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeFrameGetFramebufferObject(env, obj, paramLong, paramInt);
 }
-//todo
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetBufferSize(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint)
 {
@@ -570,14 +605,14 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit(
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeFrameSubmit(env, obj, paramLong1, paramLong2, paramArrayOfFloat);
 }
-//todo
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking(
         JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeResumeTracking(env, obj, paramLong, paramArrayOfByte);
 }
-//todo
+
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDefaultViewerProfile(
         JNIEnv* env, jobject obj, jlong paramLong, jstring paramString)
 {
@@ -809,6 +844,24 @@ int32_t gvr_buffer_viewport_get_target_eye(const gvr_buffer_viewport *viewport)
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.buffer_viewport_get_target_eye(viewport);
+}
+
+gvr_mat4f gvr_buffer_viewport_get_transform(
+        const gvr_buffer_viewport* viewport)
+{
+    CLogMessage msg(__FUNCTION__);
+    gvr_mat4f mat = gGvrApi.buffer_viewport_get_transform(viewport);
+    return mat;
+
+}
+
+void gvr_buffer_viewport_set_transform(gvr_buffer_viewport* viewport,
+                                       gvr_mat4f transform)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.buffer_viewport_set_transform(viewport, transform);
+    return;
+
 }
 
 int32_t gvr_buffer_spec_get_samples(const gvr_buffer_spec *spec)
@@ -1222,6 +1275,13 @@ gvr_quatf gvr_controller_state_get_orientation(const gvr_controller_state *state
     return gGvrApi.controller_state_get_orientation(state);
 }
 
+gvr_vec3f gvr_controller_state_get_position(const gvr_controller_state* state)
+{
+    CLogMessage msg(__FUNCTION__);
+    gvr_vec3f vec3 = gGvrApi.controller_state_get_position(state);
+    return vec3;
+}
+
 gvr_vec3f gvr_controller_state_get_gyro(const gvr_controller_state *state)
 {
 //    gvr_vec3f re;
@@ -1295,6 +1355,15 @@ int64_t gvr_controller_state_get_last_orientation_timestamp(const gvr_controller
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_last_orientation_timestamp(state);
+}
+
+int64_t gvr_controller_state_get_last_position_timestamp(
+        const gvr_controller_state* state)
+{
+    int64_t re = 0;
+    CLogMessage msg(__FUNCTION__);
+    re = gGvrApi.controller_state_get_last_position_timestamp(state);
+    return re;
 }
 
 int64_t gvr_controller_state_get_last_gyro_timestamp(const gvr_controller_state *state)
@@ -1450,6 +1519,14 @@ int gvr_render_reprojection_thread(int a1)
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.render_reprojection_thread(a1);
+}
+
+int gvr_request_context_sharing(int *a1, int a2, int a3)
+{
+    int re = 0;
+    CLogMessage msg(__FUNCTION__);
+    re = gGvrApi.request_context_sharing(a1, a2, a3);
+    return re;
 }
 
 int gvr_tracker_state_destroy( int *a1)

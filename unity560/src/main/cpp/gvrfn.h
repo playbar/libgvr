@@ -21,6 +21,8 @@ typedef void (*FP_NativeCallbacks_handleOrientationEvent)(JNIEnv* env, jobject o
 
 typedef void (*FP_NativeCallbacks_handleButtonEvent)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean);
 
+typedef void (*FP_NativeCallbacks_handlePositionEvent)(JNIEnv* env, jobject obj, jlong arv1, jlong var3, jlong var5, jlong var6, jfloat var7);
+
 typedef void (*FP_NativeCallbacks_handleAccelEvent)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
 
 typedef void (*FP_NativeCallbacks_handleGyroEvent)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
@@ -54,6 +56,8 @@ typedef void (*FP_GvrApi_nativeSetIgnoreManualPauseResumeTracker)(JNIEnv* env, j
 typedef void (*FP_GvrApi_nativeResetTracking)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef jobject (*FP_GvrApi_nativeRenderReprojectionThread)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_GvrApi_nativeRequestContextSharing)(JNIEnv* env, jobject obj, jlong var1, jobject var3);
 
 typedef void (*FP_GvrApi_nativeOnPauseReprojectionThread)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -95,6 +99,8 @@ typedef void (*FP_GvrApi_nativeReconnectSensors)(JNIEnv* env, jobject obj, jlong
 
 typedef void (*FP_GvrApi_nativeSetDisplayMetrics)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2);
 
+typedef void (*FP_GvrApi_nativeSetDynamicLibraryLoadingEnabled)(JNIEnv* env, jobject obj, jboolean var1);
+
 typedef void (*FP_DisplaySynchronizer_nativeReset)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3);
 
 typedef void (*FP_DisplaySynchronizer_nativeUpdate)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
@@ -104,6 +110,8 @@ typedef long (*FP_DisplaySynchronizer_nativeCreate)(JNIEnv* env, jobject obj, jo
 typedef void (*FP_DisplaySynchronizer_nativeDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeDumpDebugData)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef jboolean (*FP_GvrApi_nativeUsingVrDisplayServic)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeInitializeGl)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -273,6 +281,10 @@ typedef gvr_sizei (*FP_buffer_spec_get_size)(const gvr_buffer_spec *spec);
 
 typedef int32_t (*FP_buffer_viewport_get_target_eye)( const gvr_buffer_viewport *viewport);
 
+typedef gvr_mat4f (*FP_buffer_viewport_get_transform)(const gvr_buffer_viewport* viewport);
+
+typedef void (*FP_buffer_viewport_set_transform)(gvr_buffer_viewport* viewport, gvr_mat4f transform);
+
 typedef int32_t (*FP_buffer_spec_get_samples)(const gvr_buffer_spec *spec);
 
 typedef gvr_rectf (*FP_buffer_viewport_get_source_fov)(const gvr_buffer_viewport *viewport);
@@ -417,6 +429,7 @@ typedef void (*FP_controller_state_update)(  gvr_controller_context *api,
 typedef int32_t (*FP_controller_state_get_api_status)(const gvr_controller_state *state);
 typedef int32_t (*FP_controller_state_get_connection_state)(const gvr_controller_state *state);
 typedef gvr_quatf (*FP_controller_state_get_orientation)(const gvr_controller_state *state);
+typedef gvr_vec3f (*FP_controller_state_get_position)(const gvr_controller_state* state);
 
 typedef gvr_vec3f (*FP_controller_state_get_gyro)(const gvr_controller_state *state);
 
@@ -443,12 +456,14 @@ typedef bool (*FP_controller_state_get_button_up)(const gvr_controller_state *st
                                                   int32_t button);
 typedef int (*FP_remove_all_surfaces_reprojection_thread)(void *a1);
 typedef int64_t (*FP_controller_state_get_last_orientation_timestamp)(const gvr_controller_state *state);
+typedef int64_t (*FP_controller_state_get_last_position_timestamp)(const gvr_controller_state* state);
 typedef int64_t (*FP_controller_state_get_last_gyro_timestamp)(const gvr_controller_state *state);
 typedef int (*FP_set_async_reprojection_enabled)(int a1, int a2);
 typedef int64_t (*FP_controller_state_get_last_accel_timestamp)(const gvr_controller_state *state);
 typedef int (*FP_on_surface_created_reprojection_thread)(int a1);
 typedef int64_t (*FP_controller_state_get_last_touch_timestamp)(const gvr_controller_state *state);
 typedef int (*FP_render_reprojection_thread)(int a1);
+typedef int (*FP_request_context_sharing)(int *a1, int a2, int a3);
 typedef int64_t (*FP_controller_state_get_last_button_timestamp)(const gvr_controller_state *state);
 typedef int (*FP_tracker_state_destroy)(int *a1);
 typedef int (*FP_resume_tracking_set_state)(int a1, int a2, int a3);
@@ -478,6 +493,7 @@ public:
     void NativeCallbacks_handleOrientationEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2,
                                                 jfloat paramFloat3, jfloat paramFloat4);
     void NativeCallbacks_handleButtonEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean);
+    void NativeCallbacks_handlePositionEvent(JNIEnv* env, jobject obj, jlong arv1, jlong var3, jlong var5, jlong var6, jfloat var7);
     void NativeCallbacks_handleAccelEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
     void NativeCallbacks_handleGyroEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
     void NativeCallbacks_handleServiceInitFailed(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
@@ -495,6 +511,7 @@ public:
     void GvrApi_nativeSetIgnoreManualPauseResumeTracker(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
     void GvrApi_nativeResetTracking(JNIEnv* env, jobject obj, jlong paramLong);
     jobject GvrApi_nativeRenderReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeRequestContextSharing(JNIEnv* env, jobject obj, jlong var1, jobject var3);
     void GvrApi_nativeOnPauseReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeSetDefaultFramebufferActive(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeGetScreenBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
@@ -515,13 +532,14 @@ public:
     void GvrApi_nativeUpdateSurfaceReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat);
     bool GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong paramLong);
-    void GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2,
-                                        jfloat paramFloat1, jfloat paramFloat2);
+    void GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2);
+    void GvrApi_nativeSetDynamicLibraryLoadingEnabled(JNIEnv* env, jobject obj, jboolean var1);
     void DisplaySynchronizer_nativeReset(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3);
     void DisplaySynchronizer_nativeUpdate(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
     long DisplaySynchronizer_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
     void DisplaySynchronizer_nativeDestroy(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeDumpDebugData(JNIEnv* env, jobject obj, jlong paramLong);
+    jboolean GvrApi_nativeUsingVrDisplayServic(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeInitializeGl(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeOnSurfaceCreatedReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeGetRecommendedBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
@@ -617,6 +635,8 @@ public:
                                          gvr_buffer_viewport *viewport);
     gvr_sizei buffer_spec_get_size(const gvr_buffer_spec *spec);
     int32_t buffer_viewport_get_target_eye( const gvr_buffer_viewport *viewport);
+    gvr_mat4f buffer_viewport_get_transform(const gvr_buffer_viewport* viewport);
+    void buffer_viewport_set_transform(gvr_buffer_viewport* viewport, gvr_mat4f transform);
     int32_t buffer_spec_get_samples(const gvr_buffer_spec *spec);
     gvr_rectf buffer_viewport_get_source_fov(const gvr_buffer_viewport *viewport);
     int32_t swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain);
@@ -740,7 +760,7 @@ public:
     int32_t controller_state_get_api_status(const gvr_controller_state *state);
     int32_t controller_state_get_connection_state(const gvr_controller_state *state);
     gvr_quatf controller_state_get_orientation(const gvr_controller_state *state);
-
+    gvr_vec3f controller_state_get_position(const gvr_controller_state* state);
     gvr_vec3f controller_state_get_gyro(const gvr_controller_state *state);
 
     gvr_vec3f controller_state_get_accel( const gvr_controller_state *state);
@@ -766,12 +786,14 @@ public:
                                                       int32_t button);
     int remove_all_surfaces_reprojection_thread(void *a1);
     int64_t controller_state_get_last_orientation_timestamp(const gvr_controller_state *state);
+    int64_t controller_state_get_last_position_timestamp(const gvr_controller_state* state);
     int64_t controller_state_get_last_gyro_timestamp(const gvr_controller_state *state);
     int set_async_reprojection_enabled(int a1, int a2);
     int64_t controller_state_get_last_accel_timestamp(const gvr_controller_state *state);
     int on_surface_created_reprojection_thread(int a1);
     int64_t controller_state_get_last_touch_timestamp(const gvr_controller_state *state);
     int render_reprojection_thread(int a1);
+    int request_context_sharing(int *a1, int a2, int a3);
     int64_t controller_state_get_last_button_timestamp(const gvr_controller_state *state);
     int tracker_state_destroy(int *a1);
     int resume_tracking_set_state(int a1, int a2, int a3);
@@ -788,12 +810,14 @@ private:
     DEF_VARIABLES(tracker_state_destroy);
     DEF_VARIABLES(controller_state_get_last_button_timestamp);
     DEF_VARIABLES(render_reprojection_thread);
+    DEF_VARIABLES(request_context_sharing);
     DEF_VARIABLES(controller_state_get_last_touch_timestamp);
     DEF_VARIABLES(on_surface_created_reprojection_thread);
     DEF_VARIABLES(controller_state_get_last_accel_timestamp);
     DEF_VARIABLES(set_async_reprojection_enabled);
     DEF_VARIABLES(controller_state_get_last_gyro_timestamp);
     DEF_VARIABLES(controller_state_get_last_orientation_timestamp);
+    DEF_VARIABLES(controller_state_get_last_position_timestamp);
     DEF_VARIABLES(remove_all_surfaces_reprojection_thread);
     DEF_VARIABLES(controller_state_get_button_up);
     DEF_VARIABLES(controller_state_get_button_down);
@@ -809,6 +833,7 @@ private:
     DEF_VARIABLES(controller_state_get_accel);
     DEF_VARIABLES(controller_state_get_gyro);
     DEF_VARIABLES(controller_state_get_orientation);
+    DEF_VARIABLES(controller_state_get_position);
     DEF_VARIABLES(controller_state_get_connection_state);
     DEF_VARIABLES(controller_state_get_api_status);
     DEF_VARIABLES(controller_state_update);
@@ -890,6 +915,8 @@ private:
     DEF_VARIABLES(buffer_viewport_get_source_fov);
     DEF_VARIABLES(buffer_spec_get_samples);
     DEF_VARIABLES(buffer_viewport_get_target_eye);
+    DEF_VARIABLES(buffer_viewport_get_transform);
+    DEF_VARIABLES(buffer_viewport_set_transform);
     DEF_VARIABLES(buffer_spec_get_size);
     DEF_VARIABLES(buffer_viewport_list_get_item);
     DEF_VARIABLES(buffer_viewport_equal);
@@ -969,11 +996,13 @@ private:
     DEF_VARIABLES(GvrApi_nativeOnSurfaceCreatedReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeInitializeGl);
     DEF_VARIABLES(GvrApi_nativeDumpDebugData);
+    DEF_VARIABLES(GvrApi_nativeUsingVrDisplayServic);
     DEF_VARIABLES(DisplaySynchronizer_nativeDestroy);
     DEF_VARIABLES(DisplaySynchronizer_nativeCreate);
     DEF_VARIABLES(DisplaySynchronizer_nativeUpdate);
     DEF_VARIABLES(DisplaySynchronizer_nativeReset);
     DEF_VARIABLES(GvrApi_nativeSetDisplayMetrics);
+    DEF_VARIABLES(GvrApi_nativeSetDynamicLibraryLoadingEnabled);
     DEF_VARIABLES(GvrApi_nativeReconnectSensors);
     DEF_VARIABLES(GvrApi_nativeGetAsyncReprojectionEnabled);
     DEF_VARIABLES(GvrApi_nativeUpdateSurfaceReprojectionThread);
@@ -992,6 +1021,7 @@ private:
     DEF_VARIABLES(GvrApi_nativeGetMaximumEffectiveRenderTargetSize);
     DEF_VARIABLES(GvrApi_nativeGetScreenBufferViewports);
     DEF_VARIABLES(GvrApi_nativeSetDefaultFramebufferActive);
+    DEF_VARIABLES(GvrApi_nativeRequestContextSharing);
     DEF_VARIABLES(GvrApi_nativeOnPauseReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeRenderReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeResetTracking);
@@ -1011,6 +1041,7 @@ private:
     DEF_VARIABLES(NativeCallbacks_handleGyroEvent);
     DEF_VARIABLES(NativeCallbacks_handleAccelEvent);
     DEF_VARIABLES(NativeCallbacks_handleButtonEvent);
+    DEF_VARIABLES(NativeCallbacks_handlePositionEvent);
     DEF_VARIABLES(NativeCallbacks_handleOrientationEvent);
     DEF_VARIABLES(NativeCallbacks_handleTouchEvent);
     DEF_VARIABLES(NativeCallbacks_handleControllerRecentered);
