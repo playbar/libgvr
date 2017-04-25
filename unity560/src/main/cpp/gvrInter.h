@@ -125,6 +125,8 @@ JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeDe
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeDumpDebugData(
         JNIEnv* env, jobject obj, jlong paramLong);
 
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong);
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeInitializeGl(
         JNIEnv* env, jobject obj, jlong paramLong);
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread(
@@ -144,9 +146,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePause(
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResume(
         JNIEnv* env, jobject obj, jlong paramLong );
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeReleaseGvrContext(
-        JNIEnv* env, jobject obj, jlong paramLong);
-
-JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetCardboardApi(
         JNIEnv* env, jobject obj, jlong paramLong);
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportDestroy(
