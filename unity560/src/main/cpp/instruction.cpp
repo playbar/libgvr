@@ -474,7 +474,7 @@ static int relocateInstructionInThumb32( uint32_t pc, uint16_t high_instruction,
     return offset;
 }
 
-static void relocateInstructionInThumb( uint32_t target_addr, uint16_t *orig_instructions, int length, uint16_t *trampoline_instructions, int *orig_boundaries, int *trampoline_boundaries, int *count )
+void relocateInstructionInThumb( uint32_t target_addr, uint16_t *orig_instructions, int length, uint16_t *trampoline_instructions, int *orig_boundaries, int *trampoline_boundaries, int *count )
 {
     int orig_pos;
     int trampoline_pos;
@@ -522,9 +522,10 @@ static void relocateInstructionInThumb( uint32_t target_addr, uint16_t *orig_ins
     trampoline_instructions[trampoline_pos + 1] = 0xF000;
     trampoline_instructions[trampoline_pos + 2] = lr & 0xFFFF;
     trampoline_instructions[trampoline_pos + 3] = lr >> 16;
+    return;
 }
 
-static void relocateInstructionInArm( uint32_t target_addr, uint32_t *orig_instructions, int length, uint32_t *trampoline_instructions, int *orig_boundaries, int *trampoline_boundaries, int *count )
+void relocateInstructionInArm( uint32_t target_addr, uint32_t *orig_instructions, int length, uint32_t *trampoline_instructions, int *orig_boundaries, int *trampoline_boundaries, int *count )
 {
     uint32_t pc;
     uint32_t lr;

@@ -25,5 +25,5 @@ add_library(gvrhook SHARED
             HookBase.cpp
             HookGVRTools.cpp
             )
-target_link_libraries(gvrhook lib_gvr log)
+target_link_libraries(gvrhook gvr log)
 
