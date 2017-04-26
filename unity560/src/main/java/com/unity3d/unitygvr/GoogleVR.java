@@ -25,6 +25,16 @@ public class GoogleVR {
     private boolean mGvrLoaded = false;
     private boolean mIsDaydream = false;
 
+    public static native void HookInit();
+
+    static {
+        try {
+            System.loadLibrary("gvrhook");
+        } catch (UnsatisfiedLinkError var0) {
+            ;
+        }
+    }
+
     public GoogleVR() {
     }
 
@@ -62,6 +72,7 @@ public class GoogleVR {
         if(this.mActivity != null && this.mContext != null) {
             if(this.mGvrLayout == null) {
                 this.mGvrLayout = new GvrLayout(this.mContext);
+                GoogleVR.HookInit();
                 this.mGvrLayout.setPresentationView(this.mGvrGlView);
                 if(enableAsynchronousProjection) {
                     if(!this.mGvrLayout.setAsyncReprojectionEnabled(true)) {
