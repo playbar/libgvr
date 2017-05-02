@@ -41,8 +41,6 @@ import android.widget.FrameLayout.LayoutParams;
 import com.unity3d.player.NativeLoader;
 import com.unity3d.player.UnityWebRequest;
 import com.unity3d.player.WWW;
-import com.unity3d.player.j;
-import com.unity3d.player.m;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -62,7 +60,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     public static Activity currentActivity = null;
     private boolean c = false;
     private boolean d = true;
-    private kkc e = new kkc();
+    private Kcls e = new Kcls();
     private final ConcurrentLinkedQueue f = new ConcurrentLinkedQueue();
     private BroadcastReceiver g = null;
     UnityPlayer.c a = new UnityPlayer.c();
@@ -75,7 +73,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     private static boolean n;
     private boolean o;
     private Bundle p = new Bundle();
-    private m q;
+    private Mcls q;
     private boolean r = false;
     Hcls b = null;
     private ProgressBar s = null;
@@ -140,7 +138,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
         }
 
         a(this.l.getApplicationInfo());
-        if(!kkc.c()) {
+        if(!Kcls.c()) {
             AlertDialog var2;
             (var2 = (new Builder(this.l)).setTitle("Failure to initialize!").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public final void onClick(DialogInterface var1, int var2) {
@@ -204,7 +202,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     }
 
     private boolean b(int var1, Surface var2) {
-        if(!kkc.c()) {
+        if(!Kcls.c()) {
             return false;
         } else {
             this.nativeRecreateGfxState(var1, var2);
@@ -283,7 +281,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     }
 
     public static void UnitySendMessage(String var0, String var1, String var2) {
-        if(!kkc.c()) {
+        if(!Kcls.c()) {
             Ecls.Log(5, "Native libraries not loaded - dropping message for " + var0 + "." + var1);
         } else {
             nativeUnitySendMessage(var0, var1, var2);
@@ -339,7 +337,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
         }
 
         this.g = null;
-        if(kkc.c()) {
+        if(Kcls.c()) {
             this.removeAllViews();
         }
 
@@ -363,7 +361,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     private void d() {
         this.reportSoftInputStr((String)null, 1, true);
         if(this.e.g()) {
-            if(kkc.c()) {
+            if(Kcls.c()) {
                 final Semaphore var1 = new Semaphore(0);
                 if(this.isFinishing()) {
                     this.b(new Runnable() {
@@ -437,7 +435,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     private void f() {
         if(this.e.f()) {
             this.e.c(true);
-            if(kkc.c()) {
+            if(Kcls.c()) {
                 this.h();
             }
 
@@ -542,17 +540,17 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
 
     private static void a(ApplicationInfo var0) {
         if(n && NativeLoader.load(var0.nativeLibraryDir)) {
-            kkc.a();
+            Kcls.a();
         }
 
     }
 
     private static void g() {
-        if(kkc.c()) {
+        if(Kcls.c()) {
             if(!NativeLoader.unload()) {
                 throw new UnsatisfiedLinkError("Unable to unload libraries from libmain.so");
             } else {
-                kkc.b();
+                Kcls.b();
             }
         }
     }
@@ -652,7 +650,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
                     var9.set(2);
                     var8.release();
                 } else {
-                    UnityPlayer.this.q = new m(UnityPlayer.this.l, var1, var2, var3, var4, var5, (long)var6, (long)var7, new com.unity3d.player.m.a() {
+                    UnityPlayer.this.q = new Mcls(UnityPlayer.this.l, var1, var2, var3, var4, var5, (long)var6, (long)var7, new com.unity3d.player.Mcls.a() {
                         public final void a(int var1x) {
                             var9.set(var1x);
                             if(var1x == 3) {
@@ -739,7 +737,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     }
 
     private void b(Runnable var1) {
-        if(kkc.c()) {
+        if(Kcls.c()) {
             if(Thread.currentThread() == this.a) {
                 var1.run();
             } else {
@@ -944,7 +942,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     }
 
     static {
-        (new j()).a();
+        (new Jcls()).a();
         n = false;
         n = loadLibraryStatic("main");
     }

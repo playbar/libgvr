@@ -12,13 +12,12 @@ import android.os.Build.VERSION;
 import android.view.SurfaceView;
 import android.view.View;
 import com.unity3d.player.UnityPlayer;
-import com.unity3d.player.l;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 final class b {
-    private l a = null;
+    private Lcls a = null;
     private boolean b = false;
     private boolean c = false;
     private boolean d = false;
@@ -230,7 +229,7 @@ final class b {
         try {
             Class var4;
             Object var2 = (var4 = var1.loadClass("com.unity3d.unitygvr.GoogleVR")).getConstructor(new Class[0]).newInstance(new Object[0]);
-            this.a = new l(var4, var2);
+            this.a = new Lcls(var4, var2);
             this.a.a("initialize", new Class[]{Activity.class, Context.class, SurfaceView.class, Boolean.TYPE});
             this.a.a("deinitialize", new Class[0]);
             this.a.a("load", new Class[]{Boolean.TYPE, Boolean.TYPE, Boolean.TYPE, Runnable.class});

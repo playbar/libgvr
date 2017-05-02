@@ -8,21 +8,21 @@ package com.unity3d.player;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-final class l {
+final class Lcls {
     private HashMap a = new HashMap();
     private Class b = null;
     private Object c = null;
 
-    public l(Class var1, Object var2) {
+    public Lcls(Class var1, Object var2) {
         this.b = var1;
         this.c = var2;
     }
 
     public final void a(String var1, Class[] var2) {
-        this.a.put(var1, new l.a(var2));
+        this.a.put(var1, new Lcls.a(var2));
     }
 
-    private void a(String var1, l.a var2) {
+    private void a(String var1, Lcls.a var2) {
         try {
             var2.b = this.b.getMethod(var1, var2.a);
         } catch (Exception var4) {
@@ -36,8 +36,8 @@ final class l {
             Ecls.Log(6, "No definition for method " + var1 + " can be found");
             return null;
         } else {
-            l.a var3;
-            if((var3 = (l.a)this.a.get(var1)).b == null) {
+            Lcls.a var3;
+            if((var3 = (Lcls.a)this.a.get(var1)).b == null) {
                 this.a(var1, var3);
             }
 

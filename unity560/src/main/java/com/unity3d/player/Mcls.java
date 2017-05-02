@@ -28,7 +28,7 @@ import android.widget.MediaController.MediaPlayerControl;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public final class m extends FrameLayout
+public final class Mcls extends FrameLayout
         implements OnBufferingUpdateListener, OnCompletionListener, OnPreparedListener, OnVideoSizeChangedListener, Callback, MediaPlayerControl
 {
     public static boolean a = false;
@@ -54,15 +54,15 @@ public final class m extends FrameLayout
     private int u = 0;
     private boolean v = false;
     private boolean w = false;
-    private m.a x;
-    private m.b y;
+    private Mcls.a x;
+    private Mcls.b y;
     private volatile int z = 0;
 
     private static void b(String var0) {
         Log.i("Video", "VideoPlayer: " + var0);
     }
 
-    protected m(Context var1, String var2, int var3, int var4, int var5, boolean var6, long var7, long var9, m.a var11) {
+    protected Mcls(Context var1, String var2, int var3, int var4, int var5, boolean var6, long var7, long var9, Mcls.a var11) {
         super(var1);
         this.x = var11;
         this.b = var1;
@@ -185,7 +185,7 @@ public final class m extends FrameLayout
                 this.q.setOnVideoSizeChangedListener(this);
                 this.q.setAudioStreamType(3);
                 this.q.prepareAsync();
-                this.y = new m.b(this);
+                this.y = new Mcls.b(this);
                 (new Thread(this.y)).start();
             } catch (Exception var3) {
                 if(a) {
@@ -453,10 +453,10 @@ public final class m extends FrameLayout
     }
 
     public class b implements Runnable {
-        private m b;
+        private Mcls b;
         private boolean c;
 
-        public b(m var2) {
+        public b(Mcls var2) {
             this.b = var2;
             this.c = false;
         }
@@ -469,8 +469,8 @@ public final class m extends FrameLayout
             }
 
             if(!this.c) {
-                if(m.a) {
-                    m.b("Stopping the video player due to timeout.");
+                if(Mcls.a) {
+                    Mcls.b("Stopping the video player due to timeout.");
                 }
 
                 this.b.CancelOnPrepare();

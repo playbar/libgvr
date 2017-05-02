@@ -8,10 +8,10 @@ package com.unity3d.player;
 import android.os.Build;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-final class j implements UncaughtExceptionHandler {
+final class Jcls implements UncaughtExceptionHandler {
     private volatile UncaughtExceptionHandler a;
 
-    j() {
+    Jcls() {
     }
 
     final synchronized boolean a() {

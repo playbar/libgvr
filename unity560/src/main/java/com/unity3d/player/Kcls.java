@@ -6,14 +6,14 @@
 package com.unity3d.player;
 
 
-final class kkc {
+final class Kcls {
     private static boolean a = false;
     private boolean b;
     private boolean c;
     private boolean d;
     private boolean e;
 
-    kkc() {
+    Kcls() {
         this.b = !Gcls.b;
         this.c = false;
         this.d = false;
