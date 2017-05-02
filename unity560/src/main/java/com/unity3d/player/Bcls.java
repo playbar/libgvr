@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-final class b {
+final class Bcls {
     private Lcls a = null;
     private boolean b = false;
     private boolean c = false;
@@ -25,7 +25,7 @@ final class b {
     private Dcls f = null;
     private String g = "";
 
-    public b(Dcls var1) {
+    public Bcls(Dcls var1) {
         this.f = var1;
     }
 
@@ -87,7 +87,7 @@ final class b {
                     var1.run();
                     return;
                 } catch (Exception var4) {
-                    b.this.a("Exception unloading Google VR on UI Thread. " + var4.getLocalizedMessage());
+                    Bcls.this.a("Exception unloading Google VR on UI Thread. " + var4.getLocalizedMessage());
                 } finally {
                     var3.release();
                 }
@@ -152,10 +152,10 @@ final class b {
         if(!this.b(new Runnable() {
             public final void run() {
                 try {
-                    var5.set(((Long)b.this.a.a("load", new Object[]{Boolean.valueOf(var1), Boolean.valueOf(var2), Boolean.valueOf(var3), var4})).longValue());
-                    b.this.c();
+                    var5.set(((Long)Bcls.this.a.a("load", new Object[]{Boolean.valueOf(var1), Boolean.valueOf(var2), Boolean.valueOf(var3), var4})).longValue());
+                    Bcls.this.c();
                 } catch (Exception var2x) {
-                    b.this.a("Exception caught while loading GoogleVR. " + var2x.getLocalizedMessage());
+                    Bcls.this.a("Exception caught while loading GoogleVR. " + var2x.getLocalizedMessage());
                     var5.set(0L);
                 }
             }
@@ -171,33 +171,33 @@ final class b {
         if(this.f != null && this.e != null) {
             this.a(new Runnable() {
                 public final void run() {
-                    if(var1 != b.this.e()) {
+                    if(var1 != Bcls.this.e()) {
                         try {
-                            if(var1 && !b.this.e()) {
-                                if(b.this.a != null && b.this.f != null && !b.this.f.addViewToPlayer((View)b.this.a.a("getGvrLayout", new Object[0]), true)) {
-                                    b.this.a("Unable to add Google VR to view hierarchy.");
+                            if(var1 && !Bcls.this.e()) {
+                                if(Bcls.this.a != null && Bcls.this.f != null && !Bcls.this.f.addViewToPlayer((View)Bcls.this.a.a("getGvrLayout", new Object[0]), true)) {
+                                    Bcls.this.a("Unable to add Google VR to view hierarchy.");
                                 } else {
-                                    if(b.this.a != null) {
-                                        b.this.a.a("enable", new Object[]{Boolean.valueOf(true)});
+                                    if(Bcls.this.a != null) {
+                                        Bcls.this.a.a("enable", new Object[]{Boolean.valueOf(true)});
                                     }
 
-                                    b.this.b(true);
+                                    Bcls.this.b(true);
                                 }
                             } else {
-                                if(!var1 && b.this.e()) {
-                                    b.this.b(false);
-                                    if(b.this.a != null) {
-                                        b.this.a.a("enable", new Object[]{Boolean.valueOf(false)});
+                                if(!var1 && Bcls.this.e()) {
+                                    Bcls.this.b(false);
+                                    if(Bcls.this.a != null) {
+                                        Bcls.this.a.a("enable", new Object[]{Boolean.valueOf(false)});
                                     }
 
-                                    if(b.this.a != null && b.this.f != null) {
-                                        b.this.f.removeViewFromPlayer((View)b.this.a.a("getGvrLayout", new Object[0]));
+                                    if(Bcls.this.a != null && Bcls.this.f != null) {
+                                        Bcls.this.f.removeViewFromPlayer((View)Bcls.this.a.a("getGvrLayout", new Object[0]));
                                     }
                                 }
 
                             }
                         } catch (Exception var2) {
-                            b.this.a("Exception enablinb Google VR on UI Thread. " + var2.getLocalizedMessage());
+                            Bcls.this.a("Exception enablinb Google VR on UI Thread. " + var2.getLocalizedMessage());
                         }
                     }
                 }
@@ -210,16 +210,16 @@ final class b {
         this.a(new Runnable() {
             public final void run() {
                 try {
-                    if(b.this.a != null) {
-                        b.this.a.a("unload", new Object[0]);
-                        b.this.a.a("deinitialize", new Object[0]);
+                    if(Bcls.this.a != null) {
+                        Bcls.this.a.a("unload", new Object[0]);
+                        Bcls.this.a.a("deinitialize", new Object[0]);
                         //todo
 //                        b.d(b.this);
                     }
 
-                    b.this.b(false);
+                    Bcls.this.b(false);
                 } catch (Exception var2) {
-                    b.this.a("Exception unloading Google VR on UI Thread. " + var2.getLocalizedMessage());
+                    Bcls.this.a("Exception unloading Google VR on UI Thread. " + var2.getLocalizedMessage());
                 }
             }
         });

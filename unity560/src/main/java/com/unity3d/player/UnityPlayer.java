@@ -105,7 +105,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
 
         }
     };
-    private com.unity3d.player.b v = new com.unity3d.player.b(this);
+    private com.unity3d.player.Bcls v = new com.unity3d.player.Bcls(this);
 
     public UnityPlayer(ContextWrapper var1) {
         super(var1);
