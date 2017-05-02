@@ -1,5 +1,5 @@
-//include ':gvr'
-//include ':unity'
+include ':gvr'
+include ':unity'
 //include ':gvrres'
 //include ':unitygvr'
 //include ':controllerpaint'
