@@ -39,7 +39,7 @@ dependencies {
     compile files('libs/libprotobuf-java-nano.jar')
     compile files('libs/gvr.jar')
 //    compile files('libs/unitygvr.jar')
-    compile files('libs/unity-classes.jar')
+//    compile files('libs/unity-classes.jar')
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
 //    compile(name:'unitygvr', ext:'aar')
 //    compile(name:'sdk-base-1.10.0', ext:'aar')

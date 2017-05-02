@@ -60,7 +60,7 @@ void* get_module_base(pid_t pid,const char* module_name)
 #define LIBSF_NAME "libgvr.so"
 #define LIBSF_PATH "/data/data/com.Company.GvrProject90/lib/libgvr.so"
 
-int hook_new_get_recommended_buffer_viewports()
+void hook_new_get_recommended_buffer_viewports()
 {
     fp_get_recommended_buffer_viewports = gvr_get_recommended_buffer_viewports;
     LOGD("Orig get_recommended_buffer_viewports = %p\n",fp_get_recommended_buffer_viewports);
@@ -73,7 +73,7 @@ int hook_new_get_recommended_buffer_viewports()
     fd = open(LIBSF_PATH,O_RDONLY);
     if(fd==-1){
         LOGD("open file error\n");
-        return -1;
+        return;
     }
     Elf32_Ehdr ehdr;  //ELF header
     read(fd,&ehdr,sizeof(Elf32_Ehdr)); //读取ELF文件格式的文件头信息
@@ -119,16 +119,16 @@ int hook_new_get_recommended_buffer_viewports()
                     if( j == 0x4d4c ){
                         j = 0x4d4c;
                     }
-                    got_item = (out_addr+j + 1);
-                    if(got_item == (uint32_t)fp_get_recommended_buffer_viewports)
+                    got_item = (out_addr+j);
+                    if(got_item + 1 == (uint32_t)fp_get_recommended_buffer_viewports)
                     {
                         LOGD("Found get_recommended_buffer_viewports in got\n");
                         got_found = 1;
                         //hook
                         uint32_t page_size = getpagesize();
-                        uint32_t entry_page_start = (out_addr + j + 1)&(~(page_size-1));
-                        mprotect((uint32_t*)entry_page_start,page_size,PROT_READ|PROT_WRITE);
-                        *(uint32_t*)got_item = (uint32_t)new_get_recommended_buffer_viewports;
+                        uint32_t entry_page_start = (out_addr + j)&(~(page_size-1));
+                        mprotect((uint32_t*)entry_page_start,page_size,PROT_READ|PROT_WRITE | PROT_EXEC);
+                        *((uint32_t*)(got_item + 1)) = (uint32_t)(gvr_get_recommended_buffer_viewports);
                         break;
                     }else if(got_item == (uint32_t)new_get_recommended_buffer_viewports){
                         LOGD("Already hooked\n");
@@ -142,6 +142,7 @@ int hook_new_get_recommended_buffer_viewports()
     }
     free(string_table);
     close(fd);
+    return;
 }
 
 JNIEXPORT void JNICALL Java_com_unity3d_unitygvr_GoogleVR_HookInit(JNIEnv* env, jobject obj  )
