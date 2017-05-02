@@ -26,14 +26,14 @@ final class l {
         try {
             var2.b = this.b.getMethod(var1, var2.a);
         } catch (Exception var4) {
-            eec.Log(6, "Exception while trying to get method " + var1 + ". " + var4.getLocalizedMessage());
+            Ecls.Log(6, "Exception while trying to get method " + var1 + ". " + var4.getLocalizedMessage());
             var2.b = null;
         }
     }
 
     public final Object a(String var1, Object... var2) {
         if(!this.a.containsKey(var1)) {
-            eec.Log(6, "No definition for method " + var1 + " can be found");
+            Ecls.Log(6, "No definition for method " + var1 + " can be found");
             return null;
         } else {
             l.a var3;
@@ -42,7 +42,7 @@ final class l {
             }
 
             if(var3.b == null) {
-                eec.Log(6, "Unable to create method: " + var1);
+                Ecls.Log(6, "Unable to create method: " + var1);
                 return null;
             } else {
                 Object var5;
@@ -53,7 +53,7 @@ final class l {
                         var5 = var3.b.invoke(this.c, var2);
                     }
                 } catch (Exception var4) {
-                    eec.Log(6, "Error trying to call delegated method " + var1 + ". " + var4.getLocalizedMessage());
+                    Ecls.Log(6, "Error trying to call delegated method " + var1 + ". " + var4.getLocalizedMessage());
                     var5 = null;
                 }
 

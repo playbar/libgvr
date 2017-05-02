@@ -7,7 +7,7 @@ package com.unity3d.player;
 
 import android.view.View;
 
-interface d {
+interface Dcls {
     boolean addViewToPlayer(View var1, boolean var2);
 
     void removeViewFromPlayer(View var1);

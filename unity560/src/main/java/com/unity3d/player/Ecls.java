@@ -7,10 +7,10 @@ package com.unity3d.player;
 
 import android.util.Log;
 
-final class eec {
+final class Ecls {
     protected static boolean a = false;
 
-    protected static void Log(int var0, String var1) {
+    public static void Log(int var0, String var1) {
         if(!a) {
             if(var0 == 6) {
                 Log.e("Unity", var1);

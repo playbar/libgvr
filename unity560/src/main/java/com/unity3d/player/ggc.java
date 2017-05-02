@@ -6,13 +6,12 @@
 package com.unity3d.player;
 
 import android.os.Build.VERSION;
-import com.unity3d.player.c;
 import com.unity3d.player.f;
 
 public final class ggc {
     public static final boolean a;
     public static final boolean b;
-    static final c c;
+    static final Ccls c;
 
     static {
         a = VERSION.SDK_INT >= 21;

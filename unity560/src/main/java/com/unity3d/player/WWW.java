@@ -50,7 +50,7 @@ class WWW extends Thread {
             URLConnection var2;
             try {
                 SSLSocketFactory var3;
-                if((var2 = (var1 = new URL(this.c)).openConnection()) instanceof HttpsURLConnection && (var3 = aac.a()) != null) {
+                if((var2 = (var1 = new URL(this.c)).openConnection()) instanceof HttpsURLConnection && (var3 = Acls.a()) != null) {
                     ((HttpsURLConnection)var2).setSSLSocketFactory(var3);
                 }
             } catch (MalformedURLException var14) {

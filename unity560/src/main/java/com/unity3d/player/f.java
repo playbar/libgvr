@@ -16,13 +16,11 @@ import android.content.pm.PackageItemInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import com.unity3d.player.c;
-import com.unity3d.player.eec;
 import java.util.LinkedList;
 
 import static com.unity3d.player.UnityPlayer.Eb.e;
 
-public final class f implements c {
+public final class f implements Ccls {
     public f() {
     }
 
@@ -67,8 +65,8 @@ public final class f implements c {
                             var15.add(var8);
                         }
                     } catch (NameNotFoundException var9) {
-                        eec.Log(5, "Failed to get permission info for " + var8 + ", manifest likely missing custom permission declaration");
-                        eec.Log(5, "Permission " + var8 + " ignored");
+                        Ecls.Log(5, "Failed to get permission info for " + var8 + ", manifest likely missing custom permission declaration");
+                        Ecls.Log(5, "Permission " + var8 + " ignored");
                     }
                 }
 
@@ -85,7 +83,7 @@ public final class f implements c {
                         public final void onRequestPermissionsResult(int var1, String[] var2x, int[] var3) {
                             if(var1 == 15881) {
                                 for(var1 = 0; var1 < var2x.length && var1 < var3.length; ++var1) {
-                                    eec.Log(4, var2x[var1] + (var3[var1] == 0?" granted":" denied"));
+                                    Ecls.Log(4, var2x[var1] + (var3[var1] == 0?" granted":" denied"));
                                 }
 
                                 FragmentTransaction var4;
@@ -100,7 +98,7 @@ public final class f implements c {
                     var17.commit();
                 }
             } catch (Exception var10) {
-                eec.Log(6, "Unable to query for permission: " + var10.getMessage());
+                Ecls.Log(6, "Unable to query for permission: " + var10.getMessage());
             }
         }
     }

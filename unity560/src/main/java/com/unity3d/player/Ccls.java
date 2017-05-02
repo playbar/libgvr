@@ -7,6 +7,6 @@ package com.unity3d.player;
 
 import android.app.Activity;
 
-public interface c {
+public interface Ccls {
     void a(Activity var1, Runnable var2);
 }

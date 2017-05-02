@@ -19,14 +19,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-public final class aac extends SSLSocketFactory {
+public final class Acls extends SSLSocketFactory {
     private final SSLSocketFactory ma;
-    private final aac.aa b;
+    private final Acls.aa b;
     private static volatile SSLSocketFactory c;
     private static final Object[] d = new Object[0];
     private static final boolean e;
 
-    private aac() {
+    private Acls() {
         SSLContext var1 = null;
         try {
             (var1 = SSLContext.getInstance("TLS")).init(null, null, null);
@@ -34,7 +34,7 @@ public final class aac extends SSLSocketFactory {
             ex.printStackTrace();
         }
         this.ma = var1.getSocketFactory();
-        this.b = new aac.aa();
+        this.b = new Acls.aa();
     }
 
     public static SSLSocketFactory a() {
@@ -45,9 +45,9 @@ public final class aac extends SSLSocketFactory {
             } else {
                 SSLSocketFactory var10000;
                 try {
-                    var10000 = c = new aac();
+                    var10000 = c = new Acls();
                 } catch (Exception var2) {
-                    eec.Log(5, "CustomSSLSocketFactory: Failed to create SSLSocketFactory (" + var2.getMessage() + ")");
+                    Ecls.Log(5, "CustomSSLSocketFactory: Failed to create SSLSocketFactory (" + var2.getMessage() + ")");
                     return null;
                 }
 

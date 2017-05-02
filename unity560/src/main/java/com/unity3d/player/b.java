@@ -12,7 +12,6 @@ import android.os.Build.VERSION;
 import android.view.SurfaceView;
 import android.view.View;
 import com.unity3d.player.UnityPlayer;
-import com.unity3d.player.d;
 import com.unity3d.player.l;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -24,10 +23,10 @@ final class b {
     private boolean c = false;
     private boolean d = false;
     private Context e = null;
-    private d f = null;
+    private Dcls f = null;
     private String g = "";
 
-    public b(d var1) {
+    public b(Dcls var1) {
         this.f = var1;
     }
 
@@ -76,7 +75,7 @@ final class b {
         if(this.e instanceof Activity) {
             ((Activity)this.e).runOnUiThread(var1);
         } else {
-            eec.Log(5, "Not running Google VR from an Activity; Ignoring execution request...");
+            Ecls.Log(5, "Not running Google VR from an Activity; Ignoring execution request...");
         }
     }
 
@@ -251,7 +250,7 @@ final class b {
         if(this.f != null) {
             this.f.reportError("Google VR Error [" + this.g + "]", var1);
         } else {
-            eec.Log(6, "Google VR Error [" + this.g + "]: " + var1);
+            Ecls.Log(6, "Google VR Error [" + this.g + "]: " + var1);
         }
     }
 
