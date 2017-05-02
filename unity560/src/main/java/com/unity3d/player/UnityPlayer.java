@@ -41,8 +41,6 @@ import android.widget.FrameLayout.LayoutParams;
 import com.unity3d.player.NativeLoader;
 import com.unity3d.player.UnityWebRequest;
 import com.unity3d.player.WWW;
-import com.unity3d.player.h;
-import com.unity3d.player.i;
 import com.unity3d.player.j;
 import com.unity3d.player.m;
 import java.io.File;
@@ -71,7 +69,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     private boolean h = false;
     private UnityPlayer.a i = new UnityPlayer.a();
     private TelephonyManager j;
-    private i k;
+    private Icls k;
     private ContextWrapper l;
     private SurfaceView m;
     private static boolean n;
@@ -79,7 +77,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     private Bundle p = new Bundle();
     private m q;
     private boolean r = false;
-    h b = null;
+    Hcls b = null;
     private ProgressBar s = null;
     private Runnable t = new Runnable() {
         public final void run() {
@@ -121,12 +119,12 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
         this.l = var1;
         this.b();
         if(currentActivity != null && this.p.getBoolean("showSplash")) {
-            this.k = new i(this, com.unity3d.player.i.Enuma.a()[this.getSplashMode()]);
+            this.k = new Icls(this, com.unity3d.player.Icls.Enuma.a()[this.getSplashMode()]);
         }
 
-        if(ggc.b) {
+        if(Gcls.b) {
             if(currentActivity != null) {
-                ggc.c.a(currentActivity, new Runnable() {
+                Gcls.c.a(currentActivity, new Runnable() {
                     public final void run() {
                         UnityPlayer.this.a(new Runnable() {
                             public final void run() {
@@ -562,7 +560,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
     protected void showSoftInput(final String var1, final int var2, final boolean var3, final boolean var4, final boolean var5, final boolean var6, final String var7) {
         this.a(new Runnable() {
             public final void run() {
-                UnityPlayer.this.b = new h(UnityPlayer.this.l, UnityPlayer.this, var1, var2, var3, var4, var5, var7);
+                UnityPlayer.this.b = new Hcls(UnityPlayer.this.l, UnityPlayer.this, var1, var2, var3, var4, var5, var7);
                 UnityPlayer.this.b.show();
             }
         });
@@ -578,7 +576,7 @@ public class UnityPlayer extends FrameLayout implements com.unity3d.player.Dcls 
 
             }
         };
-        if(ggc.a) {
+        if(Gcls.a) {
             this.a(new UnityPlayer.d() {
                 public final void a() {
                     UnityPlayer.this.a(var1);

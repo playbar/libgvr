@@ -20,8 +20,8 @@ import java.util.LinkedList;
 
 import static com.unity3d.player.UnityPlayer.Eb.e;
 
-public final class f implements Ccls {
-    public f() {
+public final class Fcls implements Ccls {
+    public Fcls() {
     }
 
     private static boolean a(PackageItemInfo var0) {

@@ -24,13 +24,13 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import com.unity3d.player.UnityPlayer;
 
-public final class h extends Dialog implements TextWatcher, OnClickListener {
+public final class Hcls extends Dialog implements TextWatcher, OnClickListener {
     private Context a = null;
     private UnityPlayer b = null;
     private static int c = 1627389952;
     private static int d = -1;
 
-    public h(Context var1, UnityPlayer var2, String var3, int var4, boolean var5, boolean var6, boolean var7, String var8) {
+    public Hcls(Context var1, UnityPlayer var2, String var3, int var4, boolean var5, boolean var6, boolean var7, String var8) {
         super(var1);
         this.a = var1;
         this.b = var2;
@@ -47,7 +47,7 @@ public final class h extends Dialog implements TextWatcher, OnClickListener {
         var9.setOnFocusChangeListener(new OnFocusChangeListener() {
             public final void onFocusChange(View var1, boolean var2) {
                 if(var2) {
-                    h.this.getWindow().setSoftInputMode(5);
+                    Hcls.this.getWindow().setSoftInputMode(5);
                 }
 
             }
@@ -108,7 +108,7 @@ public final class h extends Dialog implements TextWatcher, OnClickListener {
         EditText var3 = new EditText(this.a) {
             public final boolean onKeyPreIme(int var1, KeyEvent var2) {
                 if(var1 == 4) {
-                    h.this.a(h.this.a(), true);
+                    Hcls.this.a(Hcls.this.a(), true);
                     return true;
                 } else {
                     return var1 == 84?true:super.onKeyPreIme(var1, var2);
@@ -118,7 +118,7 @@ public final class h extends Dialog implements TextWatcher, OnClickListener {
             public final void onWindowFocusChanged(boolean var1) {
                 super.onWindowFocusChanged(var1);
                 if(var1) {
-                    ((InputMethodManager)h.this.a.getSystemService("input_method")).showSoftInput(this, 0);
+                    ((InputMethodManager)Hcls.this.a.getSystemService("input_method")).showSoftInput(this, 0);
                 }
 
             }
@@ -140,7 +140,7 @@ public final class h extends Dialog implements TextWatcher, OnClickListener {
         ((EditText)var1.findViewById(1057292289)).setOnEditorActionListener(new OnEditorActionListener() {
             public final boolean onEditorAction(TextView var1, int var2, KeyEvent var3) {
                 if(var2 == 6) {
-                    h.this.a(h.this.a(), false);
+                    Hcls.this.a(Hcls.this.a(), false);
                 }
 
                 return false;

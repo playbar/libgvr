@@ -14,7 +14,7 @@ final class kkc {
     private boolean e;
 
     kkc() {
-        this.b = !ggc.b;
+        this.b = !Gcls.b;
         this.c = false;
         this.d = false;
         this.e = true;

@@ -14,7 +14,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 
-public final class i implements OnLayoutChangeListener {
+public final class Icls implements OnLayoutChangeListener {
     final View a;
     final int b;
     final int c;
@@ -22,7 +22,7 @@ public final class i implements OnLayoutChangeListener {
     Bitmap e;
     Drawable f;
 
-    public i(View var1, int var2) {
+    public Icls(View var1, int var2) {
         this.a = var1;
         this.b = var2;
         this.c = var1.getResources().getIdentifier("unity_static_splash", "drawable", var1.getContext().getPackageName());
