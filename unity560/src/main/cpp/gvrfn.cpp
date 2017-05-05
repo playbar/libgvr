@@ -318,7 +318,7 @@ bool CGVRAPI::Init()
     {
 //        const char *filename = "/data/data/com.lucidsight.highwayrage/lib/libgvrimpl.so";
         const char *filename = "/data/data/com.Company.GvrProject90/lib/libgvrimpl.so";
-//        const char *filename = "/data/data/com.mj.vr/lib/libgvrimpl.so";
+//        const char *filename = "/data/data/com.baofeng.mj/lib/libgvrimpl.so";
 //        const char *filename = "/storage/emulated/0/libgvrimpl.so";
         is_file_exist(filename);
         m_hDLL = dlopen(filename, RTLD_LAZY);
