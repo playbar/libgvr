@@ -7,6 +7,140 @@
 #include "gvrglobal.h"
 #include "LogMessage.h"
 
+//ClassLoader paramClassLoader, Context paramContext)
+JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState(
+        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
+{
+    CLogMessage msg(__FUNCTION__);
+    long re = gGvrApi.CardboardViewNativeImpl_nativeSetApplicationState( env,obj, paramClassLoader, paramContext);
+    return re;
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetScreenParams(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1,
+        jfloat paramFloat2, jfloat paramFloat3)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetScreenParams(env, obj, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramFloat3);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetNeckModelFactor(
+        JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetNeckModelFactor(env, obj, paramLong, paramFloat);
+}
+JNIEXPORT float JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeGetNeckModelFactor(
+        JNIEnv* env, jobject obj, jlong paramLong)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.CardboardViewNativeImpl_nativeGetNeckModelFactor(env, obj, paramLong);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeOnDrawFrame(
+        JNIEnv* env, jobject obj, jlong paramLong)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeOnDrawFrame(env, obj, paramLong);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetNeckModelEnabled(
+        JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean )
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetNeckModelEnabled(env,obj, paramLong, paramBoolean);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeDestroy(
+        JNIEnv* env, jobject obj, jlong paramLong)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeDestroy(env, obj, paramLong);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeOnSurfaceCreated(
+        JNIEnv* env, jobject obj, jlong paramLong )
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeOnSurfaceCreated(env, obj, paramLong);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeOnSurfaceChanged(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeOnSurfaceChanged(env, obj, paramLong, paramInt1, paramInt2);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoModeEnabled(
+        JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetStereoModeEnabled(env, obj, paramLong, paramBoolean);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled(
+        JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled(env, obj, paramLong, paramBoolean);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDistortionCorrectionScale(
+        JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetDistortionCorrectionScale(env, obj,paramLong, paramFloat);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetMultisampling(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetMultisampling(env, obj, paramLong, paramInt);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDepthStencilFormat(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt )
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetDepthStencilFormat(env, obj, paramLong, paramInt);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeUndistortTexture(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeUndistortTexture(env, obj, paramLong, paramInt);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeLogEvent(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeLogEvent(env, obj, paramLong, paramInt);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetGvrViewerParams(
+        JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetGvrViewerParams(env, obj, paramLong, paramArrayOfByte);
+}
+//GvrView.StereoRenderer paramStereoRenderer
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoRenderer(
+        JNIEnv* env, jobject obj, jlong paramLong, jobject paramStereoRenderer)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetStereoRenderer(env, obj, paramLong, paramStereoRenderer);
+}
+//GvrView.Renderer
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetRenderer(
+        JNIEnv* env, jobject obj, jlong paramLong, jobject paramRenderer)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeSetRenderer(env, obj, paramLong, paramRenderer);
+}
+
+//HeadTransform paramHeadTransform, Eye paramEye1, Eye paramEye2, Eye paramEye3, Eye paramEye4, Eye paramEye
+JNIEXPORT void JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeGetCurrentEyeParams(
+        JNIEnv* env, jobject obj, jlong paramLong, jobject paramHeadTransform, jobject paramEye1, jobject paramEye2,
+        jobject paramEye3, jobject paramEye4, jobject paramEye5)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.CardboardViewNativeImpl_nativeGetCurrentEyeParams(env, obj, paramLong, paramHeadTransform, paramEye1, paramEye2, paramEye3, paramEye4, paramEye5);
+}
+JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeInit(
+        JNIEnv* env, jobject obj, jlong paramLong)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.CardboardViewNativeImpl_nativeInit(env, obj, paramLong);
+}
 JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handleStateChanged(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2 )
 {
@@ -235,6 +369,15 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRemoveAllSurface
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeRemoveAllSurfacesReprojectionThread(env, obj, paramLong);
 }
+JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(
+        JNIEnv* env, jobject obj, jlong paramLong)
+{
+    CLogMessage msg(__FUNCTION__);
+    bool re = false;
+    re = gGvrApi.GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
+    LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
+    return re;
+}
 
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListCreate(
         JNIEnv* env, jobject obj, jlong paramLong)
@@ -334,13 +477,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeDumpDebugData(
     gGvrApi.GvrApi_nativeDumpDebugData(env, obj, paramLong);
 }
 
-JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
-{
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.GvrApi_nativeUsingVrDisplayServic(env, obj, paramLong);
-//    return true;
-};
-
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeInitializeGl(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
@@ -433,6 +569,20 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSe
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeBufferViewportSetSourceFov(env, obj, paramLong, paramFloat1, paramFloat2, paramFloat3, paramFloat4);
+}
+
+// static native void nativeBufferViewportGetTransform(long paramLong, float[] paramArrayOfFloat);
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetTransform(
+        JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeBufferViewportGetTransform(env, obj, paramLong, paramArrayOffloat);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetTransform(
+        JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeBufferViewportSetTransform(env, obj, paramLong, paramArrayOfFloat);
 }
 
 JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetTargetEye(
@@ -534,6 +684,18 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSam
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeBufferSpecSetSamples(env, obj, paramLong, paramInt);
 }
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetColorFormat(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt )
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeBufferSpecSetColorFormat(env, obj, paramLong, paramInt);
+}
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetDepthStencilFormat(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeBufferSpecSetDepthStencilFormat(env, obj, paramLong, paramInt);
+}
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainDestroy(
         JNIEnv* env, jobject obj, jlong paramLong)
@@ -584,7 +746,7 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetFramebuff
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeFrameGetFramebufferObject(env, obj, paramLong, paramInt);
 }
-
+//todo
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetBufferSize(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint)
 {
@@ -598,14 +760,14 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit(
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeFrameSubmit(env, obj, paramLong1, paramLong2, paramArrayOfFloat);
 }
-
+//todo
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking(
         JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeResumeTracking(env, obj, paramLong, paramArrayOfByte);
 }
-
+//todo
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDefaultViewerProfile(
         JNIEnv* env, jobject obj, jlong paramLong, jstring paramString)
 {
@@ -1436,6 +1598,12 @@ int gvr_get_surface_size(int a1, int a2, int a3)
     return gGvrApi.get_surface_size(a1, a2, a3);
 }
 
+int gvr_set_display_output_rotation(void *a1, int a2)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.set_display_output_rotation(a1, a2);
+}
+
 int gvr_reconnect_sensors( void *a1)
 {
     CLogMessage msg(__FUNCTION__);
@@ -1458,6 +1626,12 @@ int gvr_dump_debug_data(void *a1)
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.dump_debug_data(a1);
+}
+
+int gvr_using_vr_display_service( int a1)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.using_vr_display_service(a1);
 }
 
 int gvr_tracker_state_get_buffer_size(int a1)
@@ -1544,6 +1718,12 @@ int gvr_tracker_state_create(int a1, int a2)
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.tracker_state_create(a1, a2);
+}
+
+int gvr_create_with_tracker_for_testing( int a1, int a2)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.create_with_tracker_for_testing(a1, a2);
 }
 
 int gvr_set_error(int a1, int a2)

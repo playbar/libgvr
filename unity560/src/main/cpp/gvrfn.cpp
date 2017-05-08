@@ -13,11 +13,32 @@ static int gneedDetach = 0;
 CGVRAPI gGvrApi;
 
 
+#define FN_CardboardViewNativeImpl_nativeSetApplicationState    "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState"
+#define FN_CardboardViewNativeImpl_nativeSetScreenParams        "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetScreenParams"
+#define FN_CardboardViewNativeImpl_nativeSetNeckModelFactor     "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetNeckModelFactor"
+#define FN_CardboardViewNativeImpl_nativeGetNeckModelFactor     "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeGetNeckModelFactor"
+#define FN_CardboardViewNativeImpl_nativeOnDrawFrame             "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeOnDrawFrame"
+#define FN_CardboardViewNativeImpl_nativeSetNeckModelEnabled    "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetNeckModelEnabled"
+#define FN_CardboardViewNativeImpl_nativeDestroy                  "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeDestroy"
+#define FN_CardboardViewNativeImpl_nativeOnSurfaceCreated        "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeOnSurfaceCreated"
+#define FN_CardboardViewNativeImpl_nativeOnSurfaceChanged        "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeOnSurfaceChanged"
+#define FN_CardboardViewNativeImpl_nativeSetStereoModeEnabled    "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoModeEnabled"
+#define FN_CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled  "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled"
+#define FN_CardboardViewNativeImpl_nativeSetDistortionCorrectionScale    "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDistortionCorrectionScale"
+#define FN_CardboardViewNativeImpl_nativeSetMultisampling                  "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetMultisampling"
+#define FN_CardboardViewNativeImpl_nativeSetDepthStencilFormat            "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDepthStencilFormat"
+#define FN_CardboardViewNativeImpl_nativeUndistortTexture                  "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeUndistortTexture"
+#define FN_CardboardViewNativeImpl_nativeLogEvent                           "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeLogEvent"
+#define FN_CardboardViewNativeImpl_nativeSetGvrViewerParams                "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetGvrViewerParams"
+#define FN_CardboardViewNativeImpl_nativeSetStereoRenderer                 "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoRenderer"
+#define FN_CardboardViewNativeImpl_nativeSetRenderer                        "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetRenderer"
+#define FN_CardboardViewNativeImpl_nativeGetCurrentEyeParams               "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeGetCurrentEyeParams"
+#define FN_CardboardViewNativeImpl_nativeInit                                "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeInit"
 #define FN_NativeCallbacks_handleStateChanged                                "Java_com_google_vr_internal_controller_NativeCallbacks_handleStateChanged"
 #define FN_NativeCallbacks_handleControllerRecentered                       "Java_com_google_vr_internal_controller_NativeCallbacks_handleControllerRecentered"
 #define FN_NativeCallbacks_handleTouchEvent                                  "Java_com_google_vr_internal_controller_NativeCallbacks_handleTouchEvent"
 #define FN_NativeCallbacks_handleOrientationEvent                           "Java_com_google_vr_internal_controller_NativeCallbacks_handleOrientationEvent"
-#define FN_NativeCallbacks_handleButtonEvent                 "Java_com_google_vr_internal_controller_NativeCallbacks_handleButtonEvent"
+#define FN_NativeCallbacks_handleButtonEvent         "Java_com_google_vr_internal_controller_NativeCallbacks_handleButtonEvent"
 #define FN_GvrApi_nativeSetDynamicLibraryLoadingEnabled     "Java_com_google_vr_ndk_base_GvrApi_nativeSetDynamicLibraryLoadingEnabled"
 #define FN_GvrApi_nativeRequestContextSharing       "Java_com_google_vr_ndk_base_GvrApi_nativeRequestContextSharing"
 #define FN_NativeCallbacks_handlePositionEvent      "Java_com_google_vr_internal_controller_NativeCallbacks_handlePositionEvent"
@@ -49,6 +70,7 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeBufferViewportListSetItem          "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListSetItem"
 #define FN_GvrApi_nativeBufferViewportCreate  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportCreate"
 #define FN_GvrApi_nativeRemoveAllSurfacesReprojectionThread         "Java_com_google_vr_ndk_base_GvrApi_nativeRemoveAllSurfacesReprojectionThread"
+#define FN_GvrApi_nativeUsingVrDisplayService  "Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService"
 #define FN_GvrApi_nativeBufferViewportListCreate         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListCreate"
 #define FN_GvrApi_nativeBufferViewportListDestroy  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListDestroy"
 #define FN_GvrApi_nativeGetBorderSizeMeters          "Java_com_google_vr_ndk_base_GvrApi_nativeGetBorderSizeMeters"
@@ -79,6 +101,8 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeBufferViewportSetSourceUv         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceUv"
 #define FN_GvrApi_nativeBufferViewportGetSourceFov  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetSourceFov"
 #define FN_GvrApi_nativeBufferViewportSetSourceFov         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceFov"
+#define FN_GvrApi_nativeBufferViewportGetTransform  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetTransform"
+#define FN_GvrApi_nativeBufferViewportSetTransform         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetTransform"
 #define FN_GvrApi_nativeBufferViewportGetTargetEye  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetTargetEye"
 #define FN_GvrApi_nativeBufferViewportSetTargetEye          "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetTargetEye"
 #define FN_GvrApi_nativeBufferViewportGetSourceBufferIndex  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetSourceBufferIndex"
@@ -94,6 +118,8 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeBufferSpecSetSize  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSize"
 #define FN_GvrApi_nativeBufferSpecGetSamples         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecGetSamples"
 #define FN_GvrApi_nativeBufferSpecSetSamples  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSamples"
+#define FN_GvrApi_nativeBufferSpecSetColorFormat         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetColorFormat"
+#define FN_GvrApi_nativeBufferSpecSetDepthStencilFormat  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetDepthStencilFormat"
 #define FN_GvrApi_nativeSwapChainDestroy          "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainDestroy"
 #define FN_GvrApi_nativeSwapChainGetBufferCount  "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainGetBufferCount"
 #define FN_GvrApi_nativeSwapChainGetBufferSize   "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainGetBufferSize"
@@ -184,7 +210,9 @@ CGVRAPI gGvrApi;
 #define FN_buffer_viewport_get_external_surface_id  "gvr_buffer_viewport_get_external_surface_id"
 #define FN_buffer_viewport_set_external_surface_id          "gvr_buffer_viewport_set_external_surface_id"
 #define FN_set_surface_size  "gvr_set_surface_size"
+#define FN_buffer_viewport_get_transform          "gvr_buffer_viewport_get_transform"
 #define FN_buffer_spec_set_color_format  "gvr_buffer_spec_set_color_format"
+#define FN_buffer_viewport_set_transform          "gvr_buffer_viewport_set_transform"
 #define FN_buffer_viewport_set_target_eye  "gvr_buffer_viewport_set_target_eye"
 #define FN_frame_get_buffer_size          "gvr_frame_get_buffer_size"
 #define FN_frame_get_framebuffer_object  "gvr_frame_get_framebuffer_object"
@@ -200,11 +228,13 @@ CGVRAPI gGvrApi;
 #define FN_get_border_size_meters  "gvr_get_border_size_meters"
 #define FN_check_surface_size_changed          "gvr_check_surface_size_changed"
 #define FN_get_surface_size  "gvr_get_surface_size"
+#define FN_set_display_output_rotation          "gvr_set_display_output_rotation"
 #define FN_reconnect_sensors  "gvr_reconnect_sensors"
 #define FN_set_lens_offset         "gvr_set_lens_offset"
 #define FN_resume  "gvr_resume"
 #define FN_dump_debug_data         "gvr_dump_debug_data"
 #define FN_controller_get_default_options  "gvr_controller_get_default_options"
+#define FN_using_vr_display_service          "gvr_using_vr_display_service"
 #define FN_tracker_state_get_buffer_size  "gvr_tracker_state_get_buffer_size"
 #define FN_controller_create_and_init         "gvr_controller_create_and_init"
 #define FN_tracker_state_get_buffer  "gvr_tracker_state_get_buffer"
@@ -317,8 +347,8 @@ bool CGVRAPI::Init()
 //    try
     {
 //        const char *filename = "/data/data/com.lucidsight.highwayrage/lib/libgvrimpl.so";
-        const char *filename = "/data/data/com.Company.GvrProject90/lib/libgvrimpl.so";
-//        const char *filename = "/data/data/com.baofeng.mj/lib/libgvrimpl.so";
+//        const char *filename = "/data/data/com.Company.GvrProject90/lib/libgvrimpl.so";
+        const char *filename = "/data/data/com.baofeng.mj/lib/libgvrimpl.so";
 //        const char *filename = "/storage/emulated/0/libgvrimpl.so";
         is_file_exist(filename);
         m_hDLL = dlopen(filename, RTLD_LAZY);
@@ -329,6 +359,7 @@ bool CGVRAPI::Init()
         if (m_hDLL)
         {
 
+            GET_DLL_FUNCION(m_hDLL,create_with_tracker_for_testing);
             GET_DLL_FUNCION(m_hDLL,tracker_state_create);
             GET_DLL_FUNCION(m_hDLL,pause_tracking_get_state);
             GET_DLL_FUNCION(m_hDLL,resume_tracking_set_state);
@@ -379,11 +410,13 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,tracker_state_get_buffer);
             GET_DLL_FUNCION(m_hDLL,controller_create_and_init);
             GET_DLL_FUNCION(m_hDLL,tracker_state_get_buffer_size);
+            GET_DLL_FUNCION(m_hDLL,using_vr_display_service);
             GET_DLL_FUNCION(m_hDLL,controller_get_default_options);
             GET_DLL_FUNCION(m_hDLL,dump_debug_data);
             GET_DLL_FUNCION(m_hDLL,resume);
             GET_DLL_FUNCION(m_hDLL,set_lens_offset);
             GET_DLL_FUNCION(m_hDLL,reconnect_sensors);
+            GET_DLL_FUNCION(m_hDLL,set_display_output_rotation);
             GET_DLL_FUNCION(m_hDLL,get_surface_size);
             GET_DLL_FUNCION(m_hDLL,check_surface_size_changed);
             GET_DLL_FUNCION(m_hDLL,get_border_size_meters);
@@ -399,7 +432,9 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,frame_get_framebuffer_object);
             GET_DLL_FUNCION(m_hDLL,frame_get_buffer_size);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_set_target_eye);
+            GET_DLL_FUNCION(m_hDLL,buffer_viewport_set_transform);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_set_color_format);
+            GET_DLL_FUNCION(m_hDLL,buffer_viewport_get_transform);
             GET_DLL_FUNCION(m_hDLL,set_surface_size);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_set_external_surface_id);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_get_external_surface_id);
@@ -440,8 +475,6 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_get_source_fov);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_get_samples);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_get_target_eye);
-            GET_DLL_FUNCION(m_hDLL, buffer_viewport_get_transform);
-            GET_DLL_FUNCION(m_hDLL, buffer_viewport_set_transform);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_get_size);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_list_get_item);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_equal);
@@ -489,6 +522,8 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSwapChainGetBufferSize);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSwapChainGetBufferCount);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSwapChainDestroy);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetDepthStencilFormat);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetColorFormat);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetSamples);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecGetSamples);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetSize);
@@ -504,6 +539,8 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetSourceBufferIndex);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetTargetEye);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetTargetEye);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetTransform);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetTransform);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetSourceFov);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetSourceFov);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetSourceUv);
@@ -534,6 +571,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetBorderSizeMeters);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListDestroy);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListCreate);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeUsingVrDisplayService);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeRemoveAllSurfacesReprojectionThread);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportCreate);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListSetItem);
@@ -570,7 +608,30 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleTouchEvent);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleControllerRecentered);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleStateChanged);
-            if (m_fptracker_state_create!= NULL
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeInit);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeGetCurrentEyeParams);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetRenderer);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetStereoRenderer);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetGvrViewerParams);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeLogEvent);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetApplicationState);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetScreenParams);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetNeckModelFactor);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeGetNeckModelFactor );
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeOnDrawFrame );
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetNeckModelEnabled );
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeDestroy);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeOnSurfaceCreated);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeOnSurfaceChanged);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetStereoModeEnabled);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetDistortionCorrectionScale);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetMultisampling);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetDepthStencilFormat);
+            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeUndistortTexture);
+
+            if (m_fpcreate_with_tracker_for_testing!= NULL
+                && m_fptracker_state_create!= NULL
                 && m_fppause_tracking_get_state!= NULL
                 && m_fpresume_tracking_set_state!= NULL
                 && m_fptracker_state_destroy!= NULL
@@ -620,11 +681,13 @@ bool CGVRAPI::Init()
                 && m_fptracker_state_get_buffer!= NULL
                 && m_fpcontroller_create_and_init!= NULL
                 && m_fptracker_state_get_buffer_size!= NULL
+                && m_fpusing_vr_display_service!= NULL
                 && m_fpcontroller_get_default_options!= NULL
                 && m_fpdump_debug_data!= NULL
                 && m_fpresume!= NULL
                 && m_fpset_lens_offset!= NULL
                 && m_fpreconnect_sensors!= NULL
+                && m_fpset_display_output_rotation!= NULL
                 && m_fpget_surface_size!= NULL
                 && m_fpcheck_surface_size_changed!= NULL
                 && m_fpget_border_size_meters!= NULL
@@ -640,7 +703,9 @@ bool CGVRAPI::Init()
                 && m_fpframe_get_framebuffer_object!= NULL
                 && m_fpframe_get_buffer_size!= NULL
                 && m_fpbuffer_viewport_set_target_eye!= NULL
+                && m_fpbuffer_viewport_set_transform!= NULL
                 && m_fpbuffer_spec_set_color_format!= NULL
+                && m_fpbuffer_viewport_get_transform!= NULL
                 && m_fpset_surface_size!= NULL
                 && m_fpbuffer_viewport_set_external_surface_id!= NULL
                 && m_fpbuffer_viewport_get_external_surface_id!= NULL
@@ -730,6 +795,8 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeSwapChainGetBufferSize!= NULL
                 && m_fpGvrApi_nativeSwapChainGetBufferCount!= NULL
                 && m_fpGvrApi_nativeSwapChainDestroy!= NULL
+                && m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat!= NULL
+                && m_fpGvrApi_nativeBufferSpecSetColorFormat!= NULL
                 && m_fpGvrApi_nativeBufferSpecSetSamples!= NULL
                 && m_fpGvrApi_nativeBufferSpecGetSamples!= NULL
                 && m_fpGvrApi_nativeBufferSpecSetSize!= NULL
@@ -745,6 +812,8 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeBufferViewportGetSourceBufferIndex!= NULL
                 && m_fpGvrApi_nativeBufferViewportSetTargetEye!= NULL
                 && m_fpGvrApi_nativeBufferViewportGetTargetEye!= NULL
+                && m_fpGvrApi_nativeBufferViewportSetTransform!= NULL
+                && m_fpGvrApi_nativeBufferViewportGetTransform!= NULL
                 && m_fpGvrApi_nativeBufferViewportSetSourceFov!= NULL
                 && m_fpGvrApi_nativeBufferViewportGetSourceFov!= NULL
                 && m_fpGvrApi_nativeBufferViewportSetSourceUv!= NULL
@@ -775,6 +844,7 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeGetBorderSizeMeters!= NULL
                 && m_fpGvrApi_nativeBufferViewportListDestroy!= NULL
                 && m_fpGvrApi_nativeBufferViewportListCreate!= NULL
+                && m_fpGvrApi_nativeUsingVrDisplayService!= NULL
                 && m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread!= NULL
                 && m_fpGvrApi_nativeBufferViewportCreate!= NULL
                 && m_fpGvrApi_nativeBufferViewportListSetItem!= NULL
@@ -810,7 +880,29 @@ bool CGVRAPI::Init()
                 && m_fpNativeCallbacks_handleOrientationEvent!= NULL
                 && m_fpNativeCallbacks_handleTouchEvent!= NULL
                 && m_fpNativeCallbacks_handleControllerRecentered!= NULL
-                && m_fpNativeCallbacks_handleStateChanged!= NULL)
+                && m_fpNativeCallbacks_handleStateChanged!= NULL
+                && m_fpNativeCallbacks_handleStateChanged!= NULL
+                && m_fpCardboardViewNativeImpl_nativeInit!= NULL
+                && m_fpCardboardViewNativeImpl_nativeGetCurrentEyeParams!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetRenderer!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetStereoRenderer!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetGvrViewerParams!= NULL
+                && m_fpCardboardViewNativeImpl_nativeLogEvent!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetApplicationState!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetScreenParams!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetNeckModelFactor!= NULL
+                && m_fpCardboardViewNativeImpl_nativeGetNeckModelFactor != NULL
+                && m_fpCardboardViewNativeImpl_nativeOnDrawFrame != NULL
+                && m_fpCardboardViewNativeImpl_nativeSetNeckModelEnabled != NULL
+                && m_fpCardboardViewNativeImpl_nativeDestroy!= NULL
+                && m_fpCardboardViewNativeImpl_nativeOnSurfaceCreated!= NULL
+                && m_fpCardboardViewNativeImpl_nativeOnSurfaceChanged!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetStereoModeEnabled!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetMultisampling!= NULL
+                && m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat!= NULL
+                && m_fpCardboardViewNativeImpl_nativeUndistortTexture!= NULL)
             {
                  m_bInit = true;
                 LOGI("dlopen success, %s", __FUNCTION__ );
@@ -819,6 +911,7 @@ bool CGVRAPI::Init()
             else
             {// 有函数指针拿不到
 
+                GET_DLL_FUNCION_ERR(create_with_tracker_for_testing);
                 GET_DLL_FUNCION_ERR(tracker_state_create);
                 GET_DLL_FUNCION_ERR(pause_tracking_get_state);
                 GET_DLL_FUNCION_ERR(resume_tracking_set_state);
@@ -869,11 +962,13 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(tracker_state_get_buffer);
                 GET_DLL_FUNCION_ERR(controller_create_and_init);
                 GET_DLL_FUNCION_ERR(tracker_state_get_buffer_size);
+                GET_DLL_FUNCION_ERR(using_vr_display_service);
                 GET_DLL_FUNCION_ERR(controller_get_default_options);
                 GET_DLL_FUNCION_ERR(dump_debug_data);
                 GET_DLL_FUNCION_ERR(resume);
                 GET_DLL_FUNCION_ERR(set_lens_offset);
                 GET_DLL_FUNCION_ERR(reconnect_sensors);
+                GET_DLL_FUNCION_ERR(set_display_output_rotation);
                 GET_DLL_FUNCION_ERR(get_surface_size);
                 GET_DLL_FUNCION_ERR(check_surface_size_changed);
                 GET_DLL_FUNCION_ERR(get_border_size_meters);
@@ -889,7 +984,9 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(frame_get_framebuffer_object);
                 GET_DLL_FUNCION_ERR(frame_get_buffer_size);
                 GET_DLL_FUNCION_ERR(buffer_viewport_set_target_eye);
+                GET_DLL_FUNCION_ERR(buffer_viewport_set_transform);
                 GET_DLL_FUNCION_ERR(buffer_spec_set_color_format);
+                GET_DLL_FUNCION_ERR(buffer_viewport_get_transform);
                 GET_DLL_FUNCION_ERR(set_surface_size);
                 GET_DLL_FUNCION_ERR(buffer_viewport_set_external_surface_id);
                 GET_DLL_FUNCION_ERR(buffer_viewport_get_external_surface_id);
@@ -930,8 +1027,6 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(buffer_viewport_get_source_fov);
                 GET_DLL_FUNCION_ERR(buffer_spec_get_samples);
                 GET_DLL_FUNCION_ERR(buffer_viewport_get_target_eye);
-                GET_DLL_FUNCION_ERR(buffer_viewport_get_transform);
-                GET_DLL_FUNCION_ERR(buffer_viewport_set_transform);
                 GET_DLL_FUNCION_ERR(buffer_spec_get_size);
                 GET_DLL_FUNCION_ERR(buffer_viewport_list_get_item);
                 GET_DLL_FUNCION_ERR(buffer_viewport_equal);
@@ -979,6 +1074,8 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSwapChainGetBufferSize);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSwapChainGetBufferCount);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSwapChainDestroy);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetDepthStencilFormat);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetColorFormat);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetSamples);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecGetSamples);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetSize);
@@ -994,6 +1091,8 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetSourceBufferIndex);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetTargetEye);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetTargetEye);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetTransform);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetTransform);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetSourceFov);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetSourceFov);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetSourceUv);
@@ -1024,6 +1123,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetBorderSizeMeters);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListDestroy);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListCreate);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeUsingVrDisplayService);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeRemoveAllSurfacesReprojectionThread);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportCreate);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListSetItem);
@@ -1060,6 +1160,27 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleTouchEvent);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleControllerRecentered);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleStateChanged);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeInit);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeGetCurrentEyeParams);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetRenderer);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetStereoRenderer);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetGvrViewerParams);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeLogEvent);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetApplicationState);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetScreenParams);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetNeckModelFactor);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeGetNeckModelFactor );
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeOnDrawFrame );
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetNeckModelEnabled );
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeDestroy);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeOnSurfaceCreated);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeOnSurfaceChanged);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetStereoModeEnabled);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetDistortionCorrectionScale);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetMultisampling);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetDepthStencilFormat);
+                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeUndistortTexture);
                 Release();
             }
         }
@@ -1081,6 +1202,7 @@ void CGVRAPI::Release()
     if (m_hDLL)
         dlclose(m_hDLL);
 
+    m_fpcreate_with_tracker_for_testing = NULL;
     m_fptracker_state_create = NULL;
     m_fppause_tracking_get_state = NULL;
     m_fpresume_tracking_set_state = NULL;
@@ -1131,11 +1253,13 @@ void CGVRAPI::Release()
     m_fptracker_state_get_buffer = NULL;
     m_fpcontroller_create_and_init = NULL;
     m_fptracker_state_get_buffer_size = NULL;
+    m_fpusing_vr_display_service = NULL;
     m_fpcontroller_get_default_options = NULL;
     m_fpdump_debug_data = NULL;
     m_fpresume = NULL;
     m_fpset_lens_offset = NULL;
     m_fpreconnect_sensors = NULL;
+    m_fpset_display_output_rotation = NULL;
     m_fpget_surface_size = NULL;
     m_fpcheck_surface_size_changed = NULL;
     m_fpget_border_size_meters = NULL;
@@ -1151,7 +1275,9 @@ void CGVRAPI::Release()
     m_fpframe_get_framebuffer_object = NULL;
     m_fpframe_get_buffer_size = NULL;
     m_fpbuffer_viewport_set_target_eye = NULL;
+    m_fpbuffer_viewport_set_transform = NULL;
     m_fpbuffer_spec_set_color_format = NULL;
+    m_fpbuffer_viewport_get_transform = NULL;
     m_fpset_surface_size = NULL;
     m_fpbuffer_viewport_set_external_surface_id = NULL;
     m_fpbuffer_viewport_get_external_surface_id = NULL;
@@ -1241,6 +1367,8 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeSwapChainGetBufferSize = NULL;
     m_fpGvrApi_nativeSwapChainGetBufferCount = NULL;
     m_fpGvrApi_nativeSwapChainDestroy = NULL;
+    m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat = NULL;
+    m_fpGvrApi_nativeBufferSpecSetColorFormat = NULL;
     m_fpGvrApi_nativeBufferSpecSetSamples = NULL;
     m_fpGvrApi_nativeBufferSpecGetSamples = NULL;
     m_fpGvrApi_nativeBufferSpecSetSize = NULL;
@@ -1256,6 +1384,8 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeBufferViewportGetSourceBufferIndex = NULL;
     m_fpGvrApi_nativeBufferViewportSetTargetEye = NULL;
     m_fpGvrApi_nativeBufferViewportGetTargetEye = NULL;
+    m_fpGvrApi_nativeBufferViewportSetTransform = NULL;
+    m_fpGvrApi_nativeBufferViewportGetTransform = NULL;
     m_fpGvrApi_nativeBufferViewportSetSourceFov = NULL;
     m_fpGvrApi_nativeBufferViewportGetSourceFov = NULL;
     m_fpGvrApi_nativeBufferViewportSetSourceUv = NULL;
@@ -1286,6 +1416,7 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeGetBorderSizeMeters = NULL;
     m_fpGvrApi_nativeBufferViewportListDestroy = NULL;
     m_fpGvrApi_nativeBufferViewportListCreate = NULL;
+    m_fpGvrApi_nativeUsingVrDisplayService = NULL;
     m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread = NULL;
     m_fpGvrApi_nativeBufferViewportCreate = NULL;
     m_fpGvrApi_nativeBufferViewportListSetItem = NULL;
@@ -1322,9 +1453,191 @@ void CGVRAPI::Release()
     m_fpNativeCallbacks_handleTouchEvent = NULL;
     m_fpNativeCallbacks_handleControllerRecentered = NULL;
     m_fpNativeCallbacks_handleStateChanged = NULL;
+    m_fpCardboardViewNativeImpl_nativeInit = NULL;
+    m_fpCardboardViewNativeImpl_nativeGetCurrentEyeParams = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetRenderer = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetStereoRenderer = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetGvrViewerParams = NULL;
+    m_fpCardboardViewNativeImpl_nativeLogEvent = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetApplicationState = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetScreenParams = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetNeckModelFactor = NULL;
+    m_fpCardboardViewNativeImpl_nativeGetNeckModelFactor  = NULL;
+    m_fpCardboardViewNativeImpl_nativeOnDrawFrame  = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetNeckModelEnabled  = NULL;
+    m_fpCardboardViewNativeImpl_nativeDestroy = NULL;
+    m_fpCardboardViewNativeImpl_nativeOnSurfaceCreated = NULL;
+    m_fpCardboardViewNativeImpl_nativeOnSurfaceChanged = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetStereoModeEnabled = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetMultisampling = NULL;
+    m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat = NULL;
+    m_fpCardboardViewNativeImpl_nativeUndistortTexture = NULL;
     return;
 }
 
+long CGVRAPI::CardboardViewNativeImpl_nativeSetApplicationState(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
+{
+    Init();
+    long re = 0;
+    if( m_fpCardboardViewNativeImpl_nativeSetApplicationState)
+        re = m_fpCardboardViewNativeImpl_nativeSetApplicationState(env, obj, paramClassLoader, paramContext);
+    return re;
+}
+
+void CGVRAPI::CardboardViewNativeImpl_nativeSetScreenParams(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1,
+                                                   jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeSetScreenParams){
+        m_fpCardboardViewNativeImpl_nativeSetScreenParams(env, obj, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramFloat3);
+    }
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetNeckModelFactor(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeSetNeckModelFactor){
+        m_fpCardboardViewNativeImpl_nativeSetNeckModelFactor(env, obj, paramLong, paramFloat);
+    }
+    return;
+}
+float CGVRAPI::CardboardViewNativeImpl_nativeGetNeckModelFactor(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    float re=0;
+    if( m_fpCardboardViewNativeImpl_nativeGetNeckModelFactor)
+        re = m_fpCardboardViewNativeImpl_nativeGetNeckModelFactor(env, obj, paramLong);
+    return re;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeOnDrawFrame(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeOnDrawFrame)
+        m_fpCardboardViewNativeImpl_nativeOnDrawFrame(env, obj, paramLong);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetNeckModelEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetNeckModelEnabled)
+        m_fpCardboardViewNativeImpl_nativeSetNeckModelEnabled(env, obj, paramLong, paramBoolean);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeDestroy(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeDestroy)
+        m_fpCardboardViewNativeImpl_nativeDestroy(env, obj, paramLong);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeOnSurfaceCreated( JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeOnSurfaceCreated)
+        m_fpCardboardViewNativeImpl_nativeOnSurfaceCreated(env, obj, paramLong);
+    return;
+}
+
+void CGVRAPI::CardboardViewNativeImpl_nativeOnSurfaceChanged(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeOnSurfaceChanged)
+        m_fpCardboardViewNativeImpl_nativeOnSurfaceChanged(env, obj, paramLong, paramInt1, paramInt2);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetStereoModeEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetStereoModeEnabled)
+        m_fpCardboardViewNativeImpl_nativeSetStereoModeEnabled(env, obj, paramLong, paramBoolean);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled)
+        m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled(env, obj, paramLong, paramBoolean);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetDistortionCorrectionScale(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale)
+        m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale(env, obj, paramLong, paramFloat);
+    return;
+}
+
+void CGVRAPI::CardboardViewNativeImpl_nativeSetMultisampling(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetMultisampling)
+        m_fpCardboardViewNativeImpl_nativeSetMultisampling(env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat)
+        m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat(env,obj, paramLong, paramInt);
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeUndistortTexture(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeUndistortTexture)
+        m_fpCardboardViewNativeImpl_nativeUndistortTexture( env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeLogEvent(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeLogEvent)
+        m_fpCardboardViewNativeImpl_nativeLogEvent( env, obj, paramLong, paramInt);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetGvrViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetGvrViewerParams)
+        m_fpCardboardViewNativeImpl_nativeSetGvrViewerParams(env, obj, paramLong, paramArrayOfByte);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetStereoRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramStereoRenderer)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeSetStereoRenderer)
+        m_fpCardboardViewNativeImpl_nativeSetStereoRenderer(env, obj, paramLong, paramStereoRenderer );
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeSetRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRenderer)
+{
+    Init();
+    if( m_fpCardboardViewNativeImpl_nativeSetRenderer)
+        m_fpCardboardViewNativeImpl_nativeSetRenderer(env, obj, paramLong, paramRenderer);
+    return;
+}
+void CGVRAPI::CardboardViewNativeImpl_nativeGetCurrentEyeParams(JNIEnv* env, jobject obj, jlong paramLong, jobject paramHeadTransform,
+                                                                jobject paramEye1, jobject paramEye2, jobject paramEye3,
+                                                                jobject paramEye4, jobject paramEye5)
+{
+    Init();
+    if(m_fpCardboardViewNativeImpl_nativeGetCurrentEyeParams) {
+        m_fpCardboardViewNativeImpl_nativeGetCurrentEyeParams(env, obj, paramLong,
+                                                              paramHeadTransform, paramEye1,
+                                                              paramEye2, paramEye3,
+                                                              paramEye4, paramEye5);
+    }
+    return;
+}
+long CGVRAPI::CardboardViewNativeImpl_nativeInit(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    if( m_fpCardboardViewNativeImpl_nativeInit)
+        re = m_fpCardboardViewNativeImpl_nativeInit(env, obj, paramLong);
+    return re;
+}
 void CGVRAPI::NativeCallbacks_handleStateChanged(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2)
 {
     Init();
@@ -1591,7 +1904,14 @@ void CGVRAPI::GvrApi_nativeRemoveAllSurfacesReprojectionThread(JNIEnv* env, jobj
         m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread( env, obj, paramLong);
     return;
 }
-
+bool CGVRAPI::GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    bool re = 0;
+    if( m_fpGvrApi_nativeUsingVrDisplayService)
+        m_fpGvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
+    return re;
+}
 long CGVRAPI::GvrApi_nativeBufferViewportListCreate(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -1831,6 +2151,20 @@ void CGVRAPI::GvrApi_nativeBufferViewportSetSourceFov(JNIEnv* env, jobject obj, 
     return;
 }
 
+void CGVRAPI::GvrApi_nativeBufferViewportGetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportGetTransform)
+        m_fpGvrApi_nativeBufferViewportGetTransform( env, obj, paramLong, paramArrayOffloat);
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferViewportSetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferViewportSetTransform)
+        m_fpGvrApi_nativeBufferViewportSetTransform(env, obj, paramLong, paramArrayOfFloat );
+    return;
+}
 int CGVRAPI::GvrApi_nativeBufferViewportGetTargetEye(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -1946,7 +2280,20 @@ void CGVRAPI::GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong 
         m_fpGvrApi_nativeBufferSpecSetSamples( env, obj, paramLong, paramInt );
     return;
 }
-
+void CGVRAPI::GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferSpecSetColorFormat)
+        m_fpGvrApi_nativeBufferSpecSetColorFormat( env, obj, paramLong, paramInt );
+    return;
+}
+void CGVRAPI::GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat)
+        m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat(env, obj, paramLong, paramInt );
+    return;
+}
 void CGVRAPI::GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -2777,6 +3124,14 @@ int CGVRAPI::get_surface_size(int a1, int a2, int a3)
     return 0;
 }
 
+int CGVRAPI::set_display_output_rotation(void *a1, int a2)
+{
+    Init();
+    if(m_fpset_display_output_rotation)
+        return m_fpset_display_output_rotation( a1, a2);
+    return 0;
+}
+
 int CGVRAPI::reconnect_sensors(void *a1)
 {
     Init();
@@ -2813,7 +3168,13 @@ int32_t CGVRAPI::controller_get_default_options()
         return m_fpcontroller_get_default_options();
     return 0;
 }
-
+int CGVRAPI::using_vr_display_service(int a1)
+{
+    Init();
+    if(m_fpusing_vr_display_service)
+        return m_fpusing_vr_display_service(a1);
+    return 0;
+}
 int CGVRAPI::tracker_state_get_buffer_size(int a1)
 {
     Init();
@@ -3191,4 +3552,10 @@ int CGVRAPI::tracker_state_create(int a1, int a2)
         return m_fptracker_state_create( a1,a2);
     return 0;
 }
-
+int CGVRAPI::create_with_tracker_for_testing(int a1, int a2)
+{
+    Init();
+    if(m_fpcreate_with_tracker_for_testing)
+        return m_fpcreate_with_tracker_for_testing(a1, a2);
+    return 0;
+}

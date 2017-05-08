@@ -11,6 +11,46 @@
 #include "gvr_controller.h"
 #include "gvr_types.h"
 
+typedef long (*FP_CardboardViewNativeImpl_nativeSetApplicationState)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
+typedef void (*FP_CardboardViewNativeImpl_nativeSetScreenParams) (JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
+typedef void (*FP_CardboardViewNativeImpl_nativeSetNeckModelFactor)(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat);
+
+typedef float (*FP_CardboardViewNativeImpl_nativeGetNeckModelFactor)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeOnDrawFrame)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetNeckModelEnabled)(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeOnSurfaceCreated)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeOnSurfaceChanged)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetStereoModeEnabled)(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetDistortionCorrectionScale)( JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetMultisampling)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetDepthStencilFormat)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeUndistortTexture)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeLogEvent)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetGvrViewerParams)(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetStereoRenderer)(JNIEnv* env, jobject obj, jlong paramLong, jobject paramStereoRenderer);
+
+typedef void (*FP_CardboardViewNativeImpl_nativeSetRenderer)(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRenderer);
+
+typedef void  (*FP_CardboardViewNativeImpl_nativeGetCurrentEyeParams)(JNIEnv* env, jobject obj, jlong paramLong, jobject paramHeadTransform, jobject paramEye1, jobject paramEye2, jobject paramEye3, jobject paramEye4, jobject paramEye5);
+
+typedef long (*FP_CardboardViewNativeImpl_nativeInit)(JNIEnv* env, jobject obj, jlong paramLong);
+
 typedef void (*FP_NativeCallbacks_handleStateChanged)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2);
 
 typedef void (*FP_NativeCallbacks_handleControllerRecentered)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3, jfloat paramFloat4);
@@ -81,6 +121,8 @@ typedef long (*FP_GvrApi_nativeBufferViewportCreate)(JNIEnv* env, jobject obj, j
 
 typedef void (*FP_GvrApi_nativeRemoveAllSurfacesReprojectionThread)(JNIEnv* env, jobject obj, jlong paramLong);
 
+typedef bool (*FP_GvrApi_nativeUsingVrDisplayService)(JNIEnv* env, jobject obj, jlong paramLong);
+
 typedef long (*FP_GvrApi_nativeBufferViewportListCreate)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferViewportListDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
@@ -143,6 +185,10 @@ typedef void (*FP_GvrApi_nativeBufferViewportGetSourceFov)(JNIEnv* env, jobject 
 
 typedef void (*FP_GvrApi_nativeBufferViewportSetSourceFov)(JNIEnv* env, jobject obj,  jlong paramLong, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3, jfloat paramFloat4);
 
+typedef void (*FP_GvrApi_nativeBufferViewportGetTransform)(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat);
+
+typedef void (*FP_GvrApi_nativeBufferViewportSetTransform)(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat);
+
 typedef int (*FP_GvrApi_nativeBufferViewportGetTargetEye)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferViewportSetTargetEye)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
@@ -172,6 +218,10 @@ typedef void (*FP_GvrApi_nativeBufferSpecSetSize)(JNIEnv* env, jobject obj, jlon
 typedef int (*FP_GvrApi_nativeBufferSpecGetSamples)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferSpecSetSamples)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_GvrApi_nativeBufferSpecSetColorFormat)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_GvrApi_nativeBufferSpecSetDepthStencilFormat)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
 typedef void (*FP_GvrApi_nativeSwapChainDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -364,6 +414,8 @@ typedef void (*FP_set_surface_size)( gvr_context *gvr,
 typedef void (*FP_buffer_spec_set_color_format)(  gvr_buffer_spec *spec,
                                                   int32_t color_format);
 
+typedef void (*FP_buffer_viewport_set_transform)(gvr_buffer_viewport *viewport,
+                                                 gvr_mat4f transform);
 typedef void (*FP_buffer_viewport_set_target_eye)(  gvr_buffer_viewport *viewport,
                                                     int32_t index);
 
@@ -392,11 +444,13 @@ typedef int (*FP_display_synchronizer_destroy)(int *a1);
 typedef int (*FP_get_border_size_meters)(void *a1);
 typedef int (*FP_check_surface_size_changed)(int a1);
 typedef int (*FP_get_surface_size)(int a1, int a2, int a3);
+typedef int (*FP_set_display_output_rotation)(void *a1, int a2);
 typedef int (*FP_reconnect_sensors)(void *a1);
 typedef int (*FP_set_lens_offset)(int *a1, int a2, int a3);
 typedef int (*FP_resume)(int a1);
 typedef int (*FP_dump_debug_data)(void *a1);
 typedef int32_t (*FP_controller_get_default_options)();
+typedef int (*FP_using_vr_display_service)(int a1);
 typedef int (*FP_tracker_state_get_buffer_size)(int a1);
 typedef gvr_controller_context * (*FP_controller_create_and_init)(int32_t options,gvr_context *context);
 typedef int (*FP_tracker_state_get_buffer)(int a1);
@@ -467,6 +521,7 @@ typedef int (*FP_tracker_state_destroy)(int *a1);
 typedef int (*FP_resume_tracking_set_state)(int a1, int a2, int a3);
 typedef int (*FP_pause_tracking_get_state)(void *a1);
 typedef int (*FP_tracker_state_create)(int a1, int a2);
+typedef int (*FP_create_with_tracker_for_testing)(int a1, int a2);
 
 #define DEF_VARIABLES(name) FP_##name m_fp##name
 
@@ -483,6 +538,29 @@ public:
     bool Init();
     void Release();
 
+    long CardboardViewNativeImpl_nativeSetApplicationState(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
+    void CardboardViewNativeImpl_nativeSetScreenParams(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1,
+                                                       jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
+    void CardboardViewNativeImpl_nativeSetNeckModelFactor(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat);
+    float CardboardViewNativeImpl_nativeGetNeckModelFactor(JNIEnv* env, jobject obj, jlong paramLong);
+    void CardboardViewNativeImpl_nativeOnDrawFrame(JNIEnv* env, jobject obj, jlong paramLong);
+    void CardboardViewNativeImpl_nativeSetNeckModelEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
+    void CardboardViewNativeImpl_nativeDestroy(JNIEnv* env, jobject obj, jlong paramLong);
+    void CardboardViewNativeImpl_nativeOnSurfaceCreated( JNIEnv* env, jobject obj, jlong paramLong);
+    void CardboardViewNativeImpl_nativeOnSurfaceChanged(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2);
+    void CardboardViewNativeImpl_nativeSetStereoModeEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
+    void CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBoolean);
+    void CardboardViewNativeImpl_nativeSetDistortionCorrectionScale(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat);
+    void CardboardViewNativeImpl_nativeSetMultisampling(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void CardboardViewNativeImpl_nativeSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void CardboardViewNativeImpl_nativeUndistortTexture(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void CardboardViewNativeImpl_nativeLogEvent(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void CardboardViewNativeImpl_nativeSetGvrViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+    void CardboardViewNativeImpl_nativeSetStereoRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramStereoRenderer);
+    void CardboardViewNativeImpl_nativeSetRenderer(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRenderer);
+    void CardboardViewNativeImpl_nativeGetCurrentEyeParams(JNIEnv* env, jobject obj, jlong paramLong, jobject paramHeadTransform, jobject paramEye1,
+                                                           jobject paramEye2, jobject paramEye3, jobject paramEye4, jobject paramEye5);
+    long CardboardViewNativeImpl_nativeInit(JNIEnv* env, jobject obj, jlong paramLong);
     void NativeCallbacks_handleStateChanged(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2);
     void NativeCallbacks_handleControllerRecentered(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1,
                                                     jfloat paramFloat2, jfloat paramFloat3, jfloat paramFloat4);
@@ -522,6 +600,7 @@ public:
     void GvrApi_nativeBufferViewportListSetItem(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt, jlong paramLong2);
     long GvrApi_nativeBufferViewportCreate(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeRemoveAllSurfacesReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
+    bool GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong);
     long GvrApi_nativeBufferViewportListCreate(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferViewportListDestroy(JNIEnv* env, jobject obj, jlong paramLong);
     float GvrApi_nativeGetBorderSizeMeters(JNIEnv* env, jobject obj, jlong paramLong);
@@ -530,7 +609,8 @@ public:
     void GvrApi_nativeUpdateSurfaceReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat);
     bool GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong paramLong);
-    void GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2);
+    void GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2,
+                                        jfloat paramFloat1, jfloat paramFloat2);
     void GvrApi_nativeSetDynamicLibraryLoadingEnabled(JNIEnv* env, jobject obj, jboolean var1);
     void DisplaySynchronizer_nativeReset(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3);
     void DisplaySynchronizer_nativeUpdate(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
@@ -555,6 +635,8 @@ public:
     void GvrApi_nativeBufferViewportGetSourceFov(JNIEnv* env, jobject obj, jlong paramLong, jobject paramRectF);
     void GvrApi_nativeBufferViewportSetSourceFov(JNIEnv* env, jobject obj,  jlong paramLong, jfloat paramFloat1, jfloat paramFloat2,
                                                  jfloat paramFloat3, jfloat paramFloat4);
+    void GvrApi_nativeBufferViewportGetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOffloat);
+    void GvrApi_nativeBufferViewportSetTransform(JNIEnv* env, jobject obj, jlong paramLong, jfloatArray paramArrayOfFloat);
     int GvrApi_nativeBufferViewportGetTargetEye(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferViewportSetTargetEye(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     int GvrApi_nativeBufferViewportGetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong);
@@ -570,6 +652,8 @@ public:
     void GvrApi_nativeBufferSpecSetSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jint paramInt2);
     int GvrApi_nativeBufferSpecGetSamples(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong);
     int GvrApi_nativeSwapChainGetBufferCount(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeSwapChainGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
@@ -722,11 +806,13 @@ public:
     int get_border_size_meters(void *a1);
     int check_surface_size_changed(int a1);
     int get_surface_size(int a1, int a2, int a3);
+    int set_display_output_rotation(void *a1, int a2);
     int reconnect_sensors(void *a1);
     int set_lens_offset(int *a1, int a2, int a3);
     int resume(int a1);
     int dump_debug_data(void *a1);
     int32_t controller_get_default_options();
+    int using_vr_display_service(int a1);
     int tracker_state_get_buffer_size(int a1);
     gvr_controller_context *controller_create_and_init(int32_t options,gvr_context *context);
     int tracker_state_get_buffer(int a1);
@@ -758,6 +844,7 @@ public:
     int32_t controller_state_get_connection_state(const gvr_controller_state *state);
     gvr_quatf controller_state_get_orientation(const gvr_controller_state *state);
     gvr_vec3f controller_state_get_position(const gvr_controller_state* state);
+
     gvr_vec3f controller_state_get_gyro(const gvr_controller_state *state);
 
     gvr_vec3f controller_state_get_accel( const gvr_controller_state *state);
@@ -796,11 +883,13 @@ public:
     int resume_tracking_set_state(int a1, int a2, int a3);
     int pause_tracking_get_state(void *a1);
     int tracker_state_create(int a1, int a2);
+    int create_with_tracker_for_testing(int a1, int a2);
 
 private:
     void * m_hDLL;
     bool m_bInit;
 
+    DEF_VARIABLES(create_with_tracker_for_testing);
     DEF_VARIABLES(tracker_state_create);
     DEF_VARIABLES(pause_tracking_get_state);
     DEF_VARIABLES(resume_tracking_set_state);
@@ -851,11 +940,13 @@ private:
     DEF_VARIABLES(tracker_state_get_buffer);
     DEF_VARIABLES(controller_create_and_init);
     DEF_VARIABLES(tracker_state_get_buffer_size);
+    DEF_VARIABLES(using_vr_display_service);
     DEF_VARIABLES(controller_get_default_options);
     DEF_VARIABLES(dump_debug_data);
     DEF_VARIABLES(resume);
     DEF_VARIABLES(set_lens_offset);
     DEF_VARIABLES(reconnect_sensors);
+    DEF_VARIABLES(set_display_output_rotation);
     DEF_VARIABLES(get_surface_size);
     DEF_VARIABLES(check_surface_size_changed);
     DEF_VARIABLES(get_border_size_meters);
@@ -871,7 +962,9 @@ private:
     DEF_VARIABLES(frame_get_framebuffer_object);
     DEF_VARIABLES(frame_get_buffer_size);
     DEF_VARIABLES(buffer_viewport_set_target_eye);
+    DEF_VARIABLES(buffer_viewport_set_transform);
     DEF_VARIABLES(buffer_spec_set_color_format);
+    DEF_VARIABLES(buffer_viewport_get_transform);
     DEF_VARIABLES(set_surface_size);
     DEF_VARIABLES(buffer_viewport_set_external_surface_id);
     DEF_VARIABLES(buffer_viewport_get_external_surface_id);
@@ -912,8 +1005,6 @@ private:
     DEF_VARIABLES(buffer_viewport_get_source_fov);
     DEF_VARIABLES(buffer_spec_get_samples);
     DEF_VARIABLES(buffer_viewport_get_target_eye);
-    DEF_VARIABLES(buffer_viewport_get_transform);
-    DEF_VARIABLES(buffer_viewport_set_transform);
     DEF_VARIABLES(buffer_spec_get_size);
     DEF_VARIABLES(buffer_viewport_list_get_item);
     DEF_VARIABLES(buffer_viewport_equal);
@@ -961,6 +1052,8 @@ private:
     DEF_VARIABLES(GvrApi_nativeSwapChainGetBufferSize);
     DEF_VARIABLES(GvrApi_nativeSwapChainGetBufferCount);
     DEF_VARIABLES(GvrApi_nativeSwapChainDestroy);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetDepthStencilFormat);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetColorFormat);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetSamples);
     DEF_VARIABLES(GvrApi_nativeBufferSpecGetSamples);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetSize);
@@ -976,6 +1069,8 @@ private:
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceBufferIndex);
     DEF_VARIABLES(GvrApi_nativeBufferViewportSetTargetEye);
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetTargetEye);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetTransform);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportGetTransform);
     DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceFov);
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceFov);
     DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceUv);
@@ -1007,6 +1102,7 @@ private:
     DEF_VARIABLES(GvrApi_nativeGetBorderSizeMeters);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListDestroy);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListCreate);
+    DEF_VARIABLES(GvrApi_nativeUsingVrDisplayService);
     DEF_VARIABLES(GvrApi_nativeRemoveAllSurfacesReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeBufferViewportCreate);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListSetItem);
@@ -1042,6 +1138,27 @@ private:
     DEF_VARIABLES(NativeCallbacks_handleTouchEvent);
     DEF_VARIABLES(NativeCallbacks_handleControllerRecentered);
     DEF_VARIABLES(NativeCallbacks_handleStateChanged);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeInit);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeGetCurrentEyeParams);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetRenderer);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetStereoRenderer);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetGvrViewerParams);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeLogEvent);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetApplicationState);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetScreenParams);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetNeckModelFactor);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeGetNeckModelFactor );
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeOnDrawFrame );
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetNeckModelEnabled );
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeDestroy);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeOnSurfaceCreated);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeOnSurfaceChanged);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetStereoModeEnabled);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetDistortionCorrectionEnabled);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetDistortionCorrectionScale);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetMultisampling);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeSetDepthStencilFormat);
+    DEF_VARIABLES(CardboardViewNativeImpl_nativeUndistortTexture);
 
 };
 
