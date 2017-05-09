@@ -229,9 +229,10 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetViewerParams(
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainCreate(
         JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
 
+//(int a1, int a2, int a3, int a4, float a5, float a6, int a7, int a8, int a9, int a10, int a11
 
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
-        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jfloat a5, jfloat a6, jint paramInt1,
         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
 JNIEXPORT jfloatArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);

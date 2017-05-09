@@ -1139,21 +1139,8 @@ void gvr_frame_unbind(gvr_frame *frame)
 void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
 {
     CLogMessage msg(__FUNCTION__);
-    static unsigned int frameCounter = 0;
-    static unsigned int prevTimeMs = 0;
-
-    unsigned int currentTimeMs = GetTimeNano() * 1e-6;
-    frameCounter++;
-    if (currentTimeMs - prevTimeMs > 2000)
-//    if( frameCounter > 50)
-    {
-        float elapsedSec = (float)(currentTimeMs - prevTimeMs) / 1000.0f;
-        float currentFPS = (float)frameCounter / elapsedSec;
-        LOGI("submit, FPS: %0.2f",  currentFPS);
-
-        frameCounter = 0;
-        prevTimeMs = currentTimeMs;
-    }
+//    LOGE("gvr_frame_submit %p", frame);
+    ShowFPS();
     gGvrApi.frame_submit(frame, list, head_space_from_start_space);
 }
 
@@ -1294,6 +1281,7 @@ gvr_sizei gvr_frame_get_buffer_size(const gvr_frame *frame, int32_t index)
 int32_t gvr_frame_get_framebuffer_object(const gvr_frame *frame, int32_t index)
 {
     CLogMessage msg(__FUNCTION__);
+    LOGE("gvr_frame_get_framebuffer_object %p, index:%d", frame, index);
     return gGvrApi.frame_get_framebuffer_object(frame, index);
 }
 

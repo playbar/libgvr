@@ -817,11 +817,11 @@ public:
     gvr_controller_context *controller_create_and_init(int32_t options,gvr_context *context);
     int tracker_state_get_buffer(int a1);
     int pause(int a1);
-    gvr_controller_context * controller_create_and_init_android(  JNIEnv *env,
-                                                                                jobject android_context,
-                                                                                jobject class_loader,
-                                                                                int32_t options,
-                                                                                gvr_context *context);
+    gvr_controller_context * controller_create_and_init_android(JNIEnv *env,
+                                                                jobject android_context,
+                                                                jobject class_loader,
+                                                                int32_t options,
+                                                                gvr_context *context);
     void controller_destroy( gvr_controller_context **api);
 
     int  set_display_synchronizer(int *a1, int a2);

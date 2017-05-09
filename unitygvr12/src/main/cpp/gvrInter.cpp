@@ -599,7 +599,7 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainCreate(
 
 
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
-        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jfloat a5, jfloat a6, jint paramInt1,
         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker)
 {
 //    LOGE("Java_com_google_vr_ndk_base_GvrApi_nativeCreate");
@@ -608,9 +608,9 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
     int i2 = paramInt2;
     float f1 = paramFloat1;
     float f2 = paramFloat2;
-    LOGI("mjgvr env:%0x, obj:%0X, paramClassLoader:%0X, paramContext:%0X, paramLong:%lld paramInt1:%d, paramInt2:%d, paramFloat1:%f, paramFloat2:%f, paramPoseTracker:%0X",
-         env, obj, paramClassLoader,paramContext, paramLong, i1, i2, f1, f2, paramPoseTracker  );
-    return gGvrApi.GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
+//    LOGI("mjgvr env:%0x, obj:%0X, paramClassLoader:%0X, paramContext:%0X, paramLong:%lld paramInt1:%d, paramInt2:%d, paramFloat1:%f, paramFloat2:%f, paramPoseTracker:%0X",
+//         env, obj, paramClassLoader,paramContext, paramLong, i1, i2, f1, f2, paramPoseTracker  );
+    return gGvrApi.GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, a5, a6, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
 }
 JNIEXPORT jfloatArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat)

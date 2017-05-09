@@ -195,7 +195,7 @@ typedef bool (*FP_GvrApi_nativeSetViewerParams)( JNIEnv* env, jobject obj, jlong
 
 typedef long (*FP_GvrApi_nativeSwapChainCreate)(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
 
-typedef long (*FP_GvrApi_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
+typedef long (*FP_GvrApi_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jfloat a5, jfloat a6, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
 
 typedef jfloatArray (*FP_GvrApi_nativeComputeDistortedPoint)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
 
@@ -569,7 +569,7 @@ public:
     bool GvrApi_nativeSetDefaultViewerProfile(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString);
     bool GvrApi_nativeSetViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
     long GvrApi_nativeSwapChainCreate(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
-    long GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+    long GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jfloat a5, jfloat a6, jint paramInt1,
                              jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
     jfloatArray GvrApi_nativeComputeDistortedPoint(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
     jstring GvrApi_nativeGetErrorString(JNIEnv* env, jobject obj, jint paramInt);
