@@ -197,6 +197,7 @@ public class GvrLayout extends FrameLayout {
     public void onResume() {
         TraceCompat.beginSection("GvrLayout.onResume");
 
+        Log.i(TAG, "GvrLayout.onResume");
         try {
             this.gvrApi.resume();
             if(this.daydreamTouchListener != null) {
