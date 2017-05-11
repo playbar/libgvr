@@ -279,7 +279,7 @@ final class ReflectionHelper {
                         return Array.newInstance(a(var0, var1), 0).getClass();
                     }
 
-                    eec.Log(5, "! parseType; " + var2 + " is not known!");
+                    Ecls.Log(5, "! parseType; " + var2 + " is not known!");
                 }
             }
 

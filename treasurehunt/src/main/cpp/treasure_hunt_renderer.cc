@@ -499,7 +499,7 @@ void TreasureHuntRenderer::DrawFrame() {
   viewport_list_->SetToRecommendedBufferViewports();
   gvr::BufferViewport reticle_viewport = gvr_api_->CreateBufferViewport();
   reticle_viewport.SetSourceBufferIndex(1);
-  reticle_viewport.SetReprojection(GVR_REPROJECTION_NONE);
+  reticle_viewport.SetReprojection(GVR_REPROJECTION_FULL);
   reticle_viewport.SetSourceUv({0.f, 1.f, 0.f, 1.f});
 
   // Use the viewport transform to put the reticle in the correct place.

@@ -338,8 +338,8 @@ bool CGVRAPI::Init()
 //    try
     {
 //        const char *filename = "/data/data/com.mojingsdk.DaydreamDemo_test_0417/lib/libgvr_v13.so";
-//        const char *filename = "/data/data/com.mj.nt/lib/libgvrimpl.so";
-        const char *filename = "/data/data/com.ubisoft.vrhungryshark/lib/libgvrimpl.so";
+        const char *filename = "/data/data/com.mj.nt/lib/libgvrimpl.so";
+//        const char *filename = "/data/data/com.oniride.Magnetique/lib/libgvrimpl.so";
 //        const char *filename = "/data/data/com.mj.vr/lib/libgvrimpl.so";
 //        const char *filename = "/storage/emulated/0/libgvrimpl.so";
         is_file_exist(filename);

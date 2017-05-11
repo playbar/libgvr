@@ -1060,7 +1060,9 @@ gvr_mat4f gvr_apply_neck_model(const gvr_context *gvr, gvr_mat4f head_space_from
 gvr_frame * gvr_swap_chain_acquire_frame(gvr_swap_chain *swap_chain)
 {
     CLogMessage msg(__FUNCTION__);
-    return gGvrApi.swap_chain_acquire_frame(swap_chain);
+    gvr_frame *pframe = gGvrApi.swap_chain_acquire_frame(swap_chain);
+    LOGE("gvr_swap_chain_acquire_frame gvr_frame:%p", pframe);
+    return pframe;
 }
 
 gvr_context * gvr_create(JNIEnv *env, jobject app_context, jobject class_loader)

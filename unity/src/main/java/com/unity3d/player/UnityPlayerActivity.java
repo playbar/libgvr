@@ -11,6 +11,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+
+import com.google.vr.ndk.base.GvrApi;
 import com.unity3d.player.UnityPlayer;
 
 public class UnityPlayerActivity extends Activity {

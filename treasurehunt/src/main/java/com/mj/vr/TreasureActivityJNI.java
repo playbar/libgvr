@@ -196,25 +196,25 @@ public class TreasureActivityJNI extends Activity {
   }
 
 //  @Override
-//  public boolean onInterceptTouchEvent(MotionEvent ev) {
-//    int action = ev.getAction();
-//
-//    switch (action) {
-//      case MotionEvent.ACTION_DOWN:
-//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_DOWN");
-//        break;
-//      case MotionEvent.ACTION_MOVE:
-//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_MOVE");
-//        break;
-//      case MotionEvent.ACTION_UP:
-//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_UP");
-//        break;
-//      case MotionEvent.ACTION_CANCEL:
-//        Log.d(TAG, "onInterceptTouchEvent action:ACTION_CANCEL");
-//        break;
-//    }
-//    return false;
-//  }
+  public boolean onInterceptTouchEvent(MotionEvent ev) {
+    int action = ev.getAction();
+
+    switch (action) {
+      case MotionEvent.ACTION_DOWN:
+        Log.d(TAG, "onInterceptTouchEvent action:ACTION_DOWN");
+        break;
+      case MotionEvent.ACTION_MOVE:
+        Log.d(TAG, "onInterceptTouchEvent action:ACTION_MOVE");
+        break;
+      case MotionEvent.ACTION_UP:
+        Log.d(TAG, "onInterceptTouchEvent action:ACTION_UP");
+        break;
+      case MotionEvent.ACTION_CANCEL:
+        Log.d(TAG, "onInterceptTouchEvent action:ACTION_CANCEL");
+        break;
+    }
+    return false;
+  }
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
