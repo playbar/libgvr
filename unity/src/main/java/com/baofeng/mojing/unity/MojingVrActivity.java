@@ -222,11 +222,11 @@ public class MojingVrActivity extends Activity implements MojingInputCallback {
         Log.i(TAG, "onPause: MojingSDKReport.onPause");
         MojingSDKReport.onPause(this);
         Log.i(TAG, "onPause: IsUseUnityForSVR-2.before");
-        if(!MojingSDK.IsUseUnityForSVR()) {
-            Log.i(TAG, "onPause: MojingSDKServiceManager.onPause before");
-            MojingSDKServiceManager.onPause(this);
-            Log.i(TAG, "onPause: MojingSDKServiceManager.onPause after");
-        }
+//        if(!MojingSDK.IsUseUnityForSVR()) {
+//            Log.i(TAG, "onPause: MojingSDKServiceManager.onPause before");
+//            MojingSDKServiceManager.onPause(this);
+//            Log.i(TAG, "onPause: MojingSDKServiceManager.onPause after");
+//        }
 
         Log.i(TAG, "onPause: IsUseUnityForSVR-2.after");
         MojingSDK.LogTrace("StopTracker Done -- onPause");
@@ -254,9 +254,9 @@ public class MojingVrActivity extends Activity implements MojingInputCallback {
         Log.i(TAG, "onResume: MojingSDKReport.onResume");
         MojingSDKReport.onResume(this);
         Log.i(TAG, "onResume: IsUseUnityForSVR-2 before");
-        if(!MojingSDK.IsUseUnityForSVR()) {
-            MojingSDKServiceManager.onResume(this);
-        }
+//        if(!MojingSDK.IsUseUnityForSVR()) {
+//            MojingSDKServiceManager.onResume(this);
+//        }
 
         MojingVrLib.startVsync(this);
         Log.i(TAG, "onResume: IsUseUnityForSVR-2 after");

@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+
+
+    android {
+        compileSdkVersion 25
+        buildToolsVersion "25.0.0"
+
+        defaultConfig {
+            minSdkVersion 19
+            targetSdkVersion 24
+            versionCode 1
+            versionName "1.0"
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled true
+                proguardFiles.add(file('../../proguard-gvr.txt'))
+            }
+        }
+        repositories {
+            flatDir {
+                dirs 'libs'
+            }
+        }
+    }
+
+
+dependencies {
+    //    compile 'com.google.vr:sdk-audio:1.40.0'
+    //    compile 'com.google.vr:sdk-base:1.40.0'
+    compile(name: 'sdk-base-1.40.0', ext: 'aar')
+    compile(name: 'sdk-common-1.40.0', ext: 'aar')
+    compile(name: 'sdk-audio-1.40.0', ext: 'aar')
+    compile files('libs/protobuf-javanano-3.1.0.jar')
+}
