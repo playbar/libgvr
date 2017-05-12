@@ -175,6 +175,7 @@ public class MainActivity extends Activity {
     if (hasFocus) {
       setImmersiveSticky();
     }
+
   }
 
   @Override
