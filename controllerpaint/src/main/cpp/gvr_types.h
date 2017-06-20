@@ -50,6 +50,21 @@ typedef enum {
   GVR_VIEWER_TYPE_DAYDREAM = 1,
 } gvr_viewer_type;
 
+// Types of VR-specific features which may or may not be supported on the
+// underlying platform.
+typedef enum {
+  // Asynchronous reprojection warps the app's rendered frame using the most
+  // recent head pose just before pushing the frame to the display.
+  GVR_FEATURE_ASYNC_REPROJECTION = 0,
+  // Support for framebuffers suitable for rendering with the GL_OVR_multiview2
+  // and GL_OVR_multiview_multisampled_render_to_texture extensions.
+  GVR_FEATURE_MULTIVIEW = 1,
+  // Support for external surface creation and compositing. Note that this
+  // feature may be supported only under certain configurations, e.g., when
+  // async reprojection is explicitly enabled.
+  GVR_FEATURE_EXTERNAL_SURFACE = 2
+} gvr_feature;
+
 /// @}
 
 /// Version information for the Google VR API.
@@ -96,7 +111,8 @@ typedef struct gvr_vec3f {
   float z;
 } gvr_vec3f;
 
-/// A floating point 4x4 matrix.
+/// A floating point 4x4 matrix stored in row-major form. It needs to be
+/// transposed before being used with OpenGL.
 typedef struct gvr_mat4f { float m[4][4]; } gvr_mat4f;
 
 /// A floating point quaternion, in JPL format.
@@ -104,11 +120,11 @@ typedef struct gvr_mat4f { float m[4][4]; } gvr_mat4f;
 /// particular math library. The user of this API is free to encapsulate this
 /// into any math library they want.
 typedef struct gvr_quatf {
-  /// qx, qy, qz are the vector component.
+  /// qx, qy, qz are the vector components.
   float qx;
   float qy;
   float qz;
-  /// qw is the linelar component.
+  /// qw is the scalar component.
   float qw;
 } gvr_quatf;
 
@@ -183,6 +199,10 @@ enum {
   GVR_CONTROLLER_ENABLE_GESTURES = 1 << 4,
   /// Indicates that controller pose prediction should be enabled.
   GVR_CONTROLLER_ENABLE_POSE_PREDICTION = 1 << 5,
+  /// Indicates that controller position data should be reported.
+  GVR_CONTROLLER_ENABLE_POSITION = 1 << 6,
+  /// Indicates that controller battery data should be reported.
+  GVR_CONTROLLER_ENABLE_BATTERY = 1 << 7,
 };
 
 /// Constants that represent the status of the controller API.
@@ -236,6 +256,21 @@ typedef enum {
   /// this many elements due to the inclusion of a dummy "none" button.
   GVR_CONTROLLER_BUTTON_COUNT = 6,
 } gvr_controller_button;
+
+/// Controller battery states.
+typedef enum {
+  GVR_CONTROLLER_BATTERY_LEVEL_UNKNOWN = 0,
+  GVR_CONTROLLER_BATTERY_LEVEL_CRITICAL_LOW = 1,
+  GVR_CONTROLLER_BATTERY_LEVEL_LOW = 2,
+  GVR_CONTROLLER_BATTERY_LEVEL_MEDIUM = 3,
+  GVR_CONTROLLER_BATTERY_LEVEL_ALMOST_FULL = 4,
+  GVR_CONTROLLER_BATTERY_LEVEL_FULL = 5,
+
+  /// Note: there are 5 distinct levels, but there are 6 due to the inclusion
+  /// of an UNKNOWN state before any battery information is collected, etc.
+  GVR_CONTROLLER_BATTERY_LEVEL_COUNT = 6,
+} gvr_controller_battery_level;
+
 
 /// @}
 
@@ -320,6 +355,44 @@ typedef enum {
 /// Sound object and sound field identifier.
 typedef int32_t gvr_audio_source_id;
 
+/// Supported surround sound formats.
+typedef enum {
+  // Enables to initialize a yet undefined rendering mode.
+  GVR_AUDIO_SURROUND_FORMAT_INVALID = 0,
+
+  // Virtual mono speaker at 0 degrees (front).
+  GVR_AUDIO_SURROUND_FORMAT_SURROUND_MONO = 1,
+
+  // Virtual stereo speakers at -30 degrees and +30 degrees.
+  GVR_AUDIO_SURROUND_FORMAT_SURROUND_STEREO = 2,
+
+  // 5.1 surround sound according to the ITU-R BS 775 speaker configuration
+  // recommendation:
+  //   - Front left (FL) at 30 degrees.
+  //   - Front right (FR) at -30 degrees.
+  //   - Front center (FC) at 0 degrees.
+  //   - Low frequency effects (LFE) at front center at 0 degrees.
+  //   - Left side (LS) at 110 degrees.
+  //   - Right side (RS) at -110 degrees.
+  //
+  // The 5.1 channel input layout must matches AAC: FL, FR, FC, LFE, LS, RS.
+  // Note that this differs from the Vorbis/Opus 5.1 channel layout, which
+  // is: FL, FC, FR, LS, RS, LFE.
+  GVR_AUDIO_SURROUND_FORMAT_SURROUND_FIVE_DOT_ONE = 3,
+
+  // First-order ambisonics (AmbiX format: 4 channels, ACN channel ordering,
+  // SN3D normalization).
+  GVR_AUDIO_SURROUND_FORMAT_FIRST_ORDER_AMBISONICS = 4,
+
+  // Second-order ambisonics (AmbiX format: 9 channels, ACN channel ordering,
+  // SN3D normalization).
+  GVR_AUDIO_SURROUND_FORMAT_SECOND_ORDER_AMBISONICS = 5,
+
+  // Third-order ambisonics (AmbiX format: 16 channels, ACN channel ordering,
+  // SN3D normalization).
+  GVR_AUDIO_SURROUND_FORMAT_THIRD_ORDER_AMBISONICS = 6,
+} gvr_audio_surround_format_type;
+
 /// Valid color formats for swap chain buffers.
 typedef enum {
   /// Equivalent to GL_RGBA8
@@ -396,6 +469,10 @@ const int32_t kControllerEnableGestures =
     static_cast<int32_t>(GVR_CONTROLLER_ENABLE_GESTURES);
 const int32_t kControllerEnablePosePrediction =
     static_cast<int32_t>(GVR_CONTROLLER_ENABLE_POSE_PREDICTION);
+const int32_t kControllerEnablePosition =
+    static_cast<int32_t>(GVR_CONTROLLER_ENABLE_POSITION);
+const int32_t kControllerEnableBattery =
+    static_cast<int32_t>(GVR_CONTROLLER_ENABLE_BATTERY);
 
 typedef gvr_controller_api_status ControllerApiStatus;
 const ControllerApiStatus kControllerApiOk =
@@ -439,6 +516,26 @@ const ControllerButton kControllerButtonVolumeDown =
 const ControllerButton kControllerButtonCount =
     static_cast<ControllerButton>(GVR_CONTROLLER_BUTTON_COUNT);
 
+typedef gvr_controller_battery_level ControllerBatteryLevel;
+const ControllerBatteryLevel kControllerBatteryLevelUnknown =
+    static_cast<ControllerBatteryLevel>(
+        GVR_CONTROLLER_BATTERY_LEVEL_UNKNOWN);
+const ControllerBatteryLevel kControllerBatteryLevelCriticalLow =
+    static_cast<ControllerBatteryLevel>(
+        GVR_CONTROLLER_BATTERY_LEVEL_CRITICAL_LOW);
+const ControllerBatteryLevel kControllerBatteryLevelLow =
+    static_cast<ControllerBatteryLevel>(
+        GVR_CONTROLLER_BATTERY_LEVEL_LOW);
+const ControllerBatteryLevel kControllerBatteryLevelMedium =
+    static_cast<ControllerBatteryLevel>(
+        GVR_CONTROLLER_BATTERY_LEVEL_MEDIUM);
+const ControllerBatteryLevel kControllerBatteryLevelAlmostFull =
+    static_cast<ControllerBatteryLevel>(
+        GVR_CONTROLLER_BATTERY_LEVEL_ALMOST_FULL);
+const ControllerBatteryLevel kControllerBatteryLevelFull =
+    static_cast<ControllerBatteryLevel>(
+        GVR_CONTROLLER_BATTERY_LEVEL_FULL);
+
 /// An uninitialized external surface ID.
 const int32_t kUninitializedExternalSurface = GVR_BUFFER_INDEX_EXTERNAL_SURFACE;
 /// The default source buffer index for viewports.
@@ -470,6 +567,7 @@ typedef gvr_audio_rendering_mode AudioRenderingMode;
 typedef gvr_audio_material_type AudioMaterialName;
 typedef gvr_audio_distance_rolloff_type AudioRolloffMethod;
 typedef gvr_audio_source_id AudioSourceId;
+typedef gvr_audio_surround_format_type AudioSurroundFormat;
 
 typedef gvr_color_format_type ColorFormat;
 const ColorFormat kColorFormatRgba8888 =
@@ -521,7 +619,7 @@ class UserPrefs;
 
 }  // namespace gvr
 
-// Non-member equality operators for convenience. Since typedefs do not trigger
+// Non-member operators for convenience. Since typedefs do not trigger
 // argument-dependent lookup, these operators have to be defined for the
 // underlying types.
 inline bool operator==(const gvr_vec2f& lhs, const gvr_vec2f& rhs) {
@@ -564,6 +662,30 @@ inline bool operator==(const gvr_sizei& lhs, const gvr_sizei& rhs) {
 
 inline bool operator!=(const gvr_sizei& lhs, const gvr_sizei& rhs) {
   return !(lhs == rhs);
+}
+
+inline bool operator==(gvr_clock_time_point lhs, gvr_clock_time_point rhs) {
+  return lhs.monotonic_system_time_nanos == rhs.monotonic_system_time_nanos;
+}
+
+inline bool operator!=(gvr_clock_time_point lhs, gvr_clock_time_point rhs) {
+  return lhs.monotonic_system_time_nanos != rhs.monotonic_system_time_nanos;
+}
+
+inline bool operator<(gvr_clock_time_point lhs, gvr_clock_time_point rhs) {
+  return lhs.monotonic_system_time_nanos < rhs.monotonic_system_time_nanos;
+}
+
+inline bool operator<=(gvr_clock_time_point lhs, gvr_clock_time_point rhs) {
+  return lhs.monotonic_system_time_nanos <= rhs.monotonic_system_time_nanos;
+}
+
+inline bool operator>(gvr_clock_time_point lhs, gvr_clock_time_point rhs) {
+  return lhs.monotonic_system_time_nanos > rhs.monotonic_system_time_nanos;
+}
+
+inline bool operator>=(gvr_clock_time_point lhs, gvr_clock_time_point rhs) {
+  return lhs.monotonic_system_time_nanos >= rhs.monotonic_system_time_nanos;
 }
 
 #endif  // #if defined(__cplusplus) && !defined(GVR_NO_CPP_WRAPPER)

@@ -6,6 +6,9 @@
 #include "gvrfn.h"
 #include "gvrglobal.h"
 #include "LogMessage.h"
+#include "map"
+
+std::map<gvr_buffer_viewport*, int> ViewportMap;
 
 //ClassLoader paramClassLoader, Context paramContext)
 JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState(
@@ -869,9 +872,10 @@ void gvr_destroy(gvr_context **gvr)
 void gvr_buffer_viewport_destroy(gvr_buffer_viewport **viewport)
 {
     CLogMessage msg(__FUNCTION__);
-    int pro = gvr_buffer_viewport_get_reprojection(*viewport);
-    LOGE("gvr_context:%p, repro:%d", *viewport, pro);
-    gvr_buffer_viewport_set_reprojection(*viewport, 0);
+    std::map<gvr_buffer_viewport*, int>::iterator iter = ViewportMap.find(*viewport);
+    if( iter != ViewportMap.end()) {
+        ViewportMap.erase(iter);
+    }
     gGvrApi.buffer_viewport_destroy(viewport);
 }
 
@@ -1050,6 +1054,7 @@ int32_t gvr_buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport
 void gvr_buffer_viewport_set_reprojection(gvr_buffer_viewport *viewport, int32_t reprojection)
 {
     CLogMessage msg(__FUNCTION__);
+    LOGE("gvr_buffer_viewport_set_reprojection:%d", reprojection);
     gGvrApi.buffer_viewport_set_reprojection(viewport, reprojection);
 }
 
@@ -1065,6 +1070,23 @@ void gvr_buffer_viewport_list_set_item(
         const gvr_buffer_viewport *viewport)
 {
     CLogMessage msg(__FUNCTION__);
+
+//    static bool bchange = true;
+//    static unsigned int prevTimeMs = 0;
+//    unsigned int currentTimeMs = GetTimeNano() * 1e-6;
+//    if(currentTimeMs - prevTimeMs > 5000 ) {
+//        bchange = !bchange;
+//        prevTimeMs = currentTimeMs;
+//    }
+    gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 0);
+//    if( bchange) {
+//        gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 0);
+//    } else{
+//        gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 1);
+//    }
+//    ViewportMap.insert(std::pair<gvr_buffer_viewport*, int>(const_cast<gvr_buffer_viewport *>(viewport), index));
+    int re = gvr_buffer_viewport_get_reprojection(viewport);
+    LOGE("re=%d", re);
     gGvrApi.buffer_viewport_list_set_item(viewport_list, index, viewport);
 }
 
@@ -1146,6 +1168,37 @@ void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, g
     CLogMessage msg(__FUNCTION__);
 //    LOGE("gvr_frame_submit %p", frame);
     ShowFPS();
+
+    LOGE("matrix:%0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f",
+         head_space_from_start_space.m[0][0],head_space_from_start_space.m[0][1],head_space_from_start_space.m[0][2],head_space_from_start_space.m[0][3],
+         head_space_from_start_space.m[1][0],head_space_from_start_space.m[1][1],head_space_from_start_space.m[1][2],head_space_from_start_space.m[1][3],
+         head_space_from_start_space.m[2][0],head_space_from_start_space.m[2][1],head_space_from_start_space.m[2][2],head_space_from_start_space.m[2][3],
+         head_space_from_start_space.m[3][0],head_space_from_start_space.m[3][1],head_space_from_start_space.m[3][2],head_space_from_start_space.m[3][3]);
+
+
+//    static bool bchange = true;
+//    static unsigned int prevTimeMs = 0;
+//    unsigned int currentTimeMs = GetTimeNano() * 1e-6;
+//    if(currentTimeMs - prevTimeMs > 5000 ) {
+//        bchange = !bchange;
+//        prevTimeMs = currentTimeMs;
+//    }
+//
+//    gvr_buffer_viewport *viewport = NULL;
+//    std::map<gvr_buffer_viewport *, int>::iterator iter = ViewportMap.begin();
+//    for (; iter != ViewportMap.end(); ++iter) {
+//        gvr_buffer_viewport *viewport = iter->first;
+//        if( bchange) {
+//            gvr_buffer_viewport_set_reprojection(viewport, 0);
+//        }else{
+//            gvr_buffer_viewport_set_reprojection(viewport, 1);
+//        }
+//    }
+
+
+//    gvr_buffer_viewport_list_get_item(list, 0,  viewport);
+//    gvr_buffer_viewport_set_reprojection(viewport, 0);
+//    int size = gvr_buffer_viewport_list_get_size(list);
     gGvrApi.frame_submit(frame, list, head_space_from_start_space);
 }
 
@@ -1158,7 +1211,9 @@ void gvr_swap_chain_resize_buffer(gvr_swap_chain *swap_chain, int32_t index, gvr
 gvr_buffer_viewport_list * gvr_buffer_viewport_list_create(const gvr_context *gvr)
 {
     CLogMessage msg(__FUNCTION__);
-    return gGvrApi.buffer_viewport_list_create(gvr);
+    gvr_buffer_viewport_list * list = gGvrApi.buffer_viewport_list_create(gvr);
+    return list;
+
 }
 
 const gvr_user_prefs * gvr_get_user_prefs(gvr_context *gvr)
@@ -1170,7 +1225,8 @@ const gvr_user_prefs * gvr_get_user_prefs(gvr_context *gvr)
 gvr_buffer_viewport * gvr_buffer_viewport_create(gvr_context *gvr)
 {
     CLogMessage msg(__FUNCTION__);
-    return gGvrApi.buffer_viewport_create(gvr);
+    gvr_buffer_viewport *viewport = gGvrApi.buffer_viewport_create(gvr);
+    return viewport;
 }
 
 gvr_version gvr_get_version()

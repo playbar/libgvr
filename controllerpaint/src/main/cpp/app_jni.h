@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,26 +21,17 @@
 #include <stdint.h>
 
 #define NATIVE_METHOD(return_type, method_name) \
-  JNIEXPORT return_type JNICALL                 \
-      Java_com_mj_test_GVRMainActivity_##method_name
+  JNIEXPORT return_type JNICALL Java_com_mj_test_GVRMainActivity_##method_name
 
 extern "C" {
 
-NATIVE_METHOD(jlong, nativeOnCreate)
-(JNIEnv* env, jobject obj, jobject asset_mgr, jlong gvrContextPtr);
-NATIVE_METHOD(void, nativeOnResume)
-(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
-NATIVE_METHOD(void, nativeOnPause)
-(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
-NATIVE_METHOD(void, nativeOnSurfaceCreated)
-(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
-NATIVE_METHOD(void, nativeOnSurfaceChanged)
-(JNIEnv* env, jobject obj, jint width, jint height,
- jlong controller_paint_jptr);
-NATIVE_METHOD(void, nativeOnDrawFrame)
-(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
-NATIVE_METHOD(void, nativeOnDestroy)
-(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
+NATIVE_METHOD(jlong, nativeOnCreate)(JNIEnv* env, jobject obj, jobject asset_mgr, jlong gvrContextPtr);
+NATIVE_METHOD(void, nativeOnResume)(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
+NATIVE_METHOD(void, nativeOnPause)(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
+NATIVE_METHOD(void, nativeOnSurfaceCreated)(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
+NATIVE_METHOD(void, nativeOnSurfaceChanged)(JNIEnv* env, jobject obj, jint width, jint height, jlong controller_paint_jptr);
+NATIVE_METHOD(void, nativeOnDrawFrame)(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
+NATIVE_METHOD(void, nativeOnDestroy)(JNIEnv* env, jobject obj, jlong controller_paint_jptr);
 }
 
 #endif  // CONTROLLER_PAINT_APP_SRC_MAIN_JNI_APP_JNI_H_  // NOLINT

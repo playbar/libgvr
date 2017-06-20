@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,12 @@ inline DemoApp* ptr(jlong jptr) { return reinterpret_cast<DemoApp*>(jptr); }
 
 }  // namespace
 
-NATIVE_METHOD(jlong, nativeOnCreate)
-(JNIEnv* env, jobject obj, jobject asset_mgr, jlong gvr_context_ptr) {
+NATIVE_METHOD(jlong, nativeOnCreate)(JNIEnv* env, jobject obj, jobject asset_mgr, jlong gvr_context_ptr)
+{
   return jptr(new DemoApp(env, asset_mgr, gvr_context_ptr));
 }
 
-NATIVE_METHOD(void, nativeOnResume)
-(JNIEnv* env, jobject obj, jlong controller_paint_jptr) {
+NATIVE_METHOD(void, nativeOnResume)(JNIEnv* env, jobject obj, jlong controller_paint_jptr) {
   ptr(controller_paint_jptr)->OnResume();
 }
 

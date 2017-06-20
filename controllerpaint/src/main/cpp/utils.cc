@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,8 +178,8 @@ std::array<float, 16> Utils::MatrixToGLArray(const gvr::Mat4f& matrix) {
   return result;
 }
 
-int Utils::LoadRawTextureFromAsset(AAssetManager* asset_mgr, const char* asset_path, int width, int height)
-{
+int Utils::LoadRawTextureFromAsset(
+    AAssetManager* asset_mgr, const char* asset_path, int width, int height) {
   const int bytes_per_pixel = 3;  // RGB
   AAsset* asset = AAssetManager_open(asset_mgr, asset_path, AASSET_MODE_BUFFER);
   CHECK(asset);
