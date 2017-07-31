@@ -265,7 +265,7 @@ class VrCoreSdkClient {
                 return;
             }
 
-            this.helpCenterDialog = UiUtils.showDaydreamHelpCenterDialog(this.context, string.dialog_title_incompatible_phone, string.dialog_message_incompatible_phone, this.closeVrRunnable);
+//            this.helpCenterDialog = UiUtils.showDaydreamHelpCenterDialog(this.context, string.dialog_title_incompatible_phone, string.dialog_message_incompatible_phone, this.closeVrRunnable);
         }
 
     }

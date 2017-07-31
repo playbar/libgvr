@@ -1078,15 +1078,15 @@ void gvr_buffer_viewport_list_set_item(
 //        bchange = !bchange;
 //        prevTimeMs = currentTimeMs;
 //    }
-    gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 0);
+//    gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 0);
 //    if( bchange) {
 //        gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 0);
 //    } else{
 //        gvr_buffer_viewport_set_reprojection(const_cast<gvr_buffer_viewport *>(viewport), 1);
 //    }
 //    ViewportMap.insert(std::pair<gvr_buffer_viewport*, int>(const_cast<gvr_buffer_viewport *>(viewport), index));
-    int re = gvr_buffer_viewport_get_reprojection(viewport);
-    LOGE("re=%d", re);
+//    int re = gvr_buffer_viewport_get_reprojection(viewport);
+//    LOGE("re=%d", re);
     gGvrApi.buffer_viewport_list_set_item(viewport_list, index, viewport);
 }
 
