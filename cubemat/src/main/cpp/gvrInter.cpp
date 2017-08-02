@@ -291,7 +291,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResetTracking(JN
 JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRenderReprojectionThread(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
 }
 
@@ -456,7 +456,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeRe
 JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     gGvrApi.DisplaySynchronizer_nativeUpdate(env, obj, paramLong1, paramLong2, paramInt);
 }
 
@@ -894,7 +894,7 @@ void gvr_bind_default_framebuffer(gvr_context *gvr)
 
 gvr_sizei gvr_get_maximum_effective_render_target_size(const gvr_context *gvr)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.get_maximum_effective_render_target_size(gvr);
 }
 
@@ -942,7 +942,7 @@ void gvr_distort_to_screen(
 gvr_clock_time_point gvr_get_time_point_now()
 {
 //    gvr_clock_time_point re;
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.get_time_point_now();
 }
 
@@ -955,9 +955,14 @@ void gvr_buffer_spec_destroy(gvr_buffer_spec **spec)
 
 gvr_mat4f gvr_get_eye_from_head_matrix(const gvr_context *gvr, const int32_t eye)
 {
-//    gvr_mat4f re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.get_eye_from_head_matrix(gvr, eye);
+    gvr_mat4f re = gGvrApi.get_eye_from_head_matrix(gvr, eye);
+    LOGE("headmatrixmatrix:%0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f",
+         re.m[0][0],re.m[0][1],re.m[0][2],re.m[0][3],
+         re.m[1][0],re.m[1][1],re.m[1][2],re.m[1][3],
+         re.m[2][0],re.m[2][1],re.m[2][2],re.m[2][3],
+         re.m[3][0],re.m[3][1],re.m[3][2],re.m[3][3]);
+//    CLogMessage msg(__FUNCTION__);
+    return re;
 }
 
 gvr_sizei gvr_swap_chain_get_buffer_size(gvr_swap_chain *swap_chain, int32_t index)
@@ -991,7 +996,7 @@ bool gvr_buffer_viewport_equal(const gvr_buffer_viewport *a, const gvr_buffer_vi
 
 void gvr_buffer_viewport_list_get_item(const gvr_buffer_viewport_list *viewport_list, size_t index, gvr_buffer_viewport *viewport)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     gGvrApi.buffer_viewport_list_get_item(viewport_list, index, viewport);
 }
 
@@ -1060,7 +1065,7 @@ void gvr_buffer_viewport_set_reprojection(gvr_buffer_viewport *viewport, int32_t
 
 void gvr_buffer_viewport_set_source_uv(gvr_buffer_viewport *viewport, gvr_rectf uv)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     gGvrApi.buffer_viewport_set_source_uv(viewport, uv);
 }
 
@@ -1069,7 +1074,7 @@ void gvr_buffer_viewport_list_set_item(
         size_t index,
         const gvr_buffer_viewport *viewport)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
 
 //    static bool bchange = true;
 //    static unsigned int prevTimeMs = 0;
@@ -1112,7 +1117,7 @@ gvr_sizei gvr_get_screen_target_size(const gvr_context *gvr)
 gvr_rectf gvr_buffer_viewport_get_source_uv(const gvr_buffer_viewport *viewport)
 {
 //    gvr_rectf re;
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.buffer_viewport_get_source_uv(viewport);
 }
 
@@ -1125,23 +1130,33 @@ gvr_recti gvr_get_window_bounds(const gvr_context *gvr)
 
 gvr_mat4f gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr, const gvr_clock_time_point time)
 {
-//    gvr_mat4f re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.get_head_space_from_start_space_rotation(gvr, time);
+    gvr_mat4f re = gGvrApi.get_head_space_from_start_space_rotation(gvr, time);
+    LOGE("spacerota matrix:%0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f",
+         re.m[0][0],re.m[0][1],re.m[0][2],re.m[0][3],
+         re.m[1][0],re.m[1][1],re.m[1][2],re.m[1][3],
+         re.m[2][0],re.m[2][1],re.m[2][2],re.m[2][3],
+         re.m[3][0],re.m[3][1],re.m[3][2],re.m[3][3]);
+//    CLogMessage msg(__FUNCTION__);
+    return re;
 }
 
 gvr_mat4f gvr_apply_neck_model(const gvr_context *gvr, gvr_mat4f head_space_from_start_space_rotation, float factor)
 {
-//    gvr_mat4f re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.apply_neck_model(gvr, head_space_from_start_space_rotation, factor);
+    gvr_mat4f re = gGvrApi.apply_neck_model(gvr, head_space_from_start_space_rotation, factor);
+    LOGE("neck modelmatrix:%0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f",
+         re.m[0][0],re.m[0][1],re.m[0][2],re.m[0][3],
+         re.m[1][0],re.m[1][1],re.m[1][2],re.m[1][3],
+         re.m[2][0],re.m[2][1],re.m[2][2],re.m[2][3],
+         re.m[3][0],re.m[3][1],re.m[3][2],re.m[3][3]);
+//    CLogMessage msg(__FUNCTION__);
+    return re;
 }
 
 gvr_frame * gvr_swap_chain_acquire_frame(gvr_swap_chain *swap_chain)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     gvr_frame *pfrme = gGvrApi.swap_chain_acquire_frame(swap_chain);
-    LOGE("gvr_swap_chain_acquire_frame gvr_frame:%p", pfrme);
+//    LOGE("gvr_swap_chain_acquire_frame gvr_frame:%p", pfrme);
     return pfrme;
 }
 
@@ -1159,17 +1174,17 @@ void gvr_frame_bind_buffer(gvr_frame *frame, int32_t index)
 
 void gvr_frame_unbind(gvr_frame *frame)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     gGvrApi.frame_unbind(frame);
 }
 
 void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
 //    LOGE("gvr_frame_submit %p", frame);
-    ShowFPS();
+//    ShowFPS();
 
-    LOGE("matrix:%0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f",
+    LOGE("submit    matrix:%0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f, %0.6f",
          head_space_from_start_space.m[0][0],head_space_from_start_space.m[0][1],head_space_from_start_space.m[0][2],head_space_from_start_space.m[0][3],
          head_space_from_start_space.m[1][0],head_space_from_start_space.m[1][1],head_space_from_start_space.m[1][2],head_space_from_start_space.m[1][3],
          head_space_from_start_space.m[2][0],head_space_from_start_space.m[2][1],head_space_from_start_space.m[2][2],head_space_from_start_space.m[2][3],
@@ -1341,8 +1356,8 @@ gvr_sizei gvr_frame_get_buffer_size(const gvr_frame *frame, int32_t index)
 
 int32_t gvr_frame_get_framebuffer_object(const gvr_frame *frame, int32_t index)
 {
-    CLogMessage msg(__FUNCTION__);
-    LOGE("gvr_frame_get_framebuffer_object %p, index:%d", frame, index);
+//    CLogMessage msg(__FUNCTION__);
+//    LOGE("gvr_frame_get_framebuffer_object %p, index:%d", frame, index);
     return gGvrApi.frame_get_framebuffer_object(frame, index);
 }
 
@@ -1456,27 +1471,28 @@ void gvr_controller_state_destroy(gvr_controller_state **state)
 
 void gvr_controller_state_update(gvr_controller_context *api, int32_t flags, gvr_controller_state *out_state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     gGvrApi.controller_state_update(api, flags, out_state);
 }
 
 int32_t gvr_controller_state_get_api_status(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_api_status(state);
 }
 
 int32_t gvr_controller_state_get_connection_state(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_connection_state(state);
 }
 
 gvr_quatf gvr_controller_state_get_orientation(const gvr_controller_state *state)
 {
-//    gvr_quatf re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.controller_state_get_orientation(state);
+    gvr_quatf re = gGvrApi.controller_state_get_orientation(state);
+//    CLogMessage msg(__FUNCTION__);
+    LOGE("orientation   :%0.6f, %0.6f, %0.6f, %0.6f", re.qx, re.qy, re.qz, re.qw);
+    return re;
 }
 
 gvr_vec3f gvr_controller_state_get_position(const gvr_controller_state* state)
@@ -1488,70 +1504,73 @@ gvr_vec3f gvr_controller_state_get_position(const gvr_controller_state* state)
 
 gvr_vec3f gvr_controller_state_get_gyro(const gvr_controller_state *state)
 {
-//    gvr_vec3f re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.controller_state_get_gyro(state);
+    gvr_vec3f re = gGvrApi.controller_state_get_gyro(state);
+//    CLogMessage msg(__FUNCTION__);
+    LOGE("gyro          :%0.6f, %0.6f, %0.6f", re.x, re.y, re.z );
+    return re;
 }
 
 gvr_vec3f gvr_controller_state_get_accel(const gvr_controller_state *state)
 {
-//    gvr_vec3f re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.controller_state_get_accel(state);
+    gvr_vec3f re = gGvrApi.controller_state_get_accel(state);
+//    CLogMessage msg(__FUNCTION__);
+    LOGE("accel         :%0.6f, %0.6f, %0.6f", re.x, re.y, re.z );
+    return re;
 }
 
 bool gvr_controller_state_is_touching(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_is_touching(state);
 }
 
 gvr_vec2f gvr_controller_state_get_touch_pos(const gvr_controller_state *state)
 {
-//    gvr_vec2f re;
-    CLogMessage msg(__FUNCTION__);
-    return gGvrApi.controller_state_get_touch_pos(state);
+    gvr_vec2f re = gGvrApi.controller_state_get_touch_pos(state);
+//    CLogMessage msg(__FUNCTION__);
+    LOGE("pos           :%0.6f, %0.6f", re.x, re.y );
+    return re;
 }
 
 bool gvr_controller_state_get_touch_down(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_touch_down(state);
 }
 
 bool gvr_controller_state_get_touch_up(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_touch_up(state);
 }
 
 bool gvr_controller_state_get_recentered(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_recentered(state);
 }
 
 bool gvr_controller_state_get_recentering(const gvr_controller_state *state)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_recentering(state);
 }
 
 bool gvr_controller_state_get_button_state(const gvr_controller_state *state, int32_t button)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_button_state(state, button);
 }
 
 bool gvr_controller_state_get_button_down(const gvr_controller_state *state, int32_t button)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_button_down(state, button);
 }
 
 bool gvr_controller_state_get_button_up(const gvr_controller_state *state, int32_t button)
 {
-    CLogMessage msg(__FUNCTION__);
+//    CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_button_up(state, button);
 }
 

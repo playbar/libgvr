@@ -18,13 +18,13 @@
       Cancel
     </string>
 <string name="dialog_button_got_it" description=" Button text when the user is prompted with an action but can refuse that action. This communicates that the user has understood the dialog but wishes to take no further action, similar to CANCEL. [CHAR LIMIT=30]">
-    GOT IT
+    好的
   </string>
 <string name="dialog_button_open_help_center" description=" Button text when the user is prompted to open the Daydream Help Center. [CHAR LIMIT=40]">
-    OPEN HELP CENTER
+    帮助
   </string>
 <string name="dialog_message_incompatible_phone" description=" Text shown in a dialog telling the user that their phone is not a Daydream-compatible phone, also directing them to the Daydream Help Center website. [CHAR LIMIT=200]">
-    A Daydream-ready phone is required. Visit the Daydream Help Center for more information.
+   请尝试手动启动暴风魔镜APP或在[智能管理器-应用程序管理-自动运行]中勾选暴风魔镜APP
   </string>
 <string name="dialog_message_no_cardboard" description=" Text shown inside the dialog box that shows up to help users configure their Cardboard experience. This string is displayed when the user doesn't have the cardboard app installed. [CHAR LIMIT=200]">
       Get the Cardboard app in order to configure your viewer.
@@ -33,7 +33,7 @@
       Configure
     </string>
 <string name="dialog_title_incompatible_phone" description=" Short title text for the dialog telling the user that their phone is incompatible. [CHAR LIMIT=30]">
-    Incompatible phone
+    未找到可用服务
   </string>
 <string name="dialog_title_vr_core_not_enabled" description=" Short title text for the dialog telling the user that additional setup is required (for VrCore). [CHAR LIMIT = 30]">
     Setup required
