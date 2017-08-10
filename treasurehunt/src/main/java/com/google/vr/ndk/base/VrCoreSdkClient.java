@@ -31,14 +31,16 @@ import com.google.vr.vrcore.common.api.HeadTrackingState;
 import com.google.vr.vrcore.common.api.IDaydreamManager;
 import com.google.vr.vrcore.common.api.IVrCoreSdkService;
 import com.google.vr.vrcore.common.api.IVrCoreSdkService.Stub;
+import com.google.vr.vrcore.logging.api.IVrCoreLoggingService;
 import java.lang.ref.WeakReference;
 
 class VrCoreSdkClient {
     private static final String TAG = "VrCoreSdkClient";
     private static final boolean DEBUG = false;
     static final int MIN_VRCORE_API_VERSION = 5;
-    static final int TARGET_VRCORE_API_VERSION = 15;
+    static final int TARGET_VRCORE_API_VERSION = 16;
     static final int MIN_PREPARE_VR_2_API_VERSION = 13;
+    static final int MIN_ON_EXITING_FROM_VR_API_VERSION = 16;
     private final Context context;
     private final GvrApi gvrApi;
     private final ComponentName componentName;
@@ -52,21 +54,23 @@ class VrCoreSdkClient {
     private boolean isEnabled = true;
     private IVrCoreSdkService vrCoreSdkService;
     private IDaydreamManager daydreamManager;
+    private IVrCoreLoggingService loggingService;
     private AlertDialog helpCenterDialog;
     private int vrCoreClientApiVersion;
+    private PendingIntent optionalReentryIntent;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName var1, IBinder var2) {
             IVrCoreSdkService var3 = Stub.asInterface(var2);
 
             String var5;
             try {
-                if(!var3.initialize(15)) {
+                if(!var3.initialize(16)) {
                     Log.e("VrCoreSdkClient", "Failed to initialize VrCore SDK Service.");
                     VrCoreSdkClient.this.handleBindFailed();
                     return;
                 }
-            } catch (RemoteException var19) {
-                var5 = String.valueOf(var19);
+            } catch (RemoteException var21) {
+                var5 = String.valueOf(var21);
                 Log.w("VrCoreSdkClient", (new StringBuilder(41 + String.valueOf(var5).length())).append("Failed to initialize VrCore SDK Service: ").append(var5).toString());
                 VrCoreSdkClient.this.handleBindFailed();
                 return;
@@ -83,70 +87,89 @@ class VrCoreSdkClient {
                 }
 
                 VrCoreSdkClient.this.daydreamManager.registerListener(VrCoreSdkClient.this.componentName, VrCoreSdkClient.this.daydreamListener);
-            } catch (RemoteException var18) {
-                var5 = String.valueOf(var18);
+            } catch (RemoteException var20) {
+                var5 = String.valueOf(var20);
                 Log.w("VrCoreSdkClient", (new StringBuilder(57 + String.valueOf(var5).length())).append("Failed to obtain DaydreamManager from VrCore SDK Service:").append(var5).toString());
                 VrCoreSdkClient.this.handleNoDaydreamManager();
                 return;
             }
 
             HeadTrackingState var4 = null;
-            boolean var15 = false;
+            boolean var16 = false;
 
-            HeadTrackingState var20;
-            int var21;
-            label112: {
-                label111: {
-                    try {
-                        var15 = true;
-                        var20 = VrCoreSdkClient.this.getHeadTrackingState();
-                        if(VrCoreSdkClient.this.vrCoreClientApiVersion >= 13) {
-                            int var7 = DaydreamUtils.getComponentDaydreamCompatibility(VrCoreSdkClient.this.context, VrCoreSdkClient.this.componentName);
-                            Intent var8;
-                            (var8 = DaydreamApi.createVrIntent(VrCoreSdkClient.this.componentName)).addFlags(536870912);
-                            PendingIntent var9 = PendingIntent.getActivity(VrCoreSdkClient.this.context, 0, var8, 1073741824);
-                            var21 = VrCoreSdkClient.this.daydreamManager.prepareVr2(VrCoreSdkClient.this.componentName, var7, var9, var20);
-                        } else {
-                            var21 = VrCoreSdkClient.this.daydreamManager.prepareVr(VrCoreSdkClient.this.componentName, var20);
+            String var6;
+            label159: {
+                HeadTrackingState var22;
+                int var23;
+                label139: {
+                    label138: {
+                        try {
+                            var16 = true;
+                            var22 = VrCoreSdkClient.this.getHeadTrackingState();
+                            if(VrCoreSdkClient.this.vrCoreClientApiVersion >= 13) {
+                                int var7 = DaydreamUtils.getComponentDaydreamCompatibility(VrCoreSdkClient.this.context, VrCoreSdkClient.this.componentName);
+                                PendingIntent var8;
+                                if((var8 = VrCoreSdkClient.this.optionalReentryIntent) == null) {
+                                    Intent var9;
+                                    (var9 = DaydreamApi.createVrIntent(VrCoreSdkClient.this.componentName)).addFlags(536870912);
+                                    var8 = PendingIntent.getActivity(VrCoreSdkClient.this.context, 0, var9, 1073741824);
+                                }
+
+                                var23 = VrCoreSdkClient.this.daydreamManager.prepareVr2(VrCoreSdkClient.this.componentName, var7, var8, var22);
+                            } else {
+                                if(VrCoreSdkClient.this.optionalReentryIntent != null) {
+                                    Log.i("VrCoreSdkClient", "Ignoring client re-entry intent; unsupported by current VrCore.");
+                                }
+
+                                var23 = VrCoreSdkClient.this.daydreamManager.prepareVr(VrCoreSdkClient.this.componentName, var22);
+                            }
+
+                            if(var23 != 2) {
+                                var16 = false;
+                                break label139;
+                            }
+
+                            Log.e("VrCoreSdkClient", "Daydream VR preparation failed, closing VR session.");
+                            VrCoreSdkClient.this.handlePrepareVrFailed();
+                            var16 = false;
+                            break label138;
+                        } catch (RemoteException var18) {
+                            var6 = String.valueOf(var18);
+                            Log.w("VrCoreSdkClient", (new StringBuilder(61 + String.valueOf(var6).length())).append("Error while registering listener with the VrCore SDK Service:").append(var6).toString());
+                            var16 = false;
+                        } finally {
+                            if(var16) {
+                                VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);
+                            }
                         }
 
-                        if(var21 != 2) {
-                            var15 = false;
-                            break label112;
-                        }
-
-                        Log.e("VrCoreSdkClient", "Daydream VR preparation failed, closing VR session.");
-                        VrCoreSdkClient.this.handlePrepareVrFailed();
-                        var15 = false;
-                        break label111;
-                    } catch (RemoteException var16) {
-                        String var6 = String.valueOf(var16);
-                        Log.w("VrCoreSdkClient", (new StringBuilder(61 + String.valueOf(var6).length())).append("Error while registering listener with the VrCore SDK Service:").append(var6).toString());
-                        var15 = false;
-                    } finally {
-                        if(var15) {
-                            VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);
-                        }
+                        VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);
+                        break label159;
                     }
 
                     VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);
                     return;
                 }
 
-                VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);
-                return;
+                if(var23 == 0) {
+                    var4 = var22;
+                }
+
+                VrCoreSdkClient.this.resumeTracking(var4);
             }
 
-            if(var21 == 0) {
-                var4 = var20;
+            try {
+                VrCoreSdkClient.this.loggingService = VrCoreSdkClient.this.vrCoreSdkService.getLoggingService();
+            } catch (RemoteException var17) {
+                var6 = String.valueOf(var17);
+                Log.w("VrCoreSdkClient", (new StringBuilder(42 + String.valueOf(var6).length())).append("Error getting logging service from VrCore:").append(var6).toString());
             }
-
-            VrCoreSdkClient.this.resumeTracking(var4);
         }
 
         public void onServiceDisconnected(ComponentName var1) {
             VrCoreSdkClient.this.vrCoreSdkService = null;
             VrCoreSdkClient.this.daydreamManager = null;
+            VrCoreSdkClient.this.loggingService = null;
         }
     };
 
@@ -164,6 +187,10 @@ class VrCoreSdkClient {
 
     IDaydreamManager getDaydreamManager() {
         return this.daydreamManager;
+    }
+
+    IVrCoreLoggingService getLoggingService() {
+        return this.loggingService;
     }
 
     HeadTrackingState getHeadTrackingState() {
@@ -200,13 +227,30 @@ class VrCoreSdkClient {
         }
     }
 
+    public void setReentryIntent(PendingIntent var1) {
+        this.optionalReentryIntent = var1;
+    }
+
+    public void onExitingFromVr() {
+        if(this.daydreamManager != null) {
+            if(this.vrCoreClientApiVersion >= 16) {
+                try {
+                    this.daydreamManager.onExitingFromVr();
+                } catch (RemoteException var3) {
+                    String var2 = String.valueOf(var3);
+                    Log.e("VrCoreSdkClient", (new StringBuilder(41 + String.valueOf(var2).length())).append("Failed to signal exit from VR to VrCore: ").append(var2).toString());
+                }
+            }
+        }
+    }
+
     private boolean doBind() {
         if(this.isBound) {
             return true;
         } else {
             if(this.shouldBind) {
                 Intent var1;
-                (var1 = new Intent("com.google.vr.vrcore.BIND_SDK_SERVICE")).setPackage("com.baofeng.mj");
+                (var1 = new Intent("com.google.vr.vrcore.BIND_SDK_SERVICE")).setPackage("com.google.vr.vrcore");
                 this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
             }
 
@@ -238,6 +282,7 @@ class VrCoreSdkClient {
             }
 
             this.vrCoreSdkService = null;
+            this.loggingService = null;
             this.context.unbindService(this.serviceConnection);
             this.isBound = false;
         }
@@ -297,7 +342,7 @@ class VrCoreSdkClient {
         return false;
     }
 
-    private static final class DaydreamListenerImpl extends com.google.vr.vrcore.common.api.IDaydreamListener.Stub {
+    static final class DaydreamListenerImpl extends com.google.vr.vrcore.common.api.IDaydreamListener.Stub {
         private static final long TRACKING_SAFEGUARD_DELAY_MILLIS = 5000L;
         private static final long FADE_SAFEGUARD_DELAY_MILLIS = 5500L;
         private static final int MSG_TRACKING_RESUME_SAFEGUARD = 1;
@@ -333,7 +378,7 @@ class VrCoreSdkClient {
         }
 
         public final int getTargetApiVersion() throws RemoteException {
-            return 15;
+            return 16;
         }
 
         public final HeadTrackingState requestStopTracking() throws RemoteException {

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.*;
+
 import com.google.vr.sdk.base.CardboardViewNativeImpl;
 import com.google.vr.cardboard.MutableEglConfigChooser;
 import com.google.vr.cardboard.VrParamsProviderJni;

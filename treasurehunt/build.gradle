@@ -13,7 +13,7 @@ android {
         versionName "1.0"
         externalNativeBuild {
             cmake {
-                abiFilters 'armeabi-v7a','arm64-v8a', 'x86'
+                abiFilters 'armeabi-v7a'
             }
         }
     }
@@ -48,7 +48,7 @@ dependencies {
     //    compile(name: 'sdk-common-1.40.0', ext: 'aar')
     //    compile(name: 'sdk-audio-1.40.0', ext: 'aar')
     compile files('libs/protobuf-javanano-3.1.0.jar')
-    compile project(':gvrres')
+    compile project(':gvr16')
     compile files('libs/sdk-audio.jar')
     compile files('libs/sdk-base.jar')
     compile files('libs/sdk-common.jar')
