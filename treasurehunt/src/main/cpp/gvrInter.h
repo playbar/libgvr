@@ -151,8 +151,17 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUpdateSurfaceRep
        JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat);
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled(
         JNIEnv* env, jobject obj, jlong paramLong );
+
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeIsFeatureSupported(
+        JNIEnv* env, jobject obj, jlong paramLong, jint jvar );
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeReconnectSensors(
         JNIEnv* env, jobject obj, jlong paramLong);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetIdleListener(
+        JNIEnv* env, jobject obj, jlong paramLong, jobject jvar);
+
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDisplayMetrics(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2);
 JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeReset(
@@ -181,6 +190,17 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetUserPrefs(
         JNIEnv* env, jobject obj, jlong paramLong);
 JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetControllerHandedness(
         JNIEnv* env, jobject obj, jlong paramLong );
+
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(
+        JNIEnv* env, jobject obj, jlong paramLong );
+
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetPerformanceHudEnabled(
+        JNIEnv* env, jobject obj, jlong paramLong );
+
+JNIEXPORT jlong JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetAnalytics(
+        JNIEnv* env, jobject obj, jlong paramLong );
+
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePause(
         JNIEnv* env, jobject obj, jlong paramLong);
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResume(
@@ -222,11 +242,19 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGet
 
 JNIEXPORT void JNICALL  Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetExternalSurfaceId(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+JNIEXPORT void JNICALL  Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetExternalSurface(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
 JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetReprojection(
          JNIEnv* env, jobject obj, jlong paramLong);
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetReprojection(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceLayer(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportEqual(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
 
@@ -246,9 +274,28 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecGetSamp
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSamples(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceCreate(
+        JNIEnv* env, jobject obj, jlong paramLong);
+
+JNIEXPORT jlong JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceCreateWithListeners(
+        JNIEnv* env, jobject obj, jlong paramLong, jobject var2, jobject var3, jobject var4);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceDestroy(
+        JNIEnv* env, jobject obj, jlong paramLong);
+
+JNIEXPORT jint JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceGetId(
+        JNIEnv* env, jobject obj, jlong paramLong);
+
+JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceGetSurface(
+        JNIEnv* env, jobject obj, jlong paramLong);
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetColorFormat(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt );
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetDepthStencilFormat(
+        JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetMultiviewLayers(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainDestroy(
@@ -274,9 +321,22 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetBufferSi
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat);
+
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingDynamicLibrary(JNIEnv* env, jobject obj);
+
+JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetApplicationState(
+        JNIEnv* env, jobject obj, jobject jclassloader, jobject jcontext);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDynamicLibraryLoadingEnabled(
+        JNIEnv* env, jobject obj, jboolean jvar);
+
 //todo
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking(
         JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTrackingSetState(
+        JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+
 //todo
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDefaultViewerProfile(
         JNIEnv* env, jobject obj, jlong paramLong, jstring paramString);
@@ -289,6 +349,10 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainCreate(
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
         JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRequestContextSharing(
+        JNIEnv* env, jobject obj, jlong paramlong, jobject jvar);
+
 JNIEXPORT jfloatArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
 
@@ -303,6 +367,10 @@ JNIEXPORT jstring JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerMode
 
 JNIEXPORT jbyteArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePauseTracking(
        JNIEnv* env, jobject obj, jlong paramLong );
+
+JNIEXPORT jbyteArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePauseTrackingGetState(
+        JNIEnv* env, jobject obj, jlong paramLong );
+
 
 JNIEXPORT jintArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetWindowBounds(
                 JNIEnv* env, jobject obj, jlong paramLong);

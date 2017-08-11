@@ -133,7 +133,11 @@ typedef void (*FP_GvrApi_nativeUpdateSurfaceReprojectionThread)(JNIEnv* env, job
 
 typedef bool (*FP_GvrApi_nativeGetAsyncReprojectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong);
 
+typedef bool (*FP_GvrApi_nativeIsFeatureSupported)(JNIEnv* env, jobject obj, jlong paramLong, jint jvar );
+
 typedef void (*FP_GvrApi_nativeReconnectSensors)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_GvrApi_nativeSetIdleListener)(JNIEnv* env, jobject obj, jlong paramLong, jobject jvar);
 
 typedef void (*FP_GvrApi_nativeSetDisplayMetrics)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2);
 
@@ -160,6 +164,8 @@ typedef int (*FP_GvrApi_nativeClearError)( JNIEnv* env, jobject obj, jlong param
 typedef long (*FP_GvrApi_nativeGetUserPrefs)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef int (*FP_GvrApi_nativeUserPrefsGetControllerHandedness)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef jboolean (*FP_GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativePause)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -193,9 +199,13 @@ typedef int (*FP_GvrApi_nativeBufferViewportGetExternalSurfaceId)(JNIEnv* env, j
 
 typedef void (*FP_GvrApi_nativeBufferViewportSetExternalSurfaceId)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
+typedef void (*FP_GvrApi_nativeBufferViewportSetExternalSurface)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
 typedef int (*FP_GvrApi_nativeBufferViewportGetReprojection)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferViewportSetReprojection)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_GvrApi_nativeBufferViewportSetSourceLayer)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
 typedef bool (*FP_GvrApi_nativeBufferViewportEqual)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
 
@@ -210,6 +220,8 @@ typedef void (*FP_GvrApi_nativeBufferSpecSetSize)(JNIEnv* env, jobject obj, jlon
 typedef int (*FP_GvrApi_nativeBufferSpecGetSamples)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferSpecSetSamples)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef long (*FP_GvrApi_nativeExternalSurfaceCreate)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferSpecSetColorFormat)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
@@ -593,7 +605,9 @@ public:
     void GvrApi_nativeSetLensOffset(JNIEnv* env, jobject obj, jlong paramLong, jfloat paramFloat1, jfloat paramFloat2);
     void GvrApi_nativeUpdateSurfaceReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat);
     bool GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong);
+    bool GvrApi_nativeIsFeatureSupported(JNIEnv* env, jobject obj, jlong paramLong, jint jvar);
     void GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeSetIdleListener(JNIEnv* env, jobject obj, jlong paramLong, jobject jvar);
     void GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2,
                                         jfloat paramFloat1, jfloat paramFloat2);
     void DisplaySynchronizer_nativeReset(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3);
@@ -608,6 +622,7 @@ public:
     int GvrApi_nativeClearError( JNIEnv* env, jobject obj, jlong paramLong);
     long GvrApi_nativeGetUserPrefs(JNIEnv* env, jobject obj, jlong paramLong);
     int GvrApi_nativeUserPrefsGetControllerHandedness(JNIEnv* env, jobject obj, jlong paramLong);
+    jboolean GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeResume(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong paramLong);
@@ -626,8 +641,10 @@ public:
     void GvrApi_nativeBufferViewportSetSourceBufferIndex(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     int GvrApi_nativeBufferViewportGetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferViewportSetExternalSurfaceId(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferViewportSetExternalSurface(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     int GvrApi_nativeBufferViewportGetReprojection(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferViewportSetReprojection(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferViewportSetSourceLayer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     bool GvrApi_nativeBufferViewportEqual(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
     long GvrApi_nativeBufferSpecCreate(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferSpecDestroy(JNIEnv* env, jobject obj, jlong paramLong);
@@ -635,6 +652,7 @@ public:
     void GvrApi_nativeBufferSpecSetSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jint paramInt2);
     int GvrApi_nativeBufferSpecGetSamples(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    long GvrApi_nativeExternalSurfaceCreate(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong);
@@ -1034,6 +1052,7 @@ private:
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetDepthStencilFormat);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetColorFormat);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetSamples);
+    DEF_VARIABLES(GvrApi_nativeExternalSurfaceCreate);
     DEF_VARIABLES(GvrApi_nativeBufferSpecGetSamples);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetSize);
     DEF_VARIABLES(GvrApi_nativeBufferSpecGetSize);
@@ -1041,8 +1060,10 @@ private:
     DEF_VARIABLES(GvrApi_nativeBufferSpecCreate);
     DEF_VARIABLES(GvrApi_nativeBufferViewportEqual);
     DEF_VARIABLES(GvrApi_nativeBufferViewportSetReprojection);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceLayer);
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetReprojection);
     DEF_VARIABLES(GvrApi_nativeBufferViewportSetExternalSurfaceId);
+    DEF_VARIABLES(GvrApi_nativeBufferViewportSetExternalSurface);
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetExternalSurfaceId);
     DEF_VARIABLES(GvrApi_nativeBufferViewportSetSourceBufferIndex);
     DEF_VARIABLES(GvrApi_nativeBufferViewportGetSourceBufferIndex);
@@ -1059,6 +1080,7 @@ private:
     DEF_VARIABLES(GvrApi_nativeResume);
     DEF_VARIABLES(GvrApi_nativePause);
     DEF_VARIABLES(GvrApi_nativeUserPrefsGetControllerHandedness);
+    DEF_VARIABLES(GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled);
     DEF_VARIABLES(GvrApi_nativeGetUserPrefs);
     DEF_VARIABLES(GvrApi_nativeClearError);
     DEF_VARIABLES(GvrApi_nativeGetError);
@@ -1072,7 +1094,9 @@ private:
     DEF_VARIABLES(DisplaySynchronizer_nativeReset);
     DEF_VARIABLES(GvrApi_nativeSetDisplayMetrics);
     DEF_VARIABLES(GvrApi_nativeReconnectSensors);
+    DEF_VARIABLES(GvrApi_nativeSetIdleListener);
     DEF_VARIABLES(GvrApi_nativeGetAsyncReprojectionEnabled);
+    DEF_VARIABLES(GvrApi_nativeIsFeatureSupported);
     DEF_VARIABLES(GvrApi_nativeUpdateSurfaceReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeSetLensOffset);
     DEF_VARIABLES(GvrApi_nativeSetSurfaceSize);

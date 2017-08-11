@@ -74,8 +74,10 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeSetSurfaceSize  "Java_com_google_vr_ndk_base_GvrApi_nativeSetSurfaceSize"
 #define FN_GvrApi_nativeSetLensOffset          "Java_com_google_vr_ndk_base_GvrApi_nativeSetLensOffset"
 #define FN_GvrApi_nativeUpdateSurfaceReprojectionThread  "Java_com_google_vr_ndk_base_GvrApi_nativeUpdateSurfaceReprojectionThread"
-#define FN_GvrApi_nativeGetAsyncReprojectionEnabled          "Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled"
+#define FN_GvrApi_nativeGetAsyncReprojectionEnabled    "Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled"
+#define FN_GvrApi_nativeIsFeatureSupported              "Java_com_google_vr_ndk_base_GvrApi_nativeIsFeatureSupported"
 #define FN_GvrApi_nativeReconnectSensors  "Java_com_google_vr_ndk_base_GvrApi_nativeReconnectSensors"
+#define FN_GvrApi_nativeSetIdleListener   "Java_com_google_vr_ndk_base_GvrApi_nativeSetIdleListener"
 #define FN_GvrApi_nativeSetDisplayMetrics         "Java_com_google_vr_ndk_base_GvrApi_nativeSetDisplayMetrics"
 #define FN_DisplaySynchronizer_nativeReset  "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeReset"
 #define FN_DisplaySynchronizer_nativeUpdate         "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate"
@@ -89,6 +91,7 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeClearError         "Java_com_google_vr_ndk_base_GvrApi_nativeClearError"
 #define FN_GvrApi_nativeGetUserPrefs  "Java_com_google_vr_ndk_base_GvrApi_nativeGetUserPrefs"
 #define FN_GvrApi_nativeUserPrefsGetControllerHandedness          "Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetControllerHandedness"
+#define FN_GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled "";
 #define FN_GvrApi_nativePause  "Java_com_google_vr_ndk_base_GvrApi_nativePause"
 #define FN_GvrApi_nativeResume         "Java_com_google_vr_ndk_base_GvrApi_nativeResume"
 #define FN_GvrApi_nativeReleaseGvrContext  "Java_com_google_vr_ndk_base_GvrApi_nativeReleaseGvrContext"
@@ -104,9 +107,11 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeBufferViewportGetSourceBufferIndex  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetSourceBufferIndex"
 #define FN_GvrApi_nativeBufferViewportSetSourceBufferIndex         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceBufferIndex"
 #define FN_GvrApi_nativeBufferViewportGetExternalSurfaceId  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetExternalSurfaceId"
-#define FN_GvrApi_nativeBufferViewportSetExternalSurfaceId         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetExternalSurfaceId"
+#define FN_GvrApi_nativeBufferViewportSetExternalSurfaceId   "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetExternalSurfaceId"
+#define FN_GvrApi_nativeBufferViewportSetExternalSurface     "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetExternalSurface"
 #define FN_GvrApi_nativeBufferViewportGetReprojection  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportGetReprojection"
-#define FN_GvrApi_nativeBufferViewportSetReprojection         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetReprojection"
+#define FN_GvrApi_nativeBufferViewportSetReprojection  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetReprojection"
+#define FN_GvrApi_nativeBufferViewportSetSourceLayer   "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceLayer"
 #define FN_GvrApi_nativeBufferViewportEqual  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportEqual"
 #define FN_GvrApi_nativeBufferSpecCreate         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecCreate"
 #define FN_GvrApi_nativeBufferSpecDestroy  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecDestroy"
@@ -520,8 +525,10 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecCreate);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportEqual);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetReprojection);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetSourceLayer);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetReprojection);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetExternalSurfaceId);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetExternalSurface);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetExternalSurfaceId);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportSetSourceBufferIndex);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportGetSourceBufferIndex);
@@ -551,7 +558,9 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,DisplaySynchronizer_nativeReset);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetDisplayMetrics);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeReconnectSensors);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetIdleListener);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetAsyncReprojectionEnabled);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeIsFeatureSupported);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeUpdateSurfaceReprojectionThread);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetLensOffset);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetSurfaceSize);
@@ -784,8 +793,10 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeBufferSpecCreate!= NULL
                 && m_fpGvrApi_nativeBufferViewportEqual!= NULL
                 && m_fpGvrApi_nativeBufferViewportSetReprojection!= NULL
+                && m_fpGvrApi_nativeBufferViewportSetSourceLayer!=NULL
                 && m_fpGvrApi_nativeBufferViewportGetReprojection!= NULL
                 && m_fpGvrApi_nativeBufferViewportSetExternalSurfaceId!= NULL
+                && m_fpGvrApi_nativeBufferViewportSetExternalSurface!= NULL
                 && m_fpGvrApi_nativeBufferViewportGetExternalSurfaceId!= NULL
                 && m_fpGvrApi_nativeBufferViewportSetSourceBufferIndex!= NULL
                 && m_fpGvrApi_nativeBufferViewportGetSourceBufferIndex!= NULL
@@ -815,7 +826,9 @@ bool CGVRAPI::Init()
                 && m_fpDisplaySynchronizer_nativeReset!= NULL
                 && m_fpGvrApi_nativeSetDisplayMetrics!= NULL
                 && m_fpGvrApi_nativeReconnectSensors!= NULL
+                && m_fpGvrApi_nativeSetIdleListener!= NULL
                 && m_fpGvrApi_nativeGetAsyncReprojectionEnabled!= NULL
+                && m_fpGvrApi_nativeIsFeatureSupported != NULL
                 && m_fpGvrApi_nativeUpdateSurfaceReprojectionThread!= NULL
                 && m_fpGvrApi_nativeSetLensOffset!= NULL
                 && m_fpGvrApi_nativeSetSurfaceSize!= NULL
@@ -1055,8 +1068,10 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecCreate);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportEqual);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetReprojection);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetSourceLayer);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetReprojection);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetExternalSurfaceId);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetExternalSurface);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetExternalSurfaceId);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportSetSourceBufferIndex);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportGetSourceBufferIndex);
@@ -1086,7 +1101,9 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(DisplaySynchronizer_nativeReset);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetDisplayMetrics);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeReconnectSensors);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeSetIdleListener);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetAsyncReprojectionEnabled);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeIsFeatureSupported);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeUpdateSurfaceReprojectionThread);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetLensOffset);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetSurfaceSize);
@@ -1339,8 +1356,10 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeBufferSpecCreate = NULL;
     m_fpGvrApi_nativeBufferViewportEqual = NULL;
     m_fpGvrApi_nativeBufferViewportSetReprojection = NULL;
+    m_fpGvrApi_nativeBufferViewportSetSourceLayer = NULL;
     m_fpGvrApi_nativeBufferViewportGetReprojection = NULL;
     m_fpGvrApi_nativeBufferViewportSetExternalSurfaceId = NULL;
+    m_fpGvrApi_nativeBufferViewportSetExternalSurface = NULL;
     m_fpGvrApi_nativeBufferViewportGetExternalSurfaceId = NULL;
     m_fpGvrApi_nativeBufferViewportSetSourceBufferIndex = NULL;
     m_fpGvrApi_nativeBufferViewportGetSourceBufferIndex = NULL;
@@ -1370,7 +1389,9 @@ void CGVRAPI::Release()
     m_fpDisplaySynchronizer_nativeReset = NULL;
     m_fpGvrApi_nativeSetDisplayMetrics = NULL;
     m_fpGvrApi_nativeReconnectSensors = NULL;
+    m_fpGvrApi_nativeSetIdleListener = NULL;
     m_fpGvrApi_nativeGetAsyncReprojectionEnabled = NULL;
+    m_fpGvrApi_nativeIsFeatureSupported = NULL;
     m_fpGvrApi_nativeUpdateSurfaceReprojectionThread = NULL;
     m_fpGvrApi_nativeSetLensOffset = NULL;
     m_fpGvrApi_nativeSetSurfaceSize = NULL;
@@ -1905,6 +1926,16 @@ bool CGVRAPI::GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj,
         re = m_fpGvrApi_nativeGetAsyncReprojectionEnabled( env, obj, paramLong);
     return re;
 }
+
+bool CGVRAPI::GvrApi_nativeIsFeatureSupported(JNIEnv* env, jobject obj, jlong paramLong, jint jvar)
+{
+    Init();
+    bool re = false;
+    if(m_fpGvrApi_nativeIsFeatureSupported)
+        re = m_fpGvrApi_nativeIsFeatureSupported(env, obj, paramLong, jvar);
+    return re;
+}
+
 void CGVRAPI::GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -1912,6 +1943,14 @@ void CGVRAPI::GvrApi_nativeReconnectSensors(JNIEnv* env, jobject obj, jlong para
         m_fpGvrApi_nativeReconnectSensors( env, obj, paramLong);
     return;
 }
+
+void CGVRAPI::GvrApi_nativeSetIdleListener(JNIEnv* env, jobject obj, jlong paramLong, jobject jvar)
+{
+    Init();
+    if(m_fpGvrApi_nativeSetIdleListener)
+        m_fpGvrApi_nativeSetIdleListener(env, obj, paramLong, jvar);
+}
+
 void CGVRAPI::GvrApi_nativeSetDisplayMetrics(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2,
                                     jfloat paramFloat1, jfloat paramFloat2)
 {
@@ -2014,6 +2053,17 @@ int CGVRAPI::GvrApi_nativeUserPrefsGetControllerHandedness(JNIEnv* env, jobject 
         re = m_fpGvrApi_nativeUserPrefsGetControllerHandedness( env, obj, paramLong);
     return re;
 }
+
+jboolean CGVRAPI::GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jboolean re = false;
+    assert(false);
+    if(m_fpGvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled)
+        re = m_fpGvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(env, obj, paramLong);
+    return re;
+}
+
 void CGVRAPI::GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -2135,6 +2185,14 @@ void CGVRAPI::GvrApi_nativeBufferViewportSetExternalSurfaceId(JNIEnv* env, jobje
         m_fpGvrApi_nativeBufferViewportSetExternalSurfaceId( env, obj, paramLong, paramInt );
     return;
 }
+
+void CGVRAPI::GvrApi_nativeBufferViewportSetExternalSurface(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferViewportSetExternalSurface)
+        m_fpGvrApi_nativeBufferViewportSetExternalSurface(env, obj, paramLong, paramInt );
+}
+
 int CGVRAPI::GvrApi_nativeBufferViewportGetReprojection(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -2148,6 +2206,14 @@ void CGVRAPI::GvrApi_nativeBufferViewportSetReprojection(JNIEnv* env, jobject ob
     Init();
     if( m_fpGvrApi_nativeBufferViewportSetReprojection)
         m_fpGvrApi_nativeBufferViewportSetReprojection( env, obj, paramLong, paramInt );
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeBufferViewportSetSourceLayer(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if( m_fpGvrApi_nativeBufferViewportSetSourceLayer)
+        m_fpGvrApi_nativeBufferViewportSetSourceLayer(env, obj, paramLong, paramInt);
     return;
 }
 
@@ -2204,6 +2270,17 @@ void CGVRAPI::GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong 
         m_fpGvrApi_nativeBufferSpecSetSamples( env, obj, paramLong, paramInt );
     return;
 }
+
+long CGVRAPI::GvrApi_nativeExternalSurfaceCreate(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    long re = 0;
+    assert(false);
+    if(m_fpGvrApi_nativeExternalSurfaceCreate)
+        re = m_fpGvrApi_nativeExternalSurfaceCreate(env, obj, paramLong);
+    return re;
+}
+
 void CGVRAPI::GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
 {
     Init();
