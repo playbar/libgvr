@@ -305,16 +305,11 @@ void TreasureHuntRenderer::InitializeGl() {
   LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
 
   int index = multiview_enabled_ ? 1 : 0;
-  const int vertex_shader =
-      LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
-  const int grid_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
-  const int pass_through_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
-  const int reticle_vertex_shader =
-      LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
-  const int reticle_fragment_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
+  const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
+  const int grid_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
+  const int pass_through_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
+  const int reticle_vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
+  const int reticle_fragment_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
 
   cube_program_ = glCreateProgram();
   glAttachShader(cube_program_, vertex_shader);
@@ -328,8 +323,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   cube_model_param_ = glGetUniformLocation(cube_program_, "u_Model");
   cube_modelview_param_ = glGetUniformLocation(cube_program_, "u_MVMatrix");
-  cube_modelview_projection_param_ =
-      glGetUniformLocation(cube_program_, "u_MVP");
+  cube_modelview_projection_param_ = glGetUniformLocation(cube_program_, "u_MVP");
   cube_light_pos_param_ = glGetUniformLocation(cube_program_, "u_LightPos");
 
   CheckGLError("Cube program params");
@@ -348,8 +342,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   floor_model_param_ = glGetUniformLocation(floor_program_, "u_Model");
   floor_modelview_param_ = glGetUniformLocation(floor_program_, "u_MVMatrix");
-  floor_modelview_projection_param_ =
-      glGetUniformLocation(floor_program_, "u_MVP");
+  floor_modelview_projection_param_ = glGetUniformLocation(floor_program_, "u_MVP");
   floor_light_pos_param_ = glGetUniformLocation(floor_program_, "u_LightPos");
 
   CheckGLError("Floor program params");
@@ -411,14 +404,12 @@ void TreasureHuntRenderer::InitializeGl() {
   specs[1].SetSamples(1);
   swapchain_.reset(new gvr::SwapChain(gvr_api_->CreateSwapChain(specs)));
 
-  viewport_list_.reset(
-      new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
+  viewport_list_.reset(new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
 
   // Initialize audio engine and preload sample in a separate thread to avoid
   // any delay during construction and app initialization. Only do this once.
   if (!audio_initialization_thread_.joinable()) {
-    audio_initialization_thread_ =
-        std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
+    audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
   }
 }
 
@@ -571,14 +562,14 @@ void TreasureHuntRenderer::DrawFrame() {
 void TreasureHuntRenderer::PrepareFramebuffer() {
   // Because we are using 2X MSAA, we can render to half as many pixels and
   // achieve similar quality.
-  const gvr::Sizei recommended_size =
-      HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
-  if (render_size_.width != recommended_size.width ||
-      render_size_.height != recommended_size.height) {
+  const gvr::Sizei recommended_size = HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
+  if (render_size_.width != recommended_size.width || render_size_.height != recommended_size.height)
+  {
     // We need to resize the framebuffer. Note that multiview uses two texture
     // layers, each with half the render width.
     gvr::Sizei framebuffer_size = recommended_size;
-    if (multiview_enabled_) {
+    if (multiview_enabled_)
+    {
       framebuffer_size.width /= 2;
     }
     swapchain_->ResizeBuffer(0, framebuffer_size);

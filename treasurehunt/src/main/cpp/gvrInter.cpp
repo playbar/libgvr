@@ -866,6 +866,11 @@ void gvr_buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t dep
     gGvrApi.buffer_spec_set_depth_stencil_format(spec, depth_stencil_format);
 }
 
+void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers)
+{
+    CLogMessage msg(__FUNCTION__);
+}
+
 void gvr_buffer_spec_set_size(gvr_buffer_spec *spec, gvr_sizei size)
 {
     CLogMessage msg(__FUNCTION__);
@@ -893,6 +898,12 @@ void gvr_distort_to_screen(
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.distort_to_screen(gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
+}
+
+bool gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
+{
+    CLogMessage msg(__FUNCTION__);
+
 }
 
 gvr_clock_time_point gvr_get_time_point_now()
@@ -993,6 +1004,11 @@ void gvr_buffer_viewport_set_reprojection(gvr_buffer_viewport *viewport, int32_t
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.buffer_viewport_set_reprojection(viewport, reprojection);
+}
+
+void gvr_buffer_viewport_set_source_layer(gvr_buffer_viewport* viewport, int32_t layer_index)
+{
+    CLogMessage msg(__FUNCTION__);
 }
 
 void gvr_buffer_viewport_set_source_uv(gvr_buffer_viewport *viewport, gvr_rectf uv)

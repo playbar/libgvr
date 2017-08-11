@@ -339,7 +339,7 @@ bool CGVRAPI::Init()
     {
 //        const char *filename = "/data/data/com.mj.test/lib/libgvrimpl.so";
 //        const char *filename = "/data/data/com.Company.Daydream.Controller/lib/libgvrimpl.so";
-        const char *filename = "/data/data/com.mj.vr/lib/libgvrimpl.so";
+        const char *filename = "libgvrimpl.so";
 //        const char *filename = "/sdcard/libgvrimpl.so";
         is_file_exist(filename);
         m_hDLL = dlopen(filename, RTLD_LAZY);

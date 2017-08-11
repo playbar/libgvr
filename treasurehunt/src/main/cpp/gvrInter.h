@@ -326,6 +326,8 @@ void gvr_buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples);
 
 void gvr_buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format);
 
+void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers);
+
 void gvr_buffer_spec_set_size(gvr_buffer_spec *spec, gvr_sizei size);
 
 gvr_buffer_spec * gvr_buffer_spec_create(gvr_context *gvr);
@@ -338,6 +340,8 @@ void gvr_distort_to_screen(
   const gvr_buffer_viewport_list *viewport_list,
   gvr_mat4f head_space_from_start_space,
   gvr_clock_time_point target_presentation_time);
+
+bool gvr_is_feature_supported(const gvr_context* gvr, int32_t feature);
 
 gvr_clock_time_point gvr_get_time_point_now();
 
@@ -369,6 +373,8 @@ int32_t gvr_swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain);
 int32_t gvr_buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport);
 
 void gvr_buffer_viewport_set_reprojection(gvr_buffer_viewport *viewport, int32_t reprojection);
+
+void gvr_buffer_viewport_set_source_layer(gvr_buffer_viewport* viewport, int32_t layer_index);
 
 void gvr_buffer_viewport_set_source_uv(gvr_buffer_viewport *viewport, gvr_rectf uv);
 

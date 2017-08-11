@@ -291,7 +291,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResetTracking(JN
 JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRenderReprojectionThread(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
-//    CLogMessage msg(__FUNCTION__);
+    CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
 }
 
