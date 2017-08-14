@@ -507,8 +507,7 @@ void TreasureHuntRenderer::DrawFrame() {
     modelview_cube_[eye] = MatrixMul(eye_views[eye], model_cube_);
     modelview_floor_[eye] = MatrixMul(eye_views[eye], model_floor_);
     const gvr_rectf fov = viewport[eye]->GetSourceFov();
-    const gvr::Mat4f perspective =
-        PerspectiveMatrixFromView(fov, kZNear, kZFar);
+    const gvr::Mat4f perspective = PerspectiveMatrixFromView(fov, kZNear, kZFar);
     modelview_projection_cube_[eye] =
         MatrixMul(perspective, modelview_cube_[eye]);
     modelview_projection_floor_[eye] =

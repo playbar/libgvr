@@ -5,6 +5,7 @@
 #include "gvrfn.h"
 #include <dlfcn.h>
 #include "gvrglobal.h"
+#include "LogMessage.h"
 #include <unistd.h>
 
 JavaVM *gs_jvm=0;
@@ -27,7 +28,6 @@ CGVRAPI gGvrApi;
 #define FN_CardboardViewNativeImpl_nativeSetDistortionCorrectionScale    "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDistortionCorrectionScale"
 #define FN_CardboardViewNativeImpl_nativeSetMultisampling                  "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetMultisampling"
 #define FN_CardboardViewNativeImpl_nativeSetDepthStencilFormat            "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetDepthStencilFormat"
-#define FN_CardboardViewNativeImpl_nativeUndistortTexture                  "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeUndistortTexture"
 #define FN_CardboardViewNativeImpl_nativeLogEvent                           "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeLogEvent"
 #define FN_CardboardViewNativeImpl_nativeSetGvrViewerParams                "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetGvrViewerParams"
 #define FN_CardboardViewNativeImpl_nativeSetStereoRenderer                 "Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetStereoRenderer"
@@ -66,14 +66,12 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeBufferViewportListGetItem  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListGetItem"
 #define FN_GvrApi_nativeBufferViewportListSetItem          "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListSetItem"
 #define FN_GvrApi_nativeBufferViewportCreate  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportCreate"
-#define FN_GvrApi_nativeRemoveAllSurfacesReprojectionThread         "Java_com_google_vr_ndk_base_GvrApi_nativeRemoveAllSurfacesReprojectionThread"
 #define FN_GvrApi_nativeUsingVrDisplayService  "Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService"
 #define FN_GvrApi_nativeBufferViewportListCreate         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListCreate"
 #define FN_GvrApi_nativeBufferViewportListDestroy  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportListDestroy"
 #define FN_GvrApi_nativeGetBorderSizeMeters          "Java_com_google_vr_ndk_base_GvrApi_nativeGetBorderSizeMeters"
 #define FN_GvrApi_nativeSetSurfaceSize  "Java_com_google_vr_ndk_base_GvrApi_nativeSetSurfaceSize"
 #define FN_GvrApi_nativeSetLensOffset          "Java_com_google_vr_ndk_base_GvrApi_nativeSetLensOffset"
-#define FN_GvrApi_nativeUpdateSurfaceReprojectionThread  "Java_com_google_vr_ndk_base_GvrApi_nativeUpdateSurfaceReprojectionThread"
 #define FN_GvrApi_nativeGetAsyncReprojectionEnabled    "Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled"
 #define FN_GvrApi_nativeIsFeatureSupported              "Java_com_google_vr_ndk_base_GvrApi_nativeIsFeatureSupported"
 #define FN_GvrApi_nativeReconnectSensors  "Java_com_google_vr_ndk_base_GvrApi_nativeReconnectSensors"
@@ -300,7 +298,7 @@ CGVRAPI gGvrApi;
 
 
 #define GET_DLL_FUNCION(DLL , FUNC)  m_fp##FUNC = (FP_##FUNC)dlsym(DLL , FN_##FUNC)
-#define GET_DLL_FUNCION_ERR(FUNC) {if (m_fp##FUNC == NULL ) { LOGW( "Can not get "#FUNC" function pointer");}}
+#define GET_DLL_FUNCION_ERR(FUNC) {if (m_fp##FUNC == NULL ) { LOGE( "Can not get "#FUNC" function pointer");}}
 
 JNIEnv* AttachCurrentThreadJNI()
 {
@@ -589,14 +587,12 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetIdleListener);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetAsyncReprojectionEnabled);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeIsFeatureSupported);
-            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeUpdateSurfaceReprojectionThread);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetLensOffset);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetSurfaceSize);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetBorderSizeMeters);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListDestroy);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListCreate);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeUsingVrDisplayService);
-            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeRemoveAllSurfacesReprojectionThread);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportCreate);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListSetItem);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferViewportListGetItem);
@@ -649,7 +645,6 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetDistortionCorrectionScale);
             GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetMultisampling);
             GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeSetDepthStencilFormat);
-            GET_DLL_FUNCION(m_hDLL,CardboardViewNativeImpl_nativeUndistortTexture);
 
             if (m_fpcreate_with_tracker_for_testing!= NULL
                 && m_fptracker_state_create!= NULL
@@ -871,14 +866,12 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeSetIdleListener!= NULL
                 && m_fpGvrApi_nativeGetAsyncReprojectionEnabled!= NULL
                 && m_fpGvrApi_nativeIsFeatureSupported != NULL
-                && m_fpGvrApi_nativeUpdateSurfaceReprojectionThread!= NULL
                 && m_fpGvrApi_nativeSetLensOffset!= NULL
                 && m_fpGvrApi_nativeSetSurfaceSize!= NULL
                 && m_fpGvrApi_nativeGetBorderSizeMeters!= NULL
                 && m_fpGvrApi_nativeBufferViewportListDestroy!= NULL
                 && m_fpGvrApi_nativeBufferViewportListCreate!= NULL
                 && m_fpGvrApi_nativeUsingVrDisplayService!= NULL
-                && m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread!= NULL
                 && m_fpGvrApi_nativeBufferViewportCreate!= NULL
                 && m_fpGvrApi_nativeBufferViewportListSetItem!= NULL
                 && m_fpGvrApi_nativeBufferViewportListGetItem!= NULL
@@ -931,7 +924,7 @@ bool CGVRAPI::Init()
                 && m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale!= NULL
                 && m_fpCardboardViewNativeImpl_nativeSetMultisampling!= NULL
                 && m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat!= NULL
-                && m_fpCardboardViewNativeImpl_nativeUndistortTexture!= NULL)
+                    )
             {
                  m_bInit = true;
                 LOGI("dlopen success");
@@ -1160,14 +1153,12 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetIdleListener);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetAsyncReprojectionEnabled);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeIsFeatureSupported);
-                GET_DLL_FUNCION_ERR(GvrApi_nativeUpdateSurfaceReprojectionThread);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetLensOffset);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetSurfaceSize);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetBorderSizeMeters);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListDestroy);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListCreate);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeUsingVrDisplayService);
-                GET_DLL_FUNCION_ERR(GvrApi_nativeRemoveAllSurfacesReprojectionThread);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportCreate);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListSetItem);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferViewportListGetItem);
@@ -1220,7 +1211,6 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetDistortionCorrectionScale);
                 GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetMultisampling);
                 GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeSetDepthStencilFormat);
-                GET_DLL_FUNCION_ERR(CardboardViewNativeImpl_nativeUndistortTexture);
                 Release();
             }
         }
@@ -1462,14 +1452,12 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeSetIdleListener = NULL;
     m_fpGvrApi_nativeGetAsyncReprojectionEnabled = NULL;
     m_fpGvrApi_nativeIsFeatureSupported = NULL;
-    m_fpGvrApi_nativeUpdateSurfaceReprojectionThread = NULL;
     m_fpGvrApi_nativeSetLensOffset = NULL;
     m_fpGvrApi_nativeSetSurfaceSize = NULL;
     m_fpGvrApi_nativeGetBorderSizeMeters = NULL;
     m_fpGvrApi_nativeBufferViewportListDestroy = NULL;
     m_fpGvrApi_nativeBufferViewportListCreate = NULL;
     m_fpGvrApi_nativeUsingVrDisplayService = NULL;
-    m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread = NULL;
     m_fpGvrApi_nativeBufferViewportCreate = NULL;
     m_fpGvrApi_nativeBufferViewportListSetItem = NULL;
     m_fpGvrApi_nativeBufferViewportListGetItem = NULL;
@@ -1522,7 +1510,6 @@ void CGVRAPI::Release()
     m_fpCardboardViewNativeImpl_nativeSetDistortionCorrectionScale = NULL;
     m_fpCardboardViewNativeImpl_nativeSetMultisampling = NULL;
     m_fpCardboardViewNativeImpl_nativeSetDepthStencilFormat = NULL;
-    m_fpCardboardViewNativeImpl_nativeUndistortTexture = NULL;
     return;
 }
 
@@ -1633,9 +1620,8 @@ void CGVRAPI::CardboardViewNativeImpl_nativeSetDepthStencilFormat(JNIEnv* env, j
 }
 void CGVRAPI::CardboardViewNativeImpl_nativeUndistortTexture(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
 {
-    Init();
-    if( m_fpCardboardViewNativeImpl_nativeUndistortTexture)
-        m_fpCardboardViewNativeImpl_nativeUndistortTexture( env, obj, paramLong, paramInt);
+    CLogMessage msg(__FUNCTION__);
+    assert(false);
     return;
 }
 void CGVRAPI::CardboardViewNativeImpl_nativeLogEvent(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
@@ -1931,9 +1917,8 @@ long CGVRAPI::GvrApi_nativeBufferViewportCreate(JNIEnv* env, jobject obj, jlong 
 }
 void CGVRAPI::GvrApi_nativeRemoveAllSurfacesReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
 {
-    Init();
-    if( m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread)
-        m_fpGvrApi_nativeRemoveAllSurfacesReprojectionThread( env, obj, paramLong);
+    CLogMessage msg(__FUNCTION__);
+    assert(false);
     return;
 }
 bool CGVRAPI::GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
@@ -1983,9 +1968,8 @@ void CGVRAPI::GvrApi_nativeSetLensOffset(JNIEnv* env, jobject obj, jlong paramLo
 }
 void CGVRAPI::GvrApi_nativeUpdateSurfaceReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong1, jint paramInt1, jint paramInt2, jlong paramLong2, jfloatArray paramArrayOfFloat)
 {
-    Init();
-    if(m_fpGvrApi_nativeUpdateSurfaceReprojectionThread)
-        m_fpGvrApi_nativeUpdateSurfaceReprojectionThread( env, obj, paramLong1, paramInt1, paramInt2, paramLong2, paramArrayOfFloat);
+    CLogMessage msg(__FUNCTION__);
+    assert(false);
     return;
 }
 bool CGVRAPI::GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong)

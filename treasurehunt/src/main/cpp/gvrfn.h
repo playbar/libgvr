@@ -1147,14 +1147,12 @@ private:
     DEF_VARIABLES(GvrApi_nativeSetIdleListener);
     DEF_VARIABLES(GvrApi_nativeGetAsyncReprojectionEnabled);
     DEF_VARIABLES(GvrApi_nativeIsFeatureSupported);
-    DEF_VARIABLES(GvrApi_nativeUpdateSurfaceReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeSetLensOffset);
     DEF_VARIABLES(GvrApi_nativeSetSurfaceSize);
     DEF_VARIABLES(GvrApi_nativeGetBorderSizeMeters);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListDestroy);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListCreate);
     DEF_VARIABLES(GvrApi_nativeUsingVrDisplayService);
-    DEF_VARIABLES(GvrApi_nativeRemoveAllSurfacesReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeBufferViewportCreate);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListSetItem);
     DEF_VARIABLES(GvrApi_nativeBufferViewportListGetItem);
@@ -1207,7 +1205,6 @@ private:
     DEF_VARIABLES(CardboardViewNativeImpl_nativeSetDistortionCorrectionScale);
     DEF_VARIABLES(CardboardViewNativeImpl_nativeSetMultisampling);
     DEF_VARIABLES(CardboardViewNativeImpl_nativeSetDepthStencilFormat);
-    DEF_VARIABLES(CardboardViewNativeImpl_nativeUndistortTexture);
 
 };
 
