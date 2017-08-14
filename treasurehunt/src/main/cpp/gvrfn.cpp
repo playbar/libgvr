@@ -119,8 +119,13 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeBufferSpecSetSize  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSize"
 #define FN_GvrApi_nativeBufferSpecGetSamples         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecGetSamples"
 #define FN_GvrApi_nativeBufferSpecSetSamples  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSamples"
+#define FN_GvrApi_nativeExternalSurfaceCreateWithListeners "Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceCreateWithListeners"
+#define FN_GvrApi_nativeExternalSurfaceDestroy            "Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceDestroy"
+#define FN_GvrApi_nativeExternalSurfaceGetId              "Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceGetId"
+#define FN_GvrApi_nativeExternalSurfaceGetSurface         "Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceGetSurface"
 #define FN_GvrApi_nativeBufferSpecSetColorFormat         "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetColorFormat"
 #define FN_GvrApi_nativeBufferSpecSetDepthStencilFormat  "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetDepthStencilFormat"
+#define FN_GvrApi_nativeBufferSpecSetMultiviewLayers     "Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetMultiviewLayers"
 #define FN_GvrApi_nativeSwapChainDestroy          "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainDestroy"
 #define FN_GvrApi_nativeSwapChainGetBufferCount  "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainGetBufferCount"
 #define FN_GvrApi_nativeSwapChainGetBufferSize   "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainGetBufferSize"
@@ -131,16 +136,22 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeFrameGetFramebufferObject  "Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetFramebufferObject"
 #define FN_GvrApi_nativeFrameGetBufferSize         "Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetBufferSize"
 #define FN_GvrApi_nativeFrameSubmit  "Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit"
+#define FN_GvrApi_nativeUsingDynamicLibrary "Java_com_google_vr_ndk_base_GvrApi_nativeUsingDynamicLibrary"
+#define FN_GvrApi_nativeSetApplicationState "Java_com_google_vr_ndk_base_GvrApi_nativeSetApplicationState"
+#define FN_GvrApi_nativeSetDynamicLibraryLoadingEnabled "Java_com_google_vr_ndk_base_GvrApi_nativeSetDynamicLibraryLoadingEnabled"
 #define FN_GvrApi_nativeResumeTracking         "Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking"
+#define FN_GvrApi_nativeResumeTrackingSetState "Java_com_google_vr_ndk_base_GvrApi_nativeResumeTrackingSetState"
 #define FN_GvrApi_nativeSetDefaultViewerProfile  "Java_com_google_vr_ndk_base_GvrApi_nativeSetDefaultViewerProfile"
 #define FN_GvrApi_nativeSetViewerParams         "Java_com_google_vr_ndk_base_GvrApi_nativeSetViewerParams"
 #define FN_GvrApi_nativeSwapChainCreate  "Java_com_google_vr_ndk_base_GvrApi_nativeSwapChainCreate"
 #define FN_GvrApi_nativeCreate          "Java_com_google_vr_ndk_base_GvrApi_nativeCreate"
+#define FN_GvrApi_nativeRequestContextSharing  "Java_com_google_vr_ndk_base_GvrApi_nativeRequestContextSharing"
 #define FN_GvrApi_nativeComputeDistortedPoint  "Java_com_google_vr_ndk_base_GvrApi_nativeComputeDistortedPoint"
 #define FN_GvrApi_nativeGetErrorString         "Java_com_google_vr_ndk_base_GvrApi_nativeGetErrorString"
 #define FN_GvrApi_nativeGetViewerVendor  "Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerVendor"
 #define FN_GvrApi_nativeGetViewerModel          "Java_com_google_vr_ndk_base_GvrApi_nativeGetViewerModel"
 #define FN_GvrApi_nativePauseTracking  "Java_com_google_vr_ndk_base_GvrApi_nativePauseTracking"
+#define FN_GvrApi_nativePauseTrackingGetState "Java_com_google_vr_ndk_base_GvrApi_nativePauseTrackingGetState"
 #define FN_GvrApi_nativeGetWindowBounds         "Java_com_google_vr_ndk_base_GvrApi_nativeGetWindowBounds"
 #define FN_JNI_OnLoad "JNI_OnLoad"
 
@@ -153,10 +164,12 @@ CGVRAPI gGvrApi;
 #define FN_get_maximum_effective_render_target_size  "gvr_get_maximum_effective_render_target_size"
 #define FN_buffer_spec_set_samples          "gvr_buffer_spec_set_samples"
 #define FN_buffer_spec_set_depth_stencil_format  "gvr_buffer_spec_set_depth_stencil_format"
+#define FN_buffer_spec_set_multiview_layer        "gvr_buffer_spec_set_multiview_layers"
 #define FN_buffer_spec_set_size          "gvr_buffer_spec_set_size"
 #define FN_buffer_spec_create  "gvr_buffer_spec_create"
 #define FN_initialize_gl          "gvr_initialize_gl"
 #define FN_distort_to_screen  "gvr_distort_to_screen"
+#define FN_is_feature_supported "gvr_is_feature_supported"
 #define FN_get_time_point_now          "gvr_get_time_point_now"
 #define FN_set_viewer_params  "gvr_set_viewer_params"
 #define FN_set_display_metrics          "gvr_set_display_metrics"
@@ -174,6 +187,7 @@ CGVRAPI gGvrApi;
 #define FN_buffer_viewport_get_source_fov          "gvr_buffer_viewport_get_source_fov"
 #define FN_swap_chain_get_buffer_count  "gvr_swap_chain_get_buffer_count"
 #define FN_buffer_viewport_get_reprojection          "gvr_buffer_viewport_get_reprojection"
+#define FN_buffer_viewport_set_source_layer         "gvr_buffer_viewport_set_source_layer"
 #define FN_buffer_viewport_set_reprojection  "gvr_buffer_viewport_set_reprojection"
 #define FN_buffer_viewport_set_source_uv         "gvr_buffer_viewport_set_source_uv"
 #define FN_buffer_viewport_list_set_item  "gvr_buffer_viewport_list_set_item"
@@ -464,6 +478,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_set_source_uv);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_set_reprojection);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_get_reprojection);
+            GET_DLL_FUNCION(m_hDLL, buffer_viewport_set_source_layer);
             GET_DLL_FUNCION(m_hDLL,swap_chain_get_buffer_count);
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_get_source_fov);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_get_samples);
@@ -481,10 +496,12 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,set_viewer_params);
             GET_DLL_FUNCION(m_hDLL,get_time_point_now);
             GET_DLL_FUNCION(m_hDLL,distort_to_screen);
+            GET_DLL_FUNCION(m_hDLL, is_feature_supported);
             GET_DLL_FUNCION(m_hDLL,initialize_gl);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_create);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_set_size);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_set_depth_stencil_format);
+            GET_DLL_FUNCION(m_hDLL, buffer_spec_set_multiview_layer);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_set_samples);
             GET_DLL_FUNCION(m_hDLL,get_maximum_effective_render_target_size);
             GET_DLL_FUNCION(m_hDLL,bind_default_framebuffer);
@@ -496,16 +513,22 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,buffer_viewport_list_destroy);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetWindowBounds);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativePauseTracking);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativePauseTrackingGetState);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetViewerModel);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetViewerVendor);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetErrorString);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeComputeDistortedPoint);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeCreate);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeRequestContextSharing);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSwapChainCreate);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetViewerParams);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetDefaultViewerProfile);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeResumeTracking);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeResumeTrackingSetState);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeFrameSubmit);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeUsingDynamicLibrary);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetApplicationState);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetDynamicLibraryLoadingEnabled);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeFrameGetBufferSize);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeFrameGetFramebufferObject);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeFrameUnbind);
@@ -516,8 +539,13 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSwapChainGetBufferCount);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSwapChainDestroy);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetDepthStencilFormat);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetMultiviewLayers);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetColorFormat);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetSamples);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeExternalSurfaceCreateWithListeners);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeExternalSurfaceDestroy);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeExternalSurfaceGetId);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeExternalSurfaceGetSurface);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecGetSamples);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecSetSize);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeBufferSpecGetSize);
@@ -732,6 +760,7 @@ bool CGVRAPI::Init()
                 && m_fpbuffer_viewport_set_source_uv!= NULL
                 && m_fpbuffer_viewport_set_reprojection!= NULL
                 && m_fpbuffer_viewport_get_reprojection!= NULL
+                && m_fpbuffer_viewport_set_source_layer!= NULL
                 && m_fpswap_chain_get_buffer_count!= NULL
                 && m_fpbuffer_viewport_get_source_fov!= NULL
                 && m_fpbuffer_spec_get_samples!= NULL
@@ -749,10 +778,12 @@ bool CGVRAPI::Init()
                 && m_fpset_viewer_params!= NULL
                 && m_fpget_time_point_now!= NULL
                 && m_fpdistort_to_screen!= NULL
+                && m_fpis_feature_supported!= NULL
                 && m_fpinitialize_gl!= NULL
                 && m_fpbuffer_spec_create!= NULL
                 && m_fpbuffer_spec_set_size!= NULL
                 && m_fpbuffer_spec_set_depth_stencil_format!= NULL
+                && m_fpbuffer_spec_set_multiview_layer!= NULL
                 && m_fpbuffer_spec_set_samples!= NULL
                 && m_fpget_maximum_effective_render_target_size!= NULL
                 && m_fpbind_default_framebuffer!= NULL
@@ -764,16 +795,22 @@ bool CGVRAPI::Init()
                 && m_fpbuffer_viewport_list_destroy!= NULL
                 && m_fpGvrApi_nativeGetWindowBounds!= NULL
                 && m_fpGvrApi_nativePauseTracking!= NULL
+                && m_fpGvrApi_nativePauseTrackingGetState!= NULL
                 && m_fpGvrApi_nativeGetViewerModel!= NULL
                 && m_fpGvrApi_nativeGetViewerVendor!= NULL
                 && m_fpGvrApi_nativeGetErrorString!= NULL
                 && m_fpGvrApi_nativeComputeDistortedPoint!= NULL
                 && m_fpGvrApi_nativeCreate!= NULL
+                && m_fpGvrApi_nativeRequestContextSharing!= NULL
                 && m_fpGvrApi_nativeSwapChainCreate!= NULL
                 && m_fpGvrApi_nativeSetViewerParams!= NULL
                 && m_fpGvrApi_nativeSetDefaultViewerProfile!= NULL
                 && m_fpGvrApi_nativeResumeTracking!= NULL
+                && m_fpGvrApi_nativeResumeTrackingSetState!= NULL
                 && m_fpGvrApi_nativeFrameSubmit!= NULL
+                && m_fpGvrApi_nativeUsingDynamicLibrary!= NULL
+                && m_fpGvrApi_nativeSetApplicationState!=NULL
+                && m_fpGvrApi_nativeSetDynamicLibraryLoadingEnabled!=NULL
                 && m_fpGvrApi_nativeFrameGetBufferSize!= NULL
                 && m_fpGvrApi_nativeFrameGetFramebufferObject!= NULL
                 && m_fpGvrApi_nativeFrameUnbind!= NULL
@@ -784,8 +821,13 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeSwapChainGetBufferCount!= NULL
                 && m_fpGvrApi_nativeSwapChainDestroy!= NULL
                 && m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat!= NULL
+                && m_fpGvrApi_nativeBufferSpecSetMultiviewLayers!=NULL
                 && m_fpGvrApi_nativeBufferSpecSetColorFormat!= NULL
                 && m_fpGvrApi_nativeBufferSpecSetSamples!= NULL
+                && m_fpGvrApi_nativeExternalSurfaceCreateWithListeners!= NULL
+                && m_fpGvrApi_nativeExternalSurfaceDestroy!=NULL
+                && m_fpGvrApi_nativeExternalSurfaceGetId!=NULL
+                && m_fpGvrApi_nativeExternalSurfaceGetSurface!=NULL
                 && m_fpGvrApi_nativeBufferSpecGetSamples!= NULL
                 && m_fpGvrApi_nativeBufferSpecSetSize!= NULL
                 && m_fpGvrApi_nativeBufferSpecGetSize!= NULL
@@ -1007,6 +1049,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(buffer_viewport_set_source_uv);
                 GET_DLL_FUNCION_ERR(buffer_viewport_set_reprojection);
                 GET_DLL_FUNCION_ERR(buffer_viewport_get_reprojection);
+                GET_DLL_FUNCION_ERR(buffer_viewport_set_source_layer);
                 GET_DLL_FUNCION_ERR(swap_chain_get_buffer_count);
                 GET_DLL_FUNCION_ERR(buffer_viewport_get_source_fov);
                 GET_DLL_FUNCION_ERR(buffer_spec_get_samples);
@@ -1024,10 +1067,12 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(set_viewer_params);
                 GET_DLL_FUNCION_ERR(get_time_point_now);
                 GET_DLL_FUNCION_ERR(distort_to_screen);
+                GET_DLL_FUNCION_ERR(is_feature_supported);
                 GET_DLL_FUNCION_ERR(initialize_gl);
                 GET_DLL_FUNCION_ERR(buffer_spec_create);
                 GET_DLL_FUNCION_ERR(buffer_spec_set_size);
                 GET_DLL_FUNCION_ERR(buffer_spec_set_depth_stencil_format);
+                GET_DLL_FUNCION_ERR(buffer_spec_set_multiview_layer);
                 GET_DLL_FUNCION_ERR(buffer_spec_set_samples);
                 GET_DLL_FUNCION_ERR(get_maximum_effective_render_target_size);
                 GET_DLL_FUNCION_ERR(bind_default_framebuffer);
@@ -1039,16 +1084,22 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(buffer_viewport_list_destroy);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetWindowBounds);
                 GET_DLL_FUNCION_ERR(GvrApi_nativePauseTracking);
+                GET_DLL_FUNCION_ERR(GvrApi_nativePauseTrackingGetState);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetViewerModel);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetViewerVendor);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetErrorString);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeComputeDistortedPoint);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeCreate);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeRequestContextSharing);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSwapChainCreate);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetViewerParams);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetDefaultViewerProfile);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeResumeTracking);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeResumeTrackingSetState);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeFrameSubmit);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeUsingDynamicLibrary);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeSetApplicationState);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeSetDynamicLibraryLoadingEnabled);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeFrameGetBufferSize);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeFrameGetFramebufferObject);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeFrameUnbind);
@@ -1059,8 +1110,13 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSwapChainGetBufferCount);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSwapChainDestroy);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetDepthStencilFormat);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetMultiviewLayers);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetColorFormat);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetSamples);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeExternalSurfaceCreateWithListeners);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeExternalSurfaceDestroy);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeExternalSurfaceGetId);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeExternalSurfaceGetSurface);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecGetSamples);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecSetSize);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeBufferSpecGetSize);
@@ -1295,6 +1351,7 @@ void CGVRAPI::Release()
     m_fpbuffer_viewport_set_source_uv = NULL;
     m_fpbuffer_viewport_set_reprojection = NULL;
     m_fpbuffer_viewport_get_reprojection = NULL;
+    m_fpbuffer_viewport_set_source_layer = NULL;
     m_fpswap_chain_get_buffer_count = NULL;
     m_fpbuffer_viewport_get_source_fov = NULL;
     m_fpbuffer_spec_get_samples = NULL;
@@ -1312,10 +1369,12 @@ void CGVRAPI::Release()
     m_fpset_viewer_params = NULL;
     m_fpget_time_point_now = NULL;
     m_fpdistort_to_screen = NULL;
+    m_fpis_feature_supported = NULL;
     m_fpinitialize_gl = NULL;
     m_fpbuffer_spec_create = NULL;
     m_fpbuffer_spec_set_size = NULL;
     m_fpbuffer_spec_set_depth_stencil_format = NULL;
+    m_fpbuffer_spec_set_multiview_layer = NULL;
     m_fpbuffer_spec_set_samples = NULL;
     m_fpget_maximum_effective_render_target_size = NULL;
     m_fpbind_default_framebuffer = NULL;
@@ -1327,16 +1386,22 @@ void CGVRAPI::Release()
     m_fpbuffer_viewport_list_destroy = NULL;
     m_fpGvrApi_nativeGetWindowBounds = NULL;
     m_fpGvrApi_nativePauseTracking = NULL;
+    m_fpGvrApi_nativePauseTrackingGetState = NULL;
     m_fpGvrApi_nativeGetViewerModel = NULL;
     m_fpGvrApi_nativeGetViewerVendor = NULL;
     m_fpGvrApi_nativeGetErrorString = NULL;
     m_fpGvrApi_nativeComputeDistortedPoint = NULL;
     m_fpGvrApi_nativeCreate = NULL;
+    m_fpGvrApi_nativeRequestContextSharing = NULL;
     m_fpGvrApi_nativeSwapChainCreate = NULL;
     m_fpGvrApi_nativeSetViewerParams = NULL;
     m_fpGvrApi_nativeSetDefaultViewerProfile = NULL;
     m_fpGvrApi_nativeResumeTracking = NULL;
+    m_fpGvrApi_nativeResumeTrackingSetState = NULL;
     m_fpGvrApi_nativeFrameSubmit = NULL;
+    m_fpGvrApi_nativeUsingDynamicLibrary = NULL;
+    m_fpGvrApi_nativeSetApplicationState = NULL;
+    m_fpGvrApi_nativeSetDynamicLibraryLoadingEnabled = NULL;
     m_fpGvrApi_nativeFrameGetBufferSize = NULL;
     m_fpGvrApi_nativeFrameGetFramebufferObject = NULL;
     m_fpGvrApi_nativeFrameUnbind = NULL;
@@ -1347,8 +1412,13 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeSwapChainGetBufferCount = NULL;
     m_fpGvrApi_nativeSwapChainDestroy = NULL;
     m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat = NULL;
+    m_fpGvrApi_nativeBufferSpecSetMultiviewLayers = NULL;
     m_fpGvrApi_nativeBufferSpecSetColorFormat = NULL;
     m_fpGvrApi_nativeBufferSpecSetSamples = NULL;
+    m_fpGvrApi_nativeExternalSurfaceCreateWithListeners = NULL;
+    m_fpGvrApi_nativeExternalSurfaceDestroy = NULL;
+    m_fpGvrApi_nativeExternalSurfaceGetId = NULL;
+    m_fpGvrApi_nativeExternalSurfaceGetSurface = NULL;
     m_fpGvrApi_nativeBufferSpecGetSamples = NULL;
     m_fpGvrApi_nativeBufferSpecSetSize = NULL;
     m_fpGvrApi_nativeBufferSpecGetSize = NULL;
@@ -2281,6 +2351,41 @@ long CGVRAPI::GvrApi_nativeExternalSurfaceCreate(JNIEnv* env, jobject obj, jlong
     return re;
 }
 
+long CGVRAPI::GvrApi_nativeExternalSurfaceCreateWithListeners(JNIEnv* env, jobject obj, jlong paramLong, jobject var2, jobject var3, jobject var4)
+{
+    Init();
+    long re = 0;
+    if( m_fpGvrApi_nativeExternalSurfaceCreateWithListeners)
+        re = m_fpGvrApi_nativeExternalSurfaceCreateWithListeners(env, obj, paramLong, var2, var3, var4);
+    return re;
+}
+
+void CGVRAPI::GvrApi_nativeExternalSurfaceDestroy( JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    if( m_fpGvrApi_nativeExternalSurfaceDestroy)
+        m_fpGvrApi_nativeExternalSurfaceDestroy(env, obj, paramLong);
+    return;
+}
+
+jint CGVRAPI::GvrApi_nativeExternalSurfaceGetId(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jint re = 0;
+    if( m_fpGvrApi_nativeExternalSurfaceGetId)
+        re = m_fpGvrApi_nativeExternalSurfaceGetId(env, obj, paramLong);
+    return re;
+}
+
+jobject CGVRAPI::GvrApi_nativeExternalSurfaceGetSurface(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jobject re = NULL;
+    if(m_fpGvrApi_nativeExternalSurfaceGetSurface)
+        re = m_fpGvrApi_nativeExternalSurfaceGetSurface(env, obj, paramLong);
+    return re;
+}
+
 void CGVRAPI::GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
 {
     Init();
@@ -2295,6 +2400,15 @@ void CGVRAPI::GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject 
         m_fpGvrApi_nativeBufferSpecSetDepthStencilFormat(env, obj, paramLong, paramInt );
     return;
 }
+
+void CGVRAPI::GvrApi_nativeBufferSpecSetMultiviewLayers( JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
+{
+    Init();
+    if(m_fpGvrApi_nativeBufferSpecSetMultiviewLayers)
+        m_fpGvrApi_nativeBufferSpecSetMultiviewLayers(env, obj, paramLong, paramInt);
+    return;
+}
+
 void CGVRAPI::GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -2368,6 +2482,32 @@ void CGVRAPI::GvrApi_nativeFrameSubmit(JNIEnv* env, jobject obj, jlong paramLong
         m_fpGvrApi_nativeFrameSubmit( env, obj, paramLong1, paramLong2, paramArrayOfFloat);
     return;
 }
+
+jboolean CGVRAPI::GvrApi_nativeUsingDynamicLibrary(JNIEnv* env, jobject obj)
+{
+    Init();
+    jboolean re = false;
+    if(m_fpGvrApi_nativeUsingDynamicLibrary)
+        re = m_fpGvrApi_nativeUsingDynamicLibrary(env, obj);
+    return re;
+}
+
+void CGVRAPI::GvrApi_nativeSetApplicationState(JNIEnv* env, jobject obj, jobject jclassloader, jobject jcontext)
+{
+    Init();
+    if(m_fpGvrApi_nativeSetApplicationState)
+        m_fpGvrApi_nativeSetApplicationState(env, obj, jclassloader, jcontext);
+    return;
+}
+
+void CGVRAPI::GvrApi_nativeSetDynamicLibraryLoadingEnabled(JNIEnv* env, jobject obj, jboolean jvar)
+{
+    Init();
+    if(m_fpGvrApi_nativeSetDynamicLibraryLoadingEnabled)
+        m_fpGvrApi_nativeSetDynamicLibraryLoadingEnabled(env, obj, jvar);
+    return;
+}
+
 void CGVRAPI::GvrApi_nativeResumeTracking(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
 {
     Init();
@@ -2375,6 +2515,15 @@ void CGVRAPI::GvrApi_nativeResumeTracking(JNIEnv* env, jobject obj, jlong paramL
         m_fpGvrApi_nativeResumeTracking( env, obj, paramLong, paramArrayOfByte );
     return;
 }
+
+void CGVRAPI::GvrApi_nativeResumeTrackingSetState(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
+{
+    Init();
+    if(m_fpGvrApi_nativeResumeTrackingSetState)
+        m_fpGvrApi_nativeResumeTrackingSetState(env, obj, paramLong, paramArrayOfByte);
+    return;
+}
+
 bool CGVRAPI::GvrApi_nativeSetDefaultViewerProfile(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString)
 {
     Init();
@@ -2408,6 +2557,15 @@ long CGVRAPI::GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLo
         re = m_fpGvrApi_nativeCreate( env, obj, paramClassLoader, paramContext, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
     return re;
 }
+
+void CGVRAPI::GvrApi_nativeRequestContextSharing(JNIEnv* env, jobject obj, jlong paramlong, jobject jvar)
+{
+    Init();
+    if(m_fpGvrApi_nativeRequestContextSharing)
+        m_fpGvrApi_nativeRequestContextSharing(env, obj, paramlong, jvar);
+    return;
+}
+
 jfloatArray CGVRAPI::GvrApi_nativeComputeDistortedPoint(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat)
 {
     Init();
@@ -2448,6 +2606,16 @@ jbyteArray CGVRAPI::GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong 
         re = m_fpGvrApi_nativePauseTracking( env, obj, paramLong);
     return re;
 }
+
+jbyteArray CGVRAPI::GvrApi_nativePauseTrackingGetState(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jbyteArray re = 0;
+    if(m_fpGvrApi_nativePauseTrackingGetState)
+        re = m_fpGvrApi_nativePauseTrackingGetState(env, obj, paramLong);
+    return re;
+}
+
 jintArray CGVRAPI::GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
@@ -2530,6 +2698,15 @@ void CGVRAPI::buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_
         m_fpbuffer_spec_set_depth_stencil_format(spec, depth_stencil_format);
     return;
 }
+
+void CGVRAPI::buffer_spec_set_multiview_layer(gvr_buffer_spec* spec, int32_t num_layers)
+{
+    Init();
+    if(m_fpbuffer_spec_set_multiview_layer)
+        m_fpbuffer_spec_set_multiview_layer(spec, num_layers);
+    return;
+}
+
 void CGVRAPI::buffer_spec_set_size( gvr_buffer_spec *spec, gvr_sizei size)
 {
     Init();
@@ -2563,6 +2740,17 @@ void CGVRAPI::distort_to_screen(gvr_context *gvr,
         m_fpdistort_to_screen( gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
     return;
 }
+
+bool CGVRAPI::is_feature_supported(const gvr_context* gvr, int32_t feature)
+{
+    Init();
+    bool re = false;
+    if(m_fpis_feature_supported)
+        re = m_fpis_feature_supported(gvr, feature);
+    return re;
+}
+
+
 gvr_clock_time_point CGVRAPI::get_time_point_now()
 {
     Init();
@@ -2711,6 +2899,15 @@ void CGVRAPI::buffer_viewport_set_reprojection(  gvr_buffer_viewport *viewport, 
         m_fpbuffer_viewport_set_reprojection( viewport, reprojection );
     return;
 }
+
+void CGVRAPI::buffer_viewport_set_source_layer(gvr_buffer_viewport* viewport, int32_t layer_index)
+{
+    Init();
+    if(m_fpbuffer_viewport_set_source_layer)
+        m_fpbuffer_viewport_set_source_layer(viewport, layer_index);
+    return;
+}
+
 void CGVRAPI::buffer_viewport_set_source_uv(  gvr_buffer_viewport *viewport, gvr_rectf uv)
 {
     Init();

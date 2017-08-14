@@ -221,11 +221,21 @@ typedef int (*FP_GvrApi_nativeBufferSpecGetSamples)(JNIEnv* env, jobject obj, jl
 
 typedef void (*FP_GvrApi_nativeBufferSpecSetSamples)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
+typedef long (*FP_GvrApi_nativeExternalSurfaceCreateWithListeners)(JNIEnv* env, jobject obj, jlong paramLong, jobject var2, jobject var3, jobject var4);
+
+typedef void (*FP_GvrApi_nativeExternalSurfaceDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef jint (*FP_GvrApi_nativeExternalSurfaceGetId)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef jobject (*FP_GvrApi_nativeExternalSurfaceGetSurface)(JNIEnv* env, jobject obj, jlong paramLong);
+
 typedef long (*FP_GvrApi_nativeExternalSurfaceCreate)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeBufferSpecSetColorFormat)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
 typedef void (*FP_GvrApi_nativeBufferSpecSetDepthStencilFormat)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+
+typedef void (*FP_GvrApi_nativeBufferSpecSetMultiviewLayers)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
 
 typedef void (*FP_GvrApi_nativeSwapChainDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -247,7 +257,15 @@ typedef void (*FP_GvrApi_nativeFrameGetBufferSize)(JNIEnv* env, jobject obj, jlo
 
 typedef void (*FP_GvrApi_nativeFrameSubmit)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat);
 
+typedef jboolean (*FP_GvrApi_nativeUsingDynamicLibrary)(JNIEnv* env, jobject obj);
+
+typedef void (*FP_GvrApi_nativeSetApplicationState)(JNIEnv* env, jobject obj, jobject jclassloader, jobject jcontext);
+
+typedef void (*FP_GvrApi_nativeSetDynamicLibraryLoadingEnabled)(JNIEnv* env, jobject obj, jboolean jvar);
+
 typedef void (*FP_GvrApi_nativeResumeTracking)(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+
+typedef void (*FP_GvrApi_nativeResumeTrackingSetState)( JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
 
 typedef bool (*FP_GvrApi_nativeSetDefaultViewerProfile)(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString);
 
@@ -256,6 +274,8 @@ typedef bool (*FP_GvrApi_nativeSetViewerParams)( JNIEnv* env, jobject obj, jlong
 typedef long (*FP_GvrApi_nativeSwapChainCreate)(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
 
 typedef long (*FP_GvrApi_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
+
+typedef void (*FP_GvrApi_nativeRequestContextSharing)(JNIEnv* env, jobject obj, jlong paramlong, jobject jvar);
 
 typedef jfloatArray (*FP_GvrApi_nativeComputeDistortedPoint)(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
 
@@ -266,6 +286,8 @@ typedef jstring (*FP_GvrApi_nativeGetViewerVendor)(JNIEnv* env, jobject obj, jlo
 typedef jstring (*FP_GvrApi_nativeGetViewerModel)( JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef jbyteArray (*FP_GvrApi_nativePauseTracking)( JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef jbyteArray (*FP_GvrApi_nativePauseTrackingGetState)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef jintArray (*FP_GvrApi_nativeGetWindowBounds)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -287,6 +309,8 @@ typedef void (*FP_buffer_spec_set_samples)( gvr_buffer_spec *spec, int32_t num_s
 
 typedef void (*FP_buffer_spec_set_depth_stencil_format)( gvr_buffer_spec *spec, int32_t depth_stencil_format);
 
+typedef void (*FP_buffer_spec_set_multiview_layer)(gvr_buffer_spec* spec, int32_t num_layers);
+
 typedef void (*FP_buffer_spec_set_size)( gvr_buffer_spec *spec, gvr_sizei size);
 
 typedef gvr_buffer_spec * (*FP_buffer_spec_create)( gvr_context *gvr);
@@ -298,6 +322,8 @@ typedef void (*FP_distort_to_screen)( gvr_context *gvr,
                                        const gvr_buffer_viewport_list *viewport_list,
                                        gvr_mat4f head_space_from_start_space,
                                        gvr_clock_time_point target_presentation_time);
+
+typedef bool (*FP_is_feature_supported)(const gvr_context* gvr, int32_t feature);
 
 typedef gvr_clock_time_point (*FP_get_time_point_now)();
 
@@ -341,8 +367,9 @@ typedef int32_t (*FP_swap_chain_get_buffer_count)(const gvr_swap_chain *swap_cha
 
 typedef int32_t (*FP_buffer_viewport_get_reprojection)(const gvr_buffer_viewport *viewport);
 
-typedef void (*FP_buffer_viewport_set_reprojection)(  gvr_buffer_viewport *viewport,
-                                                      int32_t reprojection);
+typedef void (*FP_buffer_viewport_set_reprojection)(  gvr_buffer_viewport *viewport, int32_t reprojection);
+
+typedef void (*FP_buffer_viewport_set_source_layer)(gvr_buffer_viewport* viewport, int32_t layer_index);
 
 typedef void (*FP_buffer_viewport_set_source_uv)(  gvr_buffer_viewport *viewport,
                                                    gvr_rectf uv);
@@ -653,8 +680,13 @@ public:
     int GvrApi_nativeBufferSpecGetSamples(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferSpecSetSamples(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     long GvrApi_nativeExternalSurfaceCreate(JNIEnv* env, jobject obj, jlong paramLong);
+    long GvrApi_nativeExternalSurfaceCreateWithListeners(JNIEnv* env, jobject obj, jlong paramLong, jobject var2, jobject var3, jobject var4);
+    void GvrApi_nativeExternalSurfaceDestroy( JNIEnv* env, jobject obj, jlong paramLong);
+    jint GvrApi_nativeExternalSurfaceGetId(JNIEnv* env, jobject obj, jlong paramLong);
+    jobject GvrApi_nativeExternalSurfaceGetSurface(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeBufferSpecSetColorFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void GvrApi_nativeBufferSpecSetDepthStencilFormat(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
+    void GvrApi_nativeBufferSpecSetMultiviewLayers( JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void GvrApi_nativeSwapChainDestroy(JNIEnv* env, jobject obj, jlong paramLong);
     int GvrApi_nativeSwapChainGetBufferCount(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeSwapChainGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
@@ -665,17 +697,23 @@ public:
     int GvrApi_nativeFrameGetFramebufferObject(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void GvrApi_nativeFrameGetBufferSize(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint);
     void GvrApi_nativeFrameSubmit(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat);
+    jboolean GvrApi_nativeUsingDynamicLibrary(JNIEnv* env, jobject obj);
+    void GvrApi_nativeSetApplicationState(JNIEnv* env, jobject obj, jobject jclassloader, jobject jcontext);
+    void GvrApi_nativeSetDynamicLibraryLoadingEnabled(JNIEnv* env, jobject obj, jboolean jvar);
     void GvrApi_nativeResumeTracking(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
+    void GvrApi_nativeResumeTrackingSetState(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
     bool GvrApi_nativeSetDefaultViewerProfile(JNIEnv* env, jobject obj, jlong paramLong, jstring paramString);
     bool GvrApi_nativeSetViewerParams(JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte);
     long GvrApi_nativeSwapChainCreate(JNIEnv* env, jobject obj, jlong paramLong, jlongArray paramArrayOfLong);
     long GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
                              jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker);
+    void GvrApi_nativeRequestContextSharing(JNIEnv* env, jobject obj, jlong paramlong, jobject jvar);
     jfloatArray GvrApi_nativeComputeDistortedPoint(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jfloatArray paramArrayOfFloat);
     jstring GvrApi_nativeGetErrorString(JNIEnv* env, jobject obj, jint paramInt);
     jstring GvrApi_nativeGetViewerVendor(JNIEnv* env, jobject obj, jlong paramLong);
     jstring GvrApi_nativeGetViewerModel( JNIEnv* env, jobject obj, jlong paramLong);
     jbyteArray GvrApi_nativePauseTracking( JNIEnv* env, jobject obj, jlong paramLong);
+    jbyteArray GvrApi_nativePauseTrackingGetState(JNIEnv* env, jobject obj, jlong paramLong);
     jintArray GvrApi_nativeGetWindowBounds(JNIEnv* env, jobject obj, jlong paramLong);
     jint JNI_OnLoad(JavaVM* vm, void* reserved);
     void buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
@@ -687,6 +725,7 @@ public:
     gvr_sizei get_maximum_effective_render_target_size(const gvr_context *gvr);
     void buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples);
     void buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format);
+    void buffer_spec_set_multiview_layer(gvr_buffer_spec* spec, int32_t num_layers);
     void buffer_spec_set_size( gvr_buffer_spec *spec, gvr_sizei size);
     gvr_buffer_spec* buffer_spec_create( gvr_context *gvr);
     void initialize_gl(gvr_context *gvr);
@@ -695,6 +734,7 @@ public:
                            const gvr_buffer_viewport_list *viewport_list,
                            gvr_mat4f head_space_from_start_space,
                            gvr_clock_time_point target_presentation_time);
+    bool is_feature_supported(const gvr_context* gvr, int32_t feature);
     gvr_clock_time_point get_time_point_now();
     int set_viewer_params(int *a1, const void *a2, size_t a3);
     int set_display_metrics(int *a1, int a2, int a3, int a4, int a5, int a6);
@@ -721,16 +761,12 @@ public:
     gvr_rectf buffer_viewport_get_source_fov(const gvr_buffer_viewport *viewport);
     int32_t swap_chain_get_buffer_count(const gvr_swap_chain *swap_chain);
     int32_t buffer_viewport_get_reprojection(const gvr_buffer_viewport *viewport);
-    void buffer_viewport_set_reprojection(  gvr_buffer_viewport *viewport,
-                                            int32_t reprojection);
-    void buffer_viewport_set_source_uv(  gvr_buffer_viewport *viewport,
-                                         gvr_rectf uv);
-    void buffer_viewport_list_set_item(  gvr_buffer_viewport_list *viewport_list,
-                                         size_t index,
-                                         const gvr_buffer_viewport *viewport);
+    void buffer_viewport_set_reprojection(  gvr_buffer_viewport *viewport, int32_t reprojection);
+    void buffer_viewport_set_source_layer(gvr_buffer_viewport* viewport, int32_t layer_index);
+    void buffer_viewport_set_source_uv(  gvr_buffer_viewport *viewport, gvr_rectf uv);
+    void buffer_viewport_list_set_item(  gvr_buffer_viewport_list *viewport_list, size_t index, const gvr_buffer_viewport *viewport);
     int32_t user_prefs_get_controller_handedness(const gvr_user_prefs *user_prefs);
-    void get_screen_buffer_viewports(  const gvr_context *gvr,
-                                       gvr_buffer_viewport_list *viewport_list);
+    void get_screen_buffer_viewports(  const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list);
     gvr_sizei get_screen_target_size(const gvr_context *gvr);
     gvr_rectf buffer_viewport_get_source_uv(const gvr_buffer_viewport *viewport);
     gvr_recti get_window_bounds(const gvr_context *gvr);
@@ -997,6 +1033,7 @@ private:
     DEF_VARIABLES(buffer_viewport_list_set_item);
     DEF_VARIABLES(buffer_viewport_set_source_uv);
     DEF_VARIABLES(buffer_viewport_set_reprojection);
+    DEF_VARIABLES(buffer_viewport_set_source_layer);
     DEF_VARIABLES(buffer_viewport_get_reprojection);
     DEF_VARIABLES(swap_chain_get_buffer_count);
     DEF_VARIABLES(buffer_viewport_get_source_fov);
@@ -1015,10 +1052,12 @@ private:
     DEF_VARIABLES(set_viewer_params);
     DEF_VARIABLES(get_time_point_now);
     DEF_VARIABLES(distort_to_screen);
+    DEF_VARIABLES(is_feature_supported);
     DEF_VARIABLES(initialize_gl);
     DEF_VARIABLES(buffer_spec_create);
     DEF_VARIABLES(buffer_spec_set_size);
     DEF_VARIABLES(buffer_spec_set_depth_stencil_format);
+    DEF_VARIABLES(buffer_spec_set_multiview_layer);
     DEF_VARIABLES(buffer_spec_set_samples);
     DEF_VARIABLES(get_maximum_effective_render_target_size);
     DEF_VARIABLES(bind_default_framebuffer);
@@ -1030,16 +1069,22 @@ private:
     DEF_VARIABLES(buffer_viewport_list_destroy);
     DEF_VARIABLES(GvrApi_nativeGetWindowBounds);
     DEF_VARIABLES(GvrApi_nativePauseTracking);
+    DEF_VARIABLES(GvrApi_nativePauseTrackingGetState);
     DEF_VARIABLES(GvrApi_nativeGetViewerModel);
     DEF_VARIABLES(GvrApi_nativeGetViewerVendor);
     DEF_VARIABLES(GvrApi_nativeGetErrorString);
     DEF_VARIABLES(GvrApi_nativeComputeDistortedPoint);
     DEF_VARIABLES(GvrApi_nativeCreate);
+    DEF_VARIABLES(GvrApi_nativeRequestContextSharing);
     DEF_VARIABLES(GvrApi_nativeSwapChainCreate);
     DEF_VARIABLES(GvrApi_nativeSetViewerParams);
     DEF_VARIABLES(GvrApi_nativeSetDefaultViewerProfile);
     DEF_VARIABLES(GvrApi_nativeResumeTracking);
+    DEF_VARIABLES(GvrApi_nativeResumeTrackingSetState);
     DEF_VARIABLES(GvrApi_nativeFrameSubmit);
+    DEF_VARIABLES(GvrApi_nativeUsingDynamicLibrary);
+    DEF_VARIABLES(GvrApi_nativeSetApplicationState);
+    DEF_VARIABLES(GvrApi_nativeSetDynamicLibraryLoadingEnabled);
     DEF_VARIABLES(GvrApi_nativeFrameGetBufferSize);
     DEF_VARIABLES(GvrApi_nativeFrameGetFramebufferObject);
     DEF_VARIABLES(GvrApi_nativeFrameUnbind);
@@ -1050,9 +1095,14 @@ private:
     DEF_VARIABLES(GvrApi_nativeSwapChainGetBufferCount);
     DEF_VARIABLES(GvrApi_nativeSwapChainDestroy);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetDepthStencilFormat);
+    DEF_VARIABLES(GvrApi_nativeBufferSpecSetMultiviewLayers);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetColorFormat);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetSamples);
     DEF_VARIABLES(GvrApi_nativeExternalSurfaceCreate);
+    DEF_VARIABLES(GvrApi_nativeExternalSurfaceCreateWithListeners);
+    DEF_VARIABLES(GvrApi_nativeExternalSurfaceDestroy);
+    DEF_VARIABLES(GvrApi_nativeExternalSurfaceGetId);
+    DEF_VARIABLES(GvrApi_nativeExternalSurfaceGetSurface);
     DEF_VARIABLES(GvrApi_nativeBufferSpecGetSamples);
     DEF_VARIABLES(GvrApi_nativeBufferSpecSetSize);
     DEF_VARIABLES(GvrApi_nativeBufferSpecGetSize);

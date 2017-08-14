@@ -324,7 +324,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit(
 
 JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingDynamicLibrary(JNIEnv* env, jobject obj);
 
-JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetApplicationState(
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetApplicationState(
         JNIEnv* env, jobject obj, jobject jclassloader, jobject jcontext);
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDynamicLibraryLoadingEnabled(
