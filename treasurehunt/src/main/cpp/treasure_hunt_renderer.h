@@ -140,6 +140,7 @@ class TreasureHuntRenderer {
    */
   void DrawDaydreamCursor(ViewType view);
 
+    void setCubeRotation();
   /**
    * Find a new random position for the object.
    *

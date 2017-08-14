@@ -27,10 +27,10 @@ apply plugin: 'com.android.application'
 
 
 dependencies {
-    //    compile 'com.google.vr:sdk-audio:1.40.0'
-    //    compile 'com.google.vr:sdk-base:1.40.0'
-    compile(name: 'sdk-base-1.40.0', ext: 'aar')
-    compile(name: 'sdk-common-1.40.0', ext: 'aar')
-    compile(name: 'sdk-audio-1.40.0', ext: 'aar')
+//    compile 'com.google.vr:sdk-audio:1.60.1'
+//    compile 'com.google.vr:sdk-base:1.60.1'
+    compile(name: 'sdk-base-1.60.1', ext: 'aar')
+    compile(name: 'sdk-common-1.60.1', ext: 'aar')
+    compile(name: 'sdk-audio-1.60.1', ext: 'aar')
     compile files('libs/protobuf-javanano-3.1.0.jar')
 }
