@@ -9,6 +9,7 @@
 //#include "vr/gvr/capi/include/gvr_controller.h"
 #include "gvr_controller.h"
 #include "gvr_types.h"
+#include "gvr_gesture.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,6 +74,10 @@ JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_ha
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean);
 JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handleAccelEvent(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
+
+JNIEXPORT void JNICALL  Java_com_google_vr_internal_controller_NativeCallbacks_handleBatteryEvent(
+        JNIEnv* env, jobject obj, jlong var1, jlong var3, jboolean var5, jint var6);
+
 JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handleGyroEvent(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
 JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handleServiceInitFailed(
@@ -169,6 +174,9 @@ JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeRe
 JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
 
+JNIEXPORT void JNICALL Java_com_google_vr_cardboard_ExternalSurfaceManager_nativeUpdateSurface(
+        JNIEnv* env, jobject obj, jlong var0, jint var2, jint var3, jlong var4, jfloatArray var6);
+
 //ClassLoader paramClassLoader, Context paramContext
 JNIEXPORT long JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate(
         JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
@@ -180,6 +188,10 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeInitializeGl(
         JNIEnv* env, jobject obj, jlong paramLong);
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread(
         JNIEnv* env, jobject obj, jlong paramLong);
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceChangedReprojectionThread(
+        JNIEnv* env, jobject obj, jlong paramlong);
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetRecommendedBufferViewports(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
 JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetError(
@@ -470,6 +482,27 @@ void gvr_frame_bind_buffer(gvr_frame *frame, int32_t index);
 
 void gvr_frame_unbind(gvr_frame *frame);
 
+gvr_gesture_context* gvr_gesture_context_create();
+
+void gvr_gesture_context_destroy(gvr_gesture_context** context);
+
+const gvr_gesture* gvr_gesture_get(const gvr_gesture_context* context, int index);
+
+int gvr_gesture_get_count(const gvr_gesture_context* context);
+
+gvr_gesture_direction gvr_gesture_get_direction(const gvr_gesture* gesture);
+
+gvr_vec2f gvr_gesture_get_displacement(const gvr_gesture* gesture);
+
+gvr_gesture_type gvr_gesture_get_type(const gvr_gesture* gesture);
+
+gvr_vec2f gvr_gesture_get_velocity(const gvr_gesture* gesture);
+
+void gvr_gesture_restart(gvr_gesture_context* context);
+
+void gvr_gesture_update(const gvr_controller_state* controller_state,
+                        gvr_gesture_context* context);
+
 void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 
 void gvr_swap_chain_resize_buffer(gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
@@ -554,6 +587,8 @@ void gvr_controller_resume( gvr_controller_context *api);
 
 const char * gvr_controller_api_status_to_string(  int32_t status);
 
+const char* gvr_controller_battery_level_to_string(int32_t level);
+
 const char * gvr_controller_connection_state_to_string(int32_t state);
 
 const char * gvr_controller_button_to_string(int32_t button);
@@ -573,6 +608,10 @@ gvr_quatf gvr_controller_state_get_orientation(const gvr_controller_state *state
 gvr_vec3f gvr_controller_state_get_gyro(const gvr_controller_state *state);
 
 gvr_vec3f gvr_controller_state_get_accel(const gvr_controller_state *state);
+
+bool gvr_controller_state_get_battery_charging(const gvr_controller_state* state);
+
+int32_t gvr_controller_state_get_battery_level(const gvr_controller_state* state);
 
 bool gvr_controller_state_is_touching(const gvr_controller_state *state);
 
@@ -594,6 +633,8 @@ bool gvr_controller_state_get_button_up(const gvr_controller_state *state, int32
 
 int64_t gvr_controller_state_get_last_orientation_timestamp(const gvr_controller_state *state);
 
+int64_t gvr_controller_state_get_last_battery_timestamp(const gvr_controller_state* state);
+
 int64_t gvr_controller_state_get_last_gyro_timestamp(const gvr_controller_state *state);
 
 int64_t gvr_controller_state_get_last_accel_timestamp(const gvr_controller_state *state);
@@ -612,6 +653,9 @@ int gvr_set_back_gesture_event_handler(int a1, int a2, int a3);
 int gvr_display_synchronizer_create();
 int gvr_display_synchronizer_destroy(int *a1);
 int gvr_get_border_size_meters(void *a1);
+bool gvr_get_button_long_press(const gvr_controller_state* controller_state,
+                               const gvr_gesture_context* context,
+                               gvr_controller_button button);
 int gvr_check_surface_size_changed(int a1);
 int gvr_get_surface_size(int a1, int a2, int a3);
 int gvr_set_display_output_rotation(void *a1, int a2);
@@ -619,6 +663,11 @@ int gvr_reconnect_sensors( void *a1);
 int gvr_set_lens_offset(int *a1, int a2, int a3);
 int gvr_resume(int a1);
 int gvr_dump_debug_data(void *a1);
+int gvr_external_surface_create_with_listeners(int a1, int a2, int a3, int a4);
+int gvr_external_surface_destroy(void **a1, int a2, int a3);
+int gvr_external_surface_get_surface(int a1, int a2, int a3);
+int gvr_external_surface_get_surface_id(int *a1, int a2, int a3);
+bool gvr_using_dynamic_library(int a1, int a2, int a3);
 int gvr_using_vr_display_service( int a1);
 int gvr_tracker_state_get_buffer_size(int a1);
 int gvr_tracker_state_get_buffer(int a1);
@@ -635,9 +684,11 @@ int gvr_pause_tracking_get_state( void *a1);
 int gvr_tracker_state_create(int a1, int a2);
 int gvr_create_with_tracker_for_testing( int a1, int a2);
 int gvr_set_error(int a1, int a2);
+int gvr_set_idle_listener(int *a1, int a2, int a3);
 int gvr_set_display_synchronizer( int *a1, int a2);
 int gvr_display_synchronizer_reset(void *a1);
 int gvr_on_pause_reprojection_thread(int a1);
+int gvr_on_surface_changed_reprojection_thread(int a1, int a2, int a3);
 int gvr_update_surface_reprojection_thread(int *a1, int a2, int a3, int a4, int64_t a5,
                                            int a6, int a7, int a8, int a9, int a10, int a11,
                                            int a12, int a13, int a14, int a15, int a16, int a17,

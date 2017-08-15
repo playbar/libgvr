@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 long getimagebase();
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved = nullptr);
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved);
 JNIEXPORT jstring JNICALL Java_com_mj_vr_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
 
 #ifdef __cplusplus

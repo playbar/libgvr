@@ -178,6 +178,15 @@ JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_ha
     CLogMessage msg(__FUNCTION__);
     gGvrApi.NativeCallbacks_handleAccelEvent( env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3);
 }
+
+JNIEXPORT void JNICALL  Java_com_google_vr_internal_controller_NativeCallbacks_handleBatteryEvent(
+        JNIEnv* env, jobject obj, jlong var1, jlong var3, jboolean var5, jint var6)
+{
+    //todo
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.NativeCallbacks_handleBatteryEvent(env, obj, var1, var3, var5, var6);
+}
+
 JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_handleGyroEvent(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3)
 {
@@ -406,7 +415,6 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojec
 JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeIsFeatureSupported(
         JNIEnv* env, jobject obj, jlong paramLong, jint jvar )
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeIsFeatureSupported(env, obj, paramLong, jvar);
 }
@@ -421,7 +429,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeReconnectSensors
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetIdleListener(
         JNIEnv* env, jobject obj, jlong paramLong, jobject jvar)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeSetIdleListener(env, obj, paramLong, jvar);
 }
@@ -443,6 +450,14 @@ JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUp
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.DisplaySynchronizer_nativeUpdate(env, obj, paramLong1, paramLong2, paramInt);
+}
+
+JNIEXPORT void JNICALL Java_com_google_vr_cardboard_ExternalSurfaceManager_nativeUpdateSurface(
+        JNIEnv* env, jobject obj, jlong var0, jint var2, jint var3, jlong var4, jfloatArray var6)
+{
+    //todo
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.ExternalSurfaceManager_nativeUpdateSurface(env,obj, var0, var2, var3, var4, var6);
 }
 
 //ClassLoader paramClassLoader, Context paramContext
@@ -476,6 +491,14 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreated
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeOnSurfaceCreatedReprojectionThread(env, obj, paramLong);
 }
+
+JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceChangedReprojectionThread(
+        JNIEnv* env, jobject obj, jlong paramlong)
+{
+    CLogMessage msg(__FUNCTION__);
+    gGvrApi.GvrApi_nativeOnSurfaceChangedReprojectionThread(env, obj, paramlong);
+}
+
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetRecommendedBufferViewports(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2)
 {
@@ -519,12 +542,16 @@ JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGet
         JNIEnv* env, jobject obj, jlong paramLong )
 {
     //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.GvrApi_nativeUserPrefsGetPerformanceHudEnabled(env, obj, paramLong);
 }
 
 JNIEXPORT jlong JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetAnalytics(
         JNIEnv* env, jobject obj, jlong paramLong )
 {
     //todo
+    CLogMessage msg(__FUNCTION__);
+    assert(false);
 }
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePause(
@@ -714,7 +741,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetSam
 JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceCreate(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeExternalSurfaceCreate(env, obj, paramLong);
 }
@@ -722,7 +748,6 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceC
 JNIEXPORT jlong JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceCreateWithListeners(
         JNIEnv* env, jobject obj, jlong paramLong, jobject var2, jobject var3, jobject var4)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeExternalSurfaceCreateWithListeners(env, obj, paramLong, var2, var3, var4);
 }
@@ -730,7 +755,6 @@ JNIEXPORT jlong JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurface
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceDestroy(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeExternalSurfaceDestroy(env, obj, paramLong);
 }
@@ -738,7 +762,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceD
 JNIEXPORT jint JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceGetId(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeExternalSurfaceGetId(env, obj, paramLong);
 }
@@ -746,7 +769,6 @@ JNIEXPORT jint JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceG
 JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeExternalSurfaceGetSurface(
         JNIEnv* env, jobject obj, jlong paramLong)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeExternalSurfaceGetSurface(env, obj, paramLong);
 }
@@ -767,7 +789,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetDep
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferSpecSetMultiviewLayers(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeBufferSpecSetMultiviewLayers(env, obj, paramLong, paramInt);
 }
@@ -821,7 +842,6 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetFramebuff
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeFrameGetFramebufferObject(env, obj, paramLong, paramInt);
 }
-//todo
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameGetBufferSize(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt, jobject paramPoint)
 {
@@ -838,7 +858,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit(
 
 JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingDynamicLibrary(JNIEnv* env, jobject obj)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeUsingDynamicLibrary(env, obj);
 }
@@ -846,7 +865,6 @@ JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingDynamic
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetApplicationState(
         JNIEnv* env, jobject obj, jobject jclassloader, jobject jcontext)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeSetApplicationState(env, obj, jclassloader, jcontext);
 }
@@ -854,12 +872,10 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetApplicationSt
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDynamicLibraryLoadingEnabled(
         JNIEnv* env, jobject obj, jboolean jvar)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeSetDynamicLibraryLoadingEnabled(env, obj, jvar);
 }
 
-//todo
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking(
         JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
 {
@@ -870,12 +886,10 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTracking(
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeResumeTrackingSetState(
         JNIEnv* env, jobject obj, jlong paramLong, jbyteArray paramArrayOfByte)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeResumeTrackingSetState(env, obj, paramLong, paramArrayOfByte);
 }
 
-//todo
 JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetDefaultViewerProfile(
         JNIEnv* env, jobject obj, jlong paramLong, jstring paramString)
 {
@@ -908,7 +922,6 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRequestContextSharing(
         JNIEnv* env, jobject obj, jlong paramlong, jobject jvar)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeRequestContextSharing(env, obj, paramlong, jvar);
 }
@@ -954,7 +967,6 @@ JNIEXPORT jbyteArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePauseTrack
 JNIEXPORT jbyteArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePauseTrackingGetState(
         JNIEnv* env, jobject obj, jlong paramLong )
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativePauseTrackingGetState(env, obj, paramLong);
 }
@@ -1024,7 +1036,6 @@ void gvr_buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t dep
 
 void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.buffer_spec_set_multiview_layer(spec, num_layers);
 
@@ -1061,7 +1072,6 @@ void gvr_distort_to_screen(
 
 bool gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.is_feature_supported(gvr, feature);
 }
@@ -1168,7 +1178,6 @@ void gvr_buffer_viewport_set_reprojection(gvr_buffer_viewport *viewport, int32_t
 
 void gvr_buffer_viewport_set_source_layer(gvr_buffer_viewport* viewport, int32_t layer_index)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.buffer_viewport_set_source_layer(viewport, layer_index);
 }
@@ -1259,6 +1268,69 @@ void gvr_frame_unbind(gvr_frame *frame)
 {
     CLogMessage msg(__FUNCTION__);
     gGvrApi.frame_unbind(frame);
+}
+
+gvr_gesture_context* gvr_gesture_context_create()
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_context_create();
+}
+
+void gvr_gesture_context_destroy(gvr_gesture_context** context)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_context_destroy(context);
+}
+
+const gvr_gesture* gvr_gesture_get(const gvr_gesture_context* context, int index)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_get(context, index);
+}
+
+int gvr_gesture_get_count(const gvr_gesture_context* context)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_get_count(context);
+}
+
+gvr_gesture_direction gvr_gesture_get_direction(const gvr_gesture* gesture)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_get_direction(gesture);
+}
+
+gvr_vec2f gvr_gesture_get_displacement(const gvr_gesture* gesture)
+{
+    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_get_displacement(gesture);
+}
+
+gvr_gesture_type gvr_gesture_get_type(const gvr_gesture* gesture)
+{
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_get_type(gesture);
+}
+
+gvr_vec2f gvr_gesture_get_velocity(const gvr_gesture* gesture)
+{
+    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_get_velocity(gesture);
+}
+
+void gvr_gesture_restart(gvr_gesture_context* context)
+{
+    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_restart(context);
+}
+
+void gvr_gesture_update(const gvr_controller_state* controller_state,
+                        gvr_gesture_context* context)
+{
+    //todo
 }
 
 void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
@@ -1504,6 +1576,11 @@ const char * gvr_controller_api_status_to_string(  int32_t status)
     return gGvrApi.controller_api_status_to_string(status);
 }
 
+const char* gvr_controller_battery_level_to_string(int32_t level)
+{
+    //todo
+}
+
 const char * gvr_controller_connection_state_to_string(int32_t state)
 {
     CLogMessage msg(__FUNCTION__);
@@ -1567,6 +1644,16 @@ gvr_vec3f gvr_controller_state_get_accel(const gvr_controller_state *state)
     return gGvrApi.controller_state_get_accel(state);
 }
 
+bool gvr_controller_state_get_battery_charging(const gvr_controller_state* state)
+{
+    //todo
+}
+
+int32_t gvr_controller_state_get_battery_level(const gvr_controller_state* state)
+{
+    //todo
+}
+
 bool gvr_controller_state_is_touching(const gvr_controller_state *state)
 {
     CLogMessage msg(__FUNCTION__);
@@ -1626,6 +1713,11 @@ int64_t gvr_controller_state_get_last_orientation_timestamp(const gvr_controller
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.controller_state_get_last_orientation_timestamp(state);
+}
+
+int64_t gvr_controller_state_get_last_battery_timestamp(const gvr_controller_state* state)
+{
+    //todo
 }
 
 int64_t gvr_controller_state_get_last_gyro_timestamp(const gvr_controller_state *state)
@@ -1693,6 +1785,13 @@ int gvr_get_border_size_meters(void *a1)
     return gGvrApi.get_border_size_meters(a1);
 }
 
+bool gvr_get_button_long_press(const gvr_controller_state* controller_state,
+                               const gvr_gesture_context* context,
+                               gvr_controller_button button)
+{
+    //todo
+}
+
 int gvr_check_surface_size_changed(int a1)
 {
     CLogMessage msg(__FUNCTION__);
@@ -1733,6 +1832,32 @@ int gvr_dump_debug_data(void *a1)
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.dump_debug_data(a1);
+}
+
+
+int gvr_external_surface_create_with_listeners(int a1, int a2, int a3, int a4)
+{
+    //todo
+}
+
+int gvr_external_surface_destroy(void **a1, int a2, int a3)
+{
+    //todo
+}
+
+int gvr_external_surface_get_surface(int a1, int a2, int a3)
+{
+    //todo
+}
+
+int gvr_external_surface_get_surface_id(int *a1, int a2, int a3)
+{
+    //todo
+}
+
+bool gvr_using_dynamic_library(int a1, int a2, int a3)
+{
+    //todo
 }
 
 int gvr_using_vr_display_service( int a1)
@@ -1831,6 +1956,11 @@ int gvr_set_error(int a1, int a2)
     return gGvrApi.set_error(a1, a2);
 }
 
+int gvr_set_idle_listener(int *a1, int a2, int a3)
+{
+    //todo
+}
+
 int gvr_set_display_synchronizer( int *a1, int a2)
 {
     CLogMessage msg(__FUNCTION__);
@@ -1847,6 +1977,11 @@ int gvr_on_pause_reprojection_thread(int a1)
 {
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.on_pause_reprojection_thread(a1);
+}
+
+int gvr_on_surface_changed_reprojection_thread(int a1, int a2, int a3)
+{
+    //todo
 }
 
 int gvr_update_surface_reprojection_thread(int *a1, int a2, int a3, int a4, int64_t a5,
