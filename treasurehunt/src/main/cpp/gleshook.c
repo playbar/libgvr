@@ -43,6 +43,7 @@ void MJ_glBindFramebuffer (GLenum target, GLuint framebuffer)
 }
 
 
+
 void (*old_glBindRenderbuffer)(GLenum target, GLuint renderbuffer) = NULL;
 void MJ_glBindRenderbuffer (GLenum target, GLuint renderbuffer)
 {
@@ -117,6 +118,33 @@ void MJ_glUseProgram (GLuint program)
     return old_glUseProgram(program);
 }
 
+void (*old_glRenderbufferStorage)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height) = NULL;
+void MJ_glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
+{
+    LOGI("MJ_glRenderbufferStorage");
+    return old_glRenderbufferStorage(target, internalformat, width, height);
+}
+
+void (*old_glFramebufferRenderbuffer)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) = NULL;
+void MJ_glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
+{
+    LOGI("MJ_glFramebufferRenderbuffer");
+    return old_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+}
+
+void (*old_glFramebufferTexture2D) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level) = NULL;
+void MJ_glFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+{
+    LOGI("MJ_glFramebufferTexture2D");
+    return old_glFramebufferTexture2D(target, attachment, textarget, texture, level);
+}
+
+void (*old_glCopyTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
+void MJ_glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
+{
+    LOGI("MJ_glCopyTexSubImage2D");
+    return old_glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
+}
 
 int hook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr)
 {
@@ -154,6 +182,12 @@ void hookAllFun()
     hook((uint32_t) glDrawArrays, (uint32_t)MJ_glDrawArrays, (uint32_t **) &old_glDrawArrays);
     hook((uint32_t) glDrawElements, (uint32_t)MJ_glDrawElements, (uint32_t **) &old_glDrawElements);
     hook((uint32_t) glUseProgram, (uint32_t)MJ_glUseProgram, (uint32_t **) &old_glUseProgram);
+    hook((uint32_t) glRenderbufferStorage, (uint32_t)MJ_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
+    hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)MJ_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
+    hook((uint32_t) glFramebufferTexture2D, (uint32_t)MJ_glFramebufferTexture2D, (uint32_t **) &old_glFramebufferTexture2D);
+    hook((uint32_t) glCopyTexSubImage2D, (uint32_t)MJ_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
+
+    return;
 }
 
 void unhookAllFun()
