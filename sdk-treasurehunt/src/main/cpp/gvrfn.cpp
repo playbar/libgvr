@@ -213,6 +213,7 @@ CGVRAPI gGvrApi;
 #define FN_gesture_get_type             "gvr_gesture_get_type"
 #define FN_gesture_get_velocity         "gvr_gesture_get_velocity"
 #define FN_gesture_restart               "gvr_gesture_restart"
+#define FN_gesture_update                "gvr_gesture_update"
 #define FN_frame_submit  "gvr_frame_submit"
 #define FN_swap_chain_resize_buffer          "gvr_swap_chain_resize_buffer"
 #define FN_buffer_viewport_list_create  "gvr_buffer_viewport_list_create"
@@ -271,7 +272,7 @@ CGVRAPI gGvrApi;
 #define FN_controller_resume         "gvr_controller_resume"
 #define FN_display_synchronizer_reset  "gvr_display_synchronizer_reset"
 #define FN_controller_api_status_to_string   "gvr_controller_api_status_to_string"
-
+#define FN_controller_battery_level_to_string   "gvr_controller_battery_level_to_string"
 #define FN_controller_connection_state_to_string  "gvr_controller_connection_state_to_string"
 #define FN_display_synchronizer_update         "gvr_display_synchronizer_update"
 #define FN_controller_button_to_string  "gvr_controller_button_to_string"
@@ -417,6 +418,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,display_synchronizer_update);
             GET_DLL_FUNCION(m_hDLL,controller_connection_state_to_string);
             GET_DLL_FUNCION(m_hDLL,controller_api_status_to_string);
+            GET_DLL_FUNCION(m_hDLL,controller_battery_level_to_string);
             GET_DLL_FUNCION(m_hDLL,display_synchronizer_reset);
             GET_DLL_FUNCION(m_hDLL,controller_resume);
             GET_DLL_FUNCION(m_hDLL,set_ignore_manual_tracker_pause_resume);
@@ -484,6 +486,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,gesture_get_type);
             GET_DLL_FUNCION(m_hDLL,gesture_get_velocity);
             GET_DLL_FUNCION(m_hDLL,gesture_restart);
+            GET_DLL_FUNCION(m_hDLL,gesture_update);
             GET_DLL_FUNCION(m_hDLL,frame_bind_buffer);
             GET_DLL_FUNCION(m_hDLL,create);
             GET_DLL_FUNCION(m_hDLL,swap_chain_acquire_frame);
@@ -708,6 +711,7 @@ bool CGVRAPI::Init()
                 && m_fpdisplay_synchronizer_update!= NULL
                 && m_fpcontroller_connection_state_to_string!= NULL
                 && m_fpcontroller_api_status_to_string!= NULL
+                && m_fpcontroller_battery_level_to_string!= NULL
                 && m_fpdisplay_synchronizer_reset!= NULL
                 && m_fpcontroller_resume!= NULL
                 && m_fpset_ignore_manual_tracker_pause_resume!= NULL
@@ -775,6 +779,7 @@ bool CGVRAPI::Init()
                 && m_fpgesture_get_type!= NULL
                 && m_fpgesture_get_velocity!= NULL
                 && m_fpgesture_restart!= NULL
+                && m_fpgesture_update!= NULL
                 && m_fpframe_bind_buffer!= NULL
                 && m_fpcreate!= NULL
                 && m_fpswap_chain_acquire_frame!= NULL
@@ -1007,6 +1012,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(display_synchronizer_update);
                 GET_DLL_FUNCION_ERR(controller_connection_state_to_string);
                 GET_DLL_FUNCION_ERR(controller_api_status_to_string);
+                GET_DLL_FUNCION_ERR(controller_battery_level_to_string);
                 GET_DLL_FUNCION_ERR(display_synchronizer_reset);
                 GET_DLL_FUNCION_ERR(controller_resume);
                 GET_DLL_FUNCION_ERR(set_ignore_manual_tracker_pause_resume);
@@ -1074,6 +1080,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(gesture_get_type);
                 GET_DLL_FUNCION_ERR(gesture_get_velocity);
                 GET_DLL_FUNCION_ERR(gesture_restart);
+                GET_DLL_FUNCION_ERR(gesture_update);
                 GET_DLL_FUNCION_ERR(frame_bind_buffer);
                 GET_DLL_FUNCION_ERR(create);
                 GET_DLL_FUNCION_ERR(swap_chain_acquire_frame);
@@ -1318,6 +1325,7 @@ void CGVRAPI::Release()
     m_fpdisplay_synchronizer_update = NULL;
     m_fpcontroller_connection_state_to_string = NULL;
     m_fpcontroller_api_status_to_string = NULL;
+    m_fpcontroller_battery_level_to_string = NULL;
     m_fpdisplay_synchronizer_reset = NULL;
     m_fpcontroller_resume = NULL;
     m_fpset_ignore_manual_tracker_pause_resume = NULL;
@@ -1385,6 +1393,7 @@ void CGVRAPI::Release()
     m_fpgesture_get_type = NULL;
     m_fpgesture_get_velocity = NULL;
     m_fpgesture_restart = NULL;
+    m_fpgesture_update = NULL;
     m_fpframe_bind_buffer = NULL;
     m_fpcreate = NULL;
     m_fpswap_chain_acquire_frame = NULL;
@@ -3169,6 +3178,14 @@ void CGVRAPI::gesture_restart(gvr_gesture_context* context)
     return;
 }
 
+void CGVRAPI::gesture_update(const gvr_controller_state* controller_state, gvr_gesture_context* context)
+{
+    Init();
+    if(m_fpgesture_update)
+        m_fpgesture_update(controller_state, context);
+    return;
+}
+
 void CGVRAPI::frame_submit(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
 {
     Init();
@@ -3617,6 +3634,14 @@ const char* CGVRAPI::controller_api_status_to_string( int32_t status)
     Init();
     if(m_fpcontroller_api_status_to_string)
         return m_fpcontroller_api_status_to_string(status);
+    return NULL;
+}
+
+const char* CGVRAPI::controller_battery_level_to_string(int32_t level)
+{
+    Init();
+    if(m_fpcontroller_battery_level_to_string)
+        return m_fpcontroller_battery_level_to_string(level);
     return NULL;
 }
 

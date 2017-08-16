@@ -419,6 +419,7 @@ typedef gvr_vec2f (*FP_gesture_get_displacement)(const gvr_gesture* gesture);
 typedef gvr_gesture_type (*FP_gesture_get_type)(const gvr_gesture* gesture);
 typedef gvr_vec2f (*FP_gesture_get_velocity)(const gvr_gesture* gesture);
 typedef void (*FP_gesture_restart)(gvr_gesture_context* context);
+typedef void (*FP_gesture_update)(const gvr_controller_state* controller_state, gvr_gesture_context* context);
 typedef void (*FP_frame_submit)(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 typedef void (*FP_swap_chain_resize_buffer)(gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
 
@@ -511,7 +512,7 @@ typedef void (*FP_controller_resume)(gvr_controller_context *api);
 typedef int (*FP_display_synchronizer_reset)(void *a1);
 
 typedef const char* (*FP_controller_api_status_to_string)( int32_t status);
-
+typedef const char* (*FP_controller_battery_level_to_string)(int32_t level);
 typedef const char* (*FP_controller_connection_state_to_string)(int32_t state);
 typedef int (*FP_display_synchronizer_update)(int *a1, int a2, int64_t a3, int a4);
 typedef const char * (*FP_controller_button_to_string)( int32_t button);
@@ -808,6 +809,7 @@ public:
     gvr_gesture_type gesture_get_type(const gvr_gesture* gesture);
     gvr_vec2f gesture_get_velocity(const gvr_gesture* gesture);
     void gesture_restart(gvr_gesture_context* context);
+    void gesture_update(const gvr_controller_state* controller_state, gvr_gesture_context* context);
     void frame_submit(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 
     void swap_chain_resize_buffer(  gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
@@ -894,7 +896,7 @@ public:
     int display_synchronizer_reset(void *a1);
 
     const char* controller_api_status_to_string( int32_t status);
-
+    const char* controller_battery_level_to_string(int32_t level);
     const char* controller_connection_state_to_string(int32_t state);
     int display_synchronizer_update(int *a1, int a2, int64_t a3, int a4);
     const char * controller_button_to_string( int32_t button);
@@ -986,6 +988,7 @@ private:
     DEF_VARIABLES(display_synchronizer_update);
     DEF_VARIABLES(controller_connection_state_to_string);
     DEF_VARIABLES(controller_api_status_to_string);
+    DEF_VARIABLES(controller_battery_level_to_string);
     DEF_VARIABLES(display_synchronizer_reset);
     DEF_VARIABLES(controller_resume);
     DEF_VARIABLES(set_ignore_manual_tracker_pause_resume);
@@ -1053,6 +1056,7 @@ private:
     DEF_VARIABLES(gesture_get_type);
     DEF_VARIABLES(gesture_get_velocity);
     DEF_VARIABLES(gesture_restart);
+    DEF_VARIABLES(gesture_update);
     DEF_VARIABLES(frame_bind_buffer);
     DEF_VARIABLES(create);
     DEF_VARIABLES(swap_chain_acquire_frame);

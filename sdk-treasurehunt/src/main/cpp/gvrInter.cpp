@@ -182,7 +182,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_internal_controller_NativeCallbacks_ha
 JNIEXPORT void JNICALL  Java_com_google_vr_internal_controller_NativeCallbacks_handleBatteryEvent(
         JNIEnv* env, jobject obj, jlong var1, jlong var3, jboolean var5, jint var6)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.NativeCallbacks_handleBatteryEvent(env, obj, var1, var3, var5, var6);
 }
@@ -455,7 +454,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUp
 JNIEXPORT void JNICALL Java_com_google_vr_cardboard_ExternalSurfaceManager_nativeUpdateSurface(
         JNIEnv* env, jobject obj, jlong var0, jint var2, jint var3, jlong var4, jfloatArray var6)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.ExternalSurfaceManager_nativeUpdateSurface(env,obj, var0, var2, var3, var4, var6);
 }
@@ -533,7 +531,6 @@ JNIEXPORT int JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetContr
 JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(
         JNIEnv* env, jobject obj, jlong paramLong )
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(env, obj, paramLong);
 }
@@ -541,7 +538,6 @@ JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGet
 JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetPerformanceHudEnabled(
         JNIEnv* env, jobject obj, jlong paramLong )
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.GvrApi_nativeUserPrefsGetPerformanceHudEnabled(env, obj, paramLong);
 }
@@ -549,7 +545,6 @@ JNIEXPORT jboolean JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGet
 JNIEXPORT jlong JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetAnalytics(
         JNIEnv* env, jobject obj, jlong paramLong )
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     assert(false);
 }
@@ -663,7 +658,6 @@ JNIEXPORT void JNICALL  Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportS
 JNIEXPORT void JNICALL  Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetExternalSurface(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeBufferViewportSetExternalSurface(env, obj, paramLong, paramInt);
 }
@@ -685,7 +679,6 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSe
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeBufferViewportSetSourceLayer(
         JNIEnv* env, jobject obj, jlong paramLong, jint paramInt)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     gGvrApi.GvrApi_nativeBufferViewportSetSourceLayer(env, obj, paramLong, paramInt);
 }
@@ -1302,7 +1295,6 @@ gvr_gesture_direction gvr_gesture_get_direction(const gvr_gesture* gesture)
 
 gvr_vec2f gvr_gesture_get_displacement(const gvr_gesture* gesture)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.gesture_get_displacement(gesture);
 }
@@ -1315,22 +1307,20 @@ gvr_gesture_type gvr_gesture_get_type(const gvr_gesture* gesture)
 
 gvr_vec2f gvr_gesture_get_velocity(const gvr_gesture* gesture)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.gesture_get_velocity(gesture);
 }
 
 void gvr_gesture_restart(gvr_gesture_context* context)
 {
-    //todo
     CLogMessage msg(__FUNCTION__);
     return gGvrApi.gesture_restart(context);
 }
 
-void gvr_gesture_update(const gvr_controller_state* controller_state,
-                        gvr_gesture_context* context)
+void gvr_gesture_update(const gvr_controller_state* controller_state, gvr_gesture_context* context)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.gesture_update(controller_state, context);
 }
 
 void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
@@ -1578,7 +1568,8 @@ const char * gvr_controller_api_status_to_string(  int32_t status)
 
 const char* gvr_controller_battery_level_to_string(int32_t level)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.controller_battery_level_to_string(level);
 }
 
 const char * gvr_controller_connection_state_to_string(int32_t state)
