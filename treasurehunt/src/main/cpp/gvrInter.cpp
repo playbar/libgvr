@@ -1637,12 +1637,14 @@ gvr_vec3f gvr_controller_state_get_accel(const gvr_controller_state *state)
 
 bool gvr_controller_state_get_battery_charging(const gvr_controller_state* state)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.controller_state_get_battery_charging(state);
 }
 
 int32_t gvr_controller_state_get_battery_level(const gvr_controller_state* state)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.controller_state_get_battery_level(state);
 }
 
 bool gvr_controller_state_is_touching(const gvr_controller_state *state)
@@ -1708,7 +1710,8 @@ int64_t gvr_controller_state_get_last_orientation_timestamp(const gvr_controller
 
 int64_t gvr_controller_state_get_last_battery_timestamp(const gvr_controller_state* state)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.controller_state_get_last_battery_timestamp(state);
 }
 
 int64_t gvr_controller_state_get_last_gyro_timestamp(const gvr_controller_state *state)
@@ -1776,11 +1779,10 @@ int gvr_get_border_size_meters(void *a1)
     return gGvrApi.get_border_size_meters(a1);
 }
 
-bool gvr_get_button_long_press(const gvr_controller_state* controller_state,
-                               const gvr_gesture_context* context,
-                               gvr_controller_button button)
+bool gvr_get_button_long_press(const gvr_controller_state* controller_state, const gvr_gesture_context* context, gvr_controller_button button)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.get_button_long_press(controller_state, context, button);
 }
 
 int gvr_check_surface_size_changed(int a1)
@@ -1828,27 +1830,32 @@ int gvr_dump_debug_data(void *a1)
 
 int gvr_external_surface_create_with_listeners(int a1, int a2, int a3, int a4)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.external_surface_create_with_listeners(a1, a2, a3, a4);
 }
 
 int gvr_external_surface_destroy(void **a1, int a2, int a3)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.external_surface_destroy(a1, a2, a3);
 }
 
 int gvr_external_surface_get_surface(int a1, int a2, int a3)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.external_surface_get_surface(a1, a2 ,a3);
 }
 
 int gvr_external_surface_get_surface_id(int *a1, int a2, int a3)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.external_surface_get_surface_id(a1, a2, a3);
 }
 
 bool gvr_using_dynamic_library(int a1, int a2, int a3)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.using_dynamic_library(a1, a2, a3);
 }
 
 int gvr_using_vr_display_service( int a1)
@@ -1949,7 +1956,8 @@ int gvr_set_error(int a1, int a2)
 
 int gvr_set_idle_listener(int *a1, int a2, int a3)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.set_idle_listener(a1, a2, a3);
 }
 
 int gvr_set_display_synchronizer( int *a1, int a2)
@@ -1972,7 +1980,8 @@ int gvr_on_pause_reprojection_thread(int a1)
 
 int gvr_on_surface_changed_reprojection_thread(int a1, int a2, int a3)
 {
-    //todo
+    CLogMessage msg(__FUNCTION__);
+    return gGvrApi.on_surface_changed_reprojection_thread(a1, a2, a3);
 }
 
 int gvr_update_surface_reprojection_thread(int *a1, int a2, int a3, int a4, int64_t a5,

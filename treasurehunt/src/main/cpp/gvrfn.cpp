@@ -178,7 +178,8 @@ CGVRAPI gGvrApi;
 #define FN_buffer_spec_destroy  "gvr_buffer_spec_destroy"
 #define FN_get_eye_from_head_matrix          "gvr_get_eye_from_head_matrix"
 #define FN_swap_chain_get_buffer_size  "gvr_swap_chain_get_buffer_size"
-#define FN_set_error          "gvr_set_error"
+#define FN_set_error             "gvr_set_error"
+#define FN_set_idle_listener    "gvr_set_idle_listener"
 #define FN_compute_distorted_point  "gvr_compute_distorted_point"
 #define FN_get_recommended_buffer_viewports         "gvr_get_recommended_buffer_viewports"
 #define FN_buffer_viewport_equal  "gvr_buffer_viewport_equal"
@@ -251,6 +252,7 @@ CGVRAPI gGvrApi;
 #define FN_display_synchronizer_create  "gvr_display_synchronizer_create"
 #define FN_display_synchronizer_destroy         "gvr_display_synchronizer_destroy"
 #define FN_get_border_size_meters  "gvr_get_border_size_meters"
+#define FN_get_button_long_press    "gvr_get_button_long_press"
 #define FN_check_surface_size_changed          "gvr_check_surface_size_changed"
 #define FN_get_surface_size  "gvr_get_surface_size"
 #define FN_set_display_output_rotation          "gvr_set_display_output_rotation"
@@ -258,6 +260,11 @@ CGVRAPI gGvrApi;
 #define FN_set_lens_offset         "gvr_set_lens_offset"
 #define FN_resume  "gvr_resume"
 #define FN_dump_debug_data         "gvr_dump_debug_data"
+#define FN_external_surface_create_with_listeners "gvr_external_surface_create_with_listeners"
+#define FN_external_surface_destroy                 "gvr_external_surface_destroy"
+#define FN_external_surface_get_surface             "gvr_external_surface_get_surface"
+#define FN_external_surface_get_surface_id          "gvr_external_surface_get_surface_id"
+#define FN_using_dynamic_library                     "gvr_using_dynamic_library"
 #define FN_controller_get_default_options  "gvr_controller_get_default_options"
 #define FN_using_vr_display_service          "gvr_using_vr_display_service"
 #define FN_tracker_state_get_buffer_size  "gvr_tracker_state_get_buffer_size"
@@ -284,6 +291,8 @@ CGVRAPI gGvrApi;
 #define FN_controller_state_get_orientation  "gvr_controller_state_get_orientation"
 #define FN_controller_state_get_gyro        "gvr_controller_state_get_gyro"
 #define FN_controller_state_get_accel  "gvr_controller_state_get_accel"
+#define FN_controller_state_get_battery_charging "gvr_controller_state_get_battery_charging"
+#define FN_controller_state_get_battery_level "gvr_controller_state_get_battery_level"
 #define FN_controller_state_is_touching          "gvr_controller_state_is_touching"
 #define FN_controller_state_get_touch_pos  "gvr_controller_state_get_touch_pos"
 #define FN_controller_state_get_touch_down         "gvr_controller_state_get_touch_down"
@@ -291,12 +300,14 @@ CGVRAPI gGvrApi;
 #define FN_controller_state_get_recentered         "gvr_controller_state_get_recentered"
 #define FN_controller_state_get_recentering  "gvr_controller_state_get_recentering"
 #define FN_on_pause_reprojection_thread        "gvr_on_pause_reprojection_thread"
+#define FN_on_surface_changed_reprojection_thread "gvr_on_surface_changed_reprojection_thread"
 #define FN_controller_state_get_button_state  "gvr_controller_state_get_button_state"
 #define FN_update_surface_reprojection_thread       "gvr_update_surface_reprojection_thread"
 #define FN_controller_state_get_button_down  "gvr_controller_state_get_button_down"
 #define FN_controller_state_get_button_up        "gvr_controller_state_get_button_up"
 #define FN_remove_all_surfaces_reprojection_thread  "gvr_remove_all_surfaces_reprojection_thread"
 #define FN_controller_state_get_last_orientation_timestamp       "gvr_controller_state_get_last_orientation_timestamp"
+#define FN_controller_state_get_last_battery_timestamp            "gvr_controller_state_get_last_battery_timestamp"
 #define FN_controller_state_get_last_gyro_timestamp  "gvr_controller_state_get_last_gyro_timestamp"
 #define FN_set_async_reprojection_enabled       "gvr_set_async_reprojection_enabled"
 #define FN_controller_state_get_last_accel_timestamp  "gvr_controller_state_get_last_accel_timestamp"
@@ -394,12 +405,14 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,set_async_reprojection_enabled);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_last_gyro_timestamp);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_last_orientation_timestamp);
+            GET_DLL_FUNCION(m_hDLL,controller_state_get_last_battery_timestamp);
             GET_DLL_FUNCION(m_hDLL,remove_all_surfaces_reprojection_thread);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_button_up);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_button_down);
             GET_DLL_FUNCION(m_hDLL,update_surface_reprojection_thread);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_button_state);
             GET_DLL_FUNCION(m_hDLL,on_pause_reprojection_thread);
+            GET_DLL_FUNCION(m_hDLL,on_surface_changed_reprojection_thread);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_recentering);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_recentered);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_touch_up);
@@ -407,6 +420,8 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,controller_state_get_touch_pos);
             GET_DLL_FUNCION(m_hDLL,controller_state_is_touching);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_accel);
+            GET_DLL_FUNCION(m_hDLL,controller_state_get_battery_charging);
+            GET_DLL_FUNCION(m_hDLL,controller_state_get_battery_level);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_gyro);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_orientation);
             GET_DLL_FUNCION(m_hDLL,controller_state_get_connection_state);
@@ -433,6 +448,11 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,using_vr_display_service);
             GET_DLL_FUNCION(m_hDLL,controller_get_default_options);
             GET_DLL_FUNCION(m_hDLL,dump_debug_data);
+            GET_DLL_FUNCION(m_hDLL,external_surface_create_with_listeners);
+            GET_DLL_FUNCION(m_hDLL,external_surface_destroy);
+            GET_DLL_FUNCION(m_hDLL,external_surface_get_surface);
+            GET_DLL_FUNCION(m_hDLL,external_surface_get_surface_id);
+            GET_DLL_FUNCION(m_hDLL,using_dynamic_library);
             GET_DLL_FUNCION(m_hDLL,resume);
             GET_DLL_FUNCION(m_hDLL,set_lens_offset);
             GET_DLL_FUNCION(m_hDLL,reconnect_sensors);
@@ -440,6 +460,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,get_surface_size);
             GET_DLL_FUNCION(m_hDLL,check_surface_size_changed);
             GET_DLL_FUNCION(m_hDLL,get_border_size_meters);
+            GET_DLL_FUNCION(m_hDLL,get_button_long_press);
             GET_DLL_FUNCION(m_hDLL,display_synchronizer_destroy);
             GET_DLL_FUNCION(m_hDLL,display_synchronizer_create);
             GET_DLL_FUNCION(m_hDLL,refresh_viewer_profile);
@@ -512,6 +533,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,get_recommended_buffer_viewports);
             GET_DLL_FUNCION(m_hDLL,compute_distorted_point);
             GET_DLL_FUNCION(m_hDLL,set_error);
+            GET_DLL_FUNCION(m_hDLL,set_idle_listener);
             GET_DLL_FUNCION(m_hDLL,swap_chain_get_buffer_size);
             GET_DLL_FUNCION(m_hDLL,get_eye_from_head_matrix);
             GET_DLL_FUNCION(m_hDLL,buffer_spec_destroy);
@@ -687,12 +709,14 @@ bool CGVRAPI::Init()
                 && m_fpset_async_reprojection_enabled!= NULL
                 && m_fpcontroller_state_get_last_gyro_timestamp!= NULL
                 && m_fpcontroller_state_get_last_orientation_timestamp!= NULL
+                && m_fpcontroller_state_get_last_battery_timestamp!= NULL
                 && m_fpremove_all_surfaces_reprojection_thread!= NULL
                 && m_fpcontroller_state_get_button_up!= NULL
                 && m_fpcontroller_state_get_button_down!= NULL
                 && m_fpupdate_surface_reprojection_thread!= NULL
                 && m_fpcontroller_state_get_button_state!= NULL
                 && m_fpon_pause_reprojection_thread!= NULL
+                && m_fpon_surface_changed_reprojection_thread!= NULL
                 && m_fpcontroller_state_get_recentering!= NULL
                 && m_fpcontroller_state_get_recentered!= NULL
                 && m_fpcontroller_state_get_touch_up!= NULL
@@ -700,6 +724,8 @@ bool CGVRAPI::Init()
                 && m_fpcontroller_state_get_touch_pos!= NULL
                 && m_fpcontroller_state_is_touching!= NULL
                 && m_fpcontroller_state_get_accel!= NULL
+                && m_fpcontroller_state_get_battery_charging!= NULL
+                && m_fpcontroller_state_get_battery_level!= NULL
                 && m_fpcontroller_state_get_gyro!= NULL
                 && m_fpcontroller_state_get_orientation!= NULL
                 && m_fpcontroller_state_get_connection_state!= NULL
@@ -726,6 +752,11 @@ bool CGVRAPI::Init()
                 && m_fpusing_vr_display_service!= NULL
                 && m_fpcontroller_get_default_options!= NULL
                 && m_fpdump_debug_data!= NULL
+                && m_fpexternal_surface_create_with_listeners!= NULL
+                && m_fpexternal_surface_destroy!= NULL
+                && m_fpexternal_surface_get_surface!= NULL
+                && m_fpexternal_surface_get_surface_id!= NULL
+                && m_fpusing_dynamic_library!= NULL
                 && m_fpresume!= NULL
                 && m_fpset_lens_offset!= NULL
                 && m_fpreconnect_sensors!= NULL
@@ -733,6 +764,7 @@ bool CGVRAPI::Init()
                 && m_fpget_surface_size!= NULL
                 && m_fpcheck_surface_size_changed!= NULL
                 && m_fpget_border_size_meters!= NULL
+                && m_fpget_button_long_press!= NULL
                 && m_fpdisplay_synchronizer_destroy!= NULL
                 && m_fpdisplay_synchronizer_create!= NULL
                 && m_fprefresh_viewer_profile!= NULL
@@ -805,6 +837,7 @@ bool CGVRAPI::Init()
                 && m_fpget_recommended_buffer_viewports!= NULL
                 && m_fpcompute_distorted_point!= NULL
                 && m_fpset_error!= NULL
+                && m_fpset_idle_listener!= NULL
                 && m_fpswap_chain_get_buffer_size!= NULL
                 && m_fpget_eye_from_head_matrix!= NULL
                 && m_fpbuffer_spec_destroy!= NULL
@@ -988,12 +1021,14 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(set_async_reprojection_enabled);
                 GET_DLL_FUNCION_ERR(controller_state_get_last_gyro_timestamp);
                 GET_DLL_FUNCION_ERR(controller_state_get_last_orientation_timestamp);
+                GET_DLL_FUNCION_ERR(controller_state_get_last_battery_timestamp);
                 GET_DLL_FUNCION_ERR(remove_all_surfaces_reprojection_thread);
                 GET_DLL_FUNCION_ERR(controller_state_get_button_up);
                 GET_DLL_FUNCION_ERR(controller_state_get_button_down);
                 GET_DLL_FUNCION_ERR(update_surface_reprojection_thread);
                 GET_DLL_FUNCION_ERR(controller_state_get_button_state);
                 GET_DLL_FUNCION_ERR(on_pause_reprojection_thread);
+                GET_DLL_FUNCION_ERR(on_surface_changed_reprojection_thread);
                 GET_DLL_FUNCION_ERR(controller_state_get_recentering);
                 GET_DLL_FUNCION_ERR(controller_state_get_recentered);
                 GET_DLL_FUNCION_ERR(controller_state_get_touch_up);
@@ -1001,6 +1036,8 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(controller_state_get_touch_pos);
                 GET_DLL_FUNCION_ERR(controller_state_is_touching);
                 GET_DLL_FUNCION_ERR(controller_state_get_accel);
+                GET_DLL_FUNCION_ERR(controller_state_get_battery_charging);
+                GET_DLL_FUNCION_ERR(controller_state_get_battery_level);
                 GET_DLL_FUNCION_ERR(controller_state_get_gyro);
                 GET_DLL_FUNCION_ERR(controller_state_get_orientation);
                 GET_DLL_FUNCION_ERR(controller_state_get_connection_state);
@@ -1027,6 +1064,11 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(using_vr_display_service);
                 GET_DLL_FUNCION_ERR(controller_get_default_options);
                 GET_DLL_FUNCION_ERR(dump_debug_data);
+                GET_DLL_FUNCION_ERR(external_surface_create_with_listeners);
+                GET_DLL_FUNCION_ERR(external_surface_destroy);
+                GET_DLL_FUNCION_ERR(external_surface_get_surface);
+                GET_DLL_FUNCION_ERR(external_surface_get_surface_id);
+                GET_DLL_FUNCION_ERR(using_dynamic_library);
                 GET_DLL_FUNCION_ERR(resume);
                 GET_DLL_FUNCION_ERR(set_lens_offset);
                 GET_DLL_FUNCION_ERR(reconnect_sensors);
@@ -1034,6 +1076,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(get_surface_size);
                 GET_DLL_FUNCION_ERR(check_surface_size_changed);
                 GET_DLL_FUNCION_ERR(get_border_size_meters);
+                GET_DLL_FUNCION_ERR(get_button_long_press);
                 GET_DLL_FUNCION_ERR(display_synchronizer_destroy);
                 GET_DLL_FUNCION_ERR(display_synchronizer_create);
                 GET_DLL_FUNCION_ERR(refresh_viewer_profile);
@@ -1106,6 +1149,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(get_recommended_buffer_viewports);
                 GET_DLL_FUNCION_ERR(compute_distorted_point);
                 GET_DLL_FUNCION_ERR(set_error);
+                GET_DLL_FUNCION_ERR(set_idle_listener);
                 GET_DLL_FUNCION_ERR(swap_chain_get_buffer_size);
                 GET_DLL_FUNCION_ERR(get_eye_from_head_matrix);
                 GET_DLL_FUNCION_ERR(buffer_spec_destroy);
@@ -1301,12 +1345,14 @@ void CGVRAPI::Release()
     m_fpset_async_reprojection_enabled = NULL;
     m_fpcontroller_state_get_last_gyro_timestamp = NULL;
     m_fpcontroller_state_get_last_orientation_timestamp = NULL;
+    m_fpcontroller_state_get_last_battery_timestamp = NULL;
     m_fpremove_all_surfaces_reprojection_thread = NULL;
     m_fpcontroller_state_get_button_up = NULL;
     m_fpcontroller_state_get_button_down = NULL;
     m_fpupdate_surface_reprojection_thread = NULL;
     m_fpcontroller_state_get_button_state = NULL;
     m_fpon_pause_reprojection_thread = NULL;
+    m_fpon_surface_changed_reprojection_thread = NULL;
     m_fpcontroller_state_get_recentering = NULL;
     m_fpcontroller_state_get_recentered = NULL;
     m_fpcontroller_state_get_touch_up = NULL;
@@ -1314,6 +1360,8 @@ void CGVRAPI::Release()
     m_fpcontroller_state_get_touch_pos = NULL;
     m_fpcontroller_state_is_touching = NULL;
     m_fpcontroller_state_get_accel = NULL;
+    m_fpcontroller_state_get_battery_charging = NULL;
+    m_fpcontroller_state_get_battery_level = NULL;
     m_fpcontroller_state_get_gyro = NULL;
     m_fpcontroller_state_get_orientation = NULL;
     m_fpcontroller_state_get_connection_state = NULL;
@@ -1340,6 +1388,11 @@ void CGVRAPI::Release()
     m_fpusing_vr_display_service = NULL;
     m_fpcontroller_get_default_options = NULL;
     m_fpdump_debug_data = NULL;
+    m_fpexternal_surface_create_with_listeners = NULL;
+    m_fpexternal_surface_destroy = NULL;
+    m_fpexternal_surface_get_surface = NULL;
+    m_fpexternal_surface_get_surface_id = NULL;
+    m_fpusing_dynamic_library = NULL;
     m_fpresume = NULL;
     m_fpset_lens_offset = NULL;
     m_fpreconnect_sensors = NULL;
@@ -1347,6 +1400,7 @@ void CGVRAPI::Release()
     m_fpget_surface_size = NULL;
     m_fpcheck_surface_size_changed = NULL;
     m_fpget_border_size_meters = NULL;
+    m_fpget_button_long_press = NULL;
     m_fpdisplay_synchronizer_destroy = NULL;
     m_fpdisplay_synchronizer_create = NULL;
     m_fprefresh_viewer_profile = NULL;
@@ -1419,6 +1473,7 @@ void CGVRAPI::Release()
     m_fpget_recommended_buffer_viewports = NULL;
     m_fpcompute_distorted_point = NULL;
     m_fpset_error = NULL;
+    m_fpset_idle_listener = NULL;
     m_fpswap_chain_get_buffer_size = NULL;
     m_fpget_eye_from_head_matrix = NULL;
     m_fpbuffer_spec_destroy = NULL;
@@ -2896,6 +2951,16 @@ int CGVRAPI::set_error(int a1, int a2)
         re = m_fpset_error( a1, a2);
     return re;
 }
+
+int CGVRAPI::set_idle_listener(int *a1, int a2, int a3)
+{
+    Init();
+    int re = 0;
+    if(m_fpset_idle_listener)
+        re = m_fpset_idle_listener(a1, a2, a3);
+    return re;
+}
+
 void CGVRAPI::compute_distorted_point(  const gvr_context *gvr,
                                const int32_t eye,
                                const gvr_vec2f uv_in,
@@ -3479,6 +3544,16 @@ int CGVRAPI::get_border_size_meters(void *a1)
         return m_fpget_border_size_meters( a1);
     return 0;
 }
+
+bool CGVRAPI::get_button_long_press(const gvr_controller_state* controller_state, const gvr_gesture_context* context, gvr_controller_button button)
+{
+   Init();
+    bool re = false;
+    if(m_fpget_button_long_press)
+        re = m_fpget_button_long_press(controller_state, context, button);
+    return re;
+}
+
 int CGVRAPI::check_surface_size_changed(int a1)
 {
     Init();
@@ -3532,6 +3607,52 @@ int CGVRAPI::dump_debug_data(void *a1)
         return m_fpdump_debug_data( a1);
     return 0;
 }
+
+int CGVRAPI::external_surface_create_with_listeners(int a1, int a2, int a3, int a4)
+{
+    Init();
+    int re = 0;
+    if(m_fpexternal_surface_create_with_listeners)
+        re = m_fpexternal_surface_create_with_listeners(a1, a2, a3, a4);
+    return re;
+}
+
+int CGVRAPI::external_surface_destroy(void **a1, int a2, int a3)
+{
+    Init();
+    int re = 0;
+    if(m_fpexternal_surface_destroy)
+        re = m_fpexternal_surface_destroy(a1, a2, a3);
+    return re;
+}
+
+int CGVRAPI::external_surface_get_surface(int a1, int a2, int a3)
+{
+    Init();
+    int re = 0;
+    if(m_fpexternal_surface_get_surface)
+        re = m_fpexternal_surface_get_surface(a1, a2, a3);
+    return re;
+}
+
+int CGVRAPI::external_surface_get_surface_id(int *a1, int a2, int a3)
+{
+    Init();
+    int re = 0;
+    if(m_fpexternal_surface_get_surface_id)
+        re = m_fpexternal_surface_get_surface_id(a1, a2, a3);
+    return re;
+}
+
+bool CGVRAPI::using_dynamic_library(int a1, int a2, int a3)
+{
+    Init();
+    bool re = false;
+    if(m_fpusing_dynamic_library)
+        re = m_fpusing_dynamic_library(a1, a2, a3);
+    return re;
+}
+
 int32_t CGVRAPI::controller_get_default_options()
 {
     Init();
@@ -3728,6 +3849,24 @@ gvr_vec3f CGVRAPI::controller_state_get_accel( const gvr_controller_state *state
     return re;
 }
 
+bool CGVRAPI::controller_state_get_battery_charging(const gvr_controller_state* state)
+{
+    Init();
+    bool re = false;
+    if(m_fpcontroller_state_get_battery_charging)
+        re = m_fpcontroller_state_get_battery_charging(state);
+    return re;
+}
+
+int32_t CGVRAPI::controller_state_get_battery_level(const gvr_controller_state* state)
+{
+    Init();
+    int32_t re = 0;
+    if(m_fpcontroller_state_get_battery_level)
+        re = m_fpcontroller_state_get_battery_level(state);
+    return re;
+}
+
 bool CGVRAPI::controller_state_is_touching( const gvr_controller_state *state)
 {
     Init();
@@ -3779,6 +3918,15 @@ int CGVRAPI::on_pause_reprojection_thread(int a1)
         return m_fpon_pause_reprojection_thread( a1);
     return 0;
 }
+
+int CGVRAPI::on_surface_changed_reprojection_thread(int a1, int a2, int a3)
+{
+    Init();
+    if(m_fpon_surface_changed_reprojection_thread)
+        return m_fpon_surface_changed_reprojection_thread(a1, a2, a3);
+    return 0;
+}
+
 bool CGVRAPI::controller_state_get_button_state(  const gvr_controller_state *state, int32_t button)
 {
     Init();
@@ -3825,6 +3973,16 @@ int64_t CGVRAPI::controller_state_get_last_orientation_timestamp(const gvr_contr
         return m_fpcontroller_state_get_last_orientation_timestamp(state);
     return 0;
 }
+
+int64_t CGVRAPI::controller_state_get_last_battery_timestamp(const gvr_controller_state* state)
+{
+    Init();
+    int64_t re = 0;
+    if(m_fpcontroller_state_get_last_battery_timestamp)
+        re = m_fpcontroller_state_get_last_battery_timestamp(state);
+    return re;
+}
+
 int64_t CGVRAPI::controller_state_get_last_gyro_timestamp(const gvr_controller_state *state)
 {
     Init();
