@@ -10,6 +10,7 @@
 
 #include "gvr_controller.h"
 #include "gvr_types.h"
+#include "gvr_gesture.h"
 
 typedef long (*FP_CardboardViewNativeImpl_nativeSetApplicationState)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
 typedef void (*FP_CardboardViewNativeImpl_nativeSetScreenParams) (JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
@@ -62,6 +63,8 @@ typedef void (*FP_NativeCallbacks_handleOrientationEvent)(JNIEnv* env, jobject o
 typedef void (*FP_NativeCallbacks_handleButtonEvent)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean);
 
 typedef void (*FP_NativeCallbacks_handleAccelEvent)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
+
+typedef void (*FP_NativeCallbacks_handleBatteryEvent)(JNIEnv* env, jobject obj, jlong var1, jlong var3, jboolean var5, jint var6);
 
 typedef void (*FP_NativeCallbacks_handleGyroEvent)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
 
@@ -145,6 +148,8 @@ typedef void (*FP_DisplaySynchronizer_nativeReset)(JNIEnv* env, jobject obj, jlo
 
 typedef void (*FP_DisplaySynchronizer_nativeUpdate)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
 
+typedef void (*FP_ExternalSurfaceManager_nativeUpdateSurface)(JNIEnv* env, jobject obj, jlong var0, jint var2, jint var3, jlong var4, jfloatArray var6);
+
 typedef long (*FP_DisplaySynchronizer_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
 
 typedef void (*FP_DisplaySynchronizer_nativeDestroy)(JNIEnv* env, jobject obj, jlong paramLong);
@@ -154,6 +159,8 @@ typedef void (*FP_GvrApi_nativeDumpDebugData)(JNIEnv* env, jobject obj, jlong pa
 typedef void (*FP_GvrApi_nativeInitializeGl)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativeOnSurfaceCreatedReprojectionThread)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef void (*FP_GvrApi_nativeOnSurfaceChangedReprojectionThread)(JNIEnv* env, jobject obj, jlong paramlong);
 
 typedef void (*FP_GvrApi_nativeGetRecommendedBufferViewports)(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
 
@@ -166,6 +173,8 @@ typedef long (*FP_GvrApi_nativeGetUserPrefs)(JNIEnv* env, jobject obj, jlong par
 typedef int (*FP_GvrApi_nativeUserPrefsGetControllerHandedness)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef jboolean (*FP_GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled)(JNIEnv* env, jobject obj, jlong paramLong);
+
+typedef jboolean (*FP_GvrApi_nativeUserPrefsGetPerformanceHudEnabled)(JNIEnv* env, jobject obj, jlong paramLong);
 
 typedef void (*FP_GvrApi_nativePause)(JNIEnv* env, jobject obj, jlong paramLong);
 
@@ -401,13 +410,18 @@ typedef void (*FP_frame_bind_buffer)(  gvr_frame *frame,
                                        int32_t index);
 
 typedef void (*FP_frame_unbind)(gvr_frame *frame);
-typedef void (*FP_frame_submit)(  gvr_frame **frame,
-                                  const gvr_buffer_viewport_list *list,
-                                  gvr_mat4f head_space_from_start_space);
-
-typedef void (*FP_swap_chain_resize_buffer)(  gvr_swap_chain *swap_chain,
-                                              int32_t index,
-                                              gvr_sizei size);
+typedef gvr_gesture_context* (*FP_gesture_context_create)();
+typedef void (*FP_gesture_context_destroy)(gvr_gesture_context** context);
+typedef const gvr_gesture* (*FP_gesture_get)(const gvr_gesture_context* context, int index);
+typedef int (*FP_gesture_get_count)(const gvr_gesture_context* context);
+typedef gvr_gesture_direction (*FP_gesture_get_direction)(const gvr_gesture* gesture);
+typedef gvr_vec2f (*FP_gesture_get_displacement)(const gvr_gesture* gesture);
+typedef gvr_gesture_type (*FP_gesture_get_type)(const gvr_gesture* gesture);
+typedef gvr_vec2f (*FP_gesture_get_velocity)(const gvr_gesture* gesture);
+typedef void (*FP_gesture_restart)(gvr_gesture_context* context);
+typedef void (*FP_gesture_update)(const gvr_controller_state* controller_state, gvr_gesture_context* context);
+typedef void (*FP_frame_submit)(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
+typedef void (*FP_swap_chain_resize_buffer)(gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
 
 typedef gvr_buffer_viewport_list * (*FP_buffer_viewport_list_create)( const gvr_context *gvr);
 
@@ -498,7 +512,7 @@ typedef void (*FP_controller_resume)(gvr_controller_context *api);
 typedef int (*FP_display_synchronizer_reset)(void *a1);
 
 typedef const char* (*FP_controller_api_status_to_string)( int32_t status);
-
+typedef const char* (*FP_controller_battery_level_to_string)(int32_t level);
 typedef const char* (*FP_controller_connection_state_to_string)(int32_t state);
 typedef int (*FP_display_synchronizer_update)(int *a1, int a2, int64_t a3, int a4);
 typedef const char * (*FP_controller_button_to_string)( int32_t button);
@@ -596,6 +610,7 @@ public:
                                                 jfloat paramFloat3, jfloat paramFloat4);
     void NativeCallbacks_handleButtonEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt, jboolean paramBoolean);
     void NativeCallbacks_handleAccelEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
+    void NativeCallbacks_handleBatteryEvent(JNIEnv* env, jobject obj, jlong var1, jlong var3, jboolean var5, jint var6);
     void NativeCallbacks_handleGyroEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
     void NativeCallbacks_handleServiceInitFailed(JNIEnv* env, jobject obj, jlong paramLong, jint paramInt);
     void NativeCallbacks_handleServiceFailed(JNIEnv* env, jobject obj, jlong paramLong);
@@ -639,17 +654,20 @@ public:
                                         jfloat paramFloat1, jfloat paramFloat2);
     void DisplaySynchronizer_nativeReset(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jlong paramLong3);
     void DisplaySynchronizer_nativeUpdate(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt);
+    void ExternalSurfaceManager_nativeUpdateSurface(JNIEnv* env, jobject obj, jlong var0, jint var2, jint var3, jlong var4, jfloatArray var6);
     long DisplaySynchronizer_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
     void DisplaySynchronizer_nativeDestroy(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeDumpDebugData(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeInitializeGl(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeOnSurfaceCreatedReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong);
+    void GvrApi_nativeOnSurfaceChangedReprojectionThread(JNIEnv* env, jobject obj, jlong paramlong);
     void GvrApi_nativeGetRecommendedBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2);
     int GvrApi_nativeGetError(JNIEnv* env, jobject obj, jlong paramLong);
     int GvrApi_nativeClearError( JNIEnv* env, jobject obj, jlong paramLong);
     long GvrApi_nativeGetUserPrefs(JNIEnv* env, jobject obj, jlong paramLong);
     int GvrApi_nativeUserPrefsGetControllerHandedness(JNIEnv* env, jobject obj, jlong paramLong);
     jboolean GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(JNIEnv* env, jobject obj, jlong paramLong);
+    jboolean GvrApi_nativeUserPrefsGetPerformanceHudEnabled(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativePause(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeResume(JNIEnv* env, jobject obj, jlong paramLong);
     void GvrApi_nativeReleaseGvrContext(JNIEnv* env, jobject obj, jlong paramLong);
@@ -782,9 +800,17 @@ public:
     void frame_bind_buffer(  gvr_frame *frame, int32_t index);
 
     void frame_unbind(gvr_frame *frame);
-    void frame_submit(  gvr_frame **frame,
-                                      const gvr_buffer_viewport_list *list,
-                                      gvr_mat4f head_space_from_start_space);
+    gvr_gesture_context* gesture_context_create();
+    void gesture_context_destroy(gvr_gesture_context** context);
+    const gvr_gesture* gesture_get(const gvr_gesture_context* context, int index);
+    int gesture_get_count(const gvr_gesture_context* context);
+    gvr_gesture_direction gesture_get_direction(const gvr_gesture* gesture);
+    gvr_vec2f gesture_get_displacement(const gvr_gesture* gesture);
+    gvr_gesture_type gesture_get_type(const gvr_gesture* gesture);
+    gvr_vec2f gesture_get_velocity(const gvr_gesture* gesture);
+    void gesture_restart(gvr_gesture_context* context);
+    void gesture_update(const gvr_controller_state* controller_state, gvr_gesture_context* context);
+    void frame_submit(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 
     void swap_chain_resize_buffer(  gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
 
@@ -870,7 +896,7 @@ public:
     int display_synchronizer_reset(void *a1);
 
     const char* controller_api_status_to_string( int32_t status);
-
+    const char* controller_battery_level_to_string(int32_t level);
     const char* controller_connection_state_to_string(int32_t state);
     int display_synchronizer_update(int *a1, int a2, int64_t a3, int a4);
     const char * controller_button_to_string( int32_t button);
@@ -962,6 +988,7 @@ private:
     DEF_VARIABLES(display_synchronizer_update);
     DEF_VARIABLES(controller_connection_state_to_string);
     DEF_VARIABLES(controller_api_status_to_string);
+    DEF_VARIABLES(controller_battery_level_to_string);
     DEF_VARIABLES(display_synchronizer_reset);
     DEF_VARIABLES(controller_resume);
     DEF_VARIABLES(set_ignore_manual_tracker_pause_resume);
@@ -1020,6 +1047,16 @@ private:
     DEF_VARIABLES(swap_chain_resize_buffer);
     DEF_VARIABLES(frame_submit);
     DEF_VARIABLES(frame_unbind);
+    DEF_VARIABLES(gesture_context_create);
+    DEF_VARIABLES(gesture_context_destroy);
+    DEF_VARIABLES(gesture_get);
+    DEF_VARIABLES(gesture_get_count);
+    DEF_VARIABLES(gesture_get_direction);
+    DEF_VARIABLES(gesture_get_displacement);
+    DEF_VARIABLES(gesture_get_type);
+    DEF_VARIABLES(gesture_get_velocity);
+    DEF_VARIABLES(gesture_restart);
+    DEF_VARIABLES(gesture_update);
     DEF_VARIABLES(frame_bind_buffer);
     DEF_VARIABLES(create);
     DEF_VARIABLES(swap_chain_acquire_frame);
@@ -1131,16 +1168,19 @@ private:
     DEF_VARIABLES(GvrApi_nativePause);
     DEF_VARIABLES(GvrApi_nativeUserPrefsGetControllerHandedness);
     DEF_VARIABLES(GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled);
+    DEF_VARIABLES(GvrApi_nativeUserPrefsGetPerformanceHudEnabled);
     DEF_VARIABLES(GvrApi_nativeGetUserPrefs);
     DEF_VARIABLES(GvrApi_nativeClearError);
     DEF_VARIABLES(GvrApi_nativeGetError);
     DEF_VARIABLES(GvrApi_nativeGetRecommendedBufferViewports);
     DEF_VARIABLES(GvrApi_nativeOnSurfaceCreatedReprojectionThread);
+    DEF_VARIABLES(GvrApi_nativeOnSurfaceChangedReprojectionThread);
     DEF_VARIABLES(GvrApi_nativeInitializeGl);
     DEF_VARIABLES(GvrApi_nativeDumpDebugData);
     DEF_VARIABLES(DisplaySynchronizer_nativeDestroy);
     DEF_VARIABLES(DisplaySynchronizer_nativeCreate);
     DEF_VARIABLES(DisplaySynchronizer_nativeUpdate);
+    DEF_VARIABLES(ExternalSurfaceManager_nativeUpdateSurface);
     DEF_VARIABLES(DisplaySynchronizer_nativeReset);
     DEF_VARIABLES(GvrApi_nativeSetDisplayMetrics);
     DEF_VARIABLES(GvrApi_nativeReconnectSensors);
@@ -1180,6 +1220,7 @@ private:
     DEF_VARIABLES(NativeCallbacks_handleServiceInitFailed);
     DEF_VARIABLES(NativeCallbacks_handleGyroEvent);
     DEF_VARIABLES(NativeCallbacks_handleAccelEvent);
+    DEF_VARIABLES(NativeCallbacks_handleBatteryEvent);
     DEF_VARIABLES(NativeCallbacks_handleButtonEvent);
     DEF_VARIABLES(NativeCallbacks_handleOrientationEvent);
     DEF_VARIABLES(NativeCallbacks_handleTouchEvent);

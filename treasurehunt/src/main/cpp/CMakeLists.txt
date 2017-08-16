@@ -7,16 +7,19 @@ add_library(gvr SHARED
             gvrglobal.cpp
             gvrInter.cpp
             LogMessage.cpp
-            gvrfn.cpp)
+            gvrfn.cpp
+            inlineHook.c
+            relocate.c
+            gleshook.c)
 
 # Include libraries needed for hello-jnicallback lib
-target_link_libraries(gvr log android)
+target_link_libraries(gvr
+                      log
+                      android
+                      GLESv2
+                      EGL)
 
 add_library(draw SHARED
-            #gvrglobal.cpp
-            #gvrInter.cpp
-            #gvrfn.cpp
-            #LogMessage.cpp
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc
             )

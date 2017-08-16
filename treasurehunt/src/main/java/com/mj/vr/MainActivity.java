@@ -15,16 +15,24 @@
 
 package com.mj.vr;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.google.hook.GLESHook;
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -60,10 +68,44 @@ public class MainActivity extends Activity {
         }
       };
 
+    private boolean addPermission(List<String> permissionsList, String permission)
+    {
+        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
+        {
+            permissionsList.add(permission);
+
+            // Check for Rationale Option
+            if (!shouldShowRequestPermissionRationale(permission))
+                return false;
+        }
+
+        return true;
+    }
+
+    public void checkRuntimePermissionsRunnable()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= 23)
+        {
+            // Android 6.0+ needs runtime permission checks
+            List<String> permissionsNeeded = new ArrayList<String>();
+            final List<String> permissionsList = new ArrayList<String>();
+
+            if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
+                permissionsNeeded.add("Read External Storage");
+            if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                permissionsNeeded.add("Write External Storage");
+
+            if (permissionsList.size() > 0)
+            {
+                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), 124);
+            }
+        }
+    }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+      checkRuntimePermissionsRunnable();
     // Ensure fullscreen immersion.
     setImmersiveSticky();
     getWindow()
@@ -80,6 +122,7 @@ public class MainActivity extends Activity {
 
     // Initialize GvrLayout and the native renderer.
     gvrLayout = new GvrLayout(this);
+      GLESHook.initHook();
     nativeTreasureHuntRenderer =
         nativeCreateRenderer(
             getClass().getClassLoader(),

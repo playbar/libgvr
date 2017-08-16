@@ -40,6 +40,7 @@ CGVRAPI gGvrApi;
 #define FN_NativeCallbacks_handleOrientationEvent                           "Java_com_google_vr_internal_controller_NativeCallbacks_handleOrientationEvent"
 #define FN_NativeCallbacks_handleButtonEvent         "Java_com_google_vr_internal_controller_NativeCallbacks_handleButtonEvent"
 #define FN_NativeCallbacks_handleAccelEvent  "Java_com_google_vr_internal_controller_NativeCallbacks_handleAccelEvent"
+#define FN_NativeCallbacks_handleBatteryEvent "Java_com_google_vr_internal_controller_NativeCallbacks_handleBatteryEvent"
 #define FN_NativeCallbacks_handleGyroEvent         "Java_com_google_vr_internal_controller_NativeCallbacks_handleGyroEvent"
 #define FN_NativeCallbacks_handleServiceInitFailed  "Java_com_google_vr_internal_controller_NativeCallbacks_handleServiceInitFailed"
 #define FN_NativeCallbacks_handleServiceFailed          "Java_com_google_vr_internal_controller_NativeCallbacks_handleServiceFailed"
@@ -79,17 +80,20 @@ CGVRAPI gGvrApi;
 #define FN_GvrApi_nativeSetDisplayMetrics         "Java_com_google_vr_ndk_base_GvrApi_nativeSetDisplayMetrics"
 #define FN_DisplaySynchronizer_nativeReset  "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeReset"
 #define FN_DisplaySynchronizer_nativeUpdate         "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUpdate"
+#define FN_ExternalSurfaceManager_nativeUpdateSurface "Java_com_google_vr_cardboard_ExternalSurfaceManager_nativeUpdateSurface"
 #define FN_DisplaySynchronizer_nativeCreate  "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate"
 #define FN_DisplaySynchronizer_nativeDestroy          "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeDestroy"
 #define FN_GvrApi_nativeDumpDebugData  "Java_com_google_vr_ndk_base_GvrApi_nativeDumpDebugData"
 #define FN_GvrApi_nativeInitializeGl         "Java_com_google_vr_ndk_base_GvrApi_nativeInitializeGl"
-#define FN_GvrApi_nativeOnSurfaceCreatedReprojectionThread  "Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread"
+#define FN_GvrApi_nativeOnSurfaceCreatedReprojectionThread "Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceCreatedReprojectionThread"
+#define FN_GvrApi_nativeOnSurfaceChangedReprojectionThread "Java_com_google_vr_ndk_base_GvrApi_nativeOnSurfaceChangedReprojectionThread"
 #define FN_GvrApi_nativeGetRecommendedBufferViewports         "Java_com_google_vr_ndk_base_GvrApi_nativeGetRecommendedBufferViewports"
 #define FN_GvrApi_nativeGetError  "Java_com_google_vr_ndk_base_GvrApi_nativeGetError"
 #define FN_GvrApi_nativeClearError         "Java_com_google_vr_ndk_base_GvrApi_nativeClearError"
 #define FN_GvrApi_nativeGetUserPrefs  "Java_com_google_vr_ndk_base_GvrApi_nativeGetUserPrefs"
 #define FN_GvrApi_nativeUserPrefsGetControllerHandedness          "Java_com_google_vr_ndk_base_GvrApi_nativeUserPrefsGetControllerHandedness"
 #define FN_GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled "";
+#define FN_GvrApi_nativeUserPrefsGetPerformanceHudEnabled ""
 #define FN_GvrApi_nativePause  "Java_com_google_vr_ndk_base_GvrApi_nativePause"
 #define FN_GvrApi_nativeResume         "Java_com_google_vr_ndk_base_GvrApi_nativeResume"
 #define FN_GvrApi_nativeReleaseGvrContext  "Java_com_google_vr_ndk_base_GvrApi_nativeReleaseGvrContext"
@@ -200,6 +204,16 @@ CGVRAPI gGvrApi;
 #define FN_create          "gvr_create"
 #define FN_frame_bind_buffer  "gvr_frame_bind_buffer"
 #define FN_frame_unbind        "gvr_frame_unbind"
+#define FN_gesture_context_create   "gvr_gesture_context_create"
+#define FN_gesture_context_destroy  "gvr_gesture_context_destroy"
+#define FN_gesture_get                "gvr_gesture_get"
+#define FN_gesture_get_count          "gvr_gesture_get_count"
+#define FN_gesture_get_direction      "gvr_gesture_get_direction"
+#define FN_gesture_get_displacement   "gvr_gesture_get_displacement"
+#define FN_gesture_get_type             "gvr_gesture_get_type"
+#define FN_gesture_get_velocity         "gvr_gesture_get_velocity"
+#define FN_gesture_restart               "gvr_gesture_restart"
+#define FN_gesture_update                "gvr_gesture_update"
 #define FN_frame_submit  "gvr_frame_submit"
 #define FN_swap_chain_resize_buffer          "gvr_swap_chain_resize_buffer"
 #define FN_buffer_viewport_list_create  "gvr_buffer_viewport_list_create"
@@ -258,7 +272,7 @@ CGVRAPI gGvrApi;
 #define FN_controller_resume         "gvr_controller_resume"
 #define FN_display_synchronizer_reset  "gvr_display_synchronizer_reset"
 #define FN_controller_api_status_to_string   "gvr_controller_api_status_to_string"
-
+#define FN_controller_battery_level_to_string   "gvr_controller_battery_level_to_string"
 #define FN_controller_connection_state_to_string  "gvr_controller_connection_state_to_string"
 #define FN_display_synchronizer_update         "gvr_display_synchronizer_update"
 #define FN_controller_button_to_string  "gvr_controller_button_to_string"
@@ -404,6 +418,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,display_synchronizer_update);
             GET_DLL_FUNCION(m_hDLL,controller_connection_state_to_string);
             GET_DLL_FUNCION(m_hDLL,controller_api_status_to_string);
+            GET_DLL_FUNCION(m_hDLL,controller_battery_level_to_string);
             GET_DLL_FUNCION(m_hDLL,display_synchronizer_reset);
             GET_DLL_FUNCION(m_hDLL,controller_resume);
             GET_DLL_FUNCION(m_hDLL,set_ignore_manual_tracker_pause_resume);
@@ -462,6 +477,16 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,swap_chain_resize_buffer);
             GET_DLL_FUNCION(m_hDLL,frame_submit);
             GET_DLL_FUNCION(m_hDLL,frame_unbind);
+            GET_DLL_FUNCION(m_hDLL,gesture_context_create);
+            GET_DLL_FUNCION(m_hDLL,gesture_context_destroy);
+            GET_DLL_FUNCION(m_hDLL,gesture_get);
+            GET_DLL_FUNCION(m_hDLL, gesture_get_count);
+            GET_DLL_FUNCION(m_hDLL,gesture_get_direction);
+            GET_DLL_FUNCION(m_hDLL,gesture_get_displacement);
+            GET_DLL_FUNCION(m_hDLL,gesture_get_type);
+            GET_DLL_FUNCION(m_hDLL,gesture_get_velocity);
+            GET_DLL_FUNCION(m_hDLL,gesture_restart);
+            GET_DLL_FUNCION(m_hDLL,gesture_update);
             GET_DLL_FUNCION(m_hDLL,frame_bind_buffer);
             GET_DLL_FUNCION(m_hDLL,create);
             GET_DLL_FUNCION(m_hDLL,swap_chain_acquire_frame);
@@ -576,11 +601,13 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetError);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeGetRecommendedBufferViewports);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeOnSurfaceCreatedReprojectionThread);
+            GET_DLL_FUNCION(m_hDLL,GvrApi_nativeOnSurfaceChangedReprojectionThread);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeInitializeGl);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeDumpDebugData);
             GET_DLL_FUNCION(m_hDLL,DisplaySynchronizer_nativeDestroy);
             GET_DLL_FUNCION(m_hDLL,DisplaySynchronizer_nativeCreate);
             GET_DLL_FUNCION(m_hDLL,DisplaySynchronizer_nativeUpdate);
+            GET_DLL_FUNCION(m_hDLL,ExternalSurfaceManager_nativeUpdateSurface);
             GET_DLL_FUNCION(m_hDLL,DisplaySynchronizer_nativeReset);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeSetDisplayMetrics);
             GET_DLL_FUNCION(m_hDLL,GvrApi_nativeReconnectSensors);
@@ -620,6 +647,7 @@ bool CGVRAPI::Init()
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleServiceInitFailed);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleGyroEvent);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleAccelEvent);
+            GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleBatteryEvent);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleButtonEvent);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleOrientationEvent);
             GET_DLL_FUNCION(m_hDLL,NativeCallbacks_handleTouchEvent);
@@ -683,6 +711,7 @@ bool CGVRAPI::Init()
                 && m_fpdisplay_synchronizer_update!= NULL
                 && m_fpcontroller_connection_state_to_string!= NULL
                 && m_fpcontroller_api_status_to_string!= NULL
+                && m_fpcontroller_battery_level_to_string!= NULL
                 && m_fpdisplay_synchronizer_reset!= NULL
                 && m_fpcontroller_resume!= NULL
                 && m_fpset_ignore_manual_tracker_pause_resume!= NULL
@@ -741,6 +770,16 @@ bool CGVRAPI::Init()
                 && m_fpswap_chain_resize_buffer!= NULL
                 && m_fpframe_submit!= NULL
                 && m_fpframe_unbind!= NULL
+                && m_fpgesture_context_create!= NULL
+                && m_fpgesture_context_destroy!= NULL
+                && m_fpgesture_get!= NULL
+                && m_fpgesture_get_count!= NULL
+                && m_fpgesture_get_direction!= NULL
+                && m_fpgesture_get_displacement!= NULL
+                && m_fpgesture_get_type!= NULL
+                && m_fpgesture_get_velocity!= NULL
+                && m_fpgesture_restart!= NULL
+                && m_fpgesture_update!= NULL
                 && m_fpframe_bind_buffer!= NULL
                 && m_fpcreate!= NULL
                 && m_fpswap_chain_acquire_frame!= NULL
@@ -855,11 +894,13 @@ bool CGVRAPI::Init()
                 && m_fpGvrApi_nativeGetError!= NULL
                 && m_fpGvrApi_nativeGetRecommendedBufferViewports!= NULL
                 && m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread!= NULL
+                && m_fpGvrApi_nativeOnSurfaceChangedReprojectionThread!= NULL
                 && m_fpGvrApi_nativeInitializeGl!= NULL
                 && m_fpGvrApi_nativeDumpDebugData!= NULL
                 && m_fpDisplaySynchronizer_nativeDestroy!= NULL
                 && m_fpDisplaySynchronizer_nativeCreate!= NULL
                 && m_fpDisplaySynchronizer_nativeUpdate!= NULL
+                && m_fpExternalSurfaceManager_nativeUpdateSurface!= NULL
                 && m_fpDisplaySynchronizer_nativeReset!= NULL
                 && m_fpGvrApi_nativeSetDisplayMetrics!= NULL
                 && m_fpGvrApi_nativeReconnectSensors!= NULL
@@ -899,6 +940,7 @@ bool CGVRAPI::Init()
                 && m_fpNativeCallbacks_handleServiceInitFailed!= NULL
                 && m_fpNativeCallbacks_handleGyroEvent!= NULL
                 && m_fpNativeCallbacks_handleAccelEvent!= NULL
+                && m_fpNativeCallbacks_handleBatteryEvent!= NULL
                 && m_fpNativeCallbacks_handleButtonEvent!= NULL
                 && m_fpNativeCallbacks_handleOrientationEvent!= NULL
                 && m_fpNativeCallbacks_handleTouchEvent!= NULL
@@ -970,6 +1012,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(display_synchronizer_update);
                 GET_DLL_FUNCION_ERR(controller_connection_state_to_string);
                 GET_DLL_FUNCION_ERR(controller_api_status_to_string);
+                GET_DLL_FUNCION_ERR(controller_battery_level_to_string);
                 GET_DLL_FUNCION_ERR(display_synchronizer_reset);
                 GET_DLL_FUNCION_ERR(controller_resume);
                 GET_DLL_FUNCION_ERR(set_ignore_manual_tracker_pause_resume);
@@ -1028,6 +1071,16 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(swap_chain_resize_buffer);
                 GET_DLL_FUNCION_ERR(frame_submit);
                 GET_DLL_FUNCION_ERR(frame_unbind);
+                GET_DLL_FUNCION_ERR(gesture_context_create);
+                GET_DLL_FUNCION_ERR(gesture_context_destroy);
+                GET_DLL_FUNCION_ERR(gesture_get);
+                GET_DLL_FUNCION_ERR(gesture_get_count);
+                GET_DLL_FUNCION_ERR(gesture_get_direction);
+                GET_DLL_FUNCION_ERR(gesture_get_displacement);
+                GET_DLL_FUNCION_ERR(gesture_get_type);
+                GET_DLL_FUNCION_ERR(gesture_get_velocity);
+                GET_DLL_FUNCION_ERR(gesture_restart);
+                GET_DLL_FUNCION_ERR(gesture_update);
                 GET_DLL_FUNCION_ERR(frame_bind_buffer);
                 GET_DLL_FUNCION_ERR(create);
                 GET_DLL_FUNCION_ERR(swap_chain_acquire_frame);
@@ -1142,11 +1195,13 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetError);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeGetRecommendedBufferViewports);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeOnSurfaceCreatedReprojectionThread);
+                GET_DLL_FUNCION_ERR(GvrApi_nativeOnSurfaceChangedReprojectionThread);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeInitializeGl);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeDumpDebugData);
                 GET_DLL_FUNCION_ERR(DisplaySynchronizer_nativeDestroy);
                 GET_DLL_FUNCION_ERR(DisplaySynchronizer_nativeCreate);
                 GET_DLL_FUNCION_ERR(DisplaySynchronizer_nativeUpdate);
+                GET_DLL_FUNCION_ERR(ExternalSurfaceManager_nativeUpdateSurface);
                 GET_DLL_FUNCION_ERR(DisplaySynchronizer_nativeReset);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeSetDisplayMetrics);
                 GET_DLL_FUNCION_ERR(GvrApi_nativeReconnectSensors);
@@ -1186,6 +1241,7 @@ bool CGVRAPI::Init()
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleServiceInitFailed);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleGyroEvent);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleAccelEvent);
+                GET_DLL_FUNCION_ERR(NativeCallbacks_handleBatteryEvent);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleButtonEvent);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleOrientationEvent);
                 GET_DLL_FUNCION_ERR(NativeCallbacks_handleTouchEvent);
@@ -1269,6 +1325,7 @@ void CGVRAPI::Release()
     m_fpdisplay_synchronizer_update = NULL;
     m_fpcontroller_connection_state_to_string = NULL;
     m_fpcontroller_api_status_to_string = NULL;
+    m_fpcontroller_battery_level_to_string = NULL;
     m_fpdisplay_synchronizer_reset = NULL;
     m_fpcontroller_resume = NULL;
     m_fpset_ignore_manual_tracker_pause_resume = NULL;
@@ -1327,6 +1384,16 @@ void CGVRAPI::Release()
     m_fpswap_chain_resize_buffer = NULL;
     m_fpframe_submit = NULL;
     m_fpframe_unbind = NULL;
+    m_fpgesture_context_create = NULL;
+    m_fpgesture_context_destroy = NULL;
+    m_fpgesture_get = NULL;
+    m_fpgesture_get_count = NULL;
+    m_fpgesture_get_direction = NULL;
+    m_fpgesture_get_displacement = NULL;
+    m_fpgesture_get_type = NULL;
+    m_fpgesture_get_velocity = NULL;
+    m_fpgesture_restart = NULL;
+    m_fpgesture_update = NULL;
     m_fpframe_bind_buffer = NULL;
     m_fpcreate = NULL;
     m_fpswap_chain_acquire_frame = NULL;
@@ -1441,11 +1508,13 @@ void CGVRAPI::Release()
     m_fpGvrApi_nativeGetError = NULL;
     m_fpGvrApi_nativeGetRecommendedBufferViewports = NULL;
     m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread = NULL;
+    m_fpGvrApi_nativeOnSurfaceChangedReprojectionThread = NULL;
     m_fpGvrApi_nativeInitializeGl = NULL;
     m_fpGvrApi_nativeDumpDebugData = NULL;
     m_fpDisplaySynchronizer_nativeDestroy = NULL;
     m_fpDisplaySynchronizer_nativeCreate = NULL;
     m_fpDisplaySynchronizer_nativeUpdate = NULL;
+    m_fpExternalSurfaceManager_nativeUpdateSurface = NULL;
     m_fpDisplaySynchronizer_nativeReset = NULL;
     m_fpGvrApi_nativeSetDisplayMetrics = NULL;
     m_fpGvrApi_nativeReconnectSensors = NULL;
@@ -1485,6 +1554,7 @@ void CGVRAPI::Release()
     m_fpNativeCallbacks_handleServiceInitFailed = NULL;
     m_fpNativeCallbacks_handleGyroEvent = NULL;
     m_fpNativeCallbacks_handleAccelEvent = NULL;
+    m_fpNativeCallbacks_handleBatteryEvent = NULL;
     m_fpNativeCallbacks_handleButtonEvent = NULL;
     m_fpNativeCallbacks_handleOrientationEvent = NULL;
     m_fpNativeCallbacks_handleTouchEvent = NULL;
@@ -1718,6 +1788,15 @@ void CGVRAPI::NativeCallbacks_handleAccelEvent(JNIEnv* env, jobject obj, jlong p
         m_fpNativeCallbacks_handleAccelEvent( env, obj, paramLong1, paramLong2, paramFloat1, paramFloat2, paramFloat3);
     return;
 }
+
+void CGVRAPI::NativeCallbacks_handleBatteryEvent(JNIEnv* env, jobject obj, jlong var1, jlong var3, jboolean var5, jint var6)
+{
+    Init();
+    if(m_fpNativeCallbacks_handleBatteryEvent)
+        m_fpNativeCallbacks_handleBatteryEvent(env, obj, var1, var3, var5, var6);
+    return;
+}
+
 void CGVRAPI::NativeCallbacks_handleGyroEvent(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3)
 {
     Init();
@@ -2028,6 +2107,14 @@ void CGVRAPI::DisplaySynchronizer_nativeUpdate(JNIEnv* env, jobject obj, jlong p
     return;
 }
 
+void CGVRAPI::ExternalSurfaceManager_nativeUpdateSurface(JNIEnv* env, jobject obj, jlong var0, jint var2, jint var3, jlong var4, jfloatArray var6)
+{
+    Init();
+    if( m_fpExternalSurfaceManager_nativeUpdateSurface)
+        m_fpExternalSurfaceManager_nativeUpdateSurface(env, obj, var0, var2, var3, var4, var6);
+    return;
+}
+
 long CGVRAPI::DisplaySynchronizer_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
 {
     Init();
@@ -2061,13 +2148,21 @@ void CGVRAPI::GvrApi_nativeInitializeGl(JNIEnv* env, jobject obj, jlong paramLon
 void CGVRAPI::GvrApi_nativeOnSurfaceCreatedReprojectionThread(JNIEnv* env, jobject obj, jlong paramLong)
 {
     Init();
-//    if(m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread)
-//        m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread(env, obj, paramLong);
-    if(m_fpon_surface_created_reprojection_thread)
-        m_fpon_surface_created_reprojection_thread(paramLong);
-
+    if(m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread)
+        m_fpGvrApi_nativeOnSurfaceCreatedReprojectionThread(env, obj, paramLong);
+//    if(m_fpon_surface_created_reprojection_thread)
+//        m_fpon_surface_created_reprojection_thread(paramLong);
     return;
 }
+
+void CGVRAPI::GvrApi_nativeOnSurfaceChangedReprojectionThread(JNIEnv* env, jobject obj, jlong paramlong)
+{
+    Init();
+    if(m_fpGvrApi_nativeOnSurfaceChangedReprojectionThread)
+        m_fpGvrApi_nativeOnSurfaceChangedReprojectionThread(env, obj, paramlong);
+    return;
+}
+
 void CGVRAPI::GvrApi_nativeGetRecommendedBufferViewports(JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2)
 {
     Init();
@@ -2115,6 +2210,16 @@ jboolean CGVRAPI::GvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(JNIEnv* 
     assert(false);
     if(m_fpGvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled)
         re = m_fpGvrApi_nativeUserPrefsGetPerformanceMonitoringEnabled(env, obj, paramLong);
+    return re;
+}
+
+jboolean CGVRAPI::GvrApi_nativeUserPrefsGetPerformanceHudEnabled(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    Init();
+    jboolean re = false;
+    assert(false);
+    if(m_fpGvrApi_nativeUserPrefsGetPerformanceHudEnabled)
+        re = m_fpGvrApi_nativeUserPrefsGetPerformanceHudEnabled(env, obj, paramLong);
     return re;
 }
 
@@ -2995,6 +3100,92 @@ void CGVRAPI::frame_unbind(gvr_frame *frame)
         m_fpframe_unbind(frame);
     return;
 }
+
+gvr_gesture_context* CGVRAPI::gesture_context_create()
+{
+    Init();
+    if(m_fpgesture_context_create)
+        return m_fpgesture_context_create();
+    else
+        return NULL;
+}
+
+void CGVRAPI::gesture_context_destroy(gvr_gesture_context** context)
+{
+    Init();
+    if( m_fpgesture_context_destroy)
+        m_fpgesture_context_destroy(context);
+    return;
+}
+
+const gvr_gesture* CGVRAPI::gesture_get(const gvr_gesture_context* context, int index)
+{
+    Init();
+    if( m_fpgesture_get)
+        return m_fpgesture_get(context, index);
+    else
+        return NULL;
+}
+
+int CGVRAPI::gesture_get_count(const gvr_gesture_context* context)
+{
+    Init();
+    if(m_fpgesture_get_count)
+        return m_fpgesture_get_count(context);
+    return 0;
+}
+
+gvr_gesture_direction CGVRAPI::gesture_get_direction(const gvr_gesture* gesture)
+{
+    Init();
+    if(m_fpgesture_get_direction)
+        return m_fpgesture_get_direction(gesture);
+    return GVR_GESTURE_DIRECTION_UP;
+}
+
+gvr_vec2f CGVRAPI::gesture_get_displacement(const gvr_gesture* gesture)
+{
+    Init();
+    gvr_vec2f re;
+    if(m_fpgesture_get_displacement)
+        re = m_fpgesture_get_displacement(gesture);
+    return re;
+}
+
+gvr_gesture_type CGVRAPI::gesture_get_type(const gvr_gesture* gesture)
+{
+    Init();
+    gvr_gesture_type re = GVR_GESTURE_SWIPE;
+    if(m_fpgesture_get_type)
+        re = m_fpgesture_get_type(gesture);
+    return  re;
+}
+
+gvr_vec2f CGVRAPI::gesture_get_velocity(const gvr_gesture* gesture)
+{
+    Init();
+    gvr_vec2f re;
+    if(m_fpgesture_get_velocity)
+        re = m_fpgesture_get_velocity(gesture);
+    return re;
+}
+
+void CGVRAPI::gesture_restart(gvr_gesture_context* context)
+{
+    Init();
+    if(m_fpgesture_restart)
+        m_fpgesture_restart(context);
+    return;
+}
+
+void CGVRAPI::gesture_update(const gvr_controller_state* controller_state, gvr_gesture_context* context)
+{
+    Init();
+    if(m_fpgesture_update)
+        m_fpgesture_update(controller_state, context);
+    return;
+}
+
 void CGVRAPI::frame_submit(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space)
 {
     Init();
@@ -3443,6 +3634,14 @@ const char* CGVRAPI::controller_api_status_to_string( int32_t status)
     Init();
     if(m_fpcontroller_api_status_to_string)
         return m_fpcontroller_api_status_to_string(status);
+    return NULL;
+}
+
+const char* CGVRAPI::controller_battery_level_to_string(int32_t level)
+{
+    Init();
+    if(m_fpcontroller_battery_level_to_string)
+        return m_fpcontroller_battery_level_to_string(level);
     return NULL;
 }
 
