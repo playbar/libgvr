@@ -2,7 +2,7 @@
 //include ':unity'
 //include ':controllerpaint'
 //include ':gvrres'
-//include ':sdk-treasurehunt'
+include ':sdk-treasurehunt'
 include ':gvr16'
 include ':treasurehunt'
 //include ':hello-jni'

@@ -348,6 +348,7 @@ typedef gvr_mat4f (*FP_get_eye_from_head_matrix)( const gvr_context *gvr,
 typedef gvr_sizei (*FP_swap_chain_get_buffer_size)( gvr_swap_chain *swap_chain, int32_t index);
 
 typedef int (*FP_set_error)(int a1, int a2);
+typedef int (*FP_set_idle_listener)(int *a1, int a2, int a3);
 
 typedef void (*FP_compute_distorted_point)(  const gvr_context *gvr,
                                              const int32_t eye,
@@ -485,6 +486,7 @@ typedef void (*FP_refresh_viewer_profile)(gvr_context *gvr);
 typedef int (*FP_display_synchronizer_create)();
 typedef int (*FP_display_synchronizer_destroy)(int *a1);
 typedef int (*FP_get_border_size_meters)(void *a1);
+typedef bool (*FP_get_button_long_press)(const gvr_controller_state* controller_state, const gvr_gesture_context* context, gvr_controller_button button);
 typedef int (*FP_check_surface_size_changed)(int a1);
 typedef int (*FP_get_surface_size)(int a1, int a2, int a3);
 typedef int (*FP_set_display_output_rotation)(void *a1, int a2);
@@ -492,6 +494,11 @@ typedef int (*FP_reconnect_sensors)(void *a1);
 typedef int (*FP_set_lens_offset)(int *a1, int a2, int a3);
 typedef int (*FP_resume)(int a1);
 typedef int (*FP_dump_debug_data)(void *a1);
+typedef int (*FP_external_surface_create_with_listeners)(int a1, int a2, int a3, int a4);
+typedef int (*FP_external_surface_destroy)(void **a1, int a2, int a3);
+typedef int (*FP_external_surface_get_surface)(int a1, int a2, int a3);
+typedef int (*FP_external_surface_get_surface_id)(int *a1, int a2, int a3);
+typedef bool (*FP_using_dynamic_library)(int a1, int a2, int a3);
 typedef int32_t (*FP_controller_get_default_options)();
 typedef int (*FP_using_vr_display_service)(int a1);
 typedef int (*FP_tracker_state_get_buffer_size)(int a1);
@@ -528,7 +535,8 @@ typedef gvr_quatf (*FP_controller_state_get_orientation)(const gvr_controller_st
 typedef gvr_vec3f (*FP_controller_state_get_gyro)(const gvr_controller_state *state);
 
 typedef gvr_vec3f (*FP_controller_state_get_accel)( const gvr_controller_state *state);
-
+typedef bool (*FP_controller_state_get_battery_charging)(const gvr_controller_state* state);
+typedef int32_t (*FP_controller_state_get_battery_level)(const gvr_controller_state* state);
 typedef bool (*FP_controller_state_is_touching)( const gvr_controller_state *state);
 typedef gvr_vec2f (*FP_controller_state_get_touch_pos)(const gvr_controller_state *state);
 
@@ -537,6 +545,7 @@ typedef bool (*FP_controller_state_get_touch_up)(const gvr_controller_state *sta
 typedef bool (*FP_controller_state_get_recentered)(const gvr_controller_state *state);
 typedef bool (*FP_controller_state_get_recentering)(const gvr_controller_state *state);
 typedef int (*FP_on_pause_reprojection_thread)(int a1);
+typedef int (*FP_on_surface_changed_reprojection_thread)(int a1, int a2, int a3);
 typedef bool (*FP_controller_state_get_button_state)(  const gvr_controller_state *state,
                                                        int32_t button);
 typedef int (*FP_update_surface_reprojection_thread)(int *a1, int a2, int a3, int a4, int64_t a5,
@@ -550,6 +559,7 @@ typedef bool (*FP_controller_state_get_button_up)(const gvr_controller_state *st
                                                   int32_t button);
 typedef int (*FP_remove_all_surfaces_reprojection_thread)(void *a1);
 typedef int64_t (*FP_controller_state_get_last_orientation_timestamp)(const gvr_controller_state *state);
+typedef int64_t (*FP_controller_state_get_last_battery_timestamp)(const gvr_controller_state* state);
 typedef int64_t (*FP_controller_state_get_last_gyro_timestamp)(const gvr_controller_state *state);
 typedef int (*FP_set_async_reprojection_enabled)(int a1, int a2);
 typedef int64_t (*FP_controller_state_get_last_accel_timestamp)(const gvr_controller_state *state);
@@ -761,6 +771,7 @@ public:
                                         const int32_t eye);
     gvr_sizei swap_chain_get_buffer_size( gvr_swap_chain *swap_chain, int32_t index);
     int set_error(int a1, int a2);
+    int set_idle_listener(int *a1, int a2, int a3);
     void compute_distorted_point(  const gvr_context *gvr,
                                    const int32_t eye,
                                    const gvr_vec2f uv_in,
@@ -869,6 +880,7 @@ public:
     int display_synchronizer_create();
     int display_synchronizer_destroy(int *a1);
     int get_border_size_meters(void *a1);
+    bool get_button_long_press(const gvr_controller_state* controller_state, const gvr_gesture_context* context, gvr_controller_button button);
     int check_surface_size_changed(int a1);
     int get_surface_size(int a1, int a2, int a3);
     int set_display_output_rotation(void *a1, int a2);
@@ -876,6 +888,11 @@ public:
     int set_lens_offset(int *a1, int a2, int a3);
     int resume(int a1);
     int dump_debug_data(void *a1);
+    int external_surface_create_with_listeners(int a1, int a2, int a3, int a4);
+    int external_surface_destroy(void **a1, int a2, int a3);
+    int external_surface_get_surface(int a1, int a2, int a3);
+    int external_surface_get_surface_id(int *a1, int a2, int a3);
+    bool using_dynamic_library(int a1, int a2, int a3);
     int32_t controller_get_default_options();
     int using_vr_display_service(int a1);
     int tracker_state_get_buffer_size(int a1);
@@ -912,7 +929,8 @@ public:
     gvr_vec3f controller_state_get_gyro(const gvr_controller_state *state);
 
     gvr_vec3f controller_state_get_accel( const gvr_controller_state *state);
-
+    bool controller_state_get_battery_charging(const gvr_controller_state* state);
+    int32_t controller_state_get_battery_level(const gvr_controller_state* state);
     bool controller_state_is_touching( const gvr_controller_state *state);
     gvr_vec2f controller_state_get_touch_pos(const gvr_controller_state *state);
 
@@ -921,6 +939,7 @@ public:
     bool controller_state_get_recentered(const gvr_controller_state *state);
     bool controller_state_get_recentering(const gvr_controller_state *state);
     int on_pause_reprojection_thread(int a1);
+    int on_surface_changed_reprojection_thread(int a1, int a2, int a3);
     bool controller_state_get_button_state(  const gvr_controller_state *state,
                                                            int32_t button);
     int update_surface_reprojection_thread(int *a1, int a2, int a3, int a4, int64_t a5,
@@ -934,6 +953,7 @@ public:
                                                       int32_t button);
     int remove_all_surfaces_reprojection_thread(void *a1);
     int64_t controller_state_get_last_orientation_timestamp(const gvr_controller_state *state);
+    int64_t controller_state_get_last_battery_timestamp(const gvr_controller_state* state);
     int64_t controller_state_get_last_gyro_timestamp(const gvr_controller_state *state);
     int set_async_reprojection_enabled(int a1, int a2);
     int64_t controller_state_get_last_accel_timestamp(const gvr_controller_state *state);
@@ -964,12 +984,14 @@ private:
     DEF_VARIABLES(set_async_reprojection_enabled);
     DEF_VARIABLES(controller_state_get_last_gyro_timestamp);
     DEF_VARIABLES(controller_state_get_last_orientation_timestamp);
+    DEF_VARIABLES(controller_state_get_last_battery_timestamp);
     DEF_VARIABLES(remove_all_surfaces_reprojection_thread);
     DEF_VARIABLES(controller_state_get_button_up);
     DEF_VARIABLES(controller_state_get_button_down);
     DEF_VARIABLES(update_surface_reprojection_thread);
     DEF_VARIABLES(controller_state_get_button_state);
     DEF_VARIABLES(on_pause_reprojection_thread);
+    DEF_VARIABLES(on_surface_changed_reprojection_thread);
     DEF_VARIABLES(controller_state_get_recentering);
     DEF_VARIABLES(controller_state_get_recentered);
     DEF_VARIABLES(controller_state_get_touch_up);
@@ -977,6 +999,8 @@ private:
     DEF_VARIABLES(controller_state_get_touch_pos);
     DEF_VARIABLES(controller_state_is_touching);
     DEF_VARIABLES(controller_state_get_accel);
+    DEF_VARIABLES(controller_state_get_battery_charging);
+    DEF_VARIABLES(controller_state_get_battery_level);
     DEF_VARIABLES(controller_state_get_gyro);
     DEF_VARIABLES(controller_state_get_orientation);
     DEF_VARIABLES(controller_state_get_connection_state);
@@ -1003,6 +1027,11 @@ private:
     DEF_VARIABLES(using_vr_display_service);
     DEF_VARIABLES(controller_get_default_options);
     DEF_VARIABLES(dump_debug_data);
+    DEF_VARIABLES(external_surface_create_with_listeners);
+    DEF_VARIABLES(external_surface_destroy);
+    DEF_VARIABLES(external_surface_get_surface);
+    DEF_VARIABLES(external_surface_get_surface_id);
+    DEF_VARIABLES(using_dynamic_library);
     DEF_VARIABLES(resume);
     DEF_VARIABLES(set_lens_offset);
     DEF_VARIABLES(reconnect_sensors);
@@ -1010,6 +1039,7 @@ private:
     DEF_VARIABLES(get_surface_size);
     DEF_VARIABLES(check_surface_size_changed);
     DEF_VARIABLES(get_border_size_meters);
+    DEF_VARIABLES(get_button_long_press);
     DEF_VARIABLES(display_synchronizer_destroy);
     DEF_VARIABLES(display_synchronizer_create);
     DEF_VARIABLES(refresh_viewer_profile);
@@ -1082,6 +1112,7 @@ private:
     DEF_VARIABLES(get_recommended_buffer_viewports);
     DEF_VARIABLES(compute_distorted_point);
     DEF_VARIABLES(set_error);
+    DEF_VARIABLES(set_idle_listener);
     DEF_VARIABLES(swap_chain_get_buffer_size);
     DEF_VARIABLES(get_eye_from_head_matrix);
     DEF_VARIABLES(buffer_spec_destroy);
