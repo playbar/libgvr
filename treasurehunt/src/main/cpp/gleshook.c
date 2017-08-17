@@ -19,21 +19,42 @@ EGLSurface (*old_eglCreateWindowSurface)(EGLDisplay dpy, EGLConfig config, EGLNa
 EGLSurface MJ_eglCreateWindowSurface(EGLDisplay dpy, EGLConfig config, EGLNativeWindowType win, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreateWindowSurface");
-    old_eglCreateWindowSurface(dpy, config, win, attrib_list);
+    return old_eglCreateWindowSurface(dpy, config, win, attrib_list);
 }
 
 EGLSurface (*old_eglCreatePbufferSurface)(EGLDisplay dpy, EGLConfig config,const EGLint *attrib_list) = NULL;
 EGLSurface MJ_eglCreatePbufferSurface(EGLDisplay dpy, EGLConfig config, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreatePbufferSurface");
-    old_eglCreatePbufferSurface(dpy, config, attrib_list);
+    return old_eglCreatePbufferSurface(dpy, config, attrib_list);
 }
 
 EGLSurface (*old_eglCreatePixmapSurface)(EGLDisplay dpy, EGLConfig config, EGLNativePixmapType pixmap, const EGLint *attrib_list) = NULL;
 EGLSurface MJ_eglCreatePixmapSurface(EGLDisplay dpy, EGLConfig config, EGLNativePixmapType pixmap, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreatePixmapSurface");
-    old_eglCreatePixmapSurface(dpy, config, pixmap, attrib_list);
+    return old_eglCreatePixmapSurface(dpy, config, pixmap, attrib_list);
+}
+
+EGLBoolean (*old_eglMakeCurrent)(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx) = NULL;
+EGLBoolean MJ_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx)
+{
+    LOGI("MJ_eglMakeCurrent");
+    return old_eglMakeCurrent(dpy, draw, read, ctx);
+}
+
+EGLBoolean (*old_eglSwapBuffers)(EGLDisplay dpy, EGLSurface surface) = NULL;
+EGLBoolean MJ_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
+{
+    LOGI("MJ_eglSwapBuffers");
+    return old_eglSwapBuffers(dpy, surface);
+}
+
+EGLBoolean (*old_eglCopyBuffers)(EGLDisplay dpy, EGLSurface surface, EGLNativePixmapType target) = NULL;
+EGLBoolean MJ_eglCopyBuffers(EGLDisplay dpy, EGLSurface surface, EGLNativePixmapType target)
+{
+    LOGI("MJ_eglCopyBuffers");
+    return MJ_eglCopyBuffers(dpy, surface, target);
 }
 
 /////////////////////////////
@@ -194,9 +215,12 @@ int unHook(uint32_t target_addr)
 
 void hookAllFun()
 {
-//    hook((uint32_t) eglCreateWindowSurface, (uint32_t)MJ_eglCreateWindowSurface, (uint32_t **) &old_eglCreateWindowSurface);
-//    hook((uint32_t) eglCreatePbufferSurface, (uint32_t)MJ_eglCreatePbufferSurface, (uint32_t **) &old_eglCreatePbufferSurface);
-//    hook((uint32_t) eglCreatePixmapSurface, (uint32_t)MJ_eglCreatePixmapSurface, (uint32_t **) &old_eglCreatePixmapSurface);
+    hook((uint32_t) eglCreateWindowSurface, (uint32_t)MJ_eglCreateWindowSurface, (uint32_t **) &old_eglCreateWindowSurface);
+    hook((uint32_t) eglCreatePbufferSurface, (uint32_t)MJ_eglCreatePbufferSurface, (uint32_t **) &old_eglCreatePbufferSurface);
+    hook((uint32_t) eglCreatePixmapSurface, (uint32_t)MJ_eglCreatePixmapSurface, (uint32_t **) &old_eglCreatePixmapSurface);
+    hook((uint32_t) eglMakeCurrent, (uint32_t)MJ_eglMakeCurrent, (uint32_t **) &old_eglMakeCurrent);
+    hook((uint32_t) eglSwapBuffers, (uint32_t)MJ_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
+    hook((uint32_t) eglCopyBuffers, (uint32_t)MJ_eglCopyBuffers, (uint32_t **) &old_eglCopyBuffers);
     /////////////////
     hook((uint32_t) glShaderSource, (uint32_t)MJ_glShaderSource, (uint32_t **) &old_glShaderSource);
     hook((uint32_t) glBindFramebuffer, (uint32_t)MJ_glBindFramebuffer, (uint32_t **) &old_glBindFramebuffer);

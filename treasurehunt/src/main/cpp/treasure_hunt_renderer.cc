@@ -281,7 +281,8 @@ TreasureHuntRenderer::TreasureHuntRenderer(
       audio_source_id_(-1),
       success_source_id_(-1),
       gvr_controller_api_(nullptr),
-      gvr_viewer_type_(gvr_api_->GetViewerType()) {
+      gvr_viewer_type_(gvr_api_->GetViewerType())
+{
   ResumeControllerApiAsNeeded();
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
     LOGD("Viewer type: CARDBOARD");

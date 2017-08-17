@@ -7,10 +7,7 @@ add_library(gvr SHARED
             gvrglobal.cpp
             gvrInter.cpp
             LogMessage.cpp
-            gvrfn.cpp
-            inlineHook.c
-            relocate.c
-            gleshook.c)
+            gvrfn.cpp)
 
 # Include libraries needed for hello-jnicallback lib
 target_link_libraries(gvr
