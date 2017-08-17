@@ -6,8 +6,9 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 24
+        applicationId "com.google.vr.sdk.samples.treasurehunt"
+        minSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         externalNativeBuild {
@@ -43,6 +44,7 @@ dependencies {
 //    compile 'com.google.vr:sdk-base:1.60.1'
     compile files('libs/sdk-base.jar')
     compile files('libs/sdk-common.jar')
+//    compile files('libs/sdk-audio.jar')
     compile(name: 'sdk-base-1.60.1', ext: 'aar')
     compile(name: 'sdk-common-1.60.1', ext: 'aar')
     compile(name: 'sdk-audio-1.60.1', ext: 'aar')

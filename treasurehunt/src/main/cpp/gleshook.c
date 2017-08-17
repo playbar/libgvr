@@ -114,7 +114,7 @@ void MJ_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
 void (*old_glUseProgram) (GLuint program) = NULL;
 void MJ_glUseProgram (GLuint program)
 {
-    LOGI("MJ_glUseProgram");
+    LOGI("MJ_glUseProgram, programid=%d", program);
     return old_glUseProgram(program);
 }
 
