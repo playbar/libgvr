@@ -6,6 +6,7 @@
 #include "inlineHook.h"
 #include <android/log.h>
 #include <string.h>
+#include <EGL/egl.h>
 
 #define LOG_TAG "mjhook"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
@@ -13,6 +14,30 @@
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
+//egl
+EGLSurface (*old_eglCreateWindowSurface)(EGLDisplay dpy, EGLConfig config, EGLNativeWindowType win, const EGLint *attrib_list) = NULL;
+EGLSurface MJ_eglCreateWindowSurface(EGLDisplay dpy, EGLConfig config, EGLNativeWindowType win, const EGLint *attrib_list)
+{
+    LOGI("MJ_eglCreateWindowSurface");
+    old_eglCreateWindowSurface(dpy, config, win, attrib_list);
+}
+
+EGLSurface (*old_eglCreatePbufferSurface)(EGLDisplay dpy, EGLConfig config,const EGLint *attrib_list) = NULL;
+EGLSurface MJ_eglCreatePbufferSurface(EGLDisplay dpy, EGLConfig config, const EGLint *attrib_list)
+{
+    LOGI("MJ_eglCreatePbufferSurface");
+    old_eglCreatePbufferSurface(dpy, config, attrib_list);
+}
+
+EGLSurface (*old_eglCreatePixmapSurface)(EGLDisplay dpy, EGLConfig config, EGLNativePixmapType pixmap, const EGLint *attrib_list) = NULL;
+EGLSurface MJ_eglCreatePixmapSurface(EGLDisplay dpy, EGLConfig config, EGLNativePixmapType pixmap, const EGLint *attrib_list)
+{
+    LOGI("MJ_eglCreatePixmapSurface");
+    old_eglCreatePixmapSurface(dpy, config, pixmap, attrib_list);
+}
+
+/////////////////////////////
+//gles
 void (*old_glShaderSource) (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) = NULL;
 void MJ_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length)
 {
@@ -169,6 +194,10 @@ int unHook(uint32_t target_addr)
 
 void hookAllFun()
 {
+//    hook((uint32_t) eglCreateWindowSurface, (uint32_t)MJ_eglCreateWindowSurface, (uint32_t **) &old_eglCreateWindowSurface);
+//    hook((uint32_t) eglCreatePbufferSurface, (uint32_t)MJ_eglCreatePbufferSurface, (uint32_t **) &old_eglCreatePbufferSurface);
+//    hook((uint32_t) eglCreatePixmapSurface, (uint32_t)MJ_eglCreatePixmapSurface, (uint32_t **) &old_eglCreatePixmapSurface);
+    /////////////////
     hook((uint32_t) glShaderSource, (uint32_t)MJ_glShaderSource, (uint32_t **) &old_glShaderSource);
     hook((uint32_t) glBindFramebuffer, (uint32_t)MJ_glBindFramebuffer, (uint32_t **) &old_glBindFramebuffer);
     hook((uint32_t) glBindRenderbuffer, (uint32_t)MJ_glBindRenderbuffer, (uint32_t **) &old_glBindRenderbuffer);

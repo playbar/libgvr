@@ -19,6 +19,21 @@ target_link_libraries(gvr
                       GLESv2
                       EGL)
 
+#############################################
+add_library(hook SHARED
+               inlineHook.c
+               relocate.c
+               gleshook.c)
+
+# Include libraries needed for hello-jnicallback lib
+target_link_libraries(hook
+                     log
+                     android
+                     GLESv2
+                     EGL)
+
+
+################################
 add_library(draw SHARED
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc

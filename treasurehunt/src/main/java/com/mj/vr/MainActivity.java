@@ -122,7 +122,6 @@ public class MainActivity extends Activity {
 
     // Initialize GvrLayout and the native renderer.
     gvrLayout = new GvrLayout(this);
-      GLESHook.initHook();
     nativeTreasureHuntRenderer =
         nativeCreateRenderer(
             getClass().getClassLoader(),
