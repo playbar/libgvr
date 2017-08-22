@@ -1,6 +1,7 @@
 #include <dlfcn.h>
 #include <cwchar>
 #include <memory.h>
+#include <jni.h>
 #include "hookgvrfn.h"
 #include "detour.h"
 
@@ -10,27 +11,32 @@
 
 void * g_hGVR = NULL;
 
-#define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
-gvr_mat4f (*mj_gvr_get_head_space_from_start_space_rotation)(const gvr_context *gvr, const gvr_clock_time_point time) = NULL;
-gvr_mat4f hook_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr, const gvr_clock_time_point time)
+
+#define fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled "Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled"
+bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool) = NULL;
+bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
 {
-	LOGE("hook_gvr_get_head_space_from_start_space_rotation");
+	LOGI("mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled");
+	return old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+}
+
+#define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
+gvr_mat4f (*old_gvr_get_head_space_from_start_space_rotation)(const gvr_context *gvr, const gvr_clock_time_point time) = NULL;
+gvr_mat4f mj_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr, const gvr_clock_time_point time)
+{
+	LOGI("mj_gvr_get_head_space_from_start_space_rotation");
 	gvr_mat4f Ret;
 	memset(&Ret, 0, sizeof(gvr_mat4f));
 	Ret.m[0][0] = Ret.m[1][1] = Ret.m[2][2] = Ret.m[3][3] = 1;
-	bool bGetSensorFromMJSDK = false;
 
-	if (!bGetSensorFromMJSDK)
+	if (old_gvr_get_head_space_from_start_space_rotation)
 	{
-		if (mj_gvr_get_head_space_from_start_space_rotation)
-		{
-			LOGE( "Call gvr_get_head_space_from_start_space_rotation");
-			Ret = mj_gvr_get_head_space_from_start_space_rotation(gvr, time);
-		}
-		else
-		{
-			LOGE( "gvr_get_head_space_from_start_space_rotation = NULL");
-		}
+		LOGE( "Call gvr_get_head_space_from_start_space_rotation");
+		Ret = old_gvr_get_head_space_from_start_space_rotation(gvr, time);
+	}
+	else
+	{
+		LOGE( "gvr_get_head_space_from_start_space_rotation = NULL");
 	}
 	return Ret;
 }
@@ -77,7 +83,9 @@ bool InitHook()
 	bool bRet = false;
 	if (LoadGVR())
 	{
-		if (HookToFunction(g_hGVR , fn_gvr_get_head_space_from_start_space_rotation , (void*)hook_gvr_get_head_space_from_start_space_rotation, (void**)&mj_gvr_get_head_space_from_start_space_rotation))
+		bRet = HookToFunction(g_hGVR , fn_gvr_get_head_space_from_start_space_rotation , (void*)mj_gvr_get_head_space_from_start_space_rotation, (void**)&old_gvr_get_head_space_from_start_space_rotation)
+		   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled);
+		if (bRet)
 		{
 			bRet = true;
 		}
