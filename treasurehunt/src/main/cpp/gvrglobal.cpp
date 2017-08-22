@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "gvrglobal.h"
-#include "gvrfn.h"
 #include "LogMessage.h"
+#include "gvrInter.h"
 
 
 long getimagebase()
@@ -30,7 +30,7 @@ long getimagebase()
 JNIEXPORT jstring JNICALL Java_com_mj_vr_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz )
 {
 #define ABI "armeabi-v7a"
-    gGvrApi.Init();
+    InitLoadFun();
     CLogMessage msg(__FUNCTION__);
 //    getimagebase();
     return env->NewStringUTF("Hello from JNI !  Compiled with ABI " ABI ".");
@@ -39,7 +39,7 @@ JNIEXPORT jstring JNICALL Java_com_mj_vr_MainActivity_stringFromJNI( JNIEnv* env
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 {
-    return gGvrApi.JNI_OnLoad(vm, reserved);
+    return mj_JNI_OnLoad(vm, reserved);
 //    return  JNI_VERSION_1_6;
 }
 

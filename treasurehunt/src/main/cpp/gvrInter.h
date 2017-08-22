@@ -5,8 +5,6 @@
 #ifndef UNITYINTERFACE_UNITYINTERFACE_H
 #define UNITYINTERFACE_UNITYINTERFACE_H
 #include "jni.h"
-//#include "vr/gvr/capi/include/gvr_types.h"
-//#include "vr/gvr/capi/include/gvr_controller.h"
 #include "gvr_controller.h"
 #include "gvr_types.h"
 #include "gvr_gesture.h"
@@ -14,6 +12,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+bool InitLoadFun();
+void ReleaseFun();
+JNIEnv* AttachCurrentThreadJNI();
+void DetachCurrentThreadJNI();
 
 //ClassLoader paramClassLoader, Context paramContext)
 JNIEXPORT long JNICALL Java_com_google_vr_sdk_base_CardboardViewNativeImpl_nativeSetApplicationState(
@@ -387,6 +390,7 @@ JNIEXPORT jbyteArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativePauseTrack
 JNIEXPORT jintArray JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeGetWindowBounds(
                 JNIEnv* env, jobject obj, jlong paramLong);
 
+jint mj_JNI_OnLoad(JavaVM* vm, void* reserved);
 
 void gvr_buffer_viewport_list_destroy(gvr_buffer_viewport_list **viewport_list);
        
