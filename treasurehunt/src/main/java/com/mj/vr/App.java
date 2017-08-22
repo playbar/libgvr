@@ -6,11 +6,13 @@ import android.content.res.Configuration;
 import android.util.Log;
 
 import com.google.hook.GLESHook;
+import com.google.hook.GVRHook;
 
 public class App extends Application {
 
 	static {
 		System.loadLibrary("hook");
+		System.loadLibrary("gvrhook");
 	}
 
 	private String textData = "default";
@@ -30,6 +32,7 @@ public class App extends Application {
 		Log.d(TAG, "onCreate");
 		super.onCreate();
 		GLESHook.initHook();
+		GVRHook.initHook();
 	}
 	@Override
 	public void onTerminate() {

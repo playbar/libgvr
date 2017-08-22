@@ -51,7 +51,7 @@ class VrCoreSdkClient {
     private final boolean shouldBind;
     private boolean isBound;
     private boolean isResumed;
-    private boolean isEnabled = true;
+    private boolean isEnabled = false;
     private IVrCoreSdkService vrCoreSdkService;
     private IDaydreamManager daydreamManager;
     private IVrCoreLoggingService loggingService;

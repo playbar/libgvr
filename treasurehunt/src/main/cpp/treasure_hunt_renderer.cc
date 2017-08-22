@@ -22,7 +22,7 @@
 #include <cmath>
 #include <random>
 
-#define LOG_TAG "mjhook"
+#define LOG_TAG "TreasureHuntRenderer"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)

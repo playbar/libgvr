@@ -16,11 +16,29 @@ target_link_libraries(gvr
                       GLESv2
                       EGL)
 
+##############################################
+
+add_library(lib_gvr SHARED IMPORTED)
+set_target_properties(lib_gvr PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libgvr.so)
+
+add_library(gvrhook SHARED
+            gvrhook/gvrhook.cpp
+            gvrhook/detour.cpp
+            gvrhook/instruction.cpp
+            gvrhook/hookgvrfn.cpp
+            )
+target_include_directories(gvrhook PRIVATE
+                          ${CMAKE_CURRENT_SOURCE_DIR}
+                          ${CMAKE_CURRENT_SOURCE_DIR}/gvrhook )
+
+target_link_libraries(gvrhook gvr log)
+
 #############################################
 add_library(hook SHARED
-               inlineHook.c
-               relocate.c
-               gleshook.c)
+               gleshook/inlineHook.c
+               gleshook/relocate.c
+               gleshook/gleshook.c)
 
 # Include libraries needed for hello-jnicallback lib
 target_link_libraries(hook
@@ -30,11 +48,11 @@ target_link_libraries(hook
                      EGL)
 
 
+
 ################################
 add_library(draw SHARED
             treasure_hunt_jni.cc
-            treasure_hunt_renderer.cc
-            )
+            treasure_hunt_renderer.cc)
 
 add_library(lib_audio SHARED IMPORTED )
 set_target_properties(lib_audio PROPERTIES IMPORTED_LOCATION

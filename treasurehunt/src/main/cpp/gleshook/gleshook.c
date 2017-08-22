@@ -7,12 +7,36 @@
 #include <android/log.h>
 #include <string.h>
 #include <EGL/egl.h>
+#include <pthread.h>
 
 #define LOG_TAG "mjhook"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+
+
+// thread
+
+int (*old_pthread_attr_init)(pthread_attr_t * attr) = NULL;
+int mj_pthread_attr_init(pthread_attr_t * attr)
+{
+    LOGI("mj_pthread_attr_init");
+    return old_pthread_attr_init(attr);
+}
+
+int (*old_pthread_create)(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg) = NULL;
+int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg)
+{
+    LOGI("mj_pthread_create");
+    return old_pthread_create(thread, attr, start_routine, arg);
+}
+
+void hookThreadFun()
+{
+//    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
+    hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
+}
 
 //egl
 
@@ -403,7 +427,8 @@ int unHook(uint32_t target_addr)
     return 0;
 }
 
-void hookAllFun()
+
+void hookGLESFun()
 {
     hook((uint32_t) eglGetError, (uint32_t)MJ_eglGetError, (uint32_t **) &old_eglGetError);
     hook((uint32_t) eglGetDisplay, (uint32_t)MJ_eglGetDisplay, (uint32_t **) &old_eglGetDisplay);
@@ -463,7 +488,7 @@ void hookAllFun()
 void unhookAllFun()
 {
     inlineUnHookAll();
-    unHook((uint32_t)glShaderSource);
+//    unHook((uint32_t)glShaderSource);
 //    unHook((uint32_t)glBindBuffer);
 //    unHook((uint32_t)glBindBufferRange);
 //    unHook((uint32_t)glBindBufferBase);
@@ -477,7 +502,8 @@ JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_initHook(JNIEnv* env, jobje
     LOGI("unhookAllFun begin");
 //    unhookAllFun();
     LOGI("initHook begin");
-    hookAllFun();
+    hookGLESFun();
+    hookThreadFun();
     LOGI("initHook after");
 }
 

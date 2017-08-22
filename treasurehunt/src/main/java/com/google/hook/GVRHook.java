@@ -1,0 +1,11 @@
+package com.google.hook;
+
+/**
+ * Created by houguoli on 2017/8/22.
+ */
+
+public class GVRHook {
+    public static native void initHook();
+    public static native void unInitHook();
+    public static native void hookTest();
+}
