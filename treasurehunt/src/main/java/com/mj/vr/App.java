@@ -14,7 +14,7 @@ public class App extends Application {
 	}
 
 	private String textData = "default";
-	private String TAG = "CARLOZ - Application";
+	private String TAG = "Application";
 
 	public void setTextData(String textData) {
 		this.textData = textData;

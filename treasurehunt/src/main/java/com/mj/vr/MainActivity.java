@@ -179,8 +179,8 @@ public class MainActivity extends Activity {
       // sustained performance mode.
       AndroidCompat.setSustainedPerformanceMode(this, true);
     }
-
-    // Enable VR Mode.
+//
+//    // Enable VR Mode.
     AndroidCompat.setVrModeEnabled(this, true);
   }
 

@@ -402,6 +402,7 @@ void TreasureHuntRenderer::InitializeGl() {
   specs[1].SetColorFormat(GVR_COLOR_FORMAT_RGBA_8888);
   specs[1].SetDepthStencilFormat(GVR_DEPTH_STENCIL_FORMAT_NONE);
   specs[1].SetSamples(1);
+//    gvr::SwapChain temp = gvr_api_->CreateSwapChain(specs);
   swapchain_.reset(new gvr::SwapChain(gvr_api_->CreateSwapChain(specs)));
 
   viewport_list_.reset(new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
@@ -423,8 +424,7 @@ void TreasureHuntRenderer::ResumeControllerApiAsNeeded() {
         // Initialized controller api.
         gvr_controller_api_.reset(new gvr::ControllerApi);
         CHECK(gvr_controller_api_);
-        CHECK(gvr_controller_api_->Init(gvr::ControllerApi::DefaultOptions(),
-                                        gvr_api_->cobj()));
+        CHECK(gvr_controller_api_->Init(gvr::ControllerApi::DefaultOptions(), gvr_api_->cobj()));
       }
       gvr_controller_api_->Resume();
       break;
@@ -445,10 +445,8 @@ void TreasureHuntRenderer::ProcessControllerInput() {
   if (gvr_controller_state_.GetApiStatus() != old_status ||
       gvr_controller_state_.GetConnectionState() != old_connection_state) {
     LOGD("TreasureHuntApp: controller API status: %s, connection state: %s",
-         gvr_controller_api_status_to_string(
-             gvr_controller_state_.GetApiStatus()),
-         gvr_controller_connection_state_to_string(
-             gvr_controller_state_.GetConnectionState()));
+         gvr_controller_api_status_to_string(gvr_controller_state_.GetApiStatus()),
+         gvr_controller_connection_state_to_string(gvr_controller_state_.GetConnectionState()));
   }
 
   // Trigger click event if app/click button is clicked.

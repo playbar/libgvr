@@ -123,6 +123,33 @@ typedef struct gvr_quatf {
   float qw;
 } gvr_quatf;
 
+
+/// Valid color formats for swap chain buffers.
+typedef enum {
+    /// Equivalent to GL_RGBA8
+            GVR_COLOR_FORMAT_RGBA_8888 = 0,
+    /// Equivalent to GL_RGB565
+            GVR_COLOR_FORMAT_RGB_565 = 1,
+} gvr_color_format_type;
+
+typedef enum {
+    /// No depth or stencil buffer.
+            GVR_DEPTH_STENCIL_FORMAT_NONE = 255,
+    /// Equivalent to GL_DEPTH_COMPONENT16.
+            GVR_DEPTH_STENCIL_FORMAT_DEPTH_16 = 0,
+    /// Equivalent to GL_DEPTH_COMPONENT24.
+            GVR_DEPTH_STENCIL_FORMAT_DEPTH_24 = 1,
+    /// Equivlaent to GL_DEPTH24_STENCIL8.
+            GVR_DEPTH_STENCIL_FORMAT_DEPTH_24_STENCIL_8 = 2,
+    /// Equivalent to GL_DEPTH_COMPONENT32F.
+            GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F = 3,
+    /// Equivalent to GL_DEPTH_32F_STENCIL8.
+            GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F_STENCIL_8 = 4,
+    /// Equivalent to GL_STENCIL8.
+            GVR_DEPTH_STENCIL_FORMAT_STENCIL_8 = 5,
+} gvr_depth_stencil_format_type;
+
+
 /// A *monotonic system time* representation. On Android, this is equivalent to
 /// System.nanoTime(), or clock_gettime(CLOCK_MONOTONIC). If there is any doubt
 /// about how to get the current time for the current platform, simply use
@@ -154,7 +181,18 @@ typedef struct gvr_buffer_viewport_list_ gvr_buffer_viewport_list;
 /// each frame, we avoid calling them "framebuffers". Pixel buffers which are
 /// part of the currently acquired frame are immutable, i.e., they cannot be
 /// resized or otherwise reconfigured.
-typedef struct gvr_buffer_spec_ gvr_buffer_spec;
+//typedef struct gvr_buffer_spec_ gvr_buffer_spec;
+typedef struct gvr_buffer_spec_mj
+{
+    int32_t width;
+    int32_t height;
+    gvr_color_format_type color_format;
+    gvr_depth_stencil_format_type depth_stencil_format;
+    int32_t num_samples;
+    int32_t num_layers;
+}gvr_buffer_spec;
+
+
 
 /// Swap chain that contains some number of frames. Frames in the swap chain
 /// can be unused, in the process of being distorted and presented on the
@@ -384,31 +422,6 @@ typedef enum {
   // SN3D normalization).
   GVR_AUDIO_SURROUND_FORMAT_THIRD_ORDER_AMBISONICS = 5,
 } gvr_audio_surround_format_type;
-
-/// Valid color formats for swap chain buffers.
-typedef enum {
-  /// Equivalent to GL_RGBA8
-  GVR_COLOR_FORMAT_RGBA_8888 = 0,
-  /// Equivalent to GL_RGB565
-  GVR_COLOR_FORMAT_RGB_565 = 1,
-} gvr_color_format_type;
-
-typedef enum {
-  /// No depth or stencil buffer.
-  GVR_DEPTH_STENCIL_FORMAT_NONE = 255,
-  /// Equivalent to GL_DEPTH_COMPONENT16.
-  GVR_DEPTH_STENCIL_FORMAT_DEPTH_16 = 0,
-  /// Equivalent to GL_DEPTH_COMPONENT24.
-  GVR_DEPTH_STENCIL_FORMAT_DEPTH_24 = 1,
-  /// Equivlaent to GL_DEPTH24_STENCIL8.
-  GVR_DEPTH_STENCIL_FORMAT_DEPTH_24_STENCIL_8 = 2,
-  /// Equivalent to GL_DEPTH_COMPONENT32F.
-  GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F = 3,
-  /// Equivalent to GL_DEPTH_32F_STENCIL8.
-  GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F_STENCIL_8 = 4,
-  /// Equivalent to GL_STENCIL8.
-  GVR_DEPTH_STENCIL_FORMAT_STENCIL_8 = 5,
-} gvr_depth_stencil_format_type;
 
 /// Types of asynchronous reprojection.
 typedef enum {

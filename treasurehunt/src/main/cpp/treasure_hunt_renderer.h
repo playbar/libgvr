@@ -39,8 +39,7 @@ class TreasureHuntRenderer {
    * @param gvr_api The (non-owned) gvr_context.
    * @param gvr_audio_api The (owned) gvr::AudioApi context.
    */
-  TreasureHuntRenderer(gvr_context* gvr_context,
-                       std::unique_ptr<gvr::AudioApi> gvr_audio_api);
+  TreasureHuntRenderer(gvr_context* gvr_context, std::unique_ptr<gvr::AudioApi> gvr_audio_api);
 
   /**
    * Destructor.
