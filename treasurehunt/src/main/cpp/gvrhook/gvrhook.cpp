@@ -147,7 +147,9 @@ void hook_new_get_recommended_buffer_viewports()
 
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_initHook(JNIEnv* env, jobject obj)
 {
+    LOGI("GVRHook_initHook begin");
     InitHook();
+    LOGI("GVRHook_initHook end");
 }
 
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_hookTest(JNIEnv* env, jobject obj)

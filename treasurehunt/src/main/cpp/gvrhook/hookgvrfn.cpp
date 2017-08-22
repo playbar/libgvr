@@ -1,7 +1,7 @@
 #include <dlfcn.h>
 #include <cwchar>
+#include <memory.h>
 #include "hookgvrfn.h"
-#include "gvrglobal.h"
 #include "detour.h"
 
 #ifdef _DEBUG
