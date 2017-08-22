@@ -2700,11 +2700,11 @@ long CGVRAPI::GvrApi_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLo
     void * pdata = 0;
     if( m_fpGvrApi_nativeCreate)
         re = m_fpGvrApi_nativeCreate( env, obj, paramClassLoader, paramContext, paramLong, paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
-    pdata = (void*)re;
-    FILE *pfile = fopen("/sdcard/mem.txt", "wb");
-    fwrite(pdata, 600, 1, pfile);
-    fflush(pfile);
-    fclose(pfile);
+//    pdata = (void*)re;
+//    FILE *pfile = fopen("/sdcard/mem.txt", "wb");
+//    fwrite(pdata, 600, 1, pfile);
+//    fflush(pfile);
+//    fclose(pfile);
     return re;
 }
 
