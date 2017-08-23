@@ -1,60 +1,12 @@
-
-
 #include <stdint.h>
-#include "gleshook.h"
 #include <GLES2/gl2.h>
-#include "inlineHook.h"
 #include "callstack.h"
 #include <android/log.h>
 #include <string.h>
 #include <EGL/egl.h>
 #include <pthread.h>
-
-#define LOG_TAG "mjhook"
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-
-int (*old__android_log_print)(int prio, const char *tag,  const char *fmt, ...) = NULL;
-int mj__android_log_print(int prio, const char *tag,  const char *fmt, ...)
-{
-   va_list ap;
-    char buf[1024];
-    va_start(ap, fmt);
-    vsnprintf(buf, 1024, fmt, ap);
-    va_end(ap);
-
-    return __android_log_write(prio, tag, buf);
-//    return old__android_log_print(prio, tag, fmt);
-}
-
-// thread
-
-int (*old_pthread_attr_init)(pthread_attr_t * attr) = NULL;
-int mj_pthread_attr_init(pthread_attr_t * attr)
-{
-    LOGI("mj_pthread_attr_init");
-    return old_pthread_attr_init(attr);
-}
-
-int (*old_pthread_create)(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg) = NULL;
-int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg)
-{
-    LOGI("mj_pthread_create");
-    print_callstack();
-    int re = 0;
-    re = old_pthread_create(thread, attr, start_routine, arg);
-    return re;
-}
-
-
-void hookThreadFun()
-{
-    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
-//    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
-    hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
-}
+#include "hookutils.h"
+#include "log.h"
 
 //egl
 
@@ -117,21 +69,27 @@ EGLSurface (*old_eglCreateWindowSurface)(EGLDisplay dpy, EGLConfig config, EGLNa
 EGLSurface MJ_eglCreateWindowSurface(EGLDisplay dpy, EGLConfig config, EGLNativeWindowType win, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreateWindowSurface");
-    return old_eglCreateWindowSurface(dpy, config, win, attrib_list);
+    EGLSurface surface = old_eglCreateWindowSurface(dpy, config, win, attrib_list);
+    LOGI("eglcreate window=%x", surface);
+    return surface;
 }
 
 EGLSurface (*old_eglCreatePbufferSurface)(EGLDisplay dpy, EGLConfig config,const EGLint *attrib_list) = NULL;
 EGLSurface MJ_eglCreatePbufferSurface(EGLDisplay dpy, EGLConfig config, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreatePbufferSurface");
-    return old_eglCreatePbufferSurface(dpy, config, attrib_list);
+    EGLSurface surface = old_eglCreatePbufferSurface(dpy, config, attrib_list);
+    LOGI("eglcreate pbuffer=%x", surface);
+    return surface;
 }
 
 EGLSurface (*old_eglCreatePixmapSurface)(EGLDisplay dpy, EGLConfig config, EGLNativePixmapType pixmap, const EGLint *attrib_list) = NULL;
 EGLSurface MJ_eglCreatePixmapSurface(EGLDisplay dpy, EGLConfig config, EGLNativePixmapType pixmap, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreatePixmapSurface");
-    return old_eglCreatePixmapSurface(dpy, config, pixmap, attrib_list);
+    EGLSurface surface = old_eglCreatePixmapSurface(dpy, config, pixmap, attrib_list);
+    LOGI("eglcreate pixmap=%x", surface);
+    return surface;
 }
 
 EGLBoolean (*old_eglDestroySurface)(EGLDisplay dpy, EGLSurface surface) = NULL;
@@ -216,7 +174,9 @@ EGLContext (*old_eglCreateContext)(EGLDisplay dpy, EGLConfig config, EGLContext 
 EGLContext MJ_eglCreateContext(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list)
 {
     LOGI("MJ_eglCreateContext");
-    return old_eglCreateContext(dpy, config, share_context, attrib_list);
+    EGLContext context = old_eglCreateContext(dpy, config, share_context, attrib_list);
+    LOGI("eglcreate context=%x", context);
+    return context;
 }
 
 EGLBoolean (*old_eglDestroyContext)(EGLDisplay dpy, EGLContext ctx) = NULL;
@@ -230,6 +190,7 @@ EGLBoolean (*old_eglMakeCurrent)(EGLDisplay dpy, EGLSurface draw, EGLSurface rea
 EGLBoolean MJ_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx)
 {
     LOGI("MJ_eglMakeCurrent");
+    LOGI("eglcreate draw=%x, read=%x, context=%x", draw, read, ctx);
     return old_eglMakeCurrent(dpy, draw, read, ctx);
 }
 
@@ -424,27 +385,6 @@ void MJ_glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yo
     return old_glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
 }
 
-int hook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr)
-{
-    if (registerInlineHook(target_addr, new_addr, proto_addr) != ELE7EN_OK) {
-        return -1;
-    }
-    if (inlineHook((uint32_t) target_addr) != ELE7EN_OK) {
-        return -1;
-    }
-
-    return 0;
-}
-
-int unHook(uint32_t target_addr)
-{
-    if (inlineUnHook(target_addr) != ELE7EN_OK) {
-        return -1;
-    }
-
-    return 0;
-}
-
 
 void hookGLESFun()
 {
@@ -513,29 +453,4 @@ void unhookAllFun()
 //    unHook((uint32_t)glBufferData);
 //    unHook((uint32_t)glEnableVertexAttribArray);
 //    unHook((uint32_t)glVertexAttribPointer);
-}
-
-JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_printMapInfo(JNIEnv* env, jobject obj)
-{
-    print_mapinfo();
-}
-
-JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_initHook(JNIEnv* env, jobject obj)
-{
-    LOGI("unhookAllFun begin");
-//    unhookAllFun();
-    LOGI("initHook begin");
-    hookGLESFun();
-    hookThreadFun();
-    LOGI("initHook after");
-}
-
-JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_hookTest(JNIEnv* env, jobject obj)
-{
-
-}
-
-JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_unInitHook(JNIEnv* env, jobject obj)
-{
-    unhookAllFun();
 }

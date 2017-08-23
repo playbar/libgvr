@@ -37,8 +37,10 @@ target_link_libraries(gvrhook gvr log)
 #############################################
 add_library(hook SHARED
                gleshook/inlineHook.c
+               gleshook/hookutils.c
                gleshook/relocate.c
                gleshook/gleshook.c
+               gleshook/threadhook.c
                gleshook/callstack.c)
 
 # Include libraries needed for hello-jnicallback lib
