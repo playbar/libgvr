@@ -25,7 +25,7 @@ add_library(gvrhook SHARED
             gvrhook/gvrhook.cpp
             gvrhook/detour.cpp
             gvrhook/instruction.cpp
-            gvrhook/hookgvrfn.cpp
+            gvrhook/gvrhookfn.cpp
             )
 target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}

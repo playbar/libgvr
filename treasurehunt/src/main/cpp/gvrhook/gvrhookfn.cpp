@@ -2,7 +2,7 @@
 #include <cwchar>
 #include <memory.h>
 #include <jni.h>
-#include "hookgvrfn.h"
+#include "gvrhookfn.h"
 #include "detour.h"
 
 #ifdef _DEBUG
@@ -18,6 +18,31 @@ bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNI
 {
 	LOGI("mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled");
 	return old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+}
+
+#define fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate 	"Java_com_google_vr_ndk_base_GvrApi_nativeCreate"
+long (*old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate)(
+        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+        jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker) = NULL;
+long mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
+        JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramInt1,
+        jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker)
+{
+    LOGI("mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate");
+    long re = 0;
+    re = old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, paramLong,
+                                                           paramInt1, paramInt2, paramFloat1, paramFloat2, paramPoseTracker);
+    return re;
+}
+
+#define fn_gvr_create "gvr_create"
+gvr_context * (*old_gvr_create)(JNIEnv *env, jobject app_context, jobject class_loader) = NULL;
+gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_loader)
+{
+	LOGI("mj_gvr_create");
+    gvr_context *re = NULL;
+	re = old_gvr_create(env, app_context, class_loader);
+    return re;
 }
 
 #define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
@@ -84,7 +109,9 @@ bool InitHook()
 	if (LoadGVR())
 	{
 		bRet = HookToFunction(g_hGVR , fn_gvr_get_head_space_from_start_space_rotation , (void*)mj_gvr_get_head_space_from_start_space_rotation, (void**)&old_gvr_get_head_space_from_start_space_rotation)
-		   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled);
+		   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
+		   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
+           &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);
 		if (bRet)
 		{
 			bRet = true;

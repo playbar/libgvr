@@ -15,6 +15,18 @@
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
+int (*old__android_log_print)(int prio, const char *tag,  const char *fmt, ...) = NULL;
+int mj__android_log_print(int prio, const char *tag,  const char *fmt, ...)
+{
+   va_list ap;
+    char buf[1024];
+    va_start(ap, fmt);
+    vsnprintf(buf, 1024, fmt, ap);
+    va_end(ap);
+
+    return __android_log_write(prio, tag, buf);
+//    return old__android_log_print(prio, tag, fmt);
+}
 
 // thread
 
@@ -32,8 +44,10 @@ int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*st
     return old_pthread_create(thread, attr, start_routine, arg);
 }
 
+
 void hookThreadFun()
 {
+    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
 //    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
     hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
 }

@@ -10,7 +10,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include "gvr.h"
-#include "hookgvrfn.h"
+#include "gvrhookfn.h"
 
 
 extern void gvr_get_recommended_buffer_viewports(const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list);
