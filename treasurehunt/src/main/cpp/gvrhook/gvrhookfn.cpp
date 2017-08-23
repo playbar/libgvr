@@ -2,6 +2,7 @@
 #include <cwchar>
 #include <memory.h>
 #include <jni.h>
+#include <CallStack.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 
@@ -39,6 +40,8 @@ long mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
 gvr_context * (*old_gvr_create)(JNIEnv *env, jobject app_context, jobject class_loader) = NULL;
 gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_loader)
 {
+    CallStack stack;
+    stack.dump();
 	LOGI("mj_gvr_create");
     gvr_context *re = NULL;
 	re = old_gvr_create(env, app_context, class_loader);

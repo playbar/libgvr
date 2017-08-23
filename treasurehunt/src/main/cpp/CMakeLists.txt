@@ -26,6 +26,7 @@ add_library(gvrhook SHARED
             gvrhook/detour.cpp
             gvrhook/instruction.cpp
             gvrhook/gvrhookfn.cpp
+            CallStack.cpp
             )
 target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -37,7 +38,8 @@ target_link_libraries(gvrhook gvr log)
 add_library(hook SHARED
                gleshook/inlineHook.c
                gleshook/relocate.c
-               gleshook/gleshook.c)
+               gleshook/gleshook.c
+               gleshook/callstack.c)
 
 # Include libraries needed for hello-jnicallback lib
 target_link_libraries(hook
