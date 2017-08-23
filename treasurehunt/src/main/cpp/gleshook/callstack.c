@@ -3,11 +3,12 @@
 #include <unistd.h>
 #include <android/log.h>
 #include <dlfcn.h>
+#include <stdlib.h>
 #include "callstack.h"
 #include "log.h"
 
 #define CALLSTACK_TAG "callstack"
-#define BACKTRACE_SIZE  32
+#define BACKTRACE_SIZE  64
 
 
 // 6f000000-6f01e000 rwxp 00000000 00:0c 16389419   /system/lib/libcomposer.so
@@ -20,31 +21,31 @@ static mapinfo *parse_maps_line(char *line)
     int len = strlen(line);
 
     if(len < 1){
-       __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error len\n");
-	return 0;
+        __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error len\n");
+        return 0;
     }
     line[--len] = 0;
 
     if(len < 40){
-       __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error max len %d\n", len);
-	return 0;
+        __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error max len %d\n", len);
+        return 0;
     }
     if(line[20] != 'x'){
-       __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error executing \n");
-	return 0;
+//        __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error executing \n");
+        return 0;
     }
 
     //mi = dlmalloc(sizeof(mapinfo) + (len - 47));
     mi = malloc(sizeof(mapinfo) + (len - 47));
 
     if(mi == 0){
-       __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error memory\n");
-	return 0;
+        __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"error memory\n");
+        return 0;
     }
 
     mi->start = strtoul(line, 0, 16);
     mi->end = strtoul(line + 9, 0, 16);
-   // mi->is_readable = (line[19] == 'r')? 1: 0;
+    // mi->is_readable = (line[19] == 'r')? 1: 0;
     /* To be filled in parse_elf_info if the mapped section starts with
      * elf_header
      */
@@ -63,16 +64,16 @@ mapinfo *init_mapinfo(int pid)
     //    strcpy(data, "/proc/28037/maps");
     fp = fopen(data, "r");
     if(fp) {
-	while(fgets(data, sizeof(data), fp)) {
-	       t = parse_maps_line(data);
-	       if(t){
-		   	head = t;
-		   	break;
-	       }
-	}
-	if(!head)
-		return NULL;
-	prev = head;
+        while(fgets(data, sizeof(data), fp)) {
+            t = parse_maps_line(data);
+            if(t){
+                head = t;
+                break;
+            }
+        }
+        if(!head)
+            return NULL;
+        prev = head;
         while(fgets(data, sizeof(data), fp)) {
             mapinfo *mi = parse_maps_line(data);
             if(mi) {
@@ -88,23 +89,22 @@ mapinfo *init_mapinfo(int pid)
 
 void deinit_mapinfo(mapinfo *mi)
 {
-   mapinfo *del;
-   while(mi) {
-       del = mi;
-       mi = mi->next;
-       //dlfree(del);
-       free(del);
-
-   }
+    mapinfo *del;
+    while(mi) {
+        del = mi;
+        mi = mi->next;
+        //dlfree(del);
+        free(del);
+    }
 }
 
-void print_mapinfo(mapinfo *mi)
+void print_mapinfo_mi(mapinfo *mi)
 {
-   while(mi) {
-      // __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"name %s, addr 0x%x-0x%x, R%d\n", mi->name, mi->start, mi->end, mi->is_readable);
-       __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"name %s, addr 0x%x-0x%x, R%d\n", mi->name, mi->start, mi->end);
-       mi = mi->next;
-   }
+    while(mi) {
+        // __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"name %s, addr 0x%x-0x%x, R%d\n", mi->name, mi->start, mi->end, mi->is_readable);
+        __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"name %s, addr 0x%x-0x%x, R%d\n", mi->name, mi->start, mi->end);
+        mi = mi->next;
+    }
 }
 const mapinfo* find_map_info(const mapinfo* milist, uintptr_t addr) {
     const mapinfo* mi = milist;
@@ -112,7 +112,7 @@ const mapinfo* find_map_info(const mapinfo* milist, uintptr_t addr) {
     while (mi && mi->end <= addr) {
         mi = mi->next;
     }
-    
+
     return mi;
 }
 
@@ -124,9 +124,9 @@ int try_get_word(const mapinfo* map_info_list, uintptr_t ptr, uint32_t* out_valu
         return 0;
     }
     //if (!is_readable_map(map_info_list, ptr)) {
-        //ALOGV("try_get_word: pointer 0x%08x not in a readable map", ptr);
-     //   *out_value = 0xffffffffL;
-     //   return 0;
+    //ALOGV("try_get_word: pointer 0x%08x not in a readable map", ptr);
+    //   *out_value = 0xffffffffL;
+    //   return 0;
     //}
     if (!find_map_info(map_info_list, ptr)) {
         //ALOGV("try_get_word: pointer 0x%08x not in a readable map", ptr);
@@ -232,13 +232,26 @@ int callstacktest()
 {
     mapinfo* mi;
     mi = init_mapinfo(getpid());
-    print_mapinfo(mi);
-	
+    print_mapinfo_mi(mi);
     __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"Hello, World!!\n");
-
     funcA();
-    
     deinit_mapinfo(mi);
+    return 0;
+}
 
-	return 0;
+void print_mapinfo()
+{
+    mapinfo *mi = init_mapinfo(getpid());
+    print_mapinfo_mi(mi);
+    deinit_mapinfo(mi);
+}
+
+void print_callstack()
+{
+    int i;
+    intptr_t backtrace[BACKTRACE_SIZE];
+    size_t numEntries = get_backtrace(backtrace, BACKTRACE_SIZE);
+    for(i=0; i< numEntries; i++)
+        __android_log_print(ANDROID_LOG_INFO, CALLSTACK_TAG,"0x%x\n", backtrace[i]);
+    return;
 }

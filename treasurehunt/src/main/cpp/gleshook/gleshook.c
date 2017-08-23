@@ -42,6 +42,7 @@ int (*old_pthread_create)(pthread_t *thread, pthread_attr_t const * attr, void *
 int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg)
 {
     LOGI("mj_pthread_create");
+    print_callstack();
     int re = 0;
     re = old_pthread_create(thread, attr, start_routine, arg);
     return re;
@@ -514,9 +515,13 @@ void unhookAllFun()
 //    unHook((uint32_t)glVertexAttribPointer);
 }
 
+JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_printMapInfo(JNIEnv* env, jobject obj)
+{
+    print_mapinfo();
+}
+
 JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_initHook(JNIEnv* env, jobject obj)
 {
-    callstacktest();
     LOGI("unhookAllFun begin");
 //    unhookAllFun();
     LOGI("initHook begin");

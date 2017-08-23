@@ -31,7 +31,7 @@ mapinfo *init_mapinfo(int pid);
 
 void deinit_mapinfo(mapinfo *mi);
 
-void print_mapinfo(mapinfo *mi);
+void print_mapinfo_mi(mapinfo *mi);
 
 const mapinfo* find_map_info(const mapinfo* milist, uintptr_t addr);
 
@@ -47,4 +47,7 @@ int get_backtrace(intptr_t* addrs, size_t max_entries);
 
 int callstacktest();
 
+void print_mapinfo();
+
+void print_callstack();
 #endif

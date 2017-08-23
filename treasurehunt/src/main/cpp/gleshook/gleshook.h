@@ -6,6 +6,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_printMapInfo(JNIEnv* env, jobject obj);
 JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_initHook(JNIEnv* env, jobject obj);
 JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_hookTest(JNIEnv* env, jobject obj);
 JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_unInitHook(JNIEnv* env, jobject obj);

@@ -5,6 +5,7 @@ package com.google.hook;
  */
 
 public class GLESHook {
+    public static native void printMapInfo();
     public static native void initHook();
     public static native void unInitHook();
     public static native void hookTest();
