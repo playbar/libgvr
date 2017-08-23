@@ -41,12 +41,14 @@ add_library(hook SHARED
                gleshook/relocate.c
                gleshook/gleshook.c
                gleshook/threadhook.c
+               gleshook/vkhook.c
                gleshook/callstack.c)
 
 # Include libraries needed for hello-jnicallback lib
 target_link_libraries(hook
                      log
                      android
+                     vulkan
                      GLESv2
                      EGL)
 

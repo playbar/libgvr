@@ -17,6 +17,7 @@ void hookGLESFun();
 void unhookAllFun();
 
 void hookThreadFun();
+void hookVulkanFun();
 
 JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_printMapInfo(JNIEnv *env, jobject obj);
 

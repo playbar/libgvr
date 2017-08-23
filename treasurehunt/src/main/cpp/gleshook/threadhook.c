@@ -1,6 +1,5 @@
 #include <android/log.h>
 #include <string.h>
-#include <EGL/egl.h>
 #include <pthread.h>
 #include <stdio.h>
 #include "log.h"
