@@ -1063,6 +1063,7 @@ class BufferViewport {
   }
   /// For more information, see gvr_buffer_viewport_set_reprojection().
   void SetReprojection(gvr_reprojection reprojection) {
+      int ilen = sizeof(gvr_reprojection);
     gvr_buffer_viewport_set_reprojection(viewport_, reprojection);
   }
 
@@ -1602,7 +1603,10 @@ class GvrApi {
   /// @{
 
   /// For more information, see gvr_initialize_gl().
-  void InitializeGl() { gvr_initialize_gl(context_); }
+  void InitializeGl()
+  {
+      gvr_initialize_gl(context_);
+  }
 
   /// For more information, see gvr_get_async_reprojection_enabled().
   bool GetAsyncReprojectionEnabled() const {

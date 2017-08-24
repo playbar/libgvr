@@ -149,6 +149,14 @@ typedef enum {
             GVR_DEPTH_STENCIL_FORMAT_STENCIL_8 = 5,
 } gvr_depth_stencil_format_type;
 
+/// Types of asynchronous reprojection.
+typedef enum {
+    /// Do not reproject.
+    GVR_REPROJECTION_NONE = 0,
+    /// Reproject in all dimensions.
+    GVR_REPROJECTION_FULL = 1,
+} gvr_reprojection;
+
 
 /// A *monotonic system time* representation. On Android, this is equivalent to
 /// System.nanoTime(), or clock_gettime(CLOCK_MONOTONIC). If there is any doubt
@@ -169,11 +177,26 @@ typedef struct gvr_clock_time_point {
 /// gvr_get_screen_buffer_viewports(). However, the client may also customize
 /// these values via gvr_buffer_viewport_list_set(), constructing a custom
 /// gvr_buffer_viewport_list for use in the distortion pass.
-typedef struct gvr_buffer_viewport_ gvr_buffer_viewport;
+typedef struct gvr_buffer_viewport_mj
+{
+//   char data[112] ;
+    gvr_rectf view;          //16
+    gvr_mat4f transformMat;  //64
+    gvr_eye eye;             //4
+    int buffer_index; //4
+    char data1[8];    // todo
+    int layer_index;
+    char data11[4];   //todo
+    gvr_reprojection reprojection;
+    char data2[4];    //todo
+}gvr_buffer_viewport;
 
 /// List of buffer viewports that completely specifies how to transform the
 /// frame's buffers into the image displayed on the screen.
-typedef struct gvr_buffer_viewport_list_ gvr_buffer_viewport_list;
+typedef struct gvr_buffer_viewport_list_mj
+{
+    char data[16];
+}gvr_buffer_viewport_list;
 
 /// Specification of a pixel buffer. A pixel buffer can have color, depth and
 /// stencil attachments and mostly corresponds to the OpenGL concept of a
@@ -199,7 +222,12 @@ typedef struct gvr_buffer_spec_mj
 /// screen, or acquired and being rendered to by the application. The swap chain
 /// ensures that the most recent available frame is always shown and that the
 /// application never has to wait to render the next frame.
-typedef struct gvr_swap_chain_ gvr_swap_chain;
+typedef struct gvr_swap_chain_mj
+{
+    char data[8];
+    gvr_context *context;
+//    char data1[80];
+}gvr_swap_chain;
 
 /// A single frame acquired from the swap chain. Each frame is composed of one
 /// or more buffers, which are then lens distorted and composited into the final
@@ -422,14 +450,6 @@ typedef enum {
   // SN3D normalization).
   GVR_AUDIO_SURROUND_FORMAT_THIRD_ORDER_AMBISONICS = 5,
 } gvr_audio_surround_format_type;
-
-/// Types of asynchronous reprojection.
-typedef enum {
-  /// Do not reproject.
-  GVR_REPROJECTION_NONE = 0,
-  /// Reproject in all dimensions.
-  GVR_REPROJECTION_FULL = 1,
-} gvr_reprojection;
 
 typedef enum {
   GVR_CONTROLLER_RIGHT_HANDED = 0,
