@@ -28,7 +28,10 @@ extern "C" {
 /// @{
 
 /// Primary context for invoking Google VR APIs.
-typedef struct gvr_context_ gvr_context;
+typedef struct gvr_context_mj{
+    char data[512];
+}gvr_context;
+
 
 /// An enum for the left and right eye.
 typedef enum {
@@ -220,7 +223,9 @@ typedef struct gvr_buffer_spec_mj
 /// output. Buffers are identified by indices that correspond to the position
 /// of their gvr_buffer_spec in the list passed when constructing the swap
 /// chain.
-typedef struct gvr_frame_ gvr_frame;
+typedef struct gvr_frame_mj{
+    char data[32];
+} gvr_frame;
 
 /// Swap chain that contains some number of frames. Frames in the swap chain
 /// can be unused, in the process of being distorted and presented on the

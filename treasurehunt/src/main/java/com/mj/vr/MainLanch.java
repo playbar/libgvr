@@ -27,11 +27,11 @@ public class MainLanch extends Activity {
         textView = (TextView)findViewById(R.id.textView1);
     }
 
-    static {
-        System.loadLibrary("gvr");
-        System.loadLibrary("gvr_audio");
-        System.loadLibrary("gvr_t");
-    }
+//    static {
+//        System.loadLibrary("gvr");
+//        System.loadLibrary("gvr_audio");
+//        System.loadLibrary("gvr_t");
+//    }
 
 
     @Override
@@ -45,7 +45,7 @@ public class MainLanch extends Activity {
         String str = "---->" + count;
 //        str = stringFromJNI();
         textView.setText(str);
-        startActivity(new Intent(MainLanch.this, TreasureHuntActivity.class));
+        startActivity(new Intent(MainLanch.this, MainActivity.class));
         count++;
     }
 

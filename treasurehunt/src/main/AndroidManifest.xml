@@ -30,7 +30,7 @@
       android:label="MainActivity"
       android:theme="@style/VrActivityTheme">
     <activity
-        android:name=".MainActivity"
+        android:name=".MainLanch"
         android:label="@string/app_name"
         android:screenOrientation="landscape"
         android:configChanges="orientation|keyboardHidden|screenSize"
@@ -48,7 +48,7 @@
           <category android:name="com.google.intent.category.DAYDREAM"/>
         <category android:name="com.google.intent.category.CARDBOARD" />
       </intent-filter>
-
     </activity>
+    <activity android:name=".MainActivity"></activity>
   </application>
 </manifest>
