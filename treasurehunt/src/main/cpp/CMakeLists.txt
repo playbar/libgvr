@@ -6,7 +6,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC  -shared")
 add_library(gvr SHARED
             gvrglobal.cpp
             gvrInter.cpp
+            syscallstack.cc
             LogMessage.cpp)
+
+target_include_directories(gvr PRIVATE
+                          ${CMAKE_CURRENT_SOURCE_DIR}
+                          )
 
 # Include libraries needed for hello-jnicallback lib
 target_link_libraries(gvr
@@ -27,6 +32,7 @@ add_library(gvrhook SHARED
             gvrhook/instruction.cpp
             gvrhook/gvrhookfn.cpp
             CallStack.cpp
+            syscallstack.cc
             )
 target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -42,7 +48,12 @@ add_library(hook SHARED
                gleshook/gleshook.c
                gleshook/threadhook.c
                gleshook/vkhook.c
-               gleshook/callstack.c)
+               gleshook/callstack.c
+               syscallstack.cc)
+
+target_include_directories(hook PRIVATE
+                          ${CMAKE_CURRENT_SOURCE_DIR}
+                          )
 
 # Include libraries needed for hello-jnicallback lib
 target_link_libraries(hook

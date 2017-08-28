@@ -215,7 +215,12 @@ typedef struct gvr_buffer_spec_mj
     int32_t num_layers;
 }gvr_buffer_spec;
 
-
+/// A single frame acquired from the swap chain. Each frame is composed of one
+/// or more buffers, which are then lens distorted and composited into the final
+/// output. Buffers are identified by indices that correspond to the position
+/// of their gvr_buffer_spec in the list passed when constructing the swap
+/// chain.
+typedef struct gvr_frame_ gvr_frame;
 
 /// Swap chain that contains some number of frames. Frames in the swap chain
 /// can be unused, in the process of being distorted and presented on the
@@ -224,17 +229,12 @@ typedef struct gvr_buffer_spec_mj
 /// application never has to wait to render the next frame.
 typedef struct gvr_swap_chain_mj
 {
-    char data[8];
+    gvr_frame *frame;
+    char data[4];
     gvr_context *context;
 //    char data1[80];
 }gvr_swap_chain;
 
-/// A single frame acquired from the swap chain. Each frame is composed of one
-/// or more buffers, which are then lens distorted and composited into the final
-/// output. Buffers are identified by indices that correspond to the position
-/// of their gvr_buffer_spec in the list passed when constructing the swap
-/// chain.
-typedef struct gvr_frame_ gvr_frame;
 
 /// @addtogroup types
 /// @{

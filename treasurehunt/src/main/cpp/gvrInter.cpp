@@ -2959,6 +2959,7 @@ JNIEXPORT long JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
         jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker)
 {
 //    LOGE("Java_com_google_vr_ndk_base_GvrApi_nativeCreate");
+
     CLogMessage msg(__FUNCTION__);
     InitLoadFun();
     long re = 0;

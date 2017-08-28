@@ -3,6 +3,7 @@
 #include <memory.h>
 #include <jni.h>
 #include <CallStack.h>
+#include <syscallstack.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 
@@ -36,16 +37,33 @@ long mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
     return re;
 }
 
+#define fn_gvr_create_with_tracker_for_testing "gvr_create_with_tracker_for_testing"
+int (*old_gvr_create_with_tracker_for_testing)( int a1, int a2) = NULL;
+int mj_gvr_create_with_tracker_for_testing( int a1, int a2)
+{
+    LOGI("mj_gvr_create_with_tracker_for_testing");
+    return old_gvr_create_with_tracker_for_testing(a1, a2);
+}
+
 #define fn_gvr_create "gvr_create"
 gvr_context * (*old_gvr_create)(JNIEnv *env, jobject app_context, jobject class_loader) = NULL;
 gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_loader)
 {
 //    CallStack stack;
 //    stack.dump();
+	sys_call_stack();
 	LOGI("mj_gvr_create");
     gvr_context *re = NULL;
 	re = old_gvr_create(env, app_context, class_loader);
     return re;
+}
+
+#define fn_gvr_set_display_metrics "gvr_set_display_metrics"
+int (*old_gvr_set_display_metrics)( int *a1, int a2, int a3, int a4, int a5, int a6) = NULL;
+int mj_gvr_set_display_metrics( int *a1, int a2, int a3, int a4, int a5, int a6)
+{
+    LOGI("mj_gvr_set_display_metrics");
+    return old_gvr_set_display_metrics(a1, a2, a3, a4, a5, a6);
 }
 
 #define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
@@ -113,7 +131,9 @@ bool InitHook()
 	{
 		bRet = HookToFunction(g_hGVR , fn_gvr_get_head_space_from_start_space_rotation , (void*)mj_gvr_get_head_space_from_start_space_rotation, (void**)&old_gvr_get_head_space_from_start_space_rotation)
 		   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
+		   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
 		   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
+		   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
            &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);
 		if (bRet)
 		{

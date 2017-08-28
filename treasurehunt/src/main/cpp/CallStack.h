@@ -45,14 +45,14 @@ public:
 		init();
 	}
 	void dump();
+	void deinit_mapinfo();
+	void print_mapinfo();
+
 
 private:
 	intptr_t backtrace[BACKTRACE_SIZE];
 	struct mapinfo *mapinfohead;
-	
 	mapinfo *parse_maps_line(char *);
-	void deinit_mapinfo();
-	void print_mapinfo();
 	int try_get_word(uintptr_t ptr, uint32_t* out_value);
 	int try_get_half_word(uint32_t pc, uint16_t* out_value);
 	uintptr_t rewind_pc_arch(uintptr_t pc);

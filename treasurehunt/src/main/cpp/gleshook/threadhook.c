@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <dlfcn.h>
+#include <syscallstack.h>
 #include "log.h"
 #include "callstack.h"
 #include "hookutils.h"
@@ -38,15 +39,39 @@ void* (*old_malloc)(size_t byte_count) = NULL;
 void* mj_malloc(size_t byte_count)
 {
     void *re = old_malloc(byte_count);
-    LOGITAG("mjmem", "mj_malloc, re=%x", re);
+    LOGITAG("mjmem", "mj_malloc, bytecount=%d, re=%x, pid=%d", byte_count, re, getpid());
     memset(re, 0, byte_count);
+    return re;
+}
+
+void* (*old_calloc)(size_t item_count, size_t item_size) = NULL;
+void* mj_calloc(size_t item_count, size_t item_size)
+{
+    void *re = old_calloc(item_count, item_size);
+    LOGITAG("mjmem", "mj_calloc, re=%x, item_cout=%d, item_size=%d",  re, item_count, item_size);
+    return re;
+}
+void* (*old_realloc)(void* p, size_t byte_count) = NULL;
+void* mj_realloc(void* p, size_t byte_count)
+{
+    void *re = old_realloc(p, byte_count);
+    LOGITAG("mjmem", "mj_realloc, bytecount=%d, re=%x", byte_count, re);
     return re;
 }
 
 void (*old_free)(void* p) = NULL;
 void mj_free(void* p)
 {
-    LOGITAG("mjmem", "mj_free, p=%x", p);
+    static int count = 0;
+    if( count == 0 ) {
+        ++count;
+        if( p!= NULL) {
+            LOGITAG("mjmem", "mj_free, p=%x, pid=%d", p, getpid());
+        }
+    } else {
+        count = 0;
+    }
+
     return old_free(p);
 }
 
@@ -72,10 +97,13 @@ int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*st
 
 void hookThreadFun()
 {
-    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
+//    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
 //    hook((uint32_t) dlopen, (uint32_t)mj_dlopen, (uint32_t **) &old_dlopen);
     hook((uint32_t) dlclose, (uint32_t)mj_dlclose, (uint32_t **) &old_dlclose);
     hook((uint32_t) malloc, (uint32_t)mj_malloc, (uint32_t **) &old_malloc);
+    hook((uint32_t) calloc, (uint32_t)mj_calloc, (uint32_t **) &old_calloc);
+    hook((uint32_t) realloc, (uint32_t)mj_realloc, (uint32_t **) &old_realloc);
+//    hook((uint32_t) free, (uint32_t)mj_free, (uint32_t **) &old_free);
 //    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
     hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
 }
