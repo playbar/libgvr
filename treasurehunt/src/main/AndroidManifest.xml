@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mj.vr"
+    package="com.mj.vr.my"
     android:versionCode="170509033"
     android:versionName="1.60.1">
 
@@ -25,12 +25,12 @@
   <uses-feature android:name="android.hardware.vr.high_performance" android:required="false"/>
 
   <application
-      android:name=".App"
+      android:name="com.mj.vr.App"
       android:allowBackup="true"
       android:label="MainActivity"
       android:theme="@style/VrActivityTheme">
     <activity
-        android:name=".MainLanch"
+        android:name="com.mj.vr.MainLanch"
         android:label="@string/app_name"
         android:screenOrientation="landscape"
         android:configChanges="orientation|keyboardHidden|screenSize"
@@ -49,6 +49,6 @@
         <category android:name="com.google.intent.category.CARDBOARD" />
       </intent-filter>
     </activity>
-    <activity android:name=".MainActivity"></activity>
+    <activity android:name="com.mj.vr.MainActivity"  android:screenOrientation="landscape"></activity>
   </application>
 </manifest>

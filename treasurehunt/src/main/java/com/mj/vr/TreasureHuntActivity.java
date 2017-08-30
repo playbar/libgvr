@@ -67,6 +67,8 @@ import com.google.vr.internal.controller.NativeCallbacks;
 import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.GvrViewerParams;
 import com.google.vr.sdk.base.CardboardViewNativeImpl;
+import com.mj.vr.my.R;
+
 /**
  * A Google VR sample application.
  *

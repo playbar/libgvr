@@ -31,6 +31,7 @@ add_library(gvrhook SHARED
             gvrhook/detour.cpp
             gvrhook/instruction.cpp
             gvrhook/gvrhookfn.cpp
+            gvrhook/mjgvr.cc
             CallStack.cpp
             syscallstack.cc
             )

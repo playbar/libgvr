@@ -27,9 +27,20 @@ extern "C" {
 /// @brief Various types used in the Google VR NDK.
 /// @{
 
+typedef struct gvr_user_prefs_mj{
+    char data[600];
+}gvr_user_prefs;
+
+
 /// Primary context for invoking Google VR APIs.
 typedef struct gvr_context_mj{
-    char data[512];
+    gvr_user_prefs *sub24738_0;  // st24738_0 指针
+    int32_t errorno;
+    void *sub24738_2;
+    void *sub24738_3;
+    void *sub24738_4;
+    void *sub24738_5;
+    uint32_t flag;
 }gvr_context;
 
 
@@ -460,8 +471,6 @@ typedef enum {
   GVR_CONTROLLER_RIGHT_HANDED = 0,
   GVR_CONTROLLER_LEFT_HANDED = 1,
 } gvr_controller_handedness;
-
-typedef struct gvr_user_prefs_ gvr_user_prefs;
 
 // Anonymous enum for miscellaneous integer constants.
 enum {

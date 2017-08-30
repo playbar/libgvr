@@ -25,10 +25,10 @@ static const char* hooktag = "gvrhook";
 extern "C" {
 #endif
 
+void* get_module_base(pid_t pid,const char* module_name);
 bool InitHook();
 bool UninitHook();
 bool LoadGVR();
-gvr_mat4f HOOK_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr, const gvr_clock_time_point time);
 
 #ifdef __cplusplus
 }

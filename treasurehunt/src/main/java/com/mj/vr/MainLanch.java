@@ -1,6 +1,8 @@
 package com.mj.vr;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -11,6 +13,10 @@ import android.widget.*;
 import com.google.vr.sdk.base.CardboardViewNativeImpl;
 import com.google.vr.cardboard.MutableEglConfigChooser;
 import com.google.vr.cardboard.VrParamsProviderJni;
+import com.mj.vr.my.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainLanch extends Activity {
 
@@ -18,9 +24,44 @@ public class MainLanch extends Activity {
     TextView textView;
     int count = 0;
 
+    private boolean addPermission(List<String> permissionsList, String permission)
+    {
+        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
+        {
+            permissionsList.add(permission);
+
+            // Check for Rationale Option
+            if (!shouldShowRequestPermissionRationale(permission))
+                return false;
+        }
+
+        return true;
+    }
+
+    public void checkRuntimePermissionsRunnable()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= 23)
+        {
+            // Android 6.0+ needs runtime permission checks
+            List<String> permissionsNeeded = new ArrayList<String>();
+            final List<String> permissionsList = new ArrayList<String>();
+
+            if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
+                permissionsNeeded.add("Read External Storage");
+            if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                permissionsNeeded.add("Write External Storage");
+
+            if (permissionsList.size() > 0)
+            {
+                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), 124);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkRuntimePermissionsRunnable();
         setContentView(R.layout.activity_main);
         button = (Button)findViewById(R.id.button1);
 //        int i = TreasureActivityJNI.cout;

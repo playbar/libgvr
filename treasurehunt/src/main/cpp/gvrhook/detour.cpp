@@ -430,10 +430,10 @@ enum detour_status inlineHook( uint32_t target_addr )
 
     if ( item->status == REGISTERED )
     {
-        pid_t pid;
-        pid = freeze( item, ACTION_ENABLE );
+//        pid_t pid;
+//        pid = freeze( item, ACTION_ENABLE );
         doInlineHook( item );
-        unFreeze( pid );
+//        unFreeze( pid );
 
         return DETOUR_OK;
     }

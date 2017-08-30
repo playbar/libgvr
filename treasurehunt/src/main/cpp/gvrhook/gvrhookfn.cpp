@@ -6,6 +6,7 @@
 #include <syscallstack.h>
 #include "gvrhookfn.h"
 #include "detour.h"
+#include "mjgvr.h"
 
 #ifdef _DEBUG
 #define  HOOK_DEBUG
@@ -80,8 +81,25 @@ gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_load
 	sys_call_stack();
 	LOGI("mj_gvr_create");
     gvr_context *re = NULL;
+    sub_C1324("GVR");
 	re = old_gvr_create(env, app_context, class_loader);
     return re;
+}
+
+#define fn_gvr_get_error "gvr_get_error"
+int32_t (*old_gvr_get_error)(gvr_context* gvr) = NULL;
+int32_t mj_gvr_get_error(gvr_context* gvr)
+{
+    LOGI("mj_gvr_get_error");
+    return old_gvr_get_error(gvr);
+}
+
+#define fn_gvr_clear_error "gvr_clear_error"
+int32_t (*old_gvr_clear_error)(gvr_context* gvr) = NULL;
+int32_t mj_gvr_clear_error(gvr_context* gvr)
+{
+	LOGI("mj_gvr_clear_error");
+	return old_gvr_clear_error(gvr);
 }
 
 #define fn_gvr_resume_tracking "gvr_resume_tracking"
@@ -90,6 +108,31 @@ void mj_gvr_resume_tracking(gvr_context* gvr)
 {
     LOGI("mj_gvr_resume_tracking");
     return old_gvr_resume_tracking(gvr);
+}
+
+#define fn_gvr_get_user_prefs "gvr_get_user_prefs"
+const gvr_user_prefs* (*old_gvr_get_user_prefs)(gvr_context* gvr) = NULL;
+const gvr_user_prefs* mj_gvr_get_user_prefs(gvr_context* gvr)
+{
+    LOGI("mj_gvr_get_user_prefs");
+    const gvr_user_prefs* re = old_gvr_get_user_prefs(gvr);
+    return re;
+}
+
+#define fn_gvr_destroy "gvr_destroy"
+void (*old_gvr_destroy)(gvr_context** gvr) = NULL;
+void mj_gvr_destroy(gvr_context** gvr)
+{
+    LOGI("mj_gvr_destroy");
+    return old_gvr_destroy(gvr);
+}
+
+#define fn_gvr_initialize_gl "gvr_initialize_gl"
+void (*old_gvr_initialize_gl)(gvr_context* gvr) = NULL;
+void mj_gvr_initialize_gl(gvr_context* gvr)
+{
+    LOGI("mj_gvr_initialize_gl");
+	return old_gvr_initialize_gl(gvr);
 }
 
 #define fn_gvr_set_display_metrics "gvr_set_display_metrics"
@@ -133,38 +176,52 @@ gvr_mat4f mj_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr
 bool HookToFunctionBase(void * hDLL, int base, void * fpReplactToFunction, void ** fpOutRealFunction)
 {
     bool bRet = false;
-    const char * szFunName = "gvr_get_head_space_from_start_space_rotation";
-    if (hDLL != NULL && fpOutRealFunction != NULL)
+    void *pModule = get_module_base(getpid(), "libgvr.so");
+    void *pFunc = (void*)((int)pModule + 0x24738 + 1);
+    if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == DETOUR_OK)
     {
-        void *pFunc = dlsym(hDLL, szFunName);
-        pFunc = (void*)((int)pFunc + base);
-        if (pFunc != NULL)
+        if (inlineHook((uint32_t)pFunc) == DETOUR_OK)
         {
-            if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == DETOUR_OK)
-            {
-                if (inlineHook((uint32_t)pFunc) == DETOUR_OK)
-                {
-                    bRet = true;
-                }
-                else
-                {
-                    LOGE( "Try inlineHook error!! Fucntion name = %s", szFunName);
-                }
-            }
-            else
-            {
-                LOGE("Try registerInlineHook error!! Fucntion name = %s", szFunName);
-            }
-        }
-        else
-        {
-            LOGE("Can not find and Fucntion name = %s", szFunName);
+            bRet = true;
         }
     }
     else
     {
-        LOGE( "Invalid parmeat!!");
+        LOGE("Try registerInlineHook error!!");
     }
+
+//    const char * szFunName = "gvr_get_head_space_from_start_space_rotation";
+//    if (hDLL != NULL && fpOutRealFunction != NULL)
+//    {
+//        void *pFunc = dlsym(hDLL, szFunName);
+//        pFunc = (void*)((int)pFunc + base);
+//        if (pFunc != NULL)
+//        {
+//            if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == DETOUR_OK)
+//            {
+//                if (inlineHook((uint32_t)pFunc) == DETOUR_OK)
+//                {
+//                    bRet = true;
+//                }
+//                else
+//                {
+//                    LOGE( "Try inlineHook error!! Fucntion name = %s", szFunName);
+//                }
+//            }
+//            else
+//            {
+//                LOGE("Try registerInlineHook error!! Fucntion name = %s", szFunName);
+//            }
+//        }
+//        else
+//        {
+//            LOGE("Can not find and Fucntion name = %s", szFunName);
+//        }
+//    }
+//    else
+//    {
+//        LOGE( "Invalid parmeat!!");
+//    }
     return bRet;
 }
 
@@ -212,20 +269,27 @@ bool InitHook()
 	if (LoadGVR())
 	{
 		bRet = HookToFunction(g_hGVR , fn_gvr_get_head_space_from_start_space_rotation , (void*)mj_gvr_get_head_space_from_start_space_rotation, (void**)&old_gvr_get_head_space_from_start_space_rotation)
-		   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
+			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
 //           &&HookToFunctionBase(g_hGVR, 0x9B37E, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
-           &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
-		   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)
+			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
+			   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)
 //		   &&HookToFunctionBase(g_hGVR, 0x6722, (void*)mj_sub_24738, (void**)&old_sub_24738)
-		   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
-           &&HookToFunction(g_hGVR, fn_gvr_resume_tracking, (void*)mj_gvr_resume_tracking, (void**)&old_gvr_resume_tracking)
-		   &&HookToFunction(g_hGVR, fn_gvr_set_display_synchronizer, (void*)mj_gvr_set_display_synchronizer, (void**)&old_gvr_set_display_synchronizer)
-		   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
-		   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void*)mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void**)&old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)
-           &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);
+			   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
+			   &&HookToFunction(g_hGVR, fn_gvr_get_error, (void*)mj_gvr_get_error, (void**)&old_gvr_get_error)
+			   &&HookToFunction(g_hGVR, fn_gvr_clear_error,(void*)mj_gvr_clear_error, (void**)&old_gvr_clear_error)
+			   &&HookToFunction(g_hGVR, fn_gvr_get_user_prefs, (void*)mj_gvr_get_user_prefs, (void**)&old_gvr_get_user_prefs)
+			   &&HookToFunction(g_hGVR, fn_gvr_destroy, (void*)mj_gvr_destroy, (void**)&old_gvr_destroy)
+			   &&HookToFunction(g_hGVR, fn_gvr_initialize_gl,(void*)mj_gvr_initialize_gl, (void**)&old_gvr_initialize_gl)
+			   &&HookToFunction(g_hGVR, fn_gvr_resume_tracking, (void*)mj_gvr_resume_tracking, (void**)&old_gvr_resume_tracking)
+			   &&HookToFunction(g_hGVR, fn_gvr_set_display_synchronizer, (void*)mj_gvr_set_display_synchronizer, (void**)&old_gvr_set_display_synchronizer)
+			   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
+			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void*)mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void**)&old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)
+			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);
+
 		if (bRet)
 		{
 			bRet = true;
+
 		}
 		else
 		{
