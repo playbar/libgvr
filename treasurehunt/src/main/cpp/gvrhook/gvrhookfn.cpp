@@ -171,7 +171,11 @@ int32_t (*old_gvr_get_viewer_type)(const gvr_context* gvr) = NULL;
 int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 {
     LOGI("mj_gvr_get_viewer_type");
-    return old_gvr_get_viewer_type(gvr);
+//    int32_t (*get_viewer_type)() = NULL;
+//    get_viewer_type = gvr->user_prefs->get_viewer_type;
+//    int32_t re = get_viewer_type();
+    int32_t re = old_gvr_get_viewer_type(gvr);
+    return re;
 }
 
 #define fn_gvr_get_eye_from_head_matrix "gvr_get_eye_from_head_matrix"
@@ -179,7 +183,8 @@ gvr_mat4f (*old_gvr_get_eye_from_head_matrix)(const gvr_context* gvr, const int3
 gvr_mat4f mj_gvr_get_eye_from_head_matrix(const gvr_context* gvr, const int32_t eye)
 {
     LOGI("mj_gvr_get_eye_from_head_matrix");
-    return old_gvr_get_eye_from_head_matrix(gvr, eye);
+    gvr_mat4f mat =  old_gvr_get_eye_from_head_matrix(gvr, eye);
+    return mat;
 }
 
 #define fn_gvr_get_window_bounds "gvr_get_window_bounds"
@@ -252,7 +257,9 @@ gvr_sizei (*old_gvr_get_maximum_effective_render_target_size)(const gvr_context*
 gvr_sizei mj_gvr_get_maximum_effective_render_target_size(const gvr_context* gvr)
 {
     LOGI("mj_gvr_get_maximum_effective_render_target_size");
-    return old_gvr_get_maximum_effective_render_target_size(gvr);
+    gvr_sizei size = old_gvr_get_maximum_effective_render_target_size(gvr);
+    LOGI("w=%d, h=%d", size.width, size.height);
+    return size;
 }
 
 #define fn_gvr_get_screen_target_size "gvr_get_screen_target_size"
@@ -286,7 +293,16 @@ gvr_buffer_viewport* (*old_gvr_buffer_viewport_create)(gvr_context* gvr) = NULL;
 gvr_buffer_viewport* mj_gvr_buffer_viewport_create(gvr_context* gvr)
 {
     LOGI("mj_gvr_buffer_viewport_create");
-    return old_gvr_buffer_viewport_create(gvr);
+//    gvr_buffer_viewport *viewport = old_gvr_buffer_viewport_create(gvr);
+    gvr_buffer_viewport *viewport = (gvr_buffer_viewport*)malloc(sizeof(gvr_buffer_viewport));
+    memset(viewport, 0, 80);
+    viewport->eye = GVR_LEFT_EYE;
+    viewport->buffer_index = 0;
+    memset((char*)viewport + 88, 0xff, 8);
+    viewport->layer_index = 0;
+    memset((char*)viewport + 100, 0, 4);
+    viewport->reprojection = GVR_REPROJECTION_FULL;
+    return viewport;
 }
 
 #define fn_gvr_buffer_viewport_list_create "gvr_buffer_viewport_list_create"
@@ -302,7 +318,8 @@ gvr_buffer_spec* (*old_gvr_buffer_spec_create)(gvr_context* gvr) = NULL;
 gvr_buffer_spec* mj_gvr_buffer_spec_create(gvr_context* gvr)
 {
     LOGI("mj_gvr_buffer_spec_create");
-    return old_gvr_buffer_spec_create(gvr);
+    gvr_buffer_spec *buff = old_gvr_buffer_spec_create(gvr);
+    return buff;
 }
 
 #define fn_gvr_swap_chain_create "gvr_swap_chain_create"
@@ -459,6 +476,8 @@ bool HookToFunction(void * hDLL, const char * szFunctionName, void * fpReplactTo
 
 bool InitHook()
 {
+    void *pModule = get_module_base(getpid(), "libgvr.so");
+    LOGI("gvrbase: %x", pModule);
 	bool bRet = false;
 	if (LoadGVR())
 	{

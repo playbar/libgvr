@@ -28,13 +28,24 @@ extern "C" {
 /// @{
 
 typedef struct gvr_user_prefs_mj{
-    char data[600];
+//    char data[600];
+//    char data[172];
+    char data[24];
+    void(*initialize_gl)() = NULL;
+    char data0_0[116];
+    void (*resume_tracking)() = NULL;       //148
+    char data0[12];                         //160
+    void(*refresh_viewer_profile)() = NULL; //164
+    char data00[8];
+    int32_t (*get_viewer_type)() = NULL;
+    char data1[424];
+
 }gvr_user_prefs;
 
 
 /// Primary context for invoking Google VR APIs.
 typedef struct gvr_context_mj{
-    gvr_user_prefs *sub24738_0;  // st24738_0 指针
+    gvr_user_prefs *user_prefs;
     int32_t errorno;
     void *sub24738_2;
     void *sub24738_3;
@@ -227,6 +238,7 @@ typedef struct gvr_buffer_spec_mj
     gvr_depth_stencil_format_type depth_stencil_format;
     int32_t num_samples;
     int32_t num_layers;
+    char data[4];
 }gvr_buffer_spec;
 
 /// A single frame acquired from the swap chain. Each frame is composed of one
