@@ -29,7 +29,56 @@ extern "C" {
 
 typedef struct st110B38_mj
 {
-    uint32_t pfun[50];
+    void *pfun00;
+    void *pfun01;
+    void *pfun02;
+    void *pfun03;
+    void *pfun04;
+    void *pfun05;
+    void *pfun06;
+    void *pfun07;
+    void *pfun08;
+    void *pfun09;
+    void *pfun10;
+    void *pfun11;
+    void *pfun12;
+    void *pfun13;
+    void *pfun14;
+    void *pfun15;
+    void *pfun16;
+    void *pfun17;
+    void *pfun18;
+    void *pfun19;
+    void *pfun20;
+    void *pfun21;
+    void *pfun22;
+    void *pfun23;
+    void *pfun24;
+    void *pfun25;
+    void *pfun26;
+    void *pfun27;
+    void *pfun28;
+    void *pfun29;
+    void *pfun30;
+    void *pfun31;
+    void *pfun32;
+    void *pfun33;
+    void *pfun34;
+    void *pfun35;
+    void *pfun36;
+    void *pfun37;
+    void *pfun38;
+    void *pfun39;
+    void *pfun40;
+    void *pfun41;
+    void *pfun42;
+    void *pfun43;
+    void *pfun44;
+    void *pfun45;
+    void *pfun46;
+    void *pfun47;
+    void *pfun48;
+    void *pfun49;
 }st110B38;
 
 typedef struct st1109B0_mj
@@ -50,7 +99,7 @@ typedef struct st114D98_mj
 typedef struct gvr_user_prefs_mj{
 //    char data[600];
 //    char data[172];
-    st110B38 *p001; //4
+    st110B38 *p001;        //4
     char data[8];         //12
     int i12;              //16
     int i16;              //20

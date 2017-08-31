@@ -173,7 +173,8 @@ int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 {
 //    LOGI("mj_gvr_get_viewer_type");
 	fn_get_viewer_type get_viewer_type = NULL;
-    get_viewer_type = (fn_get_viewer_type)(*(int*)((int)gvr->user_prefs->p001 + 0xAC));
+    void *pdata = (void*)((int)gvr->user_prefs->p001 + 0xAC);
+    get_viewer_type = (fn_get_viewer_type)(((int)gvr->user_prefs->p001->pfun43));
     int32_t re = get_viewer_type(gvr->user_prefs);
 //    int32_t re = old_gvr_get_viewer_type(gvr);
     return re;
