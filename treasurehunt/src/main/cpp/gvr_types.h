@@ -18,6 +18,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "mjtype.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,7 +36,7 @@ typedef struct st110B38_mj
     void *pfun03;
     void *pfun04;
     void *pfun05;
-    void *pfun06;
+    fn_initialize_gl pfun06;
     void *pfun07;
     void *pfun08;
     void *pfun09;
@@ -65,14 +66,14 @@ typedef struct st110B38_mj
     void *pfun33;
     void *pfun34;
     void *pfun35;
-    void *pfun36;
+    fn_resume_tracking pfun36;
     void *pfun37;
     void *pfun38;
     void *pfun39;
     void *pfun40;
     void *pfun41;
     void *pfun42;
-    void *pfun43;
+    fn_get_viewer_type pfun43;
     void *pfun44;
     void *pfun45;
     void *pfun46;
@@ -98,7 +99,6 @@ typedef struct st114D98_mj
 
 typedef struct gvr_user_prefs_mj{
 //    char data[600];
-//    char data[172];
     st110B38 *p001;        //4
     char data[8];         //12
     int i12;              //16

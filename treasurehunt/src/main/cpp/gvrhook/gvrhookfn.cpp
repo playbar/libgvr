@@ -4,6 +4,7 @@
 #include <jni.h>
 #include <CallStack.h>
 #include <syscallstack.h>
+#include <mjtype.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
@@ -115,7 +116,8 @@ void (*old_gvr_resume_tracking)(gvr_context* gvr) = NULL;
 void mj_gvr_resume_tracking(gvr_context* gvr)
 {
     LOGI("mj_gvr_resume_tracking");
-    return old_gvr_resume_tracking(gvr);
+    fn_resume_tracking resume_tracking = (gvr->user_prefs->p001->pfun36);
+    return resume_tracking(gvr->user_prefs);
 }
 
 #define fn_gvr_reset_tracking "gvr_reset_tracking"
@@ -166,7 +168,7 @@ const char* mj_gvr_get_viewer_model(const gvr_context* gvr)
     return old_gvr_get_viewer_model(gvr);
 }
 
-typedef int32_t (*fn_get_viewer_type)(gvr_user_prefs*p);
+
 #define fn_gvr_get_viewer_type "gvr_get_viewer_type"
 int32_t (*old_gvr_get_viewer_type)(const gvr_context* gvr) = NULL;
 int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
@@ -174,7 +176,7 @@ int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 //    LOGI("mj_gvr_get_viewer_type");
 	fn_get_viewer_type get_viewer_type = NULL;
     void *pdata = (void*)((int)gvr->user_prefs->p001 + 0xAC);
-    get_viewer_type = (fn_get_viewer_type)(((int)gvr->user_prefs->p001->pfun43));
+    get_viewer_type = (gvr->user_prefs->p001->pfun43);
     int32_t re = get_viewer_type(gvr->user_prefs);
 //    int32_t re = old_gvr_get_viewer_type(gvr);
     return re;
@@ -227,7 +229,9 @@ void (*old_gvr_initialize_gl)(gvr_context* gvr) = NULL;
 void mj_gvr_initialize_gl(gvr_context* gvr)
 {
     LOGI("mj_gvr_initialize_gl");
-	return old_gvr_initialize_gl(gvr);
+    fn_initialize_gl initgl = gvr->user_prefs->p001->pfun06;
+    return initgl(gvr->user_prefs);
+//	return old_gvr_initialize_gl(gvr);
 }
 
 #define fn_gvr_get_async_reprojection_enabled "gvr_get_async_reprojection_enabled"
