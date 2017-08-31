@@ -166,15 +166,16 @@ const char* mj_gvr_get_viewer_model(const gvr_context* gvr)
     return old_gvr_get_viewer_model(gvr);
 }
 
+typedef int32_t (*fn_get_viewer_type)(gvr_user_prefs*p);
 #define fn_gvr_get_viewer_type "gvr_get_viewer_type"
 int32_t (*old_gvr_get_viewer_type)(const gvr_context* gvr) = NULL;
 int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 {
-    LOGI("mj_gvr_get_viewer_type");
-//    int32_t (*get_viewer_type)() = NULL;
-//    get_viewer_type = gvr->user_prefs->get_viewer_type;
-//    int32_t re = get_viewer_type();
-    int32_t re = old_gvr_get_viewer_type(gvr);
+//    LOGI("mj_gvr_get_viewer_type");
+	fn_get_viewer_type get_viewer_type = NULL;
+    get_viewer_type = (fn_get_viewer_type)(*(int*)((int)gvr->user_prefs->p001 + 0xAC));
+    int32_t re = get_viewer_type(gvr->user_prefs);
+//    int32_t re = old_gvr_get_viewer_type(gvr);
     return re;
 }
 

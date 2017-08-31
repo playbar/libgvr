@@ -27,18 +27,172 @@ extern "C" {
 /// @brief Various types used in the Google VR NDK.
 /// @{
 
+typedef struct st110B38_mj
+{
+    uint32_t pfun[50];
+}st110B38;
+
+typedef struct st1109B0_mj
+{
+    uint32_t pfun[7];
+}st1109B0;
+
+typedef struct st112198_mj
+{
+    uint32_t pfun[17];
+}st112198;
+
+typedef struct st114D98_mj
+{
+    uint32_t pfun[17];
+}st114D98;
+
 typedef struct gvr_user_prefs_mj{
 //    char data[600];
 //    char data[172];
-    char data[24];
-    void(*initialize_gl)() = NULL;
-    char data0_0[116];
+    st110B38 *p001; //4
+    char data[8];         //12
+    int i12;              //16
+    int i16;              //20
+    int i20;              //24
+    int i24;              //28
+    char data0_0_0[4];    //32
+    int i32;              //36
+    void *p36;            //40
+    int   i40;            //44;
+    int   i44;            //48
+    int   i48;            //52;
+    int   i52;            //56;
+    int   i56;            //60
+    int   i60;            //64
+    int   i64;            //68
+    int   i68;            //72
+    int   i72;            //76
+    int   i76;            //80
+    st1109B0 *p80;        //84;
+    int (*sub_24FD0)(int a1); //88
+    int  i88;             //92
+    void *p92;            //96
+    char data96[24];      //120
+    int i120;              //124
+    char data0_0[20];
     void (*resume_tracking)() = NULL;       //148
-    char data0[12];                         //160
+    int i148;                               //152
+    int i152;                               //156
+    int i156;                               //160
     void(*refresh_viewer_profile)() = NULL; //164
-    char data00[8];
-    int32_t (*get_viewer_type)() = NULL;
-    char data1[424];
+    char data164[4];                        //168
+    char data00[4];                         //172
+    int32_t (*get_viewer_type)() = NULL;    //176
+    int i176;                               //180
+//    char data1[420];
+    int i180;
+    int i184;
+    int i188;
+    int i192;
+    int i196;
+    int i200;
+    int i204;
+    int i208;
+    char data212[4];
+    int i216;
+    int i220;
+    int i224;
+    int i228;
+    int i232;   // struct
+    int i236;
+    int i240;
+    int i244;
+    int i248;
+    int i252;
+    int i256;
+    int i260;
+    int i264;
+    int i268;
+    int i272;
+    int i276;
+    int i280;   // end struct
+
+    int i284;
+    int i288;
+    int i292;
+    int i296;
+    int i300;
+    int i304;
+    int i308;
+    int i312;
+
+    char data316[4];
+    char data320[4];
+    char data324[4];
+    char data328[4];
+    char data332[4];
+    int i336;
+    char data340[4];
+    int i344;
+    int i348;
+    int i352;
+    int i356;
+    int i360;
+    int i364;
+    int i368;
+    int i372;
+    int i376;
+    int i380;
+    uint32_t i384;
+    int i388;
+    int i392;
+    char data396[4];
+    char data400[4];
+    char data404[4];
+    char data408[4];
+    char data412[4];
+    char data416[4];
+    char data420[4];
+    char data424[4];
+    char data428[4];
+    char data432[4];
+    char data436[4];
+    char data440[4];
+    char data444[4];
+    char data448[4];
+    char data452[4];
+    char data456[4];
+    char data460[4];
+    char data464[4];
+    char data468[4];
+    char data472[4];
+    char data476[4];
+    char data480[4];
+    char data484[4];
+    char data488[4];
+    st112198* p492;
+    int i496;
+    char data500[4];
+    char data504[4];
+    char data508[4];
+    char data512[4];
+    char data516[4];
+    char data520[4];
+    char data524[4];
+    char data528[4];
+    char data532[4];
+    char data536[4];
+    char data540[4];
+    st114D98 * p544;
+    int i548;
+    char data552[4];
+    char data556[4];
+    char data560[4];
+    char data564[4];
+    char data568[4];
+    char data572[4];
+    char data576[4];
+    char data580[4];
+    char data584[4];
+    char data588[4];
+    char data592[4];
+    char data596[4];
 
 }gvr_user_prefs;
 
