@@ -300,13 +300,14 @@ gvr_buffer_viewport* mj_gvr_buffer_viewport_create(gvr_context* gvr)
 {
     LOGI("mj_gvr_buffer_viewport_create");
 //    gvr_buffer_viewport *viewport = old_gvr_buffer_viewport_create(gvr);
-    gvr_buffer_viewport *viewport = (gvr_buffer_viewport*)malloc(sizeof(gvr_buffer_viewport));
-    memset(viewport, 0, 80);
+    int ilen = sizeof(gvr_buffer_viewport);
+    gvr_buffer_viewport *viewport = (gvr_buffer_viewport*)malloc(ilen);
+    memset(viewport, 0, ilen);
     viewport->eye = GVR_LEFT_EYE;
     viewport->buffer_index = 0;
-    memset((char*)viewport + 88, 0xff, 8);
+    memset(viewport->data1, 0xff, 8);
     viewport->layer_index = 0;
-    memset((char*)viewport + 100, 0, 4);
+    memset(viewport->data11, 0xff, 4);
     viewport->reprojection = GVR_REPROJECTION_FULL;
     return viewport;
 }
@@ -324,7 +325,19 @@ gvr_buffer_spec* (*old_gvr_buffer_spec_create)(gvr_context* gvr) = NULL;
 gvr_buffer_spec* mj_gvr_buffer_spec_create(gvr_context* gvr)
 {
     LOGI("mj_gvr_buffer_spec_create");
-    gvr_buffer_spec *buff = old_gvr_buffer_spec_create(gvr);
+    int ilen = sizeof(gvr_buffer_spec);
+    gvr_buffer_spec *buff = (gvr_buffer_spec*)malloc(ilen);
+    memset(buff, 0, ilen);
+    buff->size.width = 0;
+    buff->size.height = 0;
+    buff->depth_stencil_format = GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F_STENCIL_8;
+    buff->color_format = GVR_COLOR_FORMAT_RGBA_8888;
+    buff->num_samples = 1;
+    buff->num_layers = 1;
+    fn_buffer_spec_create pfun =  gvr->user_prefs->p001->pfun10;
+    pfun(&buff->size, gvr->user_prefs);
+
+//    gvr_buffer_spec *buff = old_gvr_buffer_spec_create(gvr);
     return buff;
 }
 

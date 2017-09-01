@@ -40,7 +40,7 @@ typedef struct st110B38_mj
     void *pfun07;
     void *pfun08;
     void *pfun09;
-    void *pfun10;
+    fn_buffer_spec_create pfun10;
     void *pfun11;
     void *pfun12;
     void *pfun13;
@@ -409,14 +409,14 @@ typedef struct gvr_buffer_viewport_mj
 {
 //   char data[112] ;
     gvr_rectf view;          //16
-    gvr_mat4f transformMat;  //64
-    gvr_eye eye;             //4
-    int buffer_index; //4
-    char data1[8];    // todo
-    int layer_index;
-    char data11[4];   //todo
-    gvr_reprojection reprojection;
-    char data2[4];    //todo
+    gvr_mat4f transformMat;  //80
+    gvr_eye eye;             //84
+    int buffer_index; 	     //88
+    char data1[8];    		 //96
+    int layer_index;		 //100
+    char data11[4];          //104
+    gvr_reprojection reprojection; //108
+    char data2[4];    //112
 }gvr_buffer_viewport;
 
 /// List of buffer viewports that completely specifies how to transform the
@@ -435,10 +435,11 @@ typedef struct gvr_buffer_viewport_list_mj
 //typedef struct gvr_buffer_spec_ gvr_buffer_spec;
 typedef struct gvr_buffer_spec_mj
 {
-    int32_t width;
-    int32_t height;
-    gvr_color_format_type color_format;
+//    int32_t width;
+//    int32_t height;
+    gvr_sizei size;
     gvr_depth_stencil_format_type depth_stencil_format;
+    gvr_color_format_type color_format;
     int32_t num_samples;
     int32_t num_layers;
     char data[4];
