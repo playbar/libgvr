@@ -9,9 +9,6 @@
 #include "detour.h"
 #include "mjgvr.h"
 
-#ifdef _DEBUG
-#define  HOOK_DEBUG
-#endif
 
 void * g_hGVR = NULL;
 
@@ -247,7 +244,8 @@ void (*old_gvr_get_recommended_buffer_viewports)(const gvr_context* gvr, gvr_buf
 void mj_gvr_get_recommended_buffer_viewports(const gvr_context* gvr, gvr_buffer_viewport_list* viewport_list)
 {
     LOGI("mj_gvr_get_recommended_buffer_viewports");
-    return old_gvr_get_recommended_buffer_viewports(gvr, viewport_list);
+    old_gvr_get_recommended_buffer_viewports(gvr, viewport_list);
+    return;
 }
 
 #define fn_gvr_get_screen_buffer_viewports "gvr_get_screen_buffer_viewports"
@@ -255,7 +253,8 @@ void (*old_gvr_get_screen_buffer_viewports)(const gvr_context* gvr, gvr_buffer_v
 void mj_gvr_get_screen_buffer_viewports(const gvr_context* gvr, gvr_buffer_viewport_list* viewport_list)
 {
 	LOGI("mj_gvr_get_screen_buffer_viewports");
-	return old_gvr_get_screen_buffer_viewports(gvr, viewport_list);
+    old_gvr_get_screen_buffer_viewports(gvr, viewport_list);
+	return;
 }
 
 #define fn_gvr_get_maximum_effective_render_target_size "gvr_get_maximum_effective_render_target_size"
@@ -283,7 +282,8 @@ void mj_gvr_distort_to_screen(gvr_context* gvr, int32_t texture_id, const gvr_bu
                            gvr_mat4f head_space_from_start_space, gvr_clock_time_point target_presentation_time)
 {
     LOGI("mj_gvr_distort_to_screen");
-    return old_gvr_distort_to_screen(gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
+    old_gvr_distort_to_screen(gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
+    return;
 }
 
 #define fn_gvr_is_feature_supported "gvr_is_feature_supported"
@@ -317,7 +317,26 @@ gvr_buffer_viewport_list* (*old_gvr_buffer_viewport_list_create)(const gvr_conte
 gvr_buffer_viewport_list* mj_gvr_buffer_viewport_list_create(const gvr_context* gvr)
 {
     LOGI("mj_gvr_buffer_viewport_list_create");
-    return old_gvr_buffer_viewport_list_create(gvr);
+    gvr_buffer_viewport_list *viewportlist = old_gvr_buffer_viewport_list_create(gvr);
+    return viewportlist;
+}
+
+#define fn_gvr_buffer_viewport_list_get_item "gvr_buffer_viewport_list_get_item"
+void (*old_gvr_buffer_viewport_list_get_item)(const gvr_buffer_viewport_list* viewport_list, size_t index, gvr_buffer_viewport* viewport) = NULL;
+void mj_gvr_buffer_viewport_list_get_item(const gvr_buffer_viewport_list* viewport_list, size_t index, gvr_buffer_viewport* viewport)
+{
+    LOGI("mj_gvr_buffer_viewport_list_get_item");
+    old_gvr_buffer_viewport_list_get_item(viewport_list, index, viewport);
+    return;
+}
+
+#define fn_gvr_buffer_viewport_list_set_item "gvr_buffer_viewport_list_set_item"
+void (*old_gvr_buffer_viewport_list_set_item)(gvr_buffer_viewport_list* viewport_list, size_t index, const gvr_buffer_viewport* viewport) = NULL;
+void mj_gvr_buffer_viewport_list_set_item(gvr_buffer_viewport_list* viewport_list, size_t index, const gvr_buffer_viewport* viewport)
+{
+    LOGI("mj_gvr_buffer_viewport_list_set_item");
+    old_gvr_buffer_viewport_list_set_item(viewport_list, index, viewport);
+    return;
 }
 
 #define fn_gvr_buffer_spec_create "gvr_buffer_spec_create"
@@ -346,7 +365,42 @@ gvr_swap_chain* (*old_gvr_swap_chain_create)(gvr_context* gvr, const gvr_buffer_
 gvr_swap_chain* mj_gvr_swap_chain_create(gvr_context* gvr, const gvr_buffer_spec** buffers, int32_t count)
 {
     LOGI("mj_gvr_swap_chain_create");
-    return old_gvr_swap_chain_create(gvr, buffers, count);
+    gvr_swap_chain *swap_chain = old_gvr_swap_chain_create(gvr, buffers, count);
+    return swap_chain;
+}
+
+#define fn_gvr_swap_chain_destroy "gvr_swap_chain_destroy"
+void (*old_gvr_swap_chain_destroy)(gvr_swap_chain** swap_chain) = NULL;
+void mj_gvr_swap_chain_destroy(gvr_swap_chain** swap_chain)
+{
+    LOGI("mj_gvr_swap_chain_destroy");
+    return old_gvr_swap_chain_destroy(swap_chain);
+}
+
+#define fn_gvr_swap_chain_get_buffer_count "gvr_swap_chain_get_buffer_count"
+int32_t (*old_gvr_swap_chain_get_buffer_count)(const gvr_swap_chain* swap_chain) = NULL;
+int32_t mj_gvr_swap_chain_get_buffer_count(const gvr_swap_chain* swap_chain)
+{
+    LOGI("mj_gvr_swap_chain_get_buffer_count");
+    int count = old_gvr_swap_chain_get_buffer_count(swap_chain);
+    return count;
+}
+
+#define fn_gvr_swap_chain_get_buffer_size "gvr_swap_chain_get_buffer_size"
+gvr_sizei (*old_gvr_swap_chain_get_buffer_size)(gvr_swap_chain* swap_chain, int32_t index) = NULL;
+gvr_sizei mj_gvr_swap_chain_get_buffer_size(gvr_swap_chain* swap_chain, int32_t index)
+{
+    LOGI("mj_gvr_swap_chain_get_buffer_size");
+    gvr_sizei size = old_gvr_swap_chain_get_buffer_size(swap_chain, index);
+    return size;
+}
+
+#define fn_gvr_swap_chain_resize_buffer "gvr_swap_chain_resize_buffer"
+void (*old_gvr_swap_chain_resize_buffer)(gvr_swap_chain* swap_chain, int32_t index, gvr_sizei size) = NULL;
+void mj_gvr_swap_chain_resize_buffer(gvr_swap_chain* swap_chain, int32_t index, gvr_sizei size)
+{
+    LOGI("mj_gvr_swap_chain_resize_buffer");
+    return old_gvr_swap_chain_resize_buffer(swap_chain, index, size);
 }
 
 #define fn_gvr_bind_default_framebuffer "gvr_bind_default_framebuffer"
@@ -380,6 +434,63 @@ int mj_gvr_set_display_synchronizer( gvr_context *a1, int a2)
     LOGI("mj_gvr_set_display_synchronizer");
     return old_gvr_set_display_synchronizer(a1, a2);
 }
+
+#define fn_gvr_swap_chain_acquire_frame "gvr_swap_chain_acquire_frame"
+gvr_frame* (*old_gvr_swap_chain_acquire_frame)(gvr_swap_chain* swap_chain) = NULL;
+gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
+{
+    LOGI("mj_gvr_swap_chain_acquire_frame");
+    gvr_frame *frame = old_gvr_swap_chain_acquire_frame(swap_chain);
+//    gvr_frame *frame = (gvr_frame*)swap_chain;
+//    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
+//    pfun(swap_chain->context->user_prefs);
+//    swap_chain->data04[0] = 1;
+    return frame;
+}
+
+#define fn_gvr_frame_bind_buffer "gvr_frame_bind_buffer"
+void (*old_gvr_frame_bind_buffer)(gvr_frame* frame, int32_t index) = NULL;
+void mj_gvr_frame_bind_buffer(gvr_frame* frame, int32_t index)
+{
+    LOGI("mj_gvr_frame_bind_buffer");
+    old_gvr_frame_bind_buffer(frame, index);
+    return;
+}
+
+#define fn_gvr_frame_unbind "gvr_frame_unbind"
+void (*old_gvr_frame_unbind)(gvr_frame* frame) = NULL;
+void mj_gvr_frame_unbind(gvr_frame* frame)
+{
+    LOGI("mj_gvr_frame_unbind");
+    return old_gvr_frame_unbind(frame);
+}
+
+#define fn_gvr_frame_get_buffer_size "gvr_frame_get_buffer_size"
+gvr_sizei (*old_gvr_frame_get_buffer_size)(const gvr_frame* frame, int32_t index) = NULL;
+gvr_sizei mj_gvr_frame_get_buffer_size(const gvr_frame* frame, int32_t index)
+{
+    LOGI("mj_gvr_frame_get_buffer_size");
+    gvr_sizei size = old_gvr_frame_get_buffer_size(frame, index);
+    return size;
+}
+
+#define fn_gvr_frame_get_framebuffer_object "gvr_frame_get_framebuffer_object"
+int32_t (*old_gvr_frame_get_framebuffer_object)(const gvr_frame* frame, int32_t index) = NULL;
+int32_t mj_gvr_frame_get_framebuffer_object(const gvr_frame* frame, int32_t index)
+{
+    LOGI("mj_gvr_frame_get_framebuffer_object");
+    int32_t re = old_gvr_frame_get_framebuffer_object(frame, index);
+    return re;
+}
+
+#define fn_gvr_frame_submit "gvr_frame_submit"
+void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space) = NULL;
+void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
+{
+    LOGI("mj_gvr_frame_submit");
+    return old_gvr_frame_submit(frame, list, head_space_from_start_space);
+}
+
 
 #define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
 gvr_mat4f (*old_gvr_get_head_space_from_start_space_rotation)(const gvr_context *gvr, const gvr_clock_time_point time) = NULL;
@@ -521,8 +632,14 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_gvr_is_feature_supported, (void*)mj_gvr_is_feature_supported, (void**)&old_gvr_is_feature_supported)
 			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_create, (void*)mj_gvr_buffer_viewport_create, (void**)&old_gvr_buffer_viewport_create)
                &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_create, (void*)mj_gvr_buffer_viewport_list_create, (void**)&old_gvr_buffer_viewport_list_create)
+			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_get_item, (void*)mj_gvr_buffer_viewport_list_get_item, (void**)&old_gvr_buffer_viewport_list_get_item)
+			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_set_item,(void*)mj_gvr_buffer_viewport_list_set_item, (void**)&old_gvr_buffer_viewport_list_set_item)
                &&HookToFunction(g_hGVR, fn_gvr_buffer_spec_create, (void*)mj_gvr_buffer_spec_create, (void**)&old_gvr_buffer_spec_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_swap_chain_create, (void*)mj_gvr_swap_chain_create, (void**)&old_gvr_swap_chain_create)
+               &&HookToFunction(g_hGVR, fn_gvr_swap_chain_destroy, (void*)mj_gvr_swap_chain_destroy, (void**)&old_gvr_swap_chain_destroy)
+               &&HookToFunction(g_hGVR, fn_gvr_swap_chain_get_buffer_count, (void*)mj_gvr_swap_chain_get_buffer_count, (void**)&old_gvr_swap_chain_get_buffer_count)
+               &&HookToFunction(g_hGVR, fn_gvr_swap_chain_get_buffer_size, (void*)mj_gvr_swap_chain_get_buffer_size, (void**)&old_gvr_swap_chain_get_buffer_size)
+               &&HookToFunction(g_hGVR, fn_gvr_swap_chain_resize_buffer, (void*)mj_gvr_swap_chain_resize_buffer, (void**)&old_gvr_swap_chain_resize_buffer)
 			   &&HookToFunction(g_hGVR, fn_gvr_bind_default_framebuffer, (void*)mj_gvr_bind_default_framebuffer, (void**)&old_gvr_bind_default_framebuffer)
 			   &&HookToFunction(g_hGVR, fn_gvr_apply_neck_model, (void*)mj_gvr_apply_neck_model, (void**)&old_gvr_apply_neck_model)
 			   &&HookToFunction(g_hGVR, fn_gvr_pause_tracking, (void*)mj_gvr_pause_tracking, (void**)&old_gvr_pause_tracking)
@@ -538,6 +655,12 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_gvr_get_window_bounds, (void*)mj_gvr_get_window_bounds, (void**)&old_gvr_get_window_bounds)
 			   &&HookToFunction(g_hGVR, fn_gvr_compute_distorted_point, (void*)mj_gvr_compute_distorted_point, (void**)&old_gvr_compute_distorted_point)
 			   &&HookToFunction(g_hGVR, fn_gvr_set_display_synchronizer, (void*)mj_gvr_set_display_synchronizer, (void**)&old_gvr_set_display_synchronizer)
+               &&HookToFunction(g_hGVR, fn_gvr_swap_chain_acquire_frame, (void*)mj_gvr_swap_chain_acquire_frame, (void**)&old_gvr_swap_chain_acquire_frame)
+               &&HookToFunction(g_hGVR, fn_gvr_frame_bind_buffer, (void*)mj_gvr_frame_bind_buffer, (void**)&old_gvr_frame_bind_buffer)
+               &&HookToFunction(g_hGVR, fn_gvr_frame_unbind, (void*)mj_gvr_frame_unbind, (void**)&old_gvr_frame_unbind)
+               &&HookToFunction(g_hGVR, fn_gvr_frame_get_buffer_size, (void*)mj_gvr_frame_get_buffer_size, (void**)&old_gvr_frame_get_buffer_size)
+               &&HookToFunction(g_hGVR, fn_gvr_frame_get_framebuffer_object, (void*)mj_gvr_frame_get_framebuffer_object, (void**)&old_gvr_frame_get_framebuffer_object)
+               &&HookToFunction(g_hGVR, fn_gvr_frame_submit, (void*)mj_gvr_frame_submit, (void**)&old_gvr_frame_submit)
 			   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void*)mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void**)&old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);

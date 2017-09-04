@@ -43,7 +43,7 @@ typedef struct st110B38_mj
     fn_buffer_spec_create pfun10;
     void *pfun11;
     void *pfun12;
-    void *pfun13;
+    fn_sub_271AC pfun13;
     void *pfun14;
     void *pfun15;
     void *pfun16;
@@ -423,7 +423,10 @@ typedef struct gvr_buffer_viewport_mj
 /// frame's buffers into the image displayed on the screen.
 typedef struct gvr_buffer_viewport_list_mj
 {
-    char data[16];
+    gvr_user_prefs *user_prefs;
+    void *i04;
+    void *i08;
+    void *i12;
 }gvr_buffer_viewport_list;
 
 /// Specification of a pixel buffer. A pixel buffer can have color, depth and
@@ -454,6 +457,11 @@ typedef struct gvr_frame_mj{
     char data[32];
 } gvr_frame;
 
+typedef struct st28000_mj
+{
+    char data[120];
+}st;
+
 /// Swap chain that contains some number of frames. Frames in the swap chain
 /// can be unused, in the process of being distorted and presented on the
 /// screen, or acquired and being rendered to by the application. The swap chain
@@ -461,10 +469,10 @@ typedef struct gvr_frame_mj{
 /// application never has to wait to render the next frame.
 typedef struct gvr_swap_chain_mj
 {
-    gvr_frame *frame;
-    char data[4];
+//    gvr_frame *frame;
+    gvr_frame **frame;
+    char data04[4];
     gvr_context *context;
-//    char data1[80];
 }gvr_swap_chain;
 
 
