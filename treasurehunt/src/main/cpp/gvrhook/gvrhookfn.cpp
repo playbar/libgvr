@@ -5,6 +5,7 @@
 #include <CallStack.h>
 #include <syscallstack.h>
 #include <mjtype.h>
+#include <pthread.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
@@ -439,11 +440,14 @@ int mj_gvr_set_display_synchronizer( gvr_context *a1, int a2)
 gvr_frame* (*old_gvr_swap_chain_acquire_frame)(gvr_swap_chain* swap_chain) = NULL;
 gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
 {
-    LOGI("mj_gvr_swap_chain_acquire_frame");
+
+    LOGI("mj_gvr_swap_chain_acquire_frame, threadid=%ld,tid=%d", pthread_self(), gettid());
     gvr_frame *frame = old_gvr_swap_chain_acquire_frame(swap_chain);
-//    gvr_frame *frame = (gvr_frame*)swap_chain;
+    if( (int)frame != (int)swap_chain)
+        LOGI("error");
 //    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
 //    pfun(swap_chain->context->user_prefs);
+//    gvr_frame *frame = (gvr_frame*)swap_chain;
 //    swap_chain->data04[0] = 1;
     return frame;
 }
@@ -454,6 +458,8 @@ void mj_gvr_frame_bind_buffer(gvr_frame* frame, int32_t index)
 {
     LOGI("mj_gvr_frame_bind_buffer");
     old_gvr_frame_bind_buffer(frame, index);
+//    fn_sub_26C04 pFun =  frame->context->user_prefs->p001->pfun22;
+//    pFun(frame->context->user_prefs, frame->data00, index);
     return;
 }
 
@@ -462,7 +468,8 @@ void (*old_gvr_frame_unbind)(gvr_frame* frame) = NULL;
 void mj_gvr_frame_unbind(gvr_frame* frame)
 {
     LOGI("mj_gvr_frame_unbind");
-    return old_gvr_frame_unbind(frame);
+    old_gvr_frame_unbind(frame);
+    return;
 }
 
 #define fn_gvr_frame_get_buffer_size "gvr_frame_get_buffer_size"
@@ -488,7 +495,8 @@ void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* 
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
     LOGI("mj_gvr_frame_submit");
-    return old_gvr_frame_submit(frame, list, head_space_from_start_space);
+    old_gvr_frame_submit(frame, list, head_space_from_start_space);
+    return;
 }
 
 

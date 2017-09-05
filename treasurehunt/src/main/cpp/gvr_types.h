@@ -52,7 +52,7 @@ typedef struct st110B38_mj
     void *pfun19;
     void *pfun20;
     void *pfun21;
-    void *pfun22;
+    fn_sub_26C04 pfun22;
     void *pfun23;
     void *pfun24;
     void *pfun25;
@@ -454,7 +454,10 @@ typedef struct gvr_buffer_spec_mj
 /// of their gvr_buffer_spec in the list passed when constructing the swap
 /// chain.
 typedef struct gvr_frame_mj{
-    char data[32];
+//    char data[32];
+    void *data00;
+    char data04[4];
+    gvr_context *context;
 } gvr_frame;
 
 typedef struct st28000_mj
@@ -470,7 +473,8 @@ typedef struct st28000_mj
 typedef struct gvr_swap_chain_mj
 {
 //    gvr_frame *frame;
-    gvr_frame **frame;
+//    gvr_frame **frame;
+    char data00[4];
     char data04[4];
     gvr_context *context;
 }gvr_swap_chain;
