@@ -84,17 +84,56 @@ typedef struct st110B38_mj
 
 typedef struct st1109B0_mj
 {
-    uint32_t pfun[7];
+//    uint32_t pfun[7];
+    void *pfun00;
+    void *pfun01;
+    void *pfun02;
+    void *pfun03;
+    void *pfun04;
+    void *pfun05;
+    void *pfun06;
 }st1109B0;
 
 typedef struct st112198_mj
 {
-    uint32_t pfun[17];
+//    uint32_t pfun[17];
+    void *pfun00;
+    void *pfun01;
+    void *pfun02;
+    void *pfun03;
+    void *pfun04;
+    void *pfun05;
+    void *pfun06;
+    void *pfun08;
+    void *pfun09;
+    void *pfun10;
+    void *pfun11;
+    void *pfun12;
+    void *pfun13;
+    void *pfun14;
+    void *pfun15;
+    void *pfun16;
 }st112198;
 
 typedef struct st114D98_mj
 {
-    uint32_t pfun[17];
+//    uint32_t pfun[17];
+    void *pfun00;
+    void *pfun01;
+    void *pfun02;
+    void *pfun03;
+    void *pfun04;
+    void *pfun05;
+    void *pfun06;
+    void *pfun08;
+    void *pfun09;
+    void *pfun10;
+    void *pfun11;
+    void *pfun12;
+    void *pfun13;
+    void *pfun14;
+    void *pfun15;
+    void *pfun16;
 }st114D98;
 
 typedef struct gvr_user_prefs_mj{
