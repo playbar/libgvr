@@ -30,6 +30,15 @@ long mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate(JNIEnv* en
 	return old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate(env, obj, paramClassLoader, paramContext);
 }
 
+#define fn_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled "Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled"
+bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong ) = NULL;
+bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    LOGI("Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled");
+    bool re =  old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled(env, obj, paramLong);
+//    bool re = false;
+    return re;
+}
 
 #define fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate 	"Java_com_google_vr_ndk_base_GvrApi_nativeCreate"
 long (*old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate)(
@@ -671,6 +680,7 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_gvr_frame_submit, (void*)mj_gvr_frame_submit, (void**)&old_gvr_frame_submit)
 			   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void*)mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void**)&old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)
+               &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);
 
 		if (bRet)

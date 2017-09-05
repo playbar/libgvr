@@ -25,10 +25,10 @@
 #include <thread>  // NOLINT
 #include <vector>
 
-#include "gvr.h"
-#include "gvr_audio.h"
-#include "gvr_controller.h"
-#include "gvr_types.h"
+#include "vr/gvr/capi/include/gvr.h"
+#include "vr/gvr/capi/include/gvr_audio.h"
+#include "vr/gvr/capi/include/gvr_controller.h"
+#include "vr/gvr/capi/include/gvr_types.h"
 #include "world_layout_data.h"  // NOLINT
 
 class TreasureHuntRenderer {
@@ -39,7 +39,8 @@ class TreasureHuntRenderer {
    * @param gvr_api The (non-owned) gvr_context.
    * @param gvr_audio_api The (owned) gvr::AudioApi context.
    */
-  TreasureHuntRenderer(gvr_context* gvr_context, std::unique_ptr<gvr::AudioApi> gvr_audio_api);
+  TreasureHuntRenderer(gvr_context* gvr_context,
+                       std::unique_ptr<gvr::AudioApi> gvr_audio_api);
 
   /**
    * Destructor.
@@ -56,9 +57,8 @@ class TreasureHuntRenderer {
    * Draw the TreasureHunt scene. This should be called on the rendering thread.
    */
   void DrawFrame();
-    void Draw();
 
-    /**
+  /**
    * Hide the cube if it's being targeted.
    */
   void OnTriggerEvent();
@@ -140,7 +140,6 @@ class TreasureHuntRenderer {
    */
   void DrawDaydreamCursor(ViewType view);
 
-    void setCubeRotation();
   /**
    * Find a new random position for the object.
    *

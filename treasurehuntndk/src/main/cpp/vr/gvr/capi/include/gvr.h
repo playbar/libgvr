@@ -29,7 +29,7 @@
 #include <vector>
 #endif
 
-#include "gvr_types.h"
+#include "vr/gvr/capi/include/gvr_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -1063,7 +1063,6 @@ class BufferViewport {
   }
   /// For more information, see gvr_buffer_viewport_set_reprojection().
   void SetReprojection(gvr_reprojection reprojection) {
-      int ilen = sizeof(gvr_reprojection);
     gvr_buffer_viewport_set_reprojection(viewport_, reprojection);
   }
 
@@ -1160,7 +1159,8 @@ class BufferViewportList {
 
   /// For more information, see gvr_buffer_viewport_list_get_item().
   void GetBufferViewport(size_t index, BufferViewport* viewport) const {
-    gvr_buffer_viewport_list_get_item(viewport_list_, index, viewport->viewport_);
+    gvr_buffer_viewport_list_get_item(viewport_list_, index,
+                                      viewport->viewport_);
   }
 
   /// For more information, see gvr_buffer_viewport_list_get_size().
@@ -1348,9 +1348,10 @@ class Frame {
   }
 
   /// For more information, see gvr_frame_submit().
-  void Submit(const BufferViewportList& viewport_list, const Mat4f& head_space_from_start_space)
-  {
-    gvr_frame_submit(&frame_, viewport_list.viewport_list_, head_space_from_start_space);
+  void Submit(const BufferViewportList& viewport_list,
+              const Mat4f& head_space_from_start_space) {
+    gvr_frame_submit(&frame_, viewport_list.viewport_list_,
+                     head_space_from_start_space);
   }
 
   /// @name Wrapper manipulation
@@ -1601,10 +1602,7 @@ class GvrApi {
   /// @{
 
   /// For more information, see gvr_initialize_gl().
-  void InitializeGl()
-  {
-      gvr_initialize_gl(context_);
-  }
+  void InitializeGl() { gvr_initialize_gl(context_); }
 
   /// For more information, see gvr_get_async_reprojection_enabled().
   bool GetAsyncReprojectionEnabled() const {

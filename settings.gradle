@@ -1,6 +1,5 @@
 //include ':gvr'
 //include ':unity'
-//include ':controllerpaint'
 //include ':gvrres'
 //include ':sdk-treasurehunt'
 include ':gvr16'
