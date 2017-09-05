@@ -616,7 +616,7 @@ void TreasureHuntRenderer::Draw() {
     glDisable(GL_BLEND);
 
     // Draw the world.
-    frame.BindBuffer(0);
+//    frame.BindBuffer(0);  // Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled return false;
 
     glClearColor(0.1f, 0.9f, 0.1f, 0.5f);  // Dark background so text shows up.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -626,11 +626,11 @@ void TreasureHuntRenderer::Draw() {
         DrawWorld(kLeftView);
         DrawWorld(kRightView);
     }
-    frame.Unbind();
+//    frame.Unbind();
 //
-    frame.BindBuffer(1);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    frame.BindBuffer(1);
+//    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // In Cardboard viewer, draw head-locked reticle on a separate layer since the
     // cursor is controlled by head movement. In Daydream viewer, this layer is
@@ -639,10 +639,10 @@ void TreasureHuntRenderer::Draw() {
     if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
         DrawCardboardReticle();
     }
-    frame.Unbind();
+//    frame.Unbind();
 
     // Submit frame.
-    frame.Submit(*viewport_list_, head_view_);
+//    frame.Submit(*viewport_list_, head_view_);
 
     CheckGLError("onDrawFrame");
 
