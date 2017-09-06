@@ -42,7 +42,7 @@ JNI_METHOD(void, nativeInitializeGl)
 JNI_METHOD(void, nativeDrawFrame)
 (JNIEnv *env, jobject obj, jlong native_treasure_hunt) {
 //  native(native_treasure_hunt)->DrawFrame();
-  native(native_treasure_hunt)->Draw();
+  native(native_treasure_hunt)->DrawFrame();
 }
 
 JNI_METHOD(void, nativeOnTriggerEvent)

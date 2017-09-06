@@ -13,14 +13,32 @@
 
 void * g_hGVR = NULL;
 
+#define fn_JNI_OnLoad "JNI_OnLoad"
+jint (*old_JNI_OnLoad)(JavaVM* vm, void* reserved) = NULL;
+jint GVR_JNI_OnLoad(JavaVM* vm, void* reserved)
+{
+    LOGI("mj_JNI_OnLoad");
+    return old_JNI_OnLoad(vm, reserved);
+}
+
 
 #define fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled "Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled"
 bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool) = NULL;
 bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
 {
 	LOGI("mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled");
-	return old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+    bool re = old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+	return re;
 }
+
+#define fn_gvr_set_async_reprojection_enabled "gvr_set_async_reprojection_enabled"
+int (*old_gvr_set_async_reprojection_enabled)(int a1, int a2) = NULL;
+int mj_gvr_set_async_reprojection_enabled(int a1, int a2)
+{
+    LOGI("mj_gvr_set_async_reprojection_enabled");
+    return old_gvr_set_async_reprojection_enabled(a1, a2);
+}
+
 
 #define fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate"
 long (*old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext) = NULL;
@@ -630,6 +648,8 @@ bool InitHook()
 	{
 		bRet = HookToFunction(g_hGVR , fn_gvr_get_head_space_from_start_space_rotation , (void*)mj_gvr_get_head_space_from_start_space_rotation, (void**)&old_gvr_get_head_space_from_start_space_rotation)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
+               &&HookToFunction(g_hGVR, fn_gvr_set_async_reprojection_enabled, (void*)mj_gvr_set_async_reprojection_enabled, (void**)&old_gvr_set_async_reprojection_enabled)
+               &&HookToFunction(g_hGVR, fn_JNI_OnLoad, (void*)GVR_JNI_OnLoad, (void**)&old_JNI_OnLoad)
 //           &&HookToFunctionBase(g_hGVR, 0x9B37E, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
 			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
 			   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)

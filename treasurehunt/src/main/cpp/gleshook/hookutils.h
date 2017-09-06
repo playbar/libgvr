@@ -13,6 +13,9 @@ int hook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr);
 
 int unHook(uint32_t target_addr);
 
+void hookEglextFun();
+void hookEGLFun();
+void hookESFun();
 void hookGLESFun();
 void unhookAllFun();
 

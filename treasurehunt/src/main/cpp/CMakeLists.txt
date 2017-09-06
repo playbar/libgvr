@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC  -shared")
 
+ADD_DEFINITIONS(-DEGL_EGLEXT_PROTOTYPES)
+
 add_library(gvr SHARED
             gvrglobal.cpp
             gvrInter.cpp
@@ -46,6 +48,8 @@ add_library(hook SHARED
                gleshook/inlineHook.c
                gleshook/hookutils.c
                gleshook/relocate.c
+               gleshook/eglexthook.c
+               gleshook/eglhook.c
                gleshook/gleshook.c
                gleshook/threadhook.c
                gleshook/vkhook.c
