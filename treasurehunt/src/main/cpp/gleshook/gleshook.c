@@ -30,7 +30,7 @@ void mj_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* strin
 void  (*old_glBindBuffer) (GLenum target, GLuint buffer) = NULL;
 void mj_glBindBuffer (GLenum target, GLuint buffer)
 {
-    LOGITAG("mjgl","mj_glBindBuffer, bufferid=%d", buffer);
+    LOGITAG("mjgl","mj_glBindBuffer, bufferid=%d, tid=%d", buffer, gettid());
     return old_glBindBuffer(target, buffer);
 }
 
@@ -44,8 +44,13 @@ void mj_glGenFramebuffers (GLsizei n, GLuint *framebuffers)
 void (*old_glGenTextures)(GLsizei n, GLuint *textures) = NULL;
 void mj_glGenTextures (GLsizei n, GLuint *textures)
 {
-    LOGITAG("mjgl", "mj_glGenTextures, tid=%d", gettid());
-    return old_glGenTextures(n, textures);
+    char tmp[1024] = {0};
+    old_glGenTextures(n, textures);
+    for( int i = 0; i < n; ++i ){
+        sprintf(tmp, "%s, texid%d=%d", tmp, i, textures[i] );
+    }
+    LOGITAG("mjgl", "mj_glGenTextures, %s, tid=%d", tmp,  gettid());
+    return;
 }
 
 void (*old_glBindTexture)(GLenum target, GLuint texture) = NULL;
@@ -102,7 +107,7 @@ void mj_glBindBufferBase (GLenum target, GLuint index, GLuint buffer)
 void (*old_glBufferData)(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage) = NULL;
 void mj_glBufferData (GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-    LOGITAG("mjgl","mj_glBufferData");
+    LOGITAG("mjgl","mj_glBufferData, tid=%d", gettid());
 //    FILE *pfile = fopen("/sdcard/bufferdata.txt", "wb");
 //    fwrite(data, size, 1, pfile);
 //    fflush(pfile);
@@ -127,7 +132,7 @@ void mj_glEnableVertexAttribArray (GLuint index)
 void (*old_glVertexAttribPointer)(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr) = NULL;
 void mj_glVertexAttribPointer (GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
-    LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=%d", indx, size, type, stride, ptr);
+    LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=%d, tid=%d", indx, size, type, stride, ptr, gettid());
     return old_glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
 }
 
@@ -163,7 +168,10 @@ void mj_glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei wid
 void (*old_glFramebufferRenderbuffer)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) = NULL;
 void mj_glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
 {
-    LOGITAG("mjgl","mj_glFramebufferRenderbuffer, tid=%d", gettid());
+    EGLSurface surface = eglGetCurrentSurface(EGL_DRAW);
+    LOGITAG("mjgl","mj_glFramebufferRenderbuffer, surface=%0X", surface);
+    LOGITAG("mjgl","mj_glFramebufferRenderbuffer, target=%0X, attachment=%0X, renderbuffertarget=%d, tid=%d",
+            target, attachment, renderbuffer, gettid());
     return old_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 

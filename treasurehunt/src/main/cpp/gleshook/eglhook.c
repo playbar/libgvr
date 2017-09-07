@@ -186,7 +186,7 @@ EGLBoolean MJ_eglDestroyContext(EGLDisplay dpy, EGLContext ctx)
 EGLBoolean (*old_eglMakeCurrent)(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx) = NULL;
 EGLBoolean MJ_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx)
 {
-    LOGITAG("mjgl","MJ_eglMakeCurrent draw=%x, read=%x, context=%x", draw, read, ctx);
+    LOGITAG("mjgl","MJ_eglMakeCurrent draw=%0X, read=%0X, context=%X, tid=%d", draw, read, ctx, gettid());
     return old_eglMakeCurrent(dpy, draw, read, ctx);
 }
 
