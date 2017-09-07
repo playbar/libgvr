@@ -31,8 +31,6 @@ JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_printMapInfo(JNIEnv* env, j
 
 JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_initHook(JNIEnv* env, jobject obj)
 {
-    LOGI("unhookAllFun begin");
-//    unhookAllFun();
     LOGI("initHook begin");
     hookGLESFun();
     hookThreadFun();

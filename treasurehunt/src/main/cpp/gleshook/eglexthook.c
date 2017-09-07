@@ -147,6 +147,50 @@ EGLuint64NV mj_eglGetSystemTimeNV(void)
     return old_eglGetSystemTimeNV();
 }
 
+EGLStreamKHR (*old_eglCreateStreamKHR)(EGLDisplay dpy, const EGLint *attrib_list) = NULL;
+EGLStreamKHR mj_eglCreateStreamKHR(EGLDisplay dpy, const EGLint *attrib_list)
+{
+    LOGITAG("mjgl", "eglCreateStreamKHR");
+    return old_eglCreateStreamKHR(dpy, attrib_list);
+}
+
+EGLBoolean (*old_eglDestroyStreamKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
+EGLBoolean mj_eglDestroyStreamKHR(EGLDisplay dpy, EGLStreamKHR stream)
+{
+    LOGITAG("mjgl", "eglDestroyStreamKHR");
+    return old_eglDestroyStreamKHR(dpy, stream);
+}
+
+EGLBoolean (*old_eglStreamAttribKHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint value) = NULL;
+EGLBoolean mj_eglStreamAttribKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint value)
+{
+    LOGITAG("mjgl", "eglStreamAttribKHR");
+    return old_eglStreamAttribKHR(dpy, stream, attribute, value);
+}
+
+EGLBoolean (*old_eglQueryStreamKHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint *value) = NULL;
+EGLBoolean mj_eglQueryStreamKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint *value)
+{
+    LOGITAG("mjgl", "eglQueryStreamKHR");
+    return old_eglQueryStreamKHR(dpy, stream, attribute, value);
+}
+
+EGLBoolean (*old_eglQueryStreamu64KHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLuint64KHR *value) = NULL;
+EGLBoolean mj_eglQueryStreamu64KHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLuint64KHR *value)
+{
+    LOGITAG("mjgl", "eglQueryStreamu64KHR");
+    return old_eglQueryStreamu64KHR(dpy, stream, attribute, value);
+}
+
+
+EGLClientBuffer (*old_eglCreateNativeClientBufferANDROID)(const EGLint *attrib_list) = NULL;
+EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
+{
+    LOGITAG("mjgl", "eglCreateNativeClientBufferANDROID");
+    EGLClientBuffer buffer = old_eglCreateNativeClientBufferANDROID(attrib_list);
+    return buffer;
+}
+
 //////////////////////////
 
 void hookEglextFun()
@@ -170,6 +214,14 @@ void hookEglextFun()
 //    hook((uint32_t) eglCreatePixmapSurfaceHI, (uint32_t)mj_eglCreatePixmapSurfaceHI, (uint32_t **) &old_eglCreatePixmapSurfaceHI);
     hook((uint32_t) eglGetSystemTimeFrequencyNV, (uint32_t)mj_eglGetSystemTimeFrequencyNV, (uint32_t **) &old_eglGetSystemTimeFrequencyNV);
     hook((uint32_t) eglGetSystemTimeNV, (uint32_t)mj_eglGetSystemTimeNV, (uint32_t **) &old_eglGetSystemTimeNV);
+    hook((uint32_t) eglCreateStreamKHR, (uint32_t)mj_eglCreateStreamKHR, (uint32_t **) &old_eglCreateStreamKHR);
+    hook((uint32_t) eglDestroyStreamKHR, (uint32_t)mj_eglDestroyStreamKHR, (uint32_t **) &old_eglDestroyStreamKHR);
+    hook((uint32_t) eglStreamAttribKHR, (uint32_t)mj_eglStreamAttribKHR, (uint32_t **) &old_eglStreamAttribKHR);
+    hook((uint32_t) eglQueryStreamKHR, (uint32_t)mj_eglQueryStreamKHR, (uint32_t **) &old_eglQueryStreamKHR);
+    hook((uint32_t) eglQueryStreamu64KHR, (uint32_t)mj_eglQueryStreamu64KHR, (uint32_t **) &old_eglQueryStreamu64KHR);
+
+
+    hook((uint32_t) eglCreateNativeClientBufferANDROID, (uint32_t)mj_eglCreateNativeClientBufferANDROID, (uint32_t **) &old_eglCreateNativeClientBufferANDROID);
 
 
     return;

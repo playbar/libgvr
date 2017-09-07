@@ -8,15 +8,12 @@
 #include "hookutils.h"
 #include "log.h"
 
-//egl
-
-
-
 EGLint (*old_eglGetError)(void) = NULL;
 EGLint MJ_eglGetError(void)
 {
     LOGITAG("mjgl","MJ_eglGetError");
-    return old_eglGetError();
+    EGLint re = old_eglGetError();
+    return re;
 }
 EGLDisplay (*old_eglGetDisplay)(EGLNativeDisplayType display_id) = NULL;
 EGLDisplay MJ_eglGetDisplay(EGLNativeDisplayType display_id)
