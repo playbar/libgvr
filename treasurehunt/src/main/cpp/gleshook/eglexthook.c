@@ -225,6 +225,45 @@ EGLBoolean mj_eglSwapBuffersWithDamageKHR (EGLDisplay dpy, EGLSurface surface, E
     return old_eglSwapBuffersWithDamageKHR(dpy, surface, rects, n_rects);
 }
 
+EGLNativeFileDescriptorKHR (*old_eglGetStreamFileDescriptorKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
+EGLNativeFileDescriptorKHR mj_eglGetStreamFileDescriptorKHR(EGLDisplay dpy, EGLStreamKHR stream)
+{
+    LOGITAG("mjgl", "mj_eglGetStreamFileDescriptorKHR");
+    return old_eglGetStreamFileDescriptorKHR(dpy, stream);
+}
+
+EGLStreamKHR (*old_eglCreateStreamFromFileDescriptorKHR)(EGLDisplay dpy, EGLNativeFileDescriptorKHR file_descriptor) = NULL;
+EGLStreamKHR mj_eglCreateStreamFromFileDescriptorKHR(EGLDisplay dpy, EGLNativeFileDescriptorKHR file_descriptor)
+{
+    LOGITAG("mjgl", "mj_eglCreateStreamFromFileDescriptorKHR");
+    return old_eglCreateStreamFromFileDescriptorKHR(dpy, file_descriptor);
+}
+
+EGLint (*old_eglWaitSyncKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags) = NULL;
+EGLint mj_eglWaitSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags)
+{
+    LOGITAG("mjgl", "mj_eglWaitSyncKHR");
+    return old_eglWaitSyncKHR(dpy, sync, flags);
+}
+
+EGLBoolean (*old_eglQueryNativeDisplayNV)( EGLDisplay dpy, EGLNativeDisplayType* display_id) = NULL;
+EGLBoolean (*old_eglQueryNativeWindowNV)( EGLDisplay dpy, EGLSurface surf, EGLNativeWindowType* window) = NULL;
+EGLBoolean (*old_eglQueryNativePixmapNV)( EGLDisplay dpy, EGLSurface surf, EGLNativePixmapType* pixmap) = NULL;
+
+void (*old_eglSetBlobCacheFuncsANDROID)(EGLDisplay dpy, EGLSetBlobFuncANDROID set, EGLGetBlobFuncANDROID get) = NULL;
+void mj_eglSetBlobCacheFuncsANDROID(EGLDisplay dpy, EGLSetBlobFuncANDROID set, EGLGetBlobFuncANDROID get)
+{
+    LOGITAG("mjgl", "mj_eglSetBlobCacheFuncsANDROID");
+    return old_eglSetBlobCacheFuncsANDROID(dpy, set, get);
+}
+
+EGLBoolean (*old_eglPresentationTimeANDROID)(EGLDisplay dpy, EGLSurface sur, EGLnsecsANDROID time) = NULL;
+EGLBoolean mj_eglPresentationTimeANDROID(EGLDisplay dpy, EGLSurface sur, EGLnsecsANDROID time)
+{
+    LOGITAG("mjgl", "mj_eglPresentationTimeANDROID");
+    return old_eglPresentationTimeANDROID(dpy, sur, time);
+}
+
 EGLClientBuffer (*old_eglCreateNativeClientBufferANDROID)(const EGLint *attrib_list) = NULL;
 EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
 {
@@ -267,8 +306,10 @@ void hookEglextFun()
     hook((uint32_t) eglCreateStreamProducerSurfaceKHR, (uint32_t)mj_eglCreateStreamProducerSurfaceKHR, (uint32_t **) &old_eglCreateStreamProducerSurfaceKHR);
     hook((uint32_t) eglQueryStreamTimeKHR, (uint32_t)mj_eglQueryStreamTimeKHR, (uint32_t **) &old_eglQueryStreamTimeKHR);
     hook((uint32_t) eglSwapBuffersWithDamageKHR, (uint32_t)mj_eglSwapBuffersWithDamageKHR, (uint32_t **) &old_eglSwapBuffersWithDamageKHR);
-
-
+    hook((uint32_t) eglGetStreamFileDescriptorKHR, (uint32_t)mj_eglGetStreamFileDescriptorKHR, (uint32_t **) &old_eglGetStreamFileDescriptorKHR);
+    hook((uint32_t) eglCreateStreamFromFileDescriptorKHR, (uint32_t)mj_eglCreateStreamFromFileDescriptorKHR, (uint32_t **) &old_eglCreateStreamFromFileDescriptorKHR);
+    hook((uint32_t) eglWaitSyncKHR, (uint32_t)mj_eglWaitSyncKHR, (uint32_t **) &old_eglWaitSyncKHR);
+    hook((uint32_t) eglPresentationTimeANDROID, (uint32_t)mj_eglPresentationTimeANDROID, (uint32_t **) &old_eglPresentationTimeANDROID);
 
     hook((uint32_t) eglCreateNativeClientBufferANDROID, (uint32_t)mj_eglCreateNativeClientBufferANDROID, (uint32_t **) &old_eglCreateNativeClientBufferANDROID);
 
