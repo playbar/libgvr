@@ -50,14 +50,14 @@ EGLSyncKHR mj_eglCreateSyncKHR(EGLDisplay dpy, EGLenum type, const EGLint *attri
 EGLBoolean (*old_eglDestroySyncKHR)(EGLDisplay dpy, EGLSyncKHR sync) = NULL;
 EGLBoolean mj_eglDestroySyncKHR(EGLDisplay dpy, EGLSyncKHR sync)
 {
-    LOGITAG("mjgl", "eglDestroySyncKHR");
+    LOGITAG("mjgl", "eglDestroySyncKHR, tid=%d", gettid());
     return old_eglDestroySyncKHR(dpy, sync);
 }
 
 EGLint (*old_eglClientWaitSyncKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EGLTimeKHR timeout) = NULL;
 EGLint mj_eglClientWaitSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EGLTimeKHR timeout)
 {
-    LOGITAG("mjgl", "eglClientWaitSyncKHR");
+    LOGITAG("mjgl", "eglClientWaitSyncKHR, tid=%d", gettid());
     return old_eglClientWaitSyncKHR(dpy, sync, flags, timeout);
 }
 

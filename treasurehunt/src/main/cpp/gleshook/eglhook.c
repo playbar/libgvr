@@ -11,7 +11,7 @@
 EGLint (*old_eglGetError)(void) = NULL;
 EGLint MJ_eglGetError(void)
 {
-    LOGITAG("mjgl","MJ_eglGetError");
+    LOGITAG("mjgl","MJ_eglGetError, tid=%d", gettid());
     EGLint re = old_eglGetError();
     return re;
 }
