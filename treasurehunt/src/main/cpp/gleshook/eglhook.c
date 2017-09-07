@@ -194,7 +194,7 @@ EGLContext (*old_eglGetCurrentContext)(void) = NULL;
 EGLContext MJ_eglGetCurrentContext(void)
 {
     EGLContext context = old_eglGetCurrentContext();
-    LOGITAG("mjgl","MJ_eglGetCurrentContext, context=%x", context);
+    LOGITAG("mjgl","MJ_eglGetCurrentContext, context=%x, tid=%d", context, gettid());
     return context;
 }
 

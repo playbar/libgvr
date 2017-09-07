@@ -182,6 +182,48 @@ EGLBoolean mj_eglQueryStreamu64KHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum 
     return old_eglQueryStreamu64KHR(dpy, stream, attribute, value);
 }
 
+EGLBoolean (*old_eglStreamConsumerGLTextureExternalKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
+EGLBoolean mj_eglStreamConsumerGLTextureExternalKHR(EGLDisplay dpy, EGLStreamKHR stream)
+{
+    LOGITAG("mjgl", "mj_eglStreamConsumerGLTextureExternalKHR");
+    return old_eglStreamConsumerGLTextureExternalKHR(dpy, stream);
+}
+
+EGLBoolean (*old_eglStreamConsumerAcquireKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
+EGLBoolean mj_eglStreamConsumerAcquireKHR(EGLDisplay dpy, EGLStreamKHR stream)
+{
+    LOGITAG("mjgl", "mj_eglStreamConsumerAcquireKHR");
+    return old_eglStreamConsumerAcquireKHR(dpy, stream);
+}
+
+EGLBoolean (*old_eglStreamConsumerReleaseKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
+EGLBoolean mj_eglStreamConsumerReleaseKHR(EGLDisplay dpy, EGLStreamKHR stream)
+{
+    LOGITAG("mjgl", "mj_eglStreamConsumerReleaseKHR");
+    return old_eglStreamConsumerReleaseKHR(dpy, stream);
+}
+
+EGLSurface (*old_eglCreateStreamProducerSurfaceKHR)(EGLDisplay dpy, EGLConfig config, EGLStreamKHR stream, const EGLint *attrib_list) = NULL;
+EGLSurface mj_eglCreateStreamProducerSurfaceKHR(EGLDisplay dpy, EGLConfig config, EGLStreamKHR stream, const EGLint *attrib_list)
+{
+    LOGITAG("mjgl", "mj_eglCreateStreamProducerSurfaceKHR");
+    return old_eglCreateStreamProducerSurfaceKHR(dpy, config, stream, attrib_list);
+}
+
+EGLBoolean (*old_eglQueryStreamTimeKHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLTimeKHR *value) = NULL;
+EGLBoolean mj_eglQueryStreamTimeKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLTimeKHR *value)
+{
+    LOGITAG("mjgl", "mj_eglQueryStreamTimeKHR");
+    return old_eglQueryStreamTimeKHR(dpy, stream, attribute, value);
+}
+
+
+EGLBoolean (*old_eglSwapBuffersWithDamageKHR)(EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects) = NULL;
+EGLBoolean mj_eglSwapBuffersWithDamageKHR (EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects)
+{
+    LOGITAG("mjgl", "mj_eglSwapBuffersWithDamageKHR");
+    return old_eglSwapBuffersWithDamageKHR(dpy, surface, rects, n_rects);
+}
 
 EGLClientBuffer (*old_eglCreateNativeClientBufferANDROID)(const EGLint *attrib_list) = NULL;
 EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
@@ -219,6 +261,13 @@ void hookEglextFun()
     hook((uint32_t) eglStreamAttribKHR, (uint32_t)mj_eglStreamAttribKHR, (uint32_t **) &old_eglStreamAttribKHR);
     hook((uint32_t) eglQueryStreamKHR, (uint32_t)mj_eglQueryStreamKHR, (uint32_t **) &old_eglQueryStreamKHR);
     hook((uint32_t) eglQueryStreamu64KHR, (uint32_t)mj_eglQueryStreamu64KHR, (uint32_t **) &old_eglQueryStreamu64KHR);
+    hook((uint32_t) eglStreamConsumerGLTextureExternalKHR, (uint32_t)mj_eglStreamConsumerGLTextureExternalKHR, (uint32_t **) &old_eglStreamConsumerGLTextureExternalKHR);
+    hook((uint32_t) eglStreamConsumerAcquireKHR, (uint32_t)mj_eglStreamConsumerAcquireKHR, (uint32_t **) &old_eglStreamConsumerAcquireKHR);
+    hook((uint32_t) eglStreamConsumerReleaseKHR, (uint32_t)mj_eglStreamConsumerReleaseKHR, (uint32_t **) &old_eglStreamConsumerReleaseKHR);
+    hook((uint32_t) eglCreateStreamProducerSurfaceKHR, (uint32_t)mj_eglCreateStreamProducerSurfaceKHR, (uint32_t **) &old_eglCreateStreamProducerSurfaceKHR);
+    hook((uint32_t) eglQueryStreamTimeKHR, (uint32_t)mj_eglQueryStreamTimeKHR, (uint32_t **) &old_eglQueryStreamTimeKHR);
+    hook((uint32_t) eglSwapBuffersWithDamageKHR, (uint32_t)mj_eglSwapBuffersWithDamageKHR, (uint32_t **) &old_eglSwapBuffersWithDamageKHR);
+
 
 
     hook((uint32_t) eglCreateNativeClientBufferANDROID, (uint32_t)mj_eglCreateNativeClientBufferANDROID, (uint32_t **) &old_eglCreateNativeClientBufferANDROID);

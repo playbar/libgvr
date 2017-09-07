@@ -51,7 +51,7 @@ void mj_glGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
 void (*old_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
 void MJ_glBindFramebuffer (GLenum target, GLuint framebuffer)
 {
-    LOGITAG("mjgl","MJ_glBindFramebuffer, framebuffer=%d", framebuffer);
+    LOGITAG("mjgl","MJ_glBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
     return old_glBindFramebuffer(target, framebuffer);
 }
 
@@ -120,14 +120,14 @@ void MJ_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices) = NULL;
 void MJ_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
-    LOGITAG("mjgl","MJ_glDrawElements");
+    LOGITAG("mjgl","MJ_glDrawElements, tid=%d", gettid());
     return old_glDrawElements(mode, count, type, indices);
 }
 
 void (*old_glUseProgram) (GLuint program) = NULL;
 void MJ_glUseProgram (GLuint program)
 {
-    LOGITAG("mjgl","MJ_glUseProgram, programid=%d", program);
+    LOGITAG("mjgl","MJ_glUseProgram, programid=%d, tid=%d", program, gettid());
     return old_glUseProgram(program);
 }
 
