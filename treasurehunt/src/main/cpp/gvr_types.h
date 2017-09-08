@@ -34,7 +34,7 @@ typedef struct st110B38_mj
     void *pfun01;
     void *pfun02;
     void *pfun03;
-    void *pfun04;
+    fn_set_async_reprojection_enabled pfun04;
     void *pfun05;
     fn_initialize_gl pfun06;
     void *pfun07;

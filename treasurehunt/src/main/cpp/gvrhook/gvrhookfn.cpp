@@ -32,13 +32,15 @@ bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNI
 }
 
 #define fn_gvr_set_async_reprojection_enabled "gvr_set_async_reprojection_enabled"
-int (*old_gvr_set_async_reprojection_enabled)(int a1, int a2) = NULL;
-int mj_gvr_set_async_reprojection_enabled(int a1, int a2)
+int (*old_gvr_set_async_reprojection_enabled)(gvr_context * a1, int a2) = NULL;
+int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
 {
-    LOGI("mj_gvr_set_async_reprojection_enabled");
-    return old_gvr_set_async_reprojection_enabled(a1, a2);
+    LOGI("mj_gvr_set_async_reprojection_enabled, a1=%x", a1);
+//    int re = old_gvr_set_async_reprojection_enabled(a1, a2);
+    fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
+    int re = pfun(a1->user_prefs);
+    return re;
 }
-
 
 #define fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate "Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate"
 long (*old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext) = NULL;

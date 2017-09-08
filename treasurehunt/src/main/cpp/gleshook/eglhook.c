@@ -77,7 +77,7 @@ EGLSurface (*old_eglCreatePbufferSurface)(EGLDisplay dpy, EGLConfig config,const
 EGLSurface MJ_eglCreatePbufferSurface(EGLDisplay dpy, EGLConfig config, const EGLint *attrib_list)
 {
     EGLSurface surface = old_eglCreatePbufferSurface(dpy, config, attrib_list);
-    LOGITAG("mjgl","MJ_eglCreatePbufferSurface pbuffer=%x", surface);
+    LOGITAG("mjgl","MJ_eglCreatePbufferSurface pbuffer=%x, tid=%d", surface, gettid());
     return surface;
 }
 
