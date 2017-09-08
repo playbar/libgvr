@@ -50,6 +50,7 @@ add_library(hook SHARED
                gleshook/hookutils.c
                gleshook/relocate.c
                gleshook/eglexthook.c
+               gleshook/gl2exthook.c
                gleshook/eglhook.c
                gleshook/gleshook.c
                gleshook/threadhook.c

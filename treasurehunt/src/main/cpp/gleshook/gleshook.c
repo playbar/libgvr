@@ -207,13 +207,13 @@ void hookESFun()
     hook((uint32_t) glRenderbufferStorage, (uint32_t)mj_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
     hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
-//    hook((uint32_t) glEGLImageTargetTexture2DOES, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
 }
 
 void hookGLESFun()
 {
     hookEGLFun();
     hookEglextFun();
+    hookgl2extFun();
     hookESFun();
     return;
 }
