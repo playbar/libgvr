@@ -458,6 +458,7 @@ void TreasureHuntRenderer::ProcessControllerInput() {
 
 void TreasureHuntRenderer::DrawFrame() {
     LOGE("DrawFrame  -- begin");
+    const unsigned char *version = glGetString(GL_VERSION);
     if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
         ProcessControllerInput();
     }

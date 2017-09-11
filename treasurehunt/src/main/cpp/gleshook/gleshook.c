@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+#include <GLES3/gl32.h>
+#include <GLES3/gl3ext.h>
 #include "callstack.h"
 #include <android/log.h>
 #include <string.h>
@@ -154,6 +154,7 @@ void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
 void (*old_glUseProgram) (GLuint program) = NULL;
 void mj_glUseProgram (GLuint program)
 {
+    const unsigned char *version = glGetString(GL_VERSION);
     LOGITAG("mjgl","mj_glUseProgram, programid=%d, tid=%d", program, gettid());
     return old_glUseProgram(program);
 }

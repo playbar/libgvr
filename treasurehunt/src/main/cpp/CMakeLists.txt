@@ -67,7 +67,7 @@ target_link_libraries(hook
                      log
                      android
                      vulkan
-                     GLESv2
+                     GLESv3
                      EGL)
 
 
