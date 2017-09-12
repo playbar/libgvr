@@ -29,8 +29,10 @@ EGLBoolean mj_eglUnlockSurfaceKHR(EGLDisplay display, EGLSurface surface)
 EGLImageKHR (*old_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list) = NULL;
 EGLImageKHR mj_eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "eglCreateImageKHR");
-    return old_eglCreateImageKHR(dpy, ctx, target, buffer, attrib_list);
+//    EGLDisplay display = eglGetCurrentDisplay();
+    LOGITAG("mjgl", "mj_eglCreateImageKHR, buffer=%0X, tid=%d", buffer, gettid());
+    EGLImageKHR img = old_eglCreateImageKHR(dpy, ctx, target, buffer, attrib_list);
+    return img;
 }
 
 EGLBoolean (*old_eglDestroyImageKHR)(EGLDisplay dpy, EGLImageKHR image) = NULL;
@@ -221,7 +223,7 @@ EGLBoolean mj_eglQueryStreamTimeKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum
 EGLBoolean (*old_eglSwapBuffersWithDamageKHR)(EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects) = NULL;
 EGLBoolean mj_eglSwapBuffersWithDamageKHR (EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects)
 {
-    LOGITAG("mjgl", "mj_eglSwapBuffersWithDamageKHR");
+    LOGITAG("mjgl", "mj_eglSwapBuffersWithDamageKHR, surface=%X, tid=%d", surface, gettid());
     return old_eglSwapBuffersWithDamageKHR(dpy, surface, rects, n_rects);
 }
 
@@ -267,8 +269,13 @@ EGLBoolean mj_eglPresentationTimeANDROID(EGLDisplay dpy, EGLSurface sur, EGLnsec
 EGLClientBuffer (*old_eglCreateNativeClientBufferANDROID)(const EGLint *attrib_list) = NULL;
 EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "eglCreateNativeClientBufferANDROID");
+    int i = 0;
+    while(attrib_list[i] != EGL_NONE){
+        LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
+        i = i+2;
+    }
     EGLClientBuffer buffer = old_eglCreateNativeClientBufferANDROID(attrib_list);
+    LOGITAG("mjgl", "eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d", buffer, gettid());
     return buffer;
 }
 

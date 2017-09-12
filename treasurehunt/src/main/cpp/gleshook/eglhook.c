@@ -18,14 +18,14 @@ EGLint MJ_eglGetError(void)
 EGLDisplay (*old_eglGetDisplay)(EGLNativeDisplayType display_id) = NULL;
 EGLDisplay MJ_eglGetDisplay(EGLNativeDisplayType display_id)
 {
-    LOGITAG("mjgl","MJ_eglGetDisplay");
+    LOGITAG("mjgl","MJ_eglGetDisplay, tid=%d", gettid());
     return old_eglGetDisplay(display_id);
 }
 
 EGLBoolean (*old_eglInitialize)(EGLDisplay dpy, EGLint *major, EGLint *minor) = NULL;
 EGLBoolean MJ_eglInitialize(EGLDisplay dpy, EGLint *major, EGLint *minor)
 {
-    LOGITAG("mjgl","MJ_eglInitialize");
+    LOGITAG("mjgl","MJ_eglInitialize, tid=%d", gettid());
     return old_eglInitialize(dpy, major, minor);
 }
 
@@ -53,7 +53,7 @@ EGLBoolean MJ_eglGetConfigs(EGLDisplay dpy, EGLConfig *configs, EGLint config_si
 EGLBoolean (*old_eglChooseConfig)(EGLDisplay dpy, const EGLint *attrib_list, EGLConfig *configs, EGLint config_size, EGLint *num_config) = NULL;
 EGLBoolean MJ_eglChooseConfig(EGLDisplay dpy, const EGLint *attrib_list, EGLConfig *configs, EGLint config_size, EGLint *num_config)
 {
-    LOGITAG("mjgl","MJ_eglChooseConfig");
+    LOGITAG("mjgl","MJ_eglChooseConfig, tid=%d", gettid());
     return old_eglChooseConfig(dpy, attrib_list, configs, config_size, num_config);
 }
 
@@ -69,7 +69,7 @@ EGLSurface (*old_eglCreateWindowSurface)(EGLDisplay dpy, EGLConfig config, EGLNa
 EGLSurface MJ_eglCreateWindowSurface(EGLDisplay dpy, EGLConfig config, EGLNativeWindowType win, const EGLint *attrib_list)
 {
     EGLSurface surface = old_eglCreateWindowSurface(dpy, config, win, attrib_list);
-    LOGITAG("mjgl","MJ_eglCreateWindowSurface window=%x", surface);
+    LOGITAG("mjgl","MJ_eglCreateWindowSurface surface=%X, tid=%d", surface, gettid());
     return surface;
 }
 
@@ -100,7 +100,7 @@ EGLBoolean MJ_eglDestroySurface(EGLDisplay dpy, EGLSurface surface)
 EGLBoolean (*old_eglQuerySurface)(EGLDisplay dpy, EGLSurface surface, EGLint attribute, EGLint *value) = NULL;
 EGLBoolean MJ_eglQuerySurface(EGLDisplay dpy, EGLSurface surface, EGLint attribute, EGLint *value)
 {
-    LOGITAG("mjgl","MJ_eglQuerySurface");
+    LOGITAG("mjgl","MJ_eglQuerySurface, surface=%X, tid=%d", surface, gettid());
     return old_eglQuerySurface(dpy, surface, attribute, value);
 }
 
@@ -143,7 +143,7 @@ EGLSurface MJ_eglCreatePbufferFromClientBuffer(EGLDisplay dpy, EGLenum buftype, 
 EGLBoolean (*old_eglSurfaceAttrib)(EGLDisplay dpy, EGLSurface surface, EGLint attribute, EGLint value) = NULL;
 EGLBoolean MJ_eglSurfaceAttrib(EGLDisplay dpy, EGLSurface surface, EGLint attribute, EGLint value)
 {
-    LOGITAG("mjgl","MJ_eglSurfaceAttrib");
+    LOGITAG("mjgl","MJ_eglSurfaceAttrib, surface=%X, tid=%d", surface, gettid());
     return old_eglSurfaceAttrib(dpy, surface, attribute, value);
 }
 
@@ -201,8 +201,9 @@ EGLContext MJ_eglGetCurrentContext(void)
 EGLSurface (*old_eglGetCurrentSurface)(EGLint readdraw) = NULL;
 EGLSurface MJ_eglGetCurrentSurface(EGLint readdraw)
 {
-    LOGITAG("mjgl","MJ_eglGetCurrentSurface");
-    return old_eglGetCurrentSurface(readdraw);
+    EGLSurface  surface = old_eglGetCurrentSurface(readdraw);
+    LOGITAG("mjgl","MJ_eglGetCurrentSurface, surface=%X, tid=%d", surface, gettid());
+    return surface;
 }
 
 EGLDisplay (*old_eglGetCurrentDisplay)(void) = NULL;
@@ -236,7 +237,7 @@ EGLBoolean MJ_eglWaitNative(EGLint engine)
 EGLBoolean (*old_eglSwapBuffers)(EGLDisplay dpy, EGLSurface surface) = NULL;
 EGLBoolean MJ_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 {
-    LOGITAG("mjgl","MJ_eglSwapBuffers");
+    LOGITAG("mjgl","MJ_eglSwapBuffers, surface=%X, tid=%d", surface, gettid());
     return old_eglSwapBuffers(dpy, surface);
 }
 
@@ -251,7 +252,7 @@ EGLBoolean MJ_eglCopyBuffers(EGLDisplay dpy, EGLSurface surface, EGLNativePixmap
 __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
-    LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s", procname);
+    LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s, tid=%d", procname, gettid());
     return old_eglGetProcAddress(procname);
 }
 
