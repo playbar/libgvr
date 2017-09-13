@@ -45,14 +45,14 @@ EGLBoolean mj_eglDestroyImageKHR(EGLDisplay dpy, EGLImageKHR image)
 EGLSyncKHR (*old_eglCreateSyncKHR)(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list) = NULL;
 EGLSyncKHR mj_eglCreateSyncKHR(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "eglCreateSyncKHR");
+    LOGITAG("mjgl", "mj_eglCreateSyncKHR");
     return old_eglCreateSyncKHR(dpy, type, attrib_list);
 }
 
 EGLBoolean (*old_eglDestroySyncKHR)(EGLDisplay dpy, EGLSyncKHR sync) = NULL;
 EGLBoolean mj_eglDestroySyncKHR(EGLDisplay dpy, EGLSyncKHR sync)
 {
-    LOGITAG("mjgl", "eglDestroySyncKHR, tid=%d", gettid());
+    LOGITAG("mjgl", "mj_eglDestroySyncKHR, tid=%d", gettid());
     return old_eglDestroySyncKHR(dpy, sync);
 }
 

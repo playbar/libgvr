@@ -39,7 +39,7 @@ void* (*old_malloc)(size_t byte_count) = NULL;
 void* mj_malloc(size_t byte_count)
 {
     void *re = old_malloc(byte_count);
-    LOGITAG("mjmem", "mj_malloc, bytecount=%d, re=%x, pid=%d", byte_count, re, getpid());
+//    LOGITAG("mjmem", "mj_malloc, bytecount=%d, re=%x, pid=%d", byte_count, re, getpid());
     memset(re, 0, byte_count);
     return re;
 }
@@ -48,14 +48,14 @@ void* (*old_calloc)(size_t item_count, size_t item_size) = NULL;
 void* mj_calloc(size_t item_count, size_t item_size)
 {
     void *re = old_calloc(item_count, item_size);
-    LOGITAG("mjmem", "mj_calloc, re=%x, item_cout=%d, item_size=%d",  re, item_count, item_size);
+//    LOGITAG("mjmem", "mj_calloc, re=%x, item_cout=%d, item_size=%d",  re, item_count, item_size);
     return re;
 }
 void* (*old_realloc)(void* p, size_t byte_count) = NULL;
 void* mj_realloc(void* p, size_t byte_count)
 {
     void *re = old_realloc(p, byte_count);
-    LOGITAG("mjmem", "mj_realloc, bytecount=%d, re=%x", byte_count, re);
+//    LOGITAG("mjmem", "mj_realloc, bytecount=%d, re=%x", byte_count, re);
     return re;
 }
 
@@ -88,7 +88,7 @@ int (*old_pthread_create)(pthread_t *thread, pthread_attr_t const * attr, void *
 int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg)
 {
     LOGITAG("mjhook", "mj_pthread_create");
-    print_callstack();
+//    print_callstack();
     int re = 0;
     re = old_pthread_create(thread, attr, start_routine, arg);
     return re;

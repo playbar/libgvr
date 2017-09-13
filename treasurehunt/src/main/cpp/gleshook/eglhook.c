@@ -39,8 +39,9 @@ EGLBoolean MJ_eglTerminate(EGLDisplay dpy)
 const char * (*old_eglQueryString)(EGLDisplay dpy, EGLint name) = NULL;
 const char * MJ_eglQueryString(EGLDisplay dpy, EGLint name)
 {
-    LOGITAG("mjgl","MJ_eglQueryString");
-    return old_eglQueryString(dpy, name);
+    const char *str = old_eglQueryString(dpy, name);
+    LOGITAG("mjgl","MJ_eglQueryString, name=%s, tid=%d", str, gettid());
+    return str;
 }
 
 EGLBoolean (*old_eglGetConfigs)(EGLDisplay dpy, EGLConfig *configs, EGLint config_size, EGLint *num_config) = NULL;
@@ -77,7 +78,7 @@ EGLSurface (*old_eglCreatePbufferSurface)(EGLDisplay dpy, EGLConfig config,const
 EGLSurface MJ_eglCreatePbufferSurface(EGLDisplay dpy, EGLConfig config, const EGLint *attrib_list)
 {
     EGLSurface surface = old_eglCreatePbufferSurface(dpy, config, attrib_list);
-    LOGITAG("mjgl","MJ_eglCreatePbufferSurface pbuffer=%x, tid=%d", surface, gettid());
+    LOGITAG("mjgl","MJ_eglCreatePbufferSurface pbuffer=%X, tid=%d", surface, gettid());
     return surface;
 }
 
@@ -248,12 +249,123 @@ EGLBoolean MJ_eglCopyBuffers(EGLDisplay dpy, EGLSurface surface, EGLNativePixmap
     return MJ_eglCopyBuffers(dpy, surface, target);
 }
 
+void (*pfun_gImageTargetTexture2DOES) (GLenum target, void *image);
+void mjImageTargetTexture2DOES(GLenum target, void *image)
+{
+    return pfun_gImageTargetTexture2DOES(target, image);
+}
+
+void (*pfun_glBindRenderbuffer)(GLenum target, GLuint renderbuffer);
+void mjBindRenderbuffer (GLenum target, GLuint renderbuffer)
+{
+    return pfun_glBindRenderbuffer(target, renderbuffer);
+}
+
+void (*pfun_glEGLImageTargetRenderbufferStorageOES)(GLenum target, void *image) = NULL;
+void mjEGLImageTargetRenderbufferStorageOES(GLenum target, void *image)
+{
+    return pfun_glEGLImageTargetRenderbufferStorageOES(target, image);
+}
+
+void (*pfun_glBindTexture)(GLenum target, GLuint texture) = NULL;
+void mjglBindTexture (GLenum target, GLuint texture)
+{
+    LOGITAG("mjgl", "mjglBindTexture, texid=%d, tid=%d", texture, gettid());
+    return pfun_glBindTexture(target, texture);
+}
+
+void (*pfun_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
+void mjglBindFramebuffer (GLenum target, GLuint framebuffer)
+{
+    LOGITAG("mjgl", "mjglBindFramebuffer, texid=%d, tid=%d", framebuffer, gettid());
+    return pfun_glBindFramebuffer(target, framebuffer);
+}
+
+void (*pfun_glGenTextures)(GLsizei n, GLuint *textures) = NULL;
+void mjglGenTextures (GLsizei n, GLuint *textures)
+{
+    pfun_glGenTextures(n, textures);
+    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", textures[0], gettid());
+    return;
+}
+
+void (*pfun_glFramebufferTexture2D)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level) = NULL;
+void mjglFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+{
+    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", texture, gettid());
+    pfun_glFramebufferTexture2D(target, attachment, textarget, texture, level);
+    return;
+}
+
+void (*pfun_glGenFramebuffers)(GLsizei n, GLuint *framebuffers) = NULL;
+void mjglGenFramebuffers (GLsizei n, GLuint *framebuffers)
+{
+    pfun_glGenFramebuffers(n, framebuffers);
+    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", framebuffers[0], gettid());
+    return;
+}
+
+void (*pfun_glGenRenderbuffers)(GLsizei n, GLuint *renderbuffers) = NULL;
+void mjglGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
+{
+    pfun_glGenRenderbuffers(n, renderbuffers);
+    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", renderbuffers[0], gettid());
+    return;
+}
+
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
 __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
+    __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
     LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s, tid=%d", procname, gettid());
-    return old_eglGetProcAddress(procname);
+    if( strcmp(procname, "glEGLImageTargetTexture2DOES") == 0)
+    {
+        pfun_gImageTargetTexture2DOES = pfun;
+        pfun = mjImageTargetTexture2DOES;
+        LOGI("glEGLImageTargetTexture2DOES");
+    }
+    if(strcmp(procname, "glBindRenderbuffer") == 0)
+    {
+        pfun_glBindRenderbuffer = pfun;
+        pfun = mjBindRenderbuffer;
+    }
+    if( strcmp(procname, "glEGLImageTargetRenderbufferStorageOES") == 0 )
+    {
+        pfun_glEGLImageTargetRenderbufferStorageOES = pfun;
+        pfun = mjEGLImageTargetRenderbufferStorageOES;
+    }
+    if( strcmp(procname, "glBindTexture") == 0 )
+    {
+        pfun_glBindTexture = pfun;
+        pfun = mjglBindTexture;
+    }
+    if(strcmp(procname, "glBindFramebuffer") == 0 )
+    {
+        pfun_glBindFramebuffer = pfun;
+        pfun = mjglBindFramebuffer;
+    }
+    if(strcmp(procname, "glGenTextures") == 0 )
+    {
+        pfun_glGenTextures = pfun;
+        pfun = mjglGenTextures;
+    }
+    if(strcmp(procname, "glFramebufferTexture2D") == 0 )
+    {
+        pfun_glFramebufferTexture2D = pfun;
+        pfun = mjglFramebufferTexture2D;
+    }
+    if(strcmp(procname, "glGenFramebuffers") == 0 )
+    {
+        pfun_glGenFramebuffers = pfun;
+        pfun = mjglGenFramebuffers;
+    }
+    if(strcmp(procname, "glGenRenderbuffers") == 0)
+    {
+        pfun_glGenRenderbuffers = pfun;
+        pfun = mjglGenRenderbuffers;
+    }
+    return pfun;
 }
 
 
