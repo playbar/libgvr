@@ -16,7 +16,7 @@
 void (*old_glShaderSource) (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) = NULL;
 void mj_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length)
 {
-    LOGITAG("mjgl","mj_glShaderSource");
+    LOGITAG("mjgl","mj_glShaderSource, tid=%d", gettid());
 //    for(int i = 0; i < count; ++i){
 //        int len = strlen(*string);
 //        FILE *pfile = fopen("/sdcard/shader.txt", "wb");
@@ -71,7 +71,7 @@ void mj_glFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarg
 void (*old_glGenRenderbuffers)(GLsizei n, GLuint *renderbuffers) = NULL;
 void mj_glGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
 {
-    LOGITAG("mjgl", "mj_glGenRenderbuffers");
+    LOGITAG("mjgl", "mj_glGenRenderbuffers, tid=%d", gettid());
     return old_glGenRenderbuffers(n, renderbuffers);
 }
 
@@ -87,21 +87,21 @@ void mj_glBindFramebuffer (GLenum target, GLuint framebuffer)
 void (*old_glBindRenderbuffer)(GLenum target, GLuint renderbuffer) = NULL;
 void mj_glBindRenderbuffer (GLenum target, GLuint renderbuffer)
 {
-    LOGITAG("mjgl","mj_glBindRenderbuffer");
+    LOGITAG("mjgl","mj_glBindRenderbuffer, tid=%d", gettid());
     return old_glBindRenderbuffer(target, renderbuffer);
 }
 
 void (*old_glBindBufferRange) (GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size) = NULL;
 void mj_glBindBufferRange (GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size)
 {
-    LOGITAG("mjgl","mj_glBindBufferRange");
+    LOGITAG("mjgl","mj_glBindBufferRange, tid=%d", gettid());
     return old_glBindBufferRange(target, index, buffer, offset, size);
 }
 
 void (*old_glBindBufferBase) (GLenum target, GLuint index, GLuint buffer) = NULL;
 void mj_glBindBufferBase (GLenum target, GLuint index, GLuint buffer)
 {
-    LOGITAG("mjgl","mj_glBindBufferBase");
+    LOGITAG("mjgl","mj_glBindBufferBase, tid=%d", gettid());
     return old_glBindBufferBase(target, index, buffer);
 }
 
@@ -140,7 +140,7 @@ void mj_glVertexAttribPointer (GLuint indx, GLint size, GLenum type, GLboolean n
 void (*old_glDrawArrays)(GLenum mode, GLint first, GLsizei count) = NULL;
 void mj_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 {
-    LOGITAG("mjgl","mj_glDrawArrays");
+    LOGITAG("mjgl","mj_glDrawArrays, tid=%d", gettid());
     return old_glDrawArrays(mode, first, count);
 }
 
@@ -162,7 +162,7 @@ void mj_glUseProgram (GLuint program)
 void (*old_glRenderbufferStorage)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height) = NULL;
 void mj_glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
 {
-    LOGITAG("mjgl","mj_glRenderbufferStorage");
+    LOGITAG("mjgl","mj_glRenderbufferStorage, tid=%d", gettid());
     return old_glRenderbufferStorage(target, internalformat, width, height);
 }
 
@@ -180,7 +180,7 @@ void mj_glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum rend
 void (*old_glCopyTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
 void mj_glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
 {
-    LOGITAG("mjgl","mj_glCopyTexSubImage2D");
+    LOGITAG("mjgl","mj_glCopyTexSubImage2D, tid=%d", gettid());
     return old_glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
 }
 
@@ -189,7 +189,7 @@ void (*old_glBlitFramebuffer)(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1
 void mj_glBlitFramebuffer (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
                            GLbitfield mask, GLenum filter)
 {
-    LOGITAG("mjgl","mj_glBlitFramebuffer");
+    LOGITAG("mjgl","mj_glBlitFramebuffer, tid=%d", gettid());
     return old_glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 }
 

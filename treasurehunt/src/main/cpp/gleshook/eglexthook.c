@@ -15,14 +15,14 @@
 EGLBoolean (*old_eglLockSurfaceKHR) (EGLDisplay display, EGLSurface surface, const EGLint *attrib_list) = NULL;
 EGLBoolean mj_eglLockSurfaceKHR (EGLDisplay display, EGLSurface surface, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "mj_eglLockSurfaceKHR");
+    LOGITAG("mjgl", "mj_eglLockSurfaceKHR, tid=%d", gettid());
     return old_eglLockSurfaceKHR(display, surface, attrib_list);
 }
 
 EGLBoolean (*old_eglUnlockSurfaceKHR)(EGLDisplay display, EGLSurface surface) = NULL;
 EGLBoolean mj_eglUnlockSurfaceKHR(EGLDisplay display, EGLSurface surface)
 {
-    LOGITAG("mjgl", "mj_eglUnlockSurfaceKHR");
+    LOGITAG("mjgl", "mj_eglUnlockSurfaceKHR, tid=%d", gettid());
     return old_eglUnlockSurfaceKHR(display, surface);
 }
 
@@ -38,14 +38,14 @@ EGLImageKHR mj_eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target,
 EGLBoolean (*old_eglDestroyImageKHR)(EGLDisplay dpy, EGLImageKHR image) = NULL;
 EGLBoolean mj_eglDestroyImageKHR(EGLDisplay dpy, EGLImageKHR image)
 {
-    LOGITAG("mjgl", "mj_eglDestroyImageKHR");
+    LOGITAG("mjgl", "mj_eglDestroyImageKHR, tid=%d", gettid());
     return old_eglDestroyImageKHR(dpy, image);
 }
 
 EGLSyncKHR (*old_eglCreateSyncKHR)(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list) = NULL;
 EGLSyncKHR mj_eglCreateSyncKHR(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "mj_eglCreateSyncKHR");
+    LOGITAG("mjgl", "mj_eglCreateSyncKHR, tid=%d", gettid());
     return old_eglCreateSyncKHR(dpy, type, attrib_list);
 }
 
@@ -67,21 +67,21 @@ EGLint mj_eglClientWaitSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EG
 EGLBoolean (*old_eglSignalSyncKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLenum mode) = NULL;
 EGLBoolean mj_eglSignalSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLenum mode)
 {
-    LOGITAG("mjgl", "eglSignalSyncKHR");
+    LOGITAG("mjgl", "eglSignalSyncKHR, tid=%d", gettid());
     return old_eglSignalSyncKHR(dpy, sync, mode);
 }
 
 EGLBoolean (*old_eglGetSyncAttribKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLint attribute, EGLint *value) = NULL;
 EGLBoolean mj_eglGetSyncAttribKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint attribute, EGLint *value)
 {
-    LOGITAG("mjgl", "eglGetSyncAttribKHR");
+    LOGITAG("mjgl", "eglGetSyncAttribKHR, tid=%d", gettid());
     return old_eglGetSyncAttribKHR(dpy, sync, attribute, value);
 }
 
 EGLBoolean (*old_eglSetDamageRegionKHR)(EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects) = NULL;
 EGLBoolean mj_eglSetDamageRegionKHR(EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects)
 {
-    LOGITAG("mjgl", "eglSetDamageRegionKHR");
+    LOGITAG("mjgl", "eglSetDamageRegionKHR, tid=%d", gettid());
     return old_eglSetDamageRegionKHR(dpy, surface, rects, n_rects);
 }
 
@@ -89,133 +89,133 @@ EGLBoolean mj_eglSetDamageRegionKHR(EGLDisplay dpy, EGLSurface surface, EGLint *
 EGLSyncNV (*old_eglCreateFenceSyncNV)(EGLDisplay dpy, EGLenum condition, const EGLint *attrib_list) = NULL;
 EGLSyncNV mj_eglCreateFenceSyncNV(EGLDisplay dpy, EGLenum condition, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "eglCreateFenceSyncNV");
+    LOGITAG("mjgl", "eglCreateFenceSyncNV, tid=%d", gettid());
     return old_eglCreateFenceSyncNV(dpy, condition, attrib_list);
 }
 
 EGLBoolean (*old_eglDestroySyncNV)(EGLSyncNV sync) = NULL;
 EGLBoolean mj_eglDestroySyncNV(EGLSyncNV sync)
 {
-    LOGITAG("mjgl", "eglDestroySyncNV");
+    LOGITAG("mjgl", "eglDestroySyncNV, tid=%d", gettid());
     return old_eglDestroySyncNV(sync);
 }
 
 EGLBoolean (*old_eglFenceNV)(EGLSyncNV sync) = NULL;
 EGLBoolean mj_eglFenceNV(EGLSyncNV sync)
 {
-    LOGITAG("mjgl", "eglFenceNV");
+    LOGITAG("mjgl", "eglFenceNV, tid=%d", gettid());
     return old_eglFenceNV(sync);
 }
 
 EGLint (*old_eglClientWaitSyncNV)(EGLSyncNV sync, EGLint flags, EGLTimeNV timeout) = NULL;
 EGLint mj_eglClientWaitSyncNV(EGLSyncNV sync, EGLint flags, EGLTimeNV timeout)
 {
-    LOGITAG("mjgl", "eglClientWaitSyncNV");
+    LOGITAG("mjgl", "eglClientWaitSyncNV, tid=%d", gettid());
     return old_eglClientWaitSyncNV(sync, flags, timeout);
 }
 
 EGLBoolean (*old_eglSignalSyncNV)(EGLSyncNV sync, EGLenum mode) = NULL;
 EGLBoolean mj_eglSignalSyncNV(EGLSyncNV sync, EGLenum mode)
 {
-    LOGITAG("mjgl", "eglSignalSyncNV");
+    LOGITAG("mjgl", "eglSignalSyncNV, tid=%d", gettid());
     return old_eglSignalSyncNV(sync, mode);
 }
 
 EGLBoolean (*old_eglGetSyncAttribNV)(EGLSyncNV sync, EGLint attribute, EGLint *value) = NULL;
 EGLBoolean mj_eglGetSyncAttribNV(EGLSyncNV sync, EGLint attribute, EGLint *value)
 {
-    LOGITAG("mjgl", "eglGetSyncAttribNV");
+    LOGITAG("mjgl", "eglGetSyncAttribNV, tid=%d", gettid());
     return old_eglGetSyncAttribNV(sync, attribute, value);
 }
 
 EGLSurface (*old_eglCreatePixmapSurfaceHI)(EGLDisplay dpy, EGLConfig config, struct EGLClientPixmapHI* pixmap) = NULL;
 EGLSurface mj_eglCreatePixmapSurfaceHI(EGLDisplay dpy, EGLConfig config, struct EGLClientPixmapHI* pixmap)
 {
-    LOGITAG("mjgl", "eglCreatePixmapSurfaceHI");
+    LOGITAG("mjgl", "eglCreatePixmapSurfaceHI, tid=%d", gettid());
     return old_eglCreatePixmapSurfaceHI(dpy, config, pixmap);
 }
 
 EGLuint64NV (*old_eglGetSystemTimeFrequencyNV)(void) = NULL;
 EGLuint64NV mj_eglGetSystemTimeFrequencyNV(void)
 {
-    LOGITAG("mjgl", "eglGetSystemTimeFrequencyNV");
+    LOGITAG("mjgl", "eglGetSystemTimeFrequencyNV, tid=%d", gettid());
     return old_eglGetSystemTimeFrequencyNV();
 }
 
 EGLuint64NV (*old_eglGetSystemTimeNV)(void) = NULL;
 EGLuint64NV mj_eglGetSystemTimeNV(void)
 {
-    LOGITAG("mjgl", "eglGetSystemTimeNV");
+    LOGITAG("mjgl", "eglGetSystemTimeNV, tid=%d", gettid());
     return old_eglGetSystemTimeNV();
 }
 
 EGLStreamKHR (*old_eglCreateStreamKHR)(EGLDisplay dpy, const EGLint *attrib_list) = NULL;
 EGLStreamKHR mj_eglCreateStreamKHR(EGLDisplay dpy, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "eglCreateStreamKHR");
+    LOGITAG("mjgl", "eglCreateStreamKHR, tid=%d", gettid());
     return old_eglCreateStreamKHR(dpy, attrib_list);
 }
 
 EGLBoolean (*old_eglDestroyStreamKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
 EGLBoolean mj_eglDestroyStreamKHR(EGLDisplay dpy, EGLStreamKHR stream)
 {
-    LOGITAG("mjgl", "eglDestroyStreamKHR");
+    LOGITAG("mjgl", "eglDestroyStreamKHR, tid=%d", gettid());
     return old_eglDestroyStreamKHR(dpy, stream);
 }
 
 EGLBoolean (*old_eglStreamAttribKHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint value) = NULL;
 EGLBoolean mj_eglStreamAttribKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint value)
 {
-    LOGITAG("mjgl", "eglStreamAttribKHR");
+    LOGITAG("mjgl", "eglStreamAttribKHR, tid=%d", gettid());
     return old_eglStreamAttribKHR(dpy, stream, attribute, value);
 }
 
 EGLBoolean (*old_eglQueryStreamKHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint *value) = NULL;
 EGLBoolean mj_eglQueryStreamKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLint *value)
 {
-    LOGITAG("mjgl", "eglQueryStreamKHR");
+    LOGITAG("mjgl", "eglQueryStreamKHR, tid=%d", gettid());
     return old_eglQueryStreamKHR(dpy, stream, attribute, value);
 }
 
 EGLBoolean (*old_eglQueryStreamu64KHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLuint64KHR *value) = NULL;
 EGLBoolean mj_eglQueryStreamu64KHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLuint64KHR *value)
 {
-    LOGITAG("mjgl", "eglQueryStreamu64KHR");
+    LOGITAG("mjgl", "eglQueryStreamu64KHR, tid=%d", gettid());
     return old_eglQueryStreamu64KHR(dpy, stream, attribute, value);
 }
 
 EGLBoolean (*old_eglStreamConsumerGLTextureExternalKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
 EGLBoolean mj_eglStreamConsumerGLTextureExternalKHR(EGLDisplay dpy, EGLStreamKHR stream)
 {
-    LOGITAG("mjgl", "mj_eglStreamConsumerGLTextureExternalKHR");
+    LOGITAG("mjgl", "mj_eglStreamConsumerGLTextureExternalKHR, tid=%d", gettid());
     return old_eglStreamConsumerGLTextureExternalKHR(dpy, stream);
 }
 
 EGLBoolean (*old_eglStreamConsumerAcquireKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
 EGLBoolean mj_eglStreamConsumerAcquireKHR(EGLDisplay dpy, EGLStreamKHR stream)
 {
-    LOGITAG("mjgl", "mj_eglStreamConsumerAcquireKHR");
+    LOGITAG("mjgl", "mj_eglStreamConsumerAcquireKHR, tid=%d", gettid());
     return old_eglStreamConsumerAcquireKHR(dpy, stream);
 }
 
 EGLBoolean (*old_eglStreamConsumerReleaseKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
 EGLBoolean mj_eglStreamConsumerReleaseKHR(EGLDisplay dpy, EGLStreamKHR stream)
 {
-    LOGITAG("mjgl", "mj_eglStreamConsumerReleaseKHR");
+    LOGITAG("mjgl", "mj_eglStreamConsumerReleaseKHR, tid=%d", gettid());
     return old_eglStreamConsumerReleaseKHR(dpy, stream);
 }
 
 EGLSurface (*old_eglCreateStreamProducerSurfaceKHR)(EGLDisplay dpy, EGLConfig config, EGLStreamKHR stream, const EGLint *attrib_list) = NULL;
 EGLSurface mj_eglCreateStreamProducerSurfaceKHR(EGLDisplay dpy, EGLConfig config, EGLStreamKHR stream, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "mj_eglCreateStreamProducerSurfaceKHR");
+    LOGITAG("mjgl", "mj_eglCreateStreamProducerSurfaceKHR, tid=%d", gettid());
     return old_eglCreateStreamProducerSurfaceKHR(dpy, config, stream, attrib_list);
 }
 
 EGLBoolean (*old_eglQueryStreamTimeKHR)(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLTimeKHR *value) = NULL;
 EGLBoolean mj_eglQueryStreamTimeKHR(EGLDisplay dpy, EGLStreamKHR stream, EGLenum attribute, EGLTimeKHR *value)
 {
-    LOGITAG("mjgl", "mj_eglQueryStreamTimeKHR");
+    LOGITAG("mjgl", "mj_eglQueryStreamTimeKHR, tid=%d", gettid());
     return old_eglQueryStreamTimeKHR(dpy, stream, attribute, value);
 }
 
@@ -230,21 +230,21 @@ EGLBoolean mj_eglSwapBuffersWithDamageKHR (EGLDisplay dpy, EGLSurface surface, E
 EGLNativeFileDescriptorKHR (*old_eglGetStreamFileDescriptorKHR)(EGLDisplay dpy, EGLStreamKHR stream) = NULL;
 EGLNativeFileDescriptorKHR mj_eglGetStreamFileDescriptorKHR(EGLDisplay dpy, EGLStreamKHR stream)
 {
-    LOGITAG("mjgl", "mj_eglGetStreamFileDescriptorKHR");
+    LOGITAG("mjgl", "mj_eglGetStreamFileDescriptorKHR, tid=%d", gettid());
     return old_eglGetStreamFileDescriptorKHR(dpy, stream);
 }
 
 EGLStreamKHR (*old_eglCreateStreamFromFileDescriptorKHR)(EGLDisplay dpy, EGLNativeFileDescriptorKHR file_descriptor) = NULL;
 EGLStreamKHR mj_eglCreateStreamFromFileDescriptorKHR(EGLDisplay dpy, EGLNativeFileDescriptorKHR file_descriptor)
 {
-    LOGITAG("mjgl", "mj_eglCreateStreamFromFileDescriptorKHR");
+    LOGITAG("mjgl", "mj_eglCreateStreamFromFileDescriptorKHR, tid=%d", gettid());
     return old_eglCreateStreamFromFileDescriptorKHR(dpy, file_descriptor);
 }
 
 EGLint (*old_eglWaitSyncKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags) = NULL;
 EGLint mj_eglWaitSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags)
 {
-    LOGITAG("mjgl", "mj_eglWaitSyncKHR");
+    LOGITAG("mjgl", "mj_eglWaitSyncKHR, tid=%d", gettid());
     return old_eglWaitSyncKHR(dpy, sync, flags);
 }
 
@@ -255,14 +255,14 @@ EGLBoolean (*old_eglQueryNativePixmapNV)( EGLDisplay dpy, EGLSurface surf, EGLNa
 void (*old_eglSetBlobCacheFuncsANDROID)(EGLDisplay dpy, EGLSetBlobFuncANDROID set, EGLGetBlobFuncANDROID get) = NULL;
 void mj_eglSetBlobCacheFuncsANDROID(EGLDisplay dpy, EGLSetBlobFuncANDROID set, EGLGetBlobFuncANDROID get)
 {
-    LOGITAG("mjgl", "mj_eglSetBlobCacheFuncsANDROID");
+    LOGITAG("mjgl", "mj_eglSetBlobCacheFuncsANDROID, tid=%d", gettid());
     return old_eglSetBlobCacheFuncsANDROID(dpy, set, get);
 }
 
 EGLBoolean (*old_eglPresentationTimeANDROID)(EGLDisplay dpy, EGLSurface sur, EGLnsecsANDROID time) = NULL;
 EGLBoolean mj_eglPresentationTimeANDROID(EGLDisplay dpy, EGLSurface sur, EGLnsecsANDROID time)
 {
-    LOGITAG("mjgl", "mj_eglPresentationTimeANDROID");
+    LOGITAG("mjgl", "mj_eglPresentationTimeANDROID, tid=%d", gettid());
     return old_eglPresentationTimeANDROID(dpy, sur, time);
 }
 

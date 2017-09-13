@@ -18,7 +18,7 @@ void * g_hGVR = NULL;
 jint (*old_JNI_OnLoad)(JavaVM* vm, void* reserved) = NULL;
 jint GVR_JNI_OnLoad(JavaVM* vm, void* reserved)
 {
-    LOGITAG("mjgvr","mj_JNI_OnLoad");
+    LOGITAG("mjgvr","mj_JNI_OnLoad, tid=%d", gettid());
     return old_JNI_OnLoad(vm, reserved);
 }
 
@@ -27,7 +27,7 @@ jint GVR_JNI_OnLoad(JavaVM* vm, void* reserved)
 bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool) = NULL;
 bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong, jboolean paramBool)
 {
-	LOGITAG("mjgvr","mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled");
+	LOGITAG("mjgvr","mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, tid=%d", gettid());
     bool re = old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
 	return re;
 }
@@ -36,7 +36,7 @@ bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNI
 int (*old_gvr_set_async_reprojection_enabled)(gvr_context * a1, int a2) = NULL;
 int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
 {
-    LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x", a1);
+    LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x, tid=%d", a1, gettid());
 //    int re = old_gvr_set_async_reprojection_enabled(a1, a2);
     fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
     int re = pfun(a1->user_prefs);
@@ -47,7 +47,7 @@ int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
 long (*old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext) = NULL;
 long mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext)
 {
-	LOGITAG("mjgvr","mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate");
+	LOGITAG("mjgvr","mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, tid=%d", gettid());
 	return old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate(env, obj, paramClassLoader, paramContext);
 }
 
@@ -55,7 +55,7 @@ long mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate(JNIEnv* en
 bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled)(JNIEnv* env, jobject obj, jlong paramLong ) = NULL;
 bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled(JNIEnv* env, jobject obj, jlong paramLong)
 {
-    LOGITAG("mjgvr","Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled");
+    LOGITAG("mjgvr","Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, tid=%d", gettid());
     bool re =  old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled(env, obj, paramLong);
 //    bool re = false;
     return re;
@@ -69,7 +69,7 @@ long mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
         JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext, jlong paramLong, jint paramWidth,
         jint paramHeight, jfloat paramFloat1, jfloat paramFloat2, jobject paramPoseTracker)
 {
-    LOGITAG("mjgvr","mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate");
+    LOGITAG("mjgvr","mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, tid=%d", gettid());
     long re = 0;
     re = old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, paramLong,
                                                            paramWidth, paramHeight, paramFloat1, paramFloat2, paramPoseTracker);
@@ -80,7 +80,7 @@ long mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
 bool (*old_gvr_using_dynamic_library)() = NULL;
 bool mj_gvr_using_dynamic_library()
 {
-	LOGITAG("mjgvr","mj_gvr_using_dynamic_library");
+	LOGITAG("mjgvr","mj_gvr_using_dynamic_library, tid=%d", gettid());
     bool re = old_gvr_using_dynamic_library();
 	return re;
 }
@@ -88,7 +88,7 @@ bool mj_gvr_using_dynamic_library()
 int (*old_sub_24738)() = NULL;
 int mj_sub_24738()
 {
-    LOGITAG("mjgvr","mj_sub_24738");
+    LOGITAG("mjgvr","mj_sub_24738, tid=%d", gettid());
     int re = old_sub_24738();
     return re;
 }
@@ -97,7 +97,7 @@ int mj_sub_24738()
 int (*old_gvr_create_with_tracker_for_testing)( int a1, int a2) = NULL;
 int mj_gvr_create_with_tracker_for_testing( int a1, int a2)
 {
-    LOGITAG("mjgvr","mj_gvr_create_with_tracker_for_testing");
+    LOGITAG("mjgvr","mj_gvr_create_with_tracker_for_testing, tid=%d", gettid());
     return old_gvr_create_with_tracker_for_testing(a1, a2);
 }
 
@@ -108,7 +108,7 @@ gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_load
 //    CallStack stack;
 //    stack.dump();
 	sys_call_stack();
-	LOGITAG("mjgvr","mj_gvr_create");
+	LOGITAG("mjgvr","mj_gvr_create, tid=%d", gettid());
     gvr_context *re = NULL;
     sub_C1324("GVR");
 	re = old_gvr_create(env, app_context, class_loader);
@@ -119,7 +119,7 @@ gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_load
 int32_t (*old_gvr_get_error)(gvr_context* gvr) = NULL;
 int32_t mj_gvr_get_error(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_get_error");
+    LOGITAG("mjgvr","mj_gvr_get_error, tid=%d", gettid());
     return old_gvr_get_error(gvr);
 }
 
@@ -127,7 +127,7 @@ int32_t mj_gvr_get_error(gvr_context* gvr)
 int32_t (*old_gvr_clear_error)(gvr_context* gvr) = NULL;
 int32_t mj_gvr_clear_error(gvr_context* gvr)
 {
-	LOGITAG("mjgvr","mj_gvr_clear_error");
+	LOGITAG("mjgvr","mj_gvr_clear_error, tid=%d", gettid());
 	return old_gvr_clear_error(gvr);
 }
 
@@ -135,7 +135,7 @@ int32_t mj_gvr_clear_error(gvr_context* gvr)
 void (*old_gvr_pause_tracking)(gvr_context* gvr) = NULL;
 void mj_gvr_pause_tracking(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_pause_tracking");
+    LOGITAG("mjgvr","mj_gvr_pause_tracking, tid=%d", gettid());
     return old_gvr_pause_tracking(gvr);
 }
 
@@ -143,7 +143,7 @@ void mj_gvr_pause_tracking(gvr_context* gvr)
 void (*old_gvr_resume_tracking)(gvr_context* gvr) = NULL;
 void mj_gvr_resume_tracking(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_resume_tracking");
+    LOGITAG("mjgvr","mj_gvr_resume_tracking, tid=%d", gettid());
     fn_resume_tracking resume_tracking = (gvr->user_prefs->p001->pfun36);
     return resume_tracking(gvr->user_prefs);
 }
@@ -152,7 +152,7 @@ void mj_gvr_resume_tracking(gvr_context* gvr)
 void (*old_gvr_reset_tracking)(gvr_context* gvr) = NULL;
 void mj_gvr_reset_tracking(gvr_context* gvr)
 {
-	LOGITAG("mjgvr","mj_gvr_reset_tracking");
+	LOGITAG("mjgvr","mj_gvr_reset_tracking, tid=%d", gettid());
 	return old_gvr_reset_tracking(gvr);
 }
 
@@ -160,7 +160,7 @@ void mj_gvr_reset_tracking(gvr_context* gvr)
 void (*old_gvr_recenter_tracking)(gvr_context* gvr) = NULL;
 void mj_gvr_recenter_tracking(gvr_context* gvr)
 {
-	LOGITAG("mjgvr","mj_gvr_recenter_tracking");
+	LOGITAG("mjgvr","mj_gvr_recenter_tracking, tid=%d", gettid());
 	return old_gvr_recenter_tracking(gvr);
 }
 
@@ -168,7 +168,7 @@ void mj_gvr_recenter_tracking(gvr_context* gvr)
 bool (*old_gvr_set_default_viewer_profile)(gvr_context* gvr, const char* viewer_profile_uri) = NULL;
 bool mj_gvr_set_default_viewer_profile(gvr_context* gvr, const char* viewer_profile_uri)
 {
-    LOGITAG("mjgvr","mj_gvr_set_default_viewer_profile");
+    LOGITAG("mjgvr","mj_gvr_set_default_viewer_profile, tid=%d", gettid());
     return old_gvr_set_default_viewer_profile(gvr, viewer_profile_uri);
 }
 
@@ -176,7 +176,7 @@ bool mj_gvr_set_default_viewer_profile(gvr_context* gvr, const char* viewer_prof
 void (*old_gvr_refresh_viewer_profile)(gvr_context* gvr) = NULL;
 void mj_gvr_refresh_viewer_profile(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_refresh_viewer_profile");
+    LOGITAG("mjgvr","mj_gvr_refresh_viewer_profile, tid=%d", gettid());
     return old_gvr_refresh_viewer_profile(gvr);
 }
 
@@ -184,7 +184,7 @@ void mj_gvr_refresh_viewer_profile(gvr_context* gvr)
 const char* (*old_gvr_get_viewer_vendor)(const gvr_context* gvr) = NULL;
 const char* mj_gvr_get_viewer_vendor(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","gvr_get_viewer_vendor");
+    LOGITAG("mjgvr","gvr_get_viewer_vendor, tid=%d", gettid());
     return old_gvr_get_viewer_vendor(gvr);
 }
 
@@ -192,7 +192,7 @@ const char* mj_gvr_get_viewer_vendor(const gvr_context* gvr)
 const char* (*old_gvr_get_viewer_model)(const gvr_context* gvr) = NULL;
 const char* mj_gvr_get_viewer_model(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_get_viewer_model");
+    LOGITAG("mjgvr","mj_gvr_get_viewer_model, tid=%d", gettid());
     return old_gvr_get_viewer_model(gvr);
 }
 
@@ -201,7 +201,7 @@ const char* mj_gvr_get_viewer_model(const gvr_context* gvr)
 int32_t (*old_gvr_get_viewer_type)(const gvr_context* gvr) = NULL;
 int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 {
-//    LOGITAG("mjgvr","mj_gvr_get_viewer_type");
+    LOGITAG("mjgvr","mj_gvr_get_viewer_type, tid=%d", gettid());
 	fn_get_viewer_type get_viewer_type = NULL;
     void *pdata = (void*)((int)gvr->user_prefs->p001 + 0xAC);
     get_viewer_type = (gvr->user_prefs->p001->pfun43);
@@ -214,7 +214,7 @@ int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 gvr_mat4f (*old_gvr_get_eye_from_head_matrix)(const gvr_context* gvr, const int32_t eye)= NULL;
 gvr_mat4f mj_gvr_get_eye_from_head_matrix(const gvr_context* gvr, const int32_t eye)
 {
-    LOGITAG("mjgvr","mj_gvr_get_eye_from_head_matrix");
+    LOGITAG("mjgvr","mj_gvr_get_eye_from_head_matrix, tid=%d", gettid());
     gvr_mat4f mat =  old_gvr_get_eye_from_head_matrix(gvr, eye);
     return mat;
 }
@@ -223,7 +223,7 @@ gvr_mat4f mj_gvr_get_eye_from_head_matrix(const gvr_context* gvr, const int32_t 
 gvr_recti (*old_gvr_get_window_bounds)(const gvr_context* gvr) = NULL;
 gvr_recti mj_gvr_get_window_bounds(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","gvr_get_window_bounds");
+    LOGITAG("mjgvr","gvr_get_window_bounds, tid=%d", gettid());
     return old_gvr_get_window_bounds(gvr);
 }
 
@@ -231,7 +231,7 @@ gvr_recti mj_gvr_get_window_bounds(const gvr_context* gvr)
 void (*old_gvr_compute_distorted_point)(const gvr_context* gvr, const int32_t eye, const gvr_vec2f uv_in, gvr_vec2f uv_out[3]) = NULL;
 void mj_gvr_compute_distorted_point(const gvr_context* gvr, const int32_t eye, const gvr_vec2f uv_in, gvr_vec2f uv_out[3])
 {
-    LOGITAG("mjgvr","mj_gvr_compute_distorted_point");
+    LOGITAG("mjgvr","mj_gvr_compute_distorted_point, tid=%d", gettid());
     return old_gvr_compute_distorted_point(gvr, eye, uv_in, uv_out);
 }
 
@@ -239,7 +239,7 @@ void mj_gvr_compute_distorted_point(const gvr_context* gvr, const int32_t eye, c
 const gvr_user_prefs* (*old_gvr_get_user_prefs)(gvr_context* gvr) = NULL;
 const gvr_user_prefs* mj_gvr_get_user_prefs(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_get_user_prefs");
+    LOGITAG("mjgvr","mj_gvr_get_user_prefs, tid=%d", gettid());
     const gvr_user_prefs* re = old_gvr_get_user_prefs(gvr);
     return re;
 }
@@ -248,7 +248,7 @@ const gvr_user_prefs* mj_gvr_get_user_prefs(gvr_context* gvr)
 void (*old_gvr_destroy)(gvr_context** gvr) = NULL;
 void mj_gvr_destroy(gvr_context** gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_destroy");
+    LOGITAG("mjgvr","mj_gvr_destroy, tid=%d", gettid());
     return old_gvr_destroy(gvr);
 }
 
@@ -256,7 +256,7 @@ void mj_gvr_destroy(gvr_context** gvr)
 void (*old_gvr_initialize_gl)(gvr_context* gvr) = NULL;
 void mj_gvr_initialize_gl(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_initialize_gl");
+    LOGITAG("mjgvr","mj_gvr_initialize_gl, tid=%d", gettid());
     fn_initialize_gl initgl = gvr->user_prefs->p001->pfun06;
     return initgl(gvr->user_prefs);
 //	return old_gvr_initialize_gl(gvr);
@@ -266,7 +266,7 @@ void mj_gvr_initialize_gl(gvr_context* gvr)
 bool (*old_gvr_get_async_reprojection_enabled)(const gvr_context* gvr) = NULL;
 bool mj_gvr_get_async_reprojection_enabled(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_get_async_reprojection_enabled");
+    LOGITAG("mjgvr","mj_gvr_get_async_reprojection_enabled, tid=%d", gettid());
     return old_gvr_get_async_reprojection_enabled(gvr);
 }
 
@@ -274,7 +274,7 @@ bool mj_gvr_get_async_reprojection_enabled(const gvr_context* gvr)
 void (*old_gvr_get_recommended_buffer_viewports)(const gvr_context* gvr, gvr_buffer_viewport_list* viewport_list) = NULL;
 void mj_gvr_get_recommended_buffer_viewports(const gvr_context* gvr, gvr_buffer_viewport_list* viewport_list)
 {
-    LOGITAG("mjgvr","mj_gvr_get_recommended_buffer_viewports");
+    LOGITAG("mjgvr","mj_gvr_get_recommended_buffer_viewports, tid=%d", gettid());
     old_gvr_get_recommended_buffer_viewports(gvr, viewport_list);
     return;
 }
@@ -283,7 +283,7 @@ void mj_gvr_get_recommended_buffer_viewports(const gvr_context* gvr, gvr_buffer_
 void (*old_gvr_get_screen_buffer_viewports)(const gvr_context* gvr, gvr_buffer_viewport_list* viewport_list) = NULL;
 void mj_gvr_get_screen_buffer_viewports(const gvr_context* gvr, gvr_buffer_viewport_list* viewport_list)
 {
-	LOGITAG("mjgvr","mj_gvr_get_screen_buffer_viewports");
+	LOGITAG("mjgvr","mj_gvr_get_screen_buffer_viewports, tid=%d", gettid());
     old_gvr_get_screen_buffer_viewports(gvr, viewport_list);
 	return;
 }
@@ -292,9 +292,8 @@ void mj_gvr_get_screen_buffer_viewports(const gvr_context* gvr, gvr_buffer_viewp
 gvr_sizei (*old_gvr_get_maximum_effective_render_target_size)(const gvr_context* gvr) = NULL;
 gvr_sizei mj_gvr_get_maximum_effective_render_target_size(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_get_maximum_effective_render_target_size");
     gvr_sizei size = old_gvr_get_maximum_effective_render_target_size(gvr);
-    LOGITAG("mjgvr","w=%d, h=%d", size.width, size.height);
+    LOGITAG("mjgvr","mj_gvr_get_maximum_effective_render_target_size, w=%d, h=%d, tid=%d", size.width, size.height, gettid());
     return size;
 }
 
@@ -302,7 +301,7 @@ gvr_sizei mj_gvr_get_maximum_effective_render_target_size(const gvr_context* gvr
 gvr_sizei (*old_gvr_get_screen_target_size)(const gvr_context* gvr) = NULL;
 gvr_sizei mj_gvr_get_screen_target_size(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_get_screen_target_size");
+    LOGITAG("mjgvr","mj_gvr_get_screen_target_size, tid=%d", gettid());
 	return old_gvr_get_screen_target_size(gvr);
 }
 
@@ -312,7 +311,7 @@ void (*old_gvr_distort_to_screen)(gvr_context* gvr, int32_t texture_id, const gv
 void mj_gvr_distort_to_screen(gvr_context* gvr, int32_t texture_id, const gvr_buffer_viewport_list* viewport_list,
                            gvr_mat4f head_space_from_start_space, gvr_clock_time_point target_presentation_time)
 {
-    LOGITAG("mjgvr","mj_gvr_distort_to_screen");
+    LOGITAG("mjgvr","mj_gvr_distort_to_screen, tid=%d", gettid());
     old_gvr_distort_to_screen(gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
     return;
 }
@@ -321,7 +320,7 @@ void mj_gvr_distort_to_screen(gvr_context* gvr, int32_t texture_id, const gvr_bu
 bool (*old_gvr_is_feature_supported)(const gvr_context* gvr, int32_t feature) = NULL;
 bool mj_gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
 {
-    LOGITAG("mjgvr","mj_gvr_is_feature_supported");
+    LOGITAG("mjgvr","mj_gvr_is_feature_supported, tid=%d", gettid());
     return old_gvr_is_feature_supported(gvr, feature);
 }
 
@@ -329,7 +328,7 @@ bool mj_gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
 gvr_buffer_viewport* (*old_gvr_buffer_viewport_create)(gvr_context* gvr) = NULL;
 gvr_buffer_viewport* mj_gvr_buffer_viewport_create(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_buffer_viewport_create");
+    LOGITAG("mjgvr","mj_gvr_buffer_viewport_create, tid=%d", gettid());
 //    gvr_buffer_viewport *viewport = old_gvr_buffer_viewport_create(gvr);
     int ilen = sizeof(gvr_buffer_viewport);
     gvr_buffer_viewport *viewport = (gvr_buffer_viewport*)malloc(ilen);
@@ -347,7 +346,7 @@ gvr_buffer_viewport* mj_gvr_buffer_viewport_create(gvr_context* gvr)
 gvr_buffer_viewport_list* (*old_gvr_buffer_viewport_list_create)(const gvr_context* gvr) = NULL;
 gvr_buffer_viewport_list* mj_gvr_buffer_viewport_list_create(const gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_buffer_viewport_list_create");
+    LOGITAG("mjgvr","mj_gvr_buffer_viewport_list_create, tid=%d", gettid());
     gvr_buffer_viewport_list *viewportlist = old_gvr_buffer_viewport_list_create(gvr);
     return viewportlist;
 }
@@ -356,7 +355,7 @@ gvr_buffer_viewport_list* mj_gvr_buffer_viewport_list_create(const gvr_context* 
 void (*old_gvr_buffer_viewport_list_get_item)(const gvr_buffer_viewport_list* viewport_list, size_t index, gvr_buffer_viewport* viewport) = NULL;
 void mj_gvr_buffer_viewport_list_get_item(const gvr_buffer_viewport_list* viewport_list, size_t index, gvr_buffer_viewport* viewport)
 {
-    LOGITAG("mjgvr","mj_gvr_buffer_viewport_list_get_item");
+    LOGITAG("mjgvr","mj_gvr_buffer_viewport_list_get_item, tid=%d", gettid());
     old_gvr_buffer_viewport_list_get_item(viewport_list, index, viewport);
     return;
 }
@@ -365,7 +364,7 @@ void mj_gvr_buffer_viewport_list_get_item(const gvr_buffer_viewport_list* viewpo
 void (*old_gvr_buffer_viewport_list_set_item)(gvr_buffer_viewport_list* viewport_list, size_t index, const gvr_buffer_viewport* viewport) = NULL;
 void mj_gvr_buffer_viewport_list_set_item(gvr_buffer_viewport_list* viewport_list, size_t index, const gvr_buffer_viewport* viewport)
 {
-    LOGITAG("mjgvr","mj_gvr_buffer_viewport_list_set_item");
+    LOGITAG("mjgvr","mj_gvr_buffer_viewport_list_set_item, tid=%d", gettid());
     old_gvr_buffer_viewport_list_set_item(viewport_list, index, viewport);
     return;
 }
@@ -374,7 +373,7 @@ void mj_gvr_buffer_viewport_list_set_item(gvr_buffer_viewport_list* viewport_lis
 gvr_buffer_spec* (*old_gvr_buffer_spec_create)(gvr_context* gvr) = NULL;
 gvr_buffer_spec* mj_gvr_buffer_spec_create(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_buffer_spec_create");
+    LOGITAG("mjgvr","mj_gvr_buffer_spec_create, tid=%d", gettid());
     int ilen = sizeof(gvr_buffer_spec);
     gvr_buffer_spec *buff = (gvr_buffer_spec*)malloc(ilen);
     memset(buff, 0, ilen);
@@ -395,7 +394,7 @@ gvr_buffer_spec* mj_gvr_buffer_spec_create(gvr_context* gvr)
 gvr_swap_chain* (*old_gvr_swap_chain_create)(gvr_context* gvr, const gvr_buffer_spec** buffers, int32_t count) = NULL;
 gvr_swap_chain* mj_gvr_swap_chain_create(gvr_context* gvr, const gvr_buffer_spec** buffers, int32_t count)
 {
-    LOGITAG("mjgvr","mj_gvr_swap_chain_create");
+    LOGITAG("mjgvr","mj_gvr_swap_chain_create, tid=%d", gettid());
     gvr_swap_chain *swap_chain = old_gvr_swap_chain_create(gvr, buffers, count);
     return swap_chain;
 }
@@ -404,7 +403,7 @@ gvr_swap_chain* mj_gvr_swap_chain_create(gvr_context* gvr, const gvr_buffer_spec
 void (*old_gvr_swap_chain_destroy)(gvr_swap_chain** swap_chain) = NULL;
 void mj_gvr_swap_chain_destroy(gvr_swap_chain** swap_chain)
 {
-    LOGITAG("mjgvr","mj_gvr_swap_chain_destroy");
+    LOGITAG("mjgvr","mj_gvr_swap_chain_destroy, tid=%d", gettid());
     return old_gvr_swap_chain_destroy(swap_chain);
 }
 
@@ -412,7 +411,7 @@ void mj_gvr_swap_chain_destroy(gvr_swap_chain** swap_chain)
 int32_t (*old_gvr_swap_chain_get_buffer_count)(const gvr_swap_chain* swap_chain) = NULL;
 int32_t mj_gvr_swap_chain_get_buffer_count(const gvr_swap_chain* swap_chain)
 {
-    LOGITAG("mjgvr","mj_gvr_swap_chain_get_buffer_count");
+    LOGITAG("mjgvr","mj_gvr_swap_chain_get_buffer_count, tid=%d", gettid());
     int count = old_gvr_swap_chain_get_buffer_count(swap_chain);
     return count;
 }
@@ -421,7 +420,7 @@ int32_t mj_gvr_swap_chain_get_buffer_count(const gvr_swap_chain* swap_chain)
 gvr_sizei (*old_gvr_swap_chain_get_buffer_size)(gvr_swap_chain* swap_chain, int32_t index) = NULL;
 gvr_sizei mj_gvr_swap_chain_get_buffer_size(gvr_swap_chain* swap_chain, int32_t index)
 {
-    LOGITAG("mjgvr","mj_gvr_swap_chain_get_buffer_size");
+    LOGITAG("mjgvr","mj_gvr_swap_chain_get_buffer_size, tid=%d", gettid());
     gvr_sizei size = old_gvr_swap_chain_get_buffer_size(swap_chain, index);
     return size;
 }
@@ -430,7 +429,7 @@ gvr_sizei mj_gvr_swap_chain_get_buffer_size(gvr_swap_chain* swap_chain, int32_t 
 void (*old_gvr_swap_chain_resize_buffer)(gvr_swap_chain* swap_chain, int32_t index, gvr_sizei size) = NULL;
 void mj_gvr_swap_chain_resize_buffer(gvr_swap_chain* swap_chain, int32_t index, gvr_sizei size)
 {
-    LOGITAG("mjgvr","mj_gvr_swap_chain_resize_buffer");
+    LOGITAG("mjgvr","mj_gvr_swap_chain_resize_buffer, tid=%d", gettid());
     return old_gvr_swap_chain_resize_buffer(swap_chain, index, size);
 }
 
@@ -438,7 +437,7 @@ void mj_gvr_swap_chain_resize_buffer(gvr_swap_chain* swap_chain, int32_t index, 
 void (*old_gvr_bind_default_framebuffer)(gvr_context* gvr) = NULL;
 void mj_gvr_bind_default_framebuffer(gvr_context* gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_bind_default_framebuffer");
+    LOGITAG("mjgvr","mj_gvr_bind_default_framebuffer, tid=%d", gettid());
     return old_gvr_bind_default_framebuffer(gvr);
 }
 
@@ -446,7 +445,7 @@ void mj_gvr_bind_default_framebuffer(gvr_context* gvr)
 gvr_mat4f (*old_gvr_apply_neck_model)(const gvr_context* gvr, gvr_mat4f head_space_from_start_space_rotation, float factor) = NULL;
 gvr_mat4f mj_gvr_apply_neck_model(const gvr_context* gvr, gvr_mat4f head_space_from_start_space_rotation, float factor)
 {
-	LOGITAG("mjgvr","mj_gvr_apply_neck_model");
+	LOGITAG("mjgvr","mj_gvr_apply_neck_model, tid=%d", gettid());
 	return old_gvr_apply_neck_model(gvr, head_space_from_start_space_rotation, factor);
 }
 
@@ -454,7 +453,7 @@ gvr_mat4f mj_gvr_apply_neck_model(const gvr_context* gvr, gvr_mat4f head_space_f
 int (*old_gvr_set_display_metrics)( int *a1, int a2, int a3, int a4, int a5, int a6) = NULL;
 int mj_gvr_set_display_metrics( int *a1, int widht, int height, int a4, int a5, int a6)
 {
-    LOGITAG("mjgvr","mj_gvr_set_display_metrics");
+    LOGITAG("mjgvr","mj_gvr_set_display_metrics, tid=%d", gettid());
     return old_gvr_set_display_metrics(a1, widht, height, a4, a5, a6);
 }
 
@@ -462,7 +461,7 @@ int mj_gvr_set_display_metrics( int *a1, int widht, int height, int a4, int a5, 
 int (*old_gvr_set_display_synchronizer)( gvr_context *a1, int a2) = NULL;
 int mj_gvr_set_display_synchronizer( gvr_context *a1, int a2)
 {
-    LOGITAG("mjgvr","mj_gvr_set_display_synchronizer");
+    LOGITAG("mjgvr","mj_gvr_set_display_synchronizer, tid=%d", gettid());
     return old_gvr_set_display_synchronizer(a1, a2);
 }
 
@@ -474,7 +473,7 @@ gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
     LOGITAG("mjgvr","mj_gvr_swap_chain_acquire_frame, threadid=%ld,tid=%d", pthread_self(), gettid());
     gvr_frame *frame = old_gvr_swap_chain_acquire_frame(swap_chain);
     if( (int)frame != (int)swap_chain)
-        LOGITAG("mjgvr","error");
+        LOGITAG("mjgvr","error, tid=%d", gettid());
 //    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
 //    pfun(swap_chain->context->user_prefs);
 //    gvr_frame *frame = (gvr_frame*)swap_chain;
@@ -486,7 +485,7 @@ gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
 void (*old_gvr_frame_bind_buffer)(gvr_frame* frame, int32_t index) = NULL;
 void mj_gvr_frame_bind_buffer(gvr_frame* frame, int32_t index)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_bind_buffer");
+    LOGITAG("mjgvr","mj_gvr_frame_bind_buffer, index=%d, tid=%d", index, gettid());
     old_gvr_frame_bind_buffer(frame, index);
 //    fn_sub_26C04 pFun =  frame->context->user_prefs->p001->pfun22;
 //    pFun(frame->context->user_prefs, frame->data00, index);
@@ -497,7 +496,7 @@ void mj_gvr_frame_bind_buffer(gvr_frame* frame, int32_t index)
 void (*old_gvr_frame_unbind)(gvr_frame* frame) = NULL;
 void mj_gvr_frame_unbind(gvr_frame* frame)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_unbind");
+    LOGITAG("mjgvr","mj_gvr_frame_unbind, tid=%d", gettid());
     old_gvr_frame_unbind(frame);
     return;
 }
@@ -506,7 +505,7 @@ void mj_gvr_frame_unbind(gvr_frame* frame)
 gvr_sizei (*old_gvr_frame_get_buffer_size)(const gvr_frame* frame, int32_t index) = NULL;
 gvr_sizei mj_gvr_frame_get_buffer_size(const gvr_frame* frame, int32_t index)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_get_buffer_size");
+    LOGITAG("mjgvr","mj_gvr_frame_get_buffer_size, tid=%d", gettid());
     gvr_sizei size = old_gvr_frame_get_buffer_size(frame, index);
     return size;
 }
@@ -515,7 +514,7 @@ gvr_sizei mj_gvr_frame_get_buffer_size(const gvr_frame* frame, int32_t index)
 int32_t (*old_gvr_frame_get_framebuffer_object)(const gvr_frame* frame, int32_t index) = NULL;
 int32_t mj_gvr_frame_get_framebuffer_object(const gvr_frame* frame, int32_t index)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_get_framebuffer_object");
+    LOGITAG("mjgvr","mj_gvr_frame_get_framebuffer_object, tid=%d", gettid());
     int32_t re = old_gvr_frame_get_framebuffer_object(frame, index);
     return re;
 }
@@ -524,7 +523,7 @@ int32_t mj_gvr_frame_get_framebuffer_object(const gvr_frame* frame, int32_t inde
 void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space) = NULL;
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_submit");
+    LOGITAG("mjgvr","mj_gvr_frame_submit, tid=%d", gettid());
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
     return;
 }
@@ -542,19 +541,19 @@ int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
 gvr_mat4f (*old_gvr_get_head_space_from_start_space_rotation)(const gvr_context *gvr, const gvr_clock_time_point time) = NULL;
 gvr_mat4f mj_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr, const gvr_clock_time_point time)
 {
-	LOGITAG("mjgvr","mj_gvr_get_head_space_from_start_space_rotation");
+	LOGITAG("mjgvr","mj_gvr_get_head_space_from_start_space_rotation, tid=%d", gettid());
 	gvr_mat4f Ret;
 	memset(&Ret, 0, sizeof(gvr_mat4f));
 	Ret.m[0][0] = Ret.m[1][1] = Ret.m[2][2] = Ret.m[3][3] = 1;
 
 	if (old_gvr_get_head_space_from_start_space_rotation)
 	{
-		LOGE( "Call gvr_get_head_space_from_start_space_rotation");
+		LOGE( "Call gvr_get_head_space_from_start_space_rotation, tid=%d", gettid());
 		Ret = old_gvr_get_head_space_from_start_space_rotation(gvr, time);
 	}
 	else
 	{
-		LOGE( "gvr_get_head_space_from_start_space_rotation = NULL");
+		LOGE( "gvr_get_head_space_from_start_space_rotation = NULL, tid=%d", gettid());
 	}
 	return Ret;
 }
@@ -574,7 +573,7 @@ bool HookToFunctionBase(void * hDLL, int base, void * fpReplactToFunction, void 
     }
     else
     {
-        LOGE("Try registerInlineHook error!!");
+        LOGE("Try registerInlineHook error!!, tid=%d", gettid());
     }
 
 //    const char * szFunName = "gvr_get_head_space_from_start_space_rotation";
@@ -607,7 +606,7 @@ bool HookToFunctionBase(void * hDLL, int base, void * fpReplactToFunction, void 
 //    }
 //    else
 //    {
-//        LOGE( "Invalid parmeat!!");
+//        LOGE( "Invalid parmeat!!, tid=%d", gettid());
 //    }
     return bRet;
 }
@@ -644,7 +643,7 @@ bool HookToFunction(void * hDLL, const char * szFunctionName, void * fpReplactTo
 	}
 	else
 	{
-		LOGE( "Invalid parmeat!!");
+		LOGE( "Invalid parmeat!!, tid=%d", gettid());
 	}
 	return bRet;
 }
@@ -721,12 +720,12 @@ bool InitHook()
 		}
 		else
 		{
-			LOGE( "hook error");
+			LOGE( "hook error, tid=%d", gettid());
 		}
 	}
 	else
 	{
-		LOGE("LoadGVR error");
+		LOGE("LoadGVR error, tid=%d", gettid());
 	}
 
 	return bRet;

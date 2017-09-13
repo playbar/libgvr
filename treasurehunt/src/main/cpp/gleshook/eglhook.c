@@ -11,7 +11,7 @@
 EGLint (*old_eglGetError)(void) = NULL;
 EGLint MJ_eglGetError(void)
 {
-    LOGITAG("mjgl","MJ_eglGetError, tid=%d", gettid());
+//    LOGITAG("mjgl","MJ_eglGetError, tid=%d", gettid());
     EGLint re = old_eglGetError();
     return re;
 }
@@ -195,7 +195,7 @@ EGLContext (*old_eglGetCurrentContext)(void) = NULL;
 EGLContext MJ_eglGetCurrentContext(void)
 {
     EGLContext context = old_eglGetCurrentContext();
-    LOGITAG("mjgl","MJ_eglGetCurrentContext, context=%x, tid=%d", context, gettid());
+//    LOGITAG("mjgl","MJ_eglGetCurrentContext, context=%x, tid=%d", context, gettid());
     return context;
 }
 
@@ -277,7 +277,7 @@ void mjglBindTexture (GLenum target, GLuint texture)
 void (*pfun_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
 void mjglBindFramebuffer (GLenum target, GLuint framebuffer)
 {
-    LOGITAG("mjgl", "mjglBindFramebuffer, texid=%d, tid=%d", framebuffer, gettid());
+    LOGITAG("mjgl", "mjglBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
     return pfun_glBindFramebuffer(target, framebuffer);
 }
 
@@ -311,6 +311,43 @@ void mjglGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
     pfun_glGenRenderbuffers(n, renderbuffers);
     LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", renderbuffers[0], gettid());
     return;
+}
+
+void (*pfun_glDrawArrays)(GLenum mode, GLint first, GLsizei count) = NULL;
+void mjglDrawArrays (GLenum mode, GLint first, GLsizei count)
+{
+    LOGITAG("mjgl", "mjglDrawArrays, tid=%d", gettid());
+    pfun_glDrawArrays(mode, first, count);
+    return;
+}
+
+void (*pfun_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const void *indices) = NULL;
+void mjglDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices)
+{
+    LOGITAG("mjgl", "mjglDrawElements, tid=%d", gettid());
+    return pfun_glDrawElements(mode, count, type, indices);
+}
+
+void (*pfun_glDrawBuffers)(GLsizei n, const GLenum *bufs) = NULL;
+void mjglDrawBuffers (GLsizei n, const GLenum *bufs)
+{
+    LOGITAG("mjgl", "mjglDrawBuffers, tid=%d", gettid());
+    return pfun_glDrawBuffers(n, bufs);
+}
+
+void (*pfun_glDrawArraysInstanced)(GLenum mode, GLint first, GLsizei count, GLsizei instancecount) = NULL;
+void mjglDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei instancecount)
+{
+    LOGITAG("mjgl", "mjglDrawArraysInstanced, tid=%d", gettid());
+    return pfun_glDrawArraysInstanced(mode, first, count, instancecount);
+}
+
+
+void (*pfun_glDrawElementsInstanced)(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount) = NULL;
+void mjglDrawElementsInstanced (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount)
+{
+    LOGITAG("mjgl", "mjglDrawElementsInstanced, tid=%d", gettid());
+    return pfun_glDrawElementsInstanced(mode, count, type, indices, instancecount);
 }
 
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
@@ -364,6 +401,31 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glGenRenderbuffers = pfun;
         pfun = mjglGenRenderbuffers;
+    }
+    if(strcmp(procname, "glDrawArrays") == 0)
+    {
+        pfun_glDrawArrays = pfun;
+        pfun = mjglDrawArrays;
+    }
+    if(strcmp(procname, "glDrawElements") == 0)
+    {
+        pfun_glDrawElements = pfun;
+        pfun = mjglDrawElements;
+    }
+    if(strcmp(procname, "glDrawBuffers") == 0)
+    {
+        pfun_glDrawBuffers = pfun;
+        pfun = mjglDrawBuffers;
+    }
+    if(strcmp(procname, "glDrawArraysInstanced") == 0)
+    {
+        pfun_glDrawArraysInstanced = pfun;
+        pfun = mjglDrawArraysInstanced;
+    }
+    if(strcmp(procname, "glDrawElementsInstanced") == 0)
+    {
+        pfun_glDrawElementsInstanced = pfun;
+        pfun = mjglDrawElementsInstanced;
     }
     return pfun;
 }
