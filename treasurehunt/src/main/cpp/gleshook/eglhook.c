@@ -252,6 +252,7 @@ EGLBoolean MJ_eglCopyBuffers(EGLDisplay dpy, EGLSurface surface, EGLNativePixmap
 void (*pfun_gImageTargetTexture2DOES) (GLenum target, void *image);
 void mjImageTargetTexture2DOES(GLenum target, void *image)
 {
+    LOGITAG("mjgl","mjImageTargetTexture2DOES, image=%X, tid=%d", image, gettid());
     return pfun_gImageTargetTexture2DOES(target, image);
 }
 
@@ -270,6 +271,7 @@ void mjEGLImageTargetRenderbufferStorageOES(GLenum target, void *image)
 void (*pfun_glBindTexture)(GLenum target, GLuint texture) = NULL;
 void mjglBindTexture (GLenum target, GLuint texture)
 {
+//    print_callstack();
     LOGITAG("mjgl", "mjglBindTexture, texid=%d, tid=%d", texture, gettid());
     return pfun_glBindTexture(target, texture);
 }
@@ -289,10 +291,18 @@ void mjglGenTextures (GLsizei n, GLuint *textures)
     return;
 }
 
+void (*pfun_glDeleteTextures)(GLsizei n, const GLuint *textures) = NULL;
+void mjglDeleteTextures (GLsizei n, const GLuint *textures)
+{
+    pfun_glDeleteTextures(n, textures);
+    LOGITAG("mjgl", "mjglDeleteTextures, texid=%d, tid=%d", textures[0], gettid());
+    return;
+}
+
 void (*pfun_glFramebufferTexture2D)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level) = NULL;
 void mjglFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
-    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", texture, gettid());
+    LOGITAG("mjgl", "mjglFramebufferTexture2D, texid=%d, tid=%d", texture, gettid());
     pfun_glFramebufferTexture2D(target, attachment, textarget, texture, level);
     return;
 }
@@ -301,7 +311,7 @@ void (*pfun_glGenFramebuffers)(GLsizei n, GLuint *framebuffers) = NULL;
 void mjglGenFramebuffers (GLsizei n, GLuint *framebuffers)
 {
     pfun_glGenFramebuffers(n, framebuffers);
-    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", framebuffers[0], gettid());
+    LOGITAG("mjgl", "mjglGenFramebuffers, texid=%d, tid=%d", framebuffers[0], gettid());
     return;
 }
 
@@ -309,7 +319,7 @@ void (*pfun_glGenRenderbuffers)(GLsizei n, GLuint *renderbuffers) = NULL;
 void mjglGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
 {
     pfun_glGenRenderbuffers(n, renderbuffers);
-    LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", renderbuffers[0], gettid());
+    LOGITAG("mjgl", "mjglGenRenderbuffers, texid=%d, tid=%d", renderbuffers[0], gettid());
     return;
 }
 
@@ -360,7 +370,6 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_gImageTargetTexture2DOES = pfun;
         pfun = mjImageTargetTexture2DOES;
-        LOGI("glEGLImageTargetTexture2DOES");
     }
     if(strcmp(procname, "glBindRenderbuffer") == 0)
     {
@@ -386,6 +395,11 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glGenTextures = pfun;
         pfun = mjglGenTextures;
+    }
+    if(strcmp(procname, "glDeleteTextures") == 0)
+    {
+        pfun_glDeleteTextures = pfun;
+        pfun = mjglDeleteTextures;
     }
     if(strcmp(procname, "glFramebufferTexture2D") == 0 )
     {

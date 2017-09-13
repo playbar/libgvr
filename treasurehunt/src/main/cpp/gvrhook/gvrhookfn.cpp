@@ -531,10 +531,18 @@ void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list
 #define fn_gvr_render_reprojection_thread "gvr_render_reprojection_thread"
 int (*old_gvr_render_reprojection_thread)(const gvr_context *gvr) = NULL;
 int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
-{
+{   //sub_28A86 ->sub_364B4->
     LOGITAG("mjgvr","mj_gvr_render_reprojection_thread, tid=%d", gettid());
     int re = old_gvr_render_reprojection_thread(gvr);
     return re;
+}
+
+#define fn_gvr_on_surface_created_reprojection_thread "gvr_on_surface_created_reprojection_thread"
+int (*old_gvr_on_surface_created_reprojection_thread)(const gvr_context *gvr) = NULL;
+int mj_gvr_on_surface_created_reprojection_thread(const gvr_context *gvr)
+{
+    LOGITAG("mjgvr","mj_gvr_on_surface_created_reprojection_thread, tid=%d", gettid());
+    return old_gvr_on_surface_created_reprojection_thread(gvr);
 }
 
 #define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
@@ -709,6 +717,7 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_gvr_frame_get_framebuffer_object, (void*)mj_gvr_frame_get_framebuffer_object, (void**)&old_gvr_frame_get_framebuffer_object)
                &&HookToFunction(g_hGVR, fn_gvr_frame_submit, (void*)mj_gvr_frame_submit, (void**)&old_gvr_frame_submit)
                &&HookToFunction(g_hGVR, fn_gvr_render_reprojection_thread, (void*)mj_gvr_render_reprojection_thread, (void**)&old_gvr_render_reprojection_thread)
+               &&HookToFunction(g_hGVR, fn_gvr_on_surface_created_reprojection_thread, (void*)mj_gvr_on_surface_created_reprojection_thread, (void**)&old_gvr_on_surface_created_reprojection_thread)
 			   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void*)mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void**)&old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)
                &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled)
