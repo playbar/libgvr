@@ -5,6 +5,7 @@
 #include <string.h>
 #include <EGL/egl.h>
 #include <pthread.h>
+#include <syscallstack.h>
 #include "hookutils.h"
 #include "log.h"
 
@@ -286,6 +287,7 @@ void mjglBindFramebuffer (GLenum target, GLuint framebuffer)
 void (*pfun_glGenTextures)(GLsizei n, GLuint *textures) = NULL;
 void mjglGenTextures (GLsizei n, GLuint *textures)
 {
+    sys_call_stack();
     pfun_glGenTextures(n, textures);
     LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", textures[0], gettid());
     return;

@@ -182,7 +182,7 @@ uintptr_t rewind_pc_arch(const mapinfo* map_info_list, uintptr_t pc) {
     return pc;
 }
 
-static _Unwind_Reason_Code trace_function(__unwind_context *context, void *arg)
+_Unwind_Reason_Code trace_function(__unwind_context *context, void *arg)
 {
     stack_crawl_state_t* state = (stack_crawl_state_t*)arg;
     if (state->count) {

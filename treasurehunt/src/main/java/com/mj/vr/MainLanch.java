@@ -13,7 +13,7 @@ import android.widget.*;
 import com.google.vr.sdk.base.CardboardViewNativeImpl;
 import com.google.vr.cardboard.MutableEglConfigChooser;
 import com.google.vr.cardboard.VrParamsProviderJni;
-import com.mj.vr.my.R;
+import com.mj.vr.R;
 
 import java.util.ArrayList;
 import java.util.List;

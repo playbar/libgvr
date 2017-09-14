@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <android/log.h>
 
-typedef struct _mapinfo {
+typedef struct {
     struct _mapinfo* next;
     uintptr_t start;
     uintptr_t end;
@@ -41,7 +41,7 @@ static int try_get_half_word(const mapinfo* map_info_list, uint32_t pc, uint16_t
 
 uintptr_t rewind_pc_arch(const mapinfo* map_info_list, uintptr_t pc);
 
-static _Unwind_Reason_Code trace_function(__unwind_context *context, void *arg);
+_Unwind_Reason_Code trace_function(__unwind_context *context, void *arg);
 
 int get_backtrace(intptr_t* addrs, size_t max_entries);
 

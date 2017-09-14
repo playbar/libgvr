@@ -14,7 +14,7 @@ public class App extends Application {
         System.loadLibrary("gvr");
         System.loadLibrary("gvr_audio");
         System.loadLibrary("draw");
-		System.loadLibrary("hook");
+		System.loadLibrary("glhook");
 		System.loadLibrary("gvrhook");
 	}
 

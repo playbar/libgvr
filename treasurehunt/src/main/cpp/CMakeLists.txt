@@ -45,7 +45,7 @@ target_include_directories(gvrhook PRIVATE
 target_link_libraries(gvrhook gvr log)
 
 #############################################
-add_library(hook SHARED
+add_library(glhook SHARED
                gleshook/inlineHook.c
                gleshook/hookutils.c
                gleshook/relocate.c
@@ -58,12 +58,12 @@ add_library(hook SHARED
                gleshook/callstack.c
                syscallstack.cc)
 
-target_include_directories(hook PRIVATE
+target_include_directories(glhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
                           )
 
 # Include libraries needed for hello-jnicallback lib
-target_link_libraries(hook
+target_link_libraries(glhook
                      log
                      android
                      vulkan
@@ -75,7 +75,12 @@ target_link_libraries(hook
 ################################
 add_library(draw SHARED
             treasure_hunt_jni.cc
-            treasure_hunt_renderer.cc)
+            treasure_hunt_renderer.cc
+             syscallstack.cc)
+
+target_include_directories(draw PRIVATE
+                          ${CMAKE_CURRENT_SOURCE_DIR}
+                          )
 
 add_library(lib_audio SHARED IMPORTED )
 set_target_properties(lib_audio PROPERTIES IMPORTED_LOCATION

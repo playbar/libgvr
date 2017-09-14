@@ -15,6 +15,7 @@
 
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "treasure_hunt_shaders.h"  // NOLINT
+#include "syscallstack.h"
 
 #include <android/log.h>
 #include <assert.h>
@@ -518,6 +519,7 @@ void TreasureHuntRenderer::DrawFrame() {
     glDisable(GL_SCISSOR_TEST);
     glDisable(GL_BLEND);
 
+    sys_call_stack();
     int fbo = frame.GetFramebufferObject(0);
     gvr_sizei size =  frame.GetBufferSize(0);
     // Draw the world.

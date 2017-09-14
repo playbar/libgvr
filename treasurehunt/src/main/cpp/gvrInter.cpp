@@ -3851,6 +3851,7 @@ gvr_sizei gvr_frame_get_buffer_size(const gvr_frame *frame, int32_t index)
 
 int32_t gvr_frame_get_framebuffer_object(const gvr_frame *frame, int32_t index)
 {
+    //sub_44ED8 ->sub_40866->
     CLogMessage msg(__FUNCTION__);
     InitLoadFun();
     if(g_fpframe_get_framebuffer_object)
