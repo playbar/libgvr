@@ -26,9 +26,13 @@ extern "C" {
 #endif
 
 void* get_module_base(pid_t pid,const char* module_name);
+bool HookToFunction(void * hDLL, const char * szFunctionName, void * fpReplactToFunction, void ** fpOutRealFunction);
 bool InitHook();
+bool InitGraphicHook();
 bool UninitHook();
 bool LoadGVR();
+bool LoadGraphics();
+bool UninitGraphicsHook();
 
 #ifdef __cplusplus
 }

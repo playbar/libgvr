@@ -6,6 +6,7 @@ package com.google.hook;
 
 public class GVRHook {
     public static native void initHook();
+    public static native void initGraphicHook();
     public static native void unInitHook();
     public static native void hookTest();
 }

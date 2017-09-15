@@ -152,6 +152,11 @@ JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_initHook(JNIEnv* env, jobjec
     LOGI("GVRHook_initHook end");
 }
 
+JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_initGraphicHook(JNIEnv* env, jobject obj)
+{
+    InitGraphicHook();
+}
+
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_hookTest(JNIEnv* env, jobject obj)
 {
 

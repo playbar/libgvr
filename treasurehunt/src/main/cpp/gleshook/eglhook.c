@@ -362,10 +362,20 @@ void mjglDrawElementsInstanced (GLenum mode, GLsizei count, GLenum type, const v
     return pfun_glDrawElementsInstanced(mode, count, type, indices, instancecount);
 }
 
+void (*pfun_glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
+                          GLint border, GLenum format, GLenum type, const void *pixels) = NULL;
+void mjglTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
+                   GLenum format, GLenum type, const void *pixels)
+{
+    LOGITAG("mjgl", "pfun_glTexImage2D, tid=%d", gettid());
+    return pfun_glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+}
+
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
 __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
+//    sys_call_stack();
     __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
     LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s, tid=%d", procname, gettid());
     if( strcmp(procname, "glEGLImageTargetTexture2DOES") == 0)
@@ -442,6 +452,11 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glDrawElementsInstanced = pfun;
         pfun = mjglDrawElementsInstanced;
+    }
+    if(strcmp(procname, "glTexImage2D") == 0)
+    {
+        pfun_glTexImage2D = pfun;
+        pfun = mjglTexImage2D;
     }
     return pfun;
 }

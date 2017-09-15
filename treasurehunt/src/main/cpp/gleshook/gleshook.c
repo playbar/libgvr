@@ -177,6 +177,15 @@ void mj_glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum rend
     return old_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 
+void (*old_glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format,
+                         GLenum type, const void *pixels) = NULL;
+void mj_glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format,
+                      GLenum type, const void *pixels)
+{
+    LOGITAG("mjgl","mj_glTexImage2D, tid=%d", gettid());
+    return old_glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+}
+
 void (*old_glCopyTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
 void mj_glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
 {
@@ -216,6 +225,7 @@ void hookESFun()
     hook((uint32_t) glUseProgram, (uint32_t)mj_glUseProgram, (uint32_t **) &old_glUseProgram);
     hook((uint32_t) glRenderbufferStorage, (uint32_t)mj_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
+    hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
     hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
     hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
 
