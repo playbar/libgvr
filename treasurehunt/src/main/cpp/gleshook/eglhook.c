@@ -6,6 +6,7 @@
 #include <EGL/egl.h>
 #include <pthread.h>
 #include <syscallstack.h>
+#include <glresource.h>
 #include "hookutils.h"
 #include "log.h"
 
@@ -254,7 +255,13 @@ void (*pfun_gImageTargetTexture2DOES) (GLenum target, void *image);
 void mjImageTargetTexture2DOES(GLenum target, void *image)
 {
     LOGITAG("mjgl","mjImageTargetTexture2DOES, image=%X, tid=%d", image, gettid());
-    return pfun_gImageTargetTexture2DOES(target, image);
+    pfun_gImageTargetTexture2DOES(target, image);
+    if( gMJTexture[gIndex].eglImage == image && gMJTexture[gIndex].tid == gettid())
+    {
+        gMJTexture[gIndex].texStatus = TEX_STATUS_END;
+        ++gIndex;
+    }
+    return;
 }
 
 void (*pfun_glBindRenderbuffer)(GLenum target, GLuint renderbuffer);
@@ -290,6 +297,10 @@ void mjglGenTextures (GLsizei n, GLuint *textures)
     sys_call_stack();
     pfun_glGenTextures(n, textures);
     LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", textures[0], gettid());
+    if(gMJTexture[gIndex].texStatus == TEX_STATUS_BEGIN && gMJTexture[gIndex].tid == gettid())
+    {
+        gMJTexture[gIndex].textureid = textures[0];
+    }
     return;
 }
 
@@ -370,6 +381,14 @@ void mjglTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei w
     LOGITAG("mjgl", "pfun_glTexImage2D, tid=%d", gettid());
     return pfun_glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 }
+
+void (*pfun_glBindImageTexture)(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) = NULL;
+void mjglBindImageTexture (GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
+{
+    LOGITAG("mjgl", "mjglBindImageTexture, tid=%d", gettid());
+    return pfun_glBindImageTexture(unit, texture, level, layered, layer, access, format);
+}
+
 
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
 __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
@@ -457,6 +476,11 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glTexImage2D = pfun;
         pfun = mjglTexImage2D;
+    }
+    if(strcmp(procname, "glBindImageTexture") == 0)
+    {
+        pfun_glBindImageTexture = pfun;
+        pfun = mjglBindImageTexture;
     }
     return pfun;
 }

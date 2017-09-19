@@ -474,7 +474,7 @@ gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
     gvr_frame *frame = old_gvr_swap_chain_acquire_frame(swap_chain);
     if( (int)frame != (int)swap_chain)
         LOGITAG("mjgvr","error, tid=%d", gettid());
-//    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
+    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
 //    pfun(swap_chain->context->user_prefs);
 //    gvr_frame *frame = (gvr_frame*)swap_chain;
 //    swap_chain->data04[0] = 1;
