@@ -7,6 +7,7 @@
 #include <mjtype.h>
 #include <pthread.h>
 #include <gleshook/log.h>
+#include <glresource.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
@@ -532,6 +533,7 @@ void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list
 int (*old_gvr_render_reprojection_thread)(const gvr_context *gvr) = NULL;
 int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
 {   //sub_28A86 ->sub_364B4->
+    gRendThread = gettid();
     LOGITAG("mjgvr","mj_gvr_render_reprojection_thread, tid=%d", gettid());
     int re = old_gvr_render_reprojection_thread(gvr);
     return re;

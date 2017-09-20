@@ -16,12 +16,14 @@
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "treasure_hunt_shaders.h"  // NOLINT
 #include "syscallstack.h"
+#include "glresource.h"
 
 #include <android/log.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <cmath>
 #include <random>
+#include <unistd.h>
 
 #define LOG_TAG "TreasureHuntRenderer"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
@@ -358,8 +360,7 @@ void TreasureHuntRenderer::InitializeGl() {
     CheckGLError("Reticle program");
 
     reticle_position_param_ = glGetAttribLocation(reticle_program_, "a_Position");
-    reticle_modelview_projection_param_ =
-            glGetUniformLocation(reticle_program_, "u_MVP");
+    reticle_modelview_projection_param_ = glGetUniformLocation(reticle_program_, "u_MVP");
 
     CheckGLError("Reticle program params");
 
@@ -407,12 +408,13 @@ void TreasureHuntRenderer::InitializeGl() {
     swapchain_.reset(new gvr::SwapChain(gvr_api_->CreateSwapChain(specs)));
 
     viewport_list_.reset(new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
-
+//    gTexture = CreateSimpleTexture2D();
     // Initialize audio engine and preload sample in a separate thread to avoid
     // any delay during construction and app initialization. Only do this once.
     if (!audio_initialization_thread_.joinable()) {
         audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
     }
+
 }
 
 void TreasureHuntRenderer::ResumeControllerApiAsNeeded() {
@@ -458,6 +460,7 @@ void TreasureHuntRenderer::ProcessControllerInput() {
 }
 
 void TreasureHuntRenderer::DrawFrame() {
+    gDrawThread = gettid();
     LOGE("DrawFrame  -- begin");
     const unsigned char *version = glGetString(GL_VERSION);
     if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
@@ -534,18 +537,18 @@ void TreasureHuntRenderer::DrawFrame() {
     }
     frame.Unbind();
 
-    frame.BindBuffer(1);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // In Cardboard viewer, draw head-locked reticle on a separate layer since the
-    // cursor is controlled by head movement. In Daydream viewer, this layer is
-    // left empty, since the cursor is controlled by controller and drawn with
-    // DrawDaydreamCursor() in the same frame buffer as the virtual scene.
-    if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
-        DrawCardboardReticle();
-    }
-    frame.Unbind();
+//    frame.BindBuffer(1);
+//    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//    // In Cardboard viewer, draw head-locked reticle on a separate layer since the
+//    // cursor is controlled by head movement. In Daydream viewer, this layer is
+//    // left empty, since the cursor is controlled by controller and drawn with
+//    // DrawDaydreamCursor() in the same frame buffer as the virtual scene.
+//    if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
+//        DrawCardboardReticle();
+//    }
+//    frame.Unbind();
 
     // Submit frame.
     frame.Submit(*viewport_list_, head_view_);

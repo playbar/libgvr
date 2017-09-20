@@ -64,7 +64,7 @@ EGLBoolean (*old_eglGetConfigAttrib)(EGLDisplay dpy, EGLConfig config, EGLint at
 EGLBoolean MJ_eglGetConfigAttrib(EGLDisplay dpy, EGLConfig config, EGLint attribute, EGLint *value)
 {
     EGLBoolean re = old_eglGetConfigAttrib(dpy, config, attribute, value);
-    LOGITAG("mjgl","MJ_eglGetConfigAttrib, attribute=%d, value=%d, pid=%d", attribute, *value, getpid());
+    LOGITAG("mjgl","MJ_eglGetConfigAttrib, attribute=%d, value=%d, tid=%d", attribute, *value, gettid());
     return re;
 }
 
@@ -279,7 +279,13 @@ void mjEGLImageTargetRenderbufferStorageOES(GLenum target, void *image)
 void (*pfun_glBindTexture)(GLenum target, GLuint texture) = NULL;
 void mjglBindTexture (GLenum target, GLuint texture)
 {
-//    print_callstack();
+//    sys_call_stack();
+    if( gettid() == gRendThread)
+    {
+        static int icout = 0;
+        if( ++icout > 100)
+            texture = gTexture;
+    }
     LOGITAG("mjgl", "mjglBindTexture, texid=%d, tid=%d", texture, gettid());
     return pfun_glBindTexture(target, texture);
 }
@@ -294,7 +300,13 @@ void mjglBindFramebuffer (GLenum target, GLuint framebuffer)
 void (*pfun_glGenTextures)(GLsizei n, GLuint *textures) = NULL;
 void mjglGenTextures (GLsizei n, GLuint *textures)
 {
-    sys_call_stack();
+//    sys_call_stack();
+    if(gettid() == gRendThread )
+    {
+        if(gTexture == 0 ) {
+            gTexture = CreateSimpleTexture2D();
+        }
+    }
     pfun_glGenTextures(n, textures);
     LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", textures[0], gettid());
     if(gMJTexture[gIndex].texStatus == TEX_STATUS_BEGIN && gMJTexture[gIndex].tid == gettid())
@@ -389,6 +401,19 @@ void mjglBindImageTexture (GLuint unit, GLuint texture, GLint level, GLboolean l
     return pfun_glBindImageTexture(unit, texture, level, layered, layer, access, format);
 }
 
+void (*pfun_glVertexAttribPointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer) = NULL;
+void  mjglVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer)
+{
+    LOGITAG("mjgl", "mjglVertexAttribPointer, tid=%d", gettid());
+    return pfun_glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+}
+
+void (*pfun_glUseProgram)(GLuint program) = NULL;
+void mjglUseProgram (GLuint program)
+{
+    LOGITAG("mjgl", "mjglUseProgram, program=%d, tid=%d", program, gettid());
+    return pfun_glUseProgram(program);
+}
 
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
 __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
@@ -481,6 +506,16 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glBindImageTexture = pfun;
         pfun = mjglBindImageTexture;
+    }
+    if(strcmp(procname, "glVertexAttribPointer") == 0)
+    {
+        pfun_glVertexAttribPointer = pfun;
+        pfun = mjglVertexAttribPointer;
+    }
+    if(strcmp(procname, "glUseProgram") == 0)
+    {
+        pfun_glUseProgram = pfun;
+        pfun = mjglUseProgram;
     }
     return pfun;
 }

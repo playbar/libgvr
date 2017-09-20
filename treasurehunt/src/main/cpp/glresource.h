@@ -1,6 +1,7 @@
 #ifndef __GLRESOURCE_H__
 #define __GLRESOURCE_H__
 
+#include <GLES3/gl32.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,8 +24,13 @@ typedef struct{
     TEX_STATUS texStatus;
 }MJTexture;
 
+extern int gDrawThread;
+extern int gRendThread;
+extern GLuint gTexture;
 extern int gIndex;
 extern MJTexture gMJTexture[10];
+
+GLuint CreateSimpleTexture2D( );
 
 #ifdef __cplusplus
 }

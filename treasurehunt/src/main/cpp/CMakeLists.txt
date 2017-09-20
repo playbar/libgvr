@@ -6,13 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC  -shared")
 ADD_DEFINITIONS(-DEGL_EGLEXT_PROTOTYPES)
 ADD_DEFINITIONS(-DGL_GLEXT_PROTOTYPES)
 
-add_library(texresource SHARED
-            glresource.c)
-target_link_libraries(texresource
-                      log
-                      GLESv3)
 
-##################################################
 add_library(png SHARED
             libpng/png.c
             libpng/pngerror.c
@@ -34,6 +28,17 @@ add_library(png SHARED
 target_link_libraries(png
                       log
                       z)
+
+ #######################################
+
+ add_library(texresource SHARED
+             glresource.c)
+ target_link_libraries(texresource
+                       log
+                       png
+                       GLESv3)
+
+
 
 ########################################
 
