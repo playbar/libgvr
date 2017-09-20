@@ -9,7 +9,31 @@ ADD_DEFINITIONS(-DGL_GLEXT_PROTOTYPES)
 add_library(texresource SHARED
             glresource.c)
 target_link_libraries(texresource
-                      log)
+                      log
+                      GLESv3)
+
+##################################################
+add_library(png SHARED
+            libpng/png.c
+            libpng/pngerror.c
+            libpng/pngget.c
+            libpng/pngmem.c
+            libpng/pngpread.c
+            libpng/pngread.c
+            libpng/pngrio.c
+            libpng/pngrtran.c
+            libpng/pngrutil.c
+            libpng/pngset.c
+            libpng/pngtest.c
+            libpng/pngtrans.c
+            libpng/pngwio.c
+            libpng/pngwrite.c
+            libpng/pngwtran.c
+            libpng/pngwutil.c
+            libpng/pngutils.c)
+target_link_libraries(png
+                      log
+                      z)
 
 ########################################
 
@@ -27,7 +51,7 @@ target_include_directories(gvr PRIVATE
 target_link_libraries(gvr
                       log
                       android
-                      GLESv2
+                      GLESv3
                       EGL)
 
 ##############################################
@@ -50,7 +74,7 @@ target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
                           ${CMAKE_CURRENT_SOURCE_DIR}/gvrhook )
 
-target_link_libraries(gvrhook gvr log)
+target_link_libraries(gvrhook gvr log texresource)
 
 #############################################
 add_library(glhook SHARED
@@ -100,4 +124,11 @@ set_target_properties(lib_audio PROPERTIES IMPORTED_LOCATION
 #    ${CMAKE_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libgvr.so)
 
 # Include libraries needed for hello-jnicallback lib
-target_link_libraries(draw log android  EGL GLESv2 gvr lib_audio)
+target_link_libraries(draw
+                      log
+                      android
+                      EGL
+                      GLESv3
+                      gvr
+                      lib_audio
+                      texresource)
