@@ -268,12 +268,14 @@ void mjImageTargetTexture2DOES(GLenum target, void *image)
 void (*pfun_glBindRenderbuffer)(GLenum target, GLuint renderbuffer);
 void mjBindRenderbuffer (GLenum target, GLuint renderbuffer)
 {
+    LOGITAG("mjgl","mjBindRenderbuffer, renderbuffer=%d, tid=%d", renderbuffer, gettid());
     return pfun_glBindRenderbuffer(target, renderbuffer);
 }
 
 void (*pfun_glEGLImageTargetRenderbufferStorageOES)(GLenum target, void *image) = NULL;
 void mjEGLImageTargetRenderbufferStorageOES(GLenum target, void *image)
 {
+    LOGITAG("mjgl","mjEGLImageTargetRenderbufferStorageOES, image=%0X, tid=%d", image, gettid());
     return pfun_glEGLImageTargetRenderbufferStorageOES(target, image);
 }
 
@@ -284,7 +286,7 @@ void mjglBindTexture (GLenum target, GLuint texture)
     if( gettid() == gRendThread)
     {
         static int icout = 0;
-        if( ++icout > 10)
+        if( ++icout > 20)
             texture = gTexture;
     }
     LOGITAG("mjgl", "mjglBindTexture, texid=%d, tid=%d", texture, gettid());
@@ -337,7 +339,7 @@ void (*pfun_glGenFramebuffers)(GLsizei n, GLuint *framebuffers) = NULL;
 void mjglGenFramebuffers (GLsizei n, GLuint *framebuffers)
 {
     pfun_glGenFramebuffers(n, framebuffers);
-    LOGITAG("mjgl", "mjglGenFramebuffers, texid=%d, tid=%d", framebuffers[0], gettid());
+    LOGITAG("mjgl", "mjglGenFramebuffers, framebuffers=%d, tid=%d", framebuffers[0], gettid());
     return;
 }
 
@@ -404,7 +406,7 @@ void (*pfun_glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsi
 void mjglTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
                    GLenum format, GLenum type, const void *pixels)
 {
-    LOGITAG("mjgl", "pfun_glTexImage2D, tid=%d", gettid());
+    LOGITAG("mjgl", "mjglTexImage2D, width=%d, height=%d, tid=%d", width, height, gettid());
     return pfun_glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 }
 
@@ -449,6 +451,13 @@ void mjglRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei widt
 {
     LOGITAG("mjgl", "mjglRenderbufferStorage, internalformat=%d, w=%d, h=%d, tid=%d", internalformat, width, height, gettid());
     return pfun_glRenderbufferStorage(target, internalformat, width, height);
+}
+
+void (*pfun_glFramebufferRenderbuffer)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) = NULL;
+void mjglFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
+{
+    LOGITAG("mjgl", "mjglFramebufferRenderbuffer, renderBuffer=%d, tid=%d", renderbuffer, gettid());
+    return pfun_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
@@ -567,6 +576,11 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glRenderbufferStorage = pfun;
         pfun = mjglRenderbufferStorage;
+    }
+    if(strcmp(procname, "glFramebufferRenderbuffer") == 0)
+    {
+        pfun_glFramebufferRenderbuffer = pfun;
+        pfun = mjglFramebufferRenderbuffer;
     }
     return pfun;
 }

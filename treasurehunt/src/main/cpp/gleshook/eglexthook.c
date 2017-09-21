@@ -54,21 +54,22 @@ EGLBoolean mj_eglDestroyImageKHR(EGLDisplay dpy, EGLImageKHR image)
 EGLSyncKHR (*old_eglCreateSyncKHR)(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list) = NULL;
 EGLSyncKHR mj_eglCreateSyncKHR(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list)
 {
-    LOGITAG("mjgl", "mj_eglCreateSyncKHR, tid=%d", gettid());
-    return old_eglCreateSyncKHR(dpy, type, attrib_list);
+    EGLSyncKHR sync = old_eglCreateSyncKHR(dpy, type, attrib_list);
+    LOGITAG("mjgl", "mj_eglCreateSyncKHR, sync=%0X, tid=%d", sync, gettid());
+    return sync;
 }
 
 EGLBoolean (*old_eglDestroySyncKHR)(EGLDisplay dpy, EGLSyncKHR sync) = NULL;
 EGLBoolean mj_eglDestroySyncKHR(EGLDisplay dpy, EGLSyncKHR sync)
 {
-    LOGITAG("mjgl", "mj_eglDestroySyncKHR, tid=%d", gettid());
+    LOGITAG("mjgl", "mj_eglDestroySyncKHR, sync=%0X, tid=%d", sync, gettid());
     return old_eglDestroySyncKHR(dpy, sync);
 }
 
 EGLint (*old_eglClientWaitSyncKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EGLTimeKHR timeout) = NULL;
 EGLint mj_eglClientWaitSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EGLTimeKHR timeout)
 {
-    LOGITAG("mjgl", "eglClientWaitSyncKHR, tid=%d", gettid());
+    LOGITAG("mjgl", "eglClientWaitSyncKHR, sync=%0X, tid=%d", sync, gettid());
     return old_eglClientWaitSyncKHR(dpy, sync, flags, timeout);
 }
 

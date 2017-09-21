@@ -48,7 +48,7 @@ void mj_glGenTextures (GLsizei n, GLuint *textures)
     char tmp[1024] = {0};
     old_glGenTextures(n, textures);
     for( int i = 0; i < n; ++i ){
-        sprintf(tmp, "%s, texid%d=%d", tmp, i, textures[i] );
+        sprintf(tmp, "%s, texid=%d", tmp, i, textures[i] );
     }
     LOGITAG("mjgl", "mj_glGenTextures, %s, tid=%d", tmp,  gettid());
     return;
@@ -170,8 +170,6 @@ void mj_glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei wid
 void (*old_glFramebufferRenderbuffer)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) = NULL;
 void mj_glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
 {
-    EGLSurface surface = eglGetCurrentSurface(EGL_DRAW);
-    LOGITAG("mjgl","mj_glFramebufferRenderbuffer, surface=%0X", surface);
     LOGITAG("mjgl","mj_glFramebufferRenderbuffer, target=%0X, attachment=%0X, renderbuffertarget=%d, tid=%d",
             target, attachment, renderbuffer, gettid());
     return old_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
@@ -182,7 +180,7 @@ void (*old_glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsiz
 void mj_glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format,
                       GLenum type, const void *pixels)
 {
-    LOGITAG("mjgl","mj_glTexImage2D, tid=%d", gettid());
+    LOGITAG("mjgl","mj_glTexImage2D, width=%d, height=%d, tid=%d", width, height, gettid());
     return old_glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 }
 
