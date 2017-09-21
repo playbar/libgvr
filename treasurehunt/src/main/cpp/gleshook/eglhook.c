@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <syscallstack.h>
 #include <glresource.h>
+#include <libpng/pngutils.h>
 #include "hookutils.h"
 #include "log.h"
 
@@ -283,7 +284,7 @@ void mjglBindTexture (GLenum target, GLuint texture)
     if( gettid() == gRendThread)
     {
         static int icout = 0;
-        if( ++icout > 100)
+        if( ++icout > 10)
             texture = gTexture;
     }
     LOGITAG("mjgl", "mjglBindTexture, texid=%d, tid=%d", texture, gettid());
@@ -291,9 +292,9 @@ void mjglBindTexture (GLenum target, GLuint texture)
 }
 
 void (*pfun_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
-void mjglBindFramebuffer (GLenum target, GLuint framebuffer)
+void mjBindFramebuffer (GLenum target, GLuint framebuffer)
 {
-    LOGITAG("mjgl", "mjglBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
+    LOGITAG("mjgl", "mjBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
     return pfun_glBindFramebuffer(target, framebuffer);
 }
 
@@ -359,8 +360,21 @@ void mjglDrawArrays (GLenum mode, GLint first, GLsizei count)
 void (*pfun_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const void *indices) = NULL;
 void mjglDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices)
 {
-    LOGITAG("mjgl", "mjglDrawElements, tid=%d", gettid());
-    return pfun_glDrawElements(mode, count, type, indices);
+    LOGITAG("mjgl", "mjglDrawElements, count=%d, indices=%0X, tid=%d", count, indices, gettid());
+    pfun_glDrawElements(mode, count, type, indices);
+//    if(gRendThread == gettid()) {
+//        unsigned char *pdata = malloc(960 * 1080 * 4);
+//        glReadPixels(0, 0, 960, 1080, GL_RGB, GL_UNSIGNED_BYTE, pdata);
+//        pic_data data;
+//        data.width = 980;
+//        data.height = 1080;
+//        data.bit_depth = 8;
+//        data.flag = 0;
+//        data.rgba = pdata;
+//        write_png_file("/sdcard/test_vr.png", &data);
+//        free(pdata);
+//    }
+    return;
 }
 
 void (*pfun_glDrawBuffers)(GLsizei n, const GLenum *bufs) = NULL;
@@ -404,7 +418,7 @@ void mjglBindImageTexture (GLuint unit, GLuint texture, GLint level, GLboolean l
 void (*pfun_glVertexAttribPointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer) = NULL;
 void  mjglVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer)
 {
-    LOGITAG("mjgl", "mjglVertexAttribPointer, tid=%d", gettid());
+    LOGITAG("mjgl", "mjglVertexAttribPointer, index=%d, pointer=%0X, tid=%d", index, pointer, gettid());
     return pfun_glVertexAttribPointer(index, size, type, normalized, stride, pointer);
 }
 
@@ -413,6 +427,28 @@ void mjglUseProgram (GLuint program)
 {
     LOGITAG("mjgl", "mjglUseProgram, program=%d, tid=%d", program, gettid());
     return pfun_glUseProgram(program);
+}
+
+void (*pfun_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
+void mjglViewport (GLint x, GLint y, GLsizei width, GLsizei height)
+{
+    LOGITAG("mjgl", "mjglViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
+    return pfun_glViewport(x, y, width, height);
+
+}
+
+void (*pfun_glBindBuffer)(GLenum target, GLuint buffer) = NULL;
+void mjglBindBuffer (GLenum target, GLuint buffer)
+{
+    LOGITAG("mjgl", "mjglBindBuffer, buffer=%d, tid=%d", buffer, gettid());
+    return pfun_glBindBuffer(target, buffer);
+}
+
+void (*pfun_glRenderbufferStorage)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height) = NULL;
+void mjglRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
+{
+    LOGITAG("mjgl", "mjglRenderbufferStorage, internalformat=%d, w=%d, h=%d, tid=%d", internalformat, width, height, gettid());
+    return pfun_glRenderbufferStorage(target, internalformat, width, height);
 }
 
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
@@ -445,7 +481,7 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     if(strcmp(procname, "glBindFramebuffer") == 0 )
     {
         pfun_glBindFramebuffer = pfun;
-        pfun = mjglBindFramebuffer;
+        pfun = mjBindFramebuffer;
     }
     if(strcmp(procname, "glGenTextures") == 0 )
     {
@@ -516,6 +552,21 @@ __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procna
     {
         pfun_glUseProgram = pfun;
         pfun = mjglUseProgram;
+    }
+    if(strcmp(procname, "glViewport") == 0)
+    {
+        pfun_glViewport = pfun;
+        pfun = mjglViewport;
+    }
+    if(strcmp(procname, "glBindBuffer") == 0)
+    {
+        pfun_glBindBuffer = pfun;
+        pfun = mjglBindBuffer;
+    }
+    if(strcmp(procname, "glRenderbufferStorage") == 0)
+    {
+        pfun_glRenderbufferStorage = pfun;
+        pfun = mjglRenderbufferStorage;
     }
     return pfun;
 }

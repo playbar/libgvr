@@ -407,6 +407,8 @@ void TreasureHuntRenderer::InitializeGl() {
 //    gvr::SwapChain temp = gvr_api_->CreateSwapChain(specs);
     swapchain_.reset(new gvr::SwapChain(gvr_api_->CreateSwapChain(specs)));
 
+    const GLubyte *strver = glGetString(GL_VERSION);
+
     viewport_list_.reset(new gvr::BufferViewportList(gvr_api_->CreateEmptyBufferViewportList()));
 //    gTexture = CreateSimpleTexture2D();
     // Initialize audio engine and preload sample in a separate thread to avoid

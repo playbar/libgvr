@@ -133,7 +133,7 @@ void mj_glEnableVertexAttribArray (GLuint index)
 void (*old_glVertexAttribPointer)(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr) = NULL;
 void mj_glVertexAttribPointer (GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
-    LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=%d, tid=%d", indx, size, type, stride, ptr, gettid());
+    LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=%0X, tid=%d", indx, size, type, stride, ptr, gettid());
     return old_glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
 }
 
