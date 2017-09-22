@@ -532,10 +532,29 @@ void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list
 #define fn_gvr_render_reprojection_thread "gvr_render_reprojection_thread"
 int (*old_gvr_render_reprojection_thread)(const gvr_context *gvr) = NULL;
 int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
-{   //sub_28A86 ->sub_364B4->
+{   // ->sub_28A86[00028b3f]
+    // ->sub_364B4[0003696b]
+    // ->sub_35CB0[00035e3d]
+    // ->sub_34868[00034a31]
+    // ->sub_3A724[0003a74f]
+    // ->sub_399D0[0003a3a1]
+    //->>sub_36A38[00036a47]
+    //->>sub_6CB66[0006cb81]
+    // ->sub_691E8[0006932b]
+    // ->sub_68FF0[00069179]
+    // ->sub_68FF0
+    // ->sub_67690(sub_677F4)[00069121]
+    // ->sub_67584[00067765]
+    // ->sub_67544[0006756b]
+    // ->sub_66AA8[00066abf]
+    // ->sub_656B8[00065727]
+    // ->sub_5EB60[0005eb69]->>mjglBindTexture
+//    sys_call_stack();
     gRendThread = gettid();
     LOGITAG("mjgvr","mj_gvr_render_reprojection_thread, tid=%d", gettid());
-    int re = old_gvr_render_reprojection_thread(gvr);
+    fn_sub_28A86 pfun = gvr->user_prefs->p001->pfun17;
+    int re = pfun(gvr->user_prefs);
+//    int re = old_gvr_render_reprojection_thread(gvr);
     return re;
 }
 

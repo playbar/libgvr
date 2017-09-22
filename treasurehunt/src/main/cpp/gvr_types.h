@@ -47,7 +47,7 @@ typedef struct st110B38_mj
     void *pfun14;
     void *pfun15;
     void *pfun16;
-    void *pfun17;
+    fn_sub_28A86 pfun17;
     void *pfun18;
     void *pfun19;
     void *pfun20;
@@ -135,6 +135,10 @@ typedef struct st114D98_mj
     void *pfun15;
     void *pfun16;
 }st114D98;
+
+typedef struct stdata444_mj{
+    char data[376];
+}stdata444;
 
 typedef struct gvr_user_prefs_mj{
 //    char data[600];
@@ -242,7 +246,7 @@ typedef struct gvr_user_prefs_mj{
     char data432[4];
     char data436[4];
     char data440[4];
-    char data444[4];
+    stdata444 *data444;
     char data448[4];
     char data452[4];
     char data456[4];
