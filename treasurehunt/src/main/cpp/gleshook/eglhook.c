@@ -296,6 +296,7 @@ void mjglBindTexture (GLenum target, GLuint texture)
 void (*pfun_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
 void mjBindFramebuffer (GLenum target, GLuint framebuffer)
 {
+    sys_call_stack();
     LOGITAG("mjgl", "mjBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
     return pfun_glBindFramebuffer(target, framebuffer);
 }

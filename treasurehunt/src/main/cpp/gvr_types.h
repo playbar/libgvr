@@ -28,6 +28,46 @@ extern "C" {
 /// @brief Various types used in the Google VR NDK.
 /// @{
 
+typedef struct st68CA4_mj  //里面存储的像是opengl使用的资源
+{
+    void *pfun00;
+    void *pfun01;
+    void *pfun02;
+    void *pfun03;
+    void *pfun04;
+    void *pfun05;
+    void *pfun06;
+    void *pfun07;
+    void *pfun08;
+    void *pfun09;
+    int texid;
+    void *pfun11;
+    void *pfun12;
+    void * pfun13;
+    void *pfun14;
+    void *pfun15;
+    int target;
+    void * pfun17;
+    void *pfun18;
+    void *pfun19;
+    void *pfun20;
+    void *pfun21;
+    void *pfun22;
+    void *pfun23;
+    void *pfun24;
+    void *pfun25;
+    void *pfun26;
+    void *pfun27;
+    void *pfun28;
+    void *pfun29;
+    void *pfun30;
+    void *pfun31;
+    void *pfun32;
+    void *pfun33;
+    void *pfun34;
+    int  framebuffer;
+}st68CA4;
+
 typedef struct st110B38_mj
 {
     void *pfun00;

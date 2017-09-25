@@ -94,6 +94,16 @@ int mj_sub_24738()
     return re;
 }
 
+st68CA4 * gst68CA4;
+st68CA4 *(*old_sub_68CA4)(void *a1, int a2) = NULL;
+st68CA4 *mj_sub_68CA4(void *a1, int a2)
+{
+    LOGITAG("mjgvr","mj_sub_68CA4, tid=%d", gettid());
+    st68CA4 *pdata = old_sub_68CA4(a1, a2);
+    gst68CA4 = pdata;
+    return pdata;
+}
+
 #define fn_gvr_create_with_tracker_for_testing "gvr_create_with_tracker_for_testing"
 int (*old_gvr_create_with_tracker_for_testing)( int a1, int a2) = NULL;
 int mj_gvr_create_with_tracker_for_testing( int a1, int a2)
@@ -563,7 +573,8 @@ int (*old_gvr_on_surface_created_reprojection_thread)(const gvr_context *gvr) = 
 int mj_gvr_on_surface_created_reprojection_thread(const gvr_context *gvr)
 {
     LOGITAG("mjgvr","mj_gvr_on_surface_created_reprojection_thread, tid=%d", gettid());
-    return old_gvr_on_surface_created_reprojection_thread(gvr);
+    int re = old_gvr_on_surface_created_reprojection_thread(gvr);
+    return re;
 }
 
 #define fn_gvr_get_head_space_from_start_space_rotation "gvr_get_head_space_from_start_space_rotation"
@@ -588,11 +599,11 @@ gvr_mat4f mj_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr
 }
 
 
-bool HookToFunctionBase(void * hDLL, int base, void * fpReplactToFunction, void ** fpOutRealFunction)
+bool HookToFunctionBase(int base, void * fpReplactToFunction, void ** fpOutRealFunction)
 {
     bool bRet = false;
     void *pModule = get_module_base(getpid(), "libgvr.so");
-    void *pFunc = (void*)((int)pModule + 0x24738 + 1);
+    void *pFunc = (void*)((int)pModule + base + 1);
     if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == DETOUR_OK)
     {
         if (inlineHook((uint32_t)pFunc) == DETOUR_OK)
@@ -605,38 +616,6 @@ bool HookToFunctionBase(void * hDLL, int base, void * fpReplactToFunction, void 
         LOGE("Try registerInlineHook error!!, tid=%d", gettid());
     }
 
-//    const char * szFunName = "gvr_get_head_space_from_start_space_rotation";
-//    if (hDLL != NULL && fpOutRealFunction != NULL)
-//    {
-//        void *pFunc = dlsym(hDLL, szFunName);
-//        pFunc = (void*)((int)pFunc + base);
-//        if (pFunc != NULL)
-//        {
-//            if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == DETOUR_OK)
-//            {
-//                if (inlineHook((uint32_t)pFunc) == DETOUR_OK)
-//                {
-//                    bRet = true;
-//                }
-//                else
-//                {
-//                    LOGE( "Try inlineHook error!! Fucntion name = %s", szFunName);
-//                }
-//            }
-//            else
-//            {
-//                LOGE("Try registerInlineHook error!! Fucntion name = %s", szFunName);
-//            }
-//        }
-//        else
-//        {
-//            LOGE("Can not find and Fucntion name = %s", szFunName);
-//        }
-//    }
-//    else
-//    {
-//        LOGE( "Invalid parmeat!!, tid=%d", gettid());
-//    }
     return bRet;
 }
 
@@ -693,6 +672,7 @@ bool InitHook()
 			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
 			   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)
 //		   &&HookToFunctionBase(g_hGVR, 0x6722, (void*)mj_sub_24738, (void**)&old_sub_24738)
+               &&HookToFunctionBase( 0x68CA4,(void*)mj_sub_68CA4, (void**)&old_sub_68CA4)
 			   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_get_error, (void*)mj_gvr_get_error, (void**)&old_gvr_get_error)
 			   &&HookToFunction(g_hGVR, fn_gvr_clear_error,(void*)mj_gvr_clear_error, (void**)&old_gvr_clear_error)
