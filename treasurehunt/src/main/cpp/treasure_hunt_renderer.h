@@ -17,7 +17,7 @@
 #define TREASUREHUNT_APP_SRC_MAIN_JNI_TREASUREHUNTRENDERER_H_  // NOLINT
 
 #include <EGL/egl.h>
-#include <GLES3/gl3.h>
+#include <GLES3/gl31.h>
 #include <jni.h>
 
 #include <memory>

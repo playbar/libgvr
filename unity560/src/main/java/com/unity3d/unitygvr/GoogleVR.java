@@ -72,7 +72,7 @@ public class GoogleVR {
         if(this.mActivity != null && this.mContext != null) {
             if(this.mGvrLayout == null) {
                 this.mGvrLayout = new GvrLayout(this.mContext);
-                GoogleVR.HookInit();
+//                GoogleVR.HookInit();
                 this.mGvrLayout.setPresentationView(this.mGvrGlView);
                 if(enableAsynchronousProjection) {
                     if(!this.mGvrLayout.setAsyncReprojectionEnabled(true)) {

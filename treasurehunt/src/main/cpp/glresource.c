@@ -24,7 +24,7 @@ GLuint CreateSimpleTexture2D( )
             };
 
     pic_data data;
-    detect_png("/sdcard/bird.png", &data);
+//    detect_png("/sdcard/bird.png", &data);
     // Use tightly packed data
     glPixelStorei ( GL_UNPACK_ALIGNMENT, 1 );
 

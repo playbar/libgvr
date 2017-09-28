@@ -96,7 +96,7 @@ final class Bcls {
         });
 
         try {
-            if(!var3.tryAcquire(4L, TimeUnit.SECONDS)) {
+            if(!var3.tryAcquire(40L, TimeUnit.SECONDS)) {
                 var2 = false;
                 this.a("Timeout waiting for vr state change!");
             }

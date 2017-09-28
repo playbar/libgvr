@@ -11,16 +11,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build.VERSION;
-import com.google.vr.sdk.proto.nano.CardboardDevice.DeviceParams;
+import com.google.vrtoolkit.cardboard.proto.nano.CardboardDevice.DeviceParams;
 import java.util.Iterator;
 import java.util.List;
 
 public class DaydreamUtils {
     static final String INTENT_CATEGORY_DAYDREAM = "com.google.intent.category.DAYDREAM";
     static final String INTENT_CATEGORY_CARDBOARD = "com.google.intent.category.CARDBOARD";
-    public static final int DAYDREAM_NOT_SUPPORTED = 1;
-    public static final int DAYDREAM_OPTIONAL = 2;
-    public static final int DAYDREAM_REQUIRED = 3;
+    public static final int DAYDREAM_NOT_SUPPORTED = 0;
+    public static final int DAYDREAM_OPTIONAL = 1;
+    public static final int DAYDREAM_REQUIRED = 2;
     private static boolean sDaydreamPhoneOverrideForTesting;
 
     public static boolean isDaydreamPhone(Context var0) {
@@ -45,12 +45,12 @@ public class DaydreamUtils {
         (var3 = new Intent()).setPackage(var2.getPackageName());
         var3.addCategory("com.google.intent.category.DAYDREAM");
         if(!canResolveIntent(var1, var2, var3)) {
-            return 1;
+            return 0;
         } else {
             Intent var4;
             (var4 = new Intent()).setPackage(var2.getPackageName());
             var4.addCategory("com.google.intent.category.CARDBOARD");
-            return canResolveIntent(var1, var2, var4)?2:3;
+            return canResolveIntent(var1, var2, var4)?1:2;
         }
     }
 

@@ -262,7 +262,7 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
     CLogMessage msg(__FUNCTION__);
     LOGI("mjgvr env:%0x, obj:%0X, paramLong:%lld, paramBool:%d", env, obj, paramLong, paramBool);
     bool re = false;
-    re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+//    re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
 //    re = true;
     LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
     return re;
