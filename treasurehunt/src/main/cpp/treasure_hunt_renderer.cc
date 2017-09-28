@@ -524,7 +524,7 @@ void TreasureHuntRenderer::DrawFrame() {
     glDisable(GL_SCISSOR_TEST);
     glDisable(GL_BLEND);
 
-    sys_call_stack();
+//    sys_call_stack();
     int fbo = frame.GetFramebufferObject(0);
     gvr_sizei size =  frame.GetBufferSize(0);
     // Draw the world.

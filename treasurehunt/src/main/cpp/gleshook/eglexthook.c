@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <GLES3/gl32.h>
+#include <GLES3/gl3.h>
 #include "callstack.h"
 #include <android/log.h>
 #include <string.h>
@@ -11,6 +11,8 @@
 #include "log.h"
 
 //eglext
+
+#define USE_TEXTURE_BUFFER
 
 
 EGLBoolean (*old_eglLockSurfaceKHR) (EGLDisplay display, EGLSurface surface, const EGLint *attrib_list) = NULL;
@@ -31,6 +33,16 @@ EGLImageKHR (*old_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum tar
 EGLImageKHR mj_eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list)
 {
 //    EGLDisplay display = eglGetCurrentDisplay();
+#ifdef USE_TEXTURE_BUFFER
+    int i = 0;
+    while(attrib_list[i] != EGL_NONE){
+        LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
+        i = i+2;
+    }
+    EGLint eglImgAttrs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE, EGL_NONE };
+    EGLImageKHR img = old_eglCreateImageKHR(dpy, eglGetCurrentContext(), EGL_GL_TEXTURE_2D_KHR, buffer, eglImgAttrs);
+    return img;
+#else
     int i = 0;
     while(attrib_list[i] != EGL_NONE){
         LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
@@ -42,6 +54,7 @@ EGLImageKHR mj_eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target,
         gMJTexture[gIndex].eglImage = img;
     }
     return img;
+#endif
 }
 
 EGLBoolean (*old_eglDestroyImageKHR)(EGLDisplay dpy, EGLImageKHR image) = NULL;
@@ -279,6 +292,18 @@ EGLBoolean mj_eglPresentationTimeANDROID(EGLDisplay dpy, EGLSurface sur, EGLnsec
 EGLClientBuffer (*old_eglCreateNativeClientBufferANDROID)(const EGLint *attrib_list) = NULL;
 EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
 {
+#ifdef USE_TEXTURE_BUFFER
+    GLuint textureId;
+    glGenTextures ( 1, &textureId );
+    glBindTexture ( GL_TEXTURE_2D, textureId );
+    int width = attrib_list[1];
+    int height = attrib_list[3];
+    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+    LOGITAG("mjgl", "mj_eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d",textureId , gettid());
+    return textureId;
+#else
     gMJTexture[gIndex].texStatus = TEX_STATUS_BEGIN;
     int i = 0;
     while(attrib_list[i] != EGL_NONE){
@@ -286,7 +311,7 @@ EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
         i = i+2;
     }
     EGLClientBuffer buffer = old_eglCreateNativeClientBufferANDROID(attrib_list);
-    LOGITAG("mjgl", "eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d", buffer, gettid());
+    LOGITAG("mjgl", "mj_eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d", buffer, gettid());
     if( buffer ){
         gMJTexture[gIndex].width = attrib_list[1];
         gMJTexture[gIndex].height = attrib_list[3];
@@ -294,6 +319,7 @@ EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
         gMJTexture[gIndex].tid = gettid();
     }
     return buffer;
+#endif
 }
 
 //////////////////////////
@@ -335,7 +361,7 @@ void hookEglextFun()
     hook((uint32_t) eglWaitSyncKHR, (uint32_t)mj_eglWaitSyncKHR, (uint32_t **) &old_eglWaitSyncKHR);
     hook((uint32_t) eglPresentationTimeANDROID, (uint32_t)mj_eglPresentationTimeANDROID, (uint32_t **) &old_eglPresentationTimeANDROID);
 
-    hook((uint32_t) eglCreateNativeClientBufferANDROID, (uint32_t)mj_eglCreateNativeClientBufferANDROID, (uint32_t **) &old_eglCreateNativeClientBufferANDROID);
+//    hook((uint32_t) eglCreateNativeClientBufferANDROID, (uint32_t)mj_eglCreateNativeClientBufferANDROID, (uint32_t **) &old_eglCreateNativeClientBufferANDROID);
 
 
     return;

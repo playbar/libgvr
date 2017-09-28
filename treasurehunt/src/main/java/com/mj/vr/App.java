@@ -36,7 +36,7 @@ public class App extends Application {
 		super.onCreate();
 		GLESHook.initHook();
 //		GVRHook.initGraphicHook();
-//		GVRHook.initHook();
+		GVRHook.initHook();
 	}
 	@Override
 	public void onTerminate() {

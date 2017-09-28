@@ -37,6 +37,7 @@ bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled(JNI
 int (*old_gvr_set_async_reprojection_enabled)(gvr_context * a1, int a2) = NULL;
 int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
 {
+    // sub_28DC8  sub_95960
     LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x, tid=%d", a1, gettid());
 //    int re = old_gvr_set_async_reprojection_enabled(a1, a2);
     fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;

@@ -1,7 +1,7 @@
 #ifndef __GLRESOURCE_H__
 #define __GLRESOURCE_H__
 
-#include <GLES3/gl32.h>
+#include <GLES3/gl3.h>
 
 #ifdef __cplusplus
 extern "C" {

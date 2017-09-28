@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <GLES3/gl32.h>
+#include <GLES3/gl3.h>
 #include "callstack.h"
 #include <android/log.h>
 #include <string.h>
@@ -282,7 +282,7 @@ void mjEGLImageTargetRenderbufferStorageOES(GLenum target, void *image)
 void (*pfun_glBindTexture)(GLenum target, GLuint texture) = NULL;
 void mjglBindTexture (GLenum target, GLuint texture)
 {
-    sys_call_stack();
+//    sys_call_stack();
 //    if( gettid() == gRendThread)
 //    {
 //        static int icout = 0;
@@ -296,7 +296,7 @@ void mjglBindTexture (GLenum target, GLuint texture)
 void (*pfun_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
 void mjBindFramebuffer (GLenum target, GLuint framebuffer)
 {
-    sys_call_stack();
+//    sys_call_stack();
     LOGITAG("mjgl", "mjBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
     return pfun_glBindFramebuffer(target, framebuffer);
 }

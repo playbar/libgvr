@@ -91,7 +91,7 @@ add_library(glhook SHARED
                gleshook/eglhook.c
                gleshook/gleshook.c
                gleshook/threadhook.c
-               gleshook/vkhook.c
+ #              gleshook/vkhook.c
                gleshook/callstack.c
                syscallstack.cc)
 
@@ -103,7 +103,7 @@ target_include_directories(glhook PRIVATE
 target_link_libraries(glhook
                      log
                      android
-                     vulkan
+ #                    vulkan
                      texresource
                      GLESv3
                      EGL)

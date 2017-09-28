@@ -28,6 +28,14 @@ void* mj_dlopen(const char*  filename, int flag)
     return old_dlopen(filename, flag);
 }
 
+FILE *(*old_fopen)(const char * name , const char * mode) = NULL;
+FILE *mj_fopen(const char * name , const char * mode)
+{
+    LOGITAG("mjhook", "mj_fopen, filename=%s", name);
+    FILE *pfile = old_fopen(name, mode);
+    return pfile;
+}
+
 int (*old_dlclose)(void* handle) = NULL;
 int mj_dlclose(void*  handle)
 {
@@ -98,6 +106,7 @@ int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*st
 void hookThreadFun()
 {
 //    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
+    hook((uint32_t) fopen, (uint32_t)mj_fopen, (uint32_t **) &old_fopen);
 //    hook((uint32_t) dlopen, (uint32_t)mj_dlopen, (uint32_t **) &old_dlopen);
     hook((uint32_t) dlclose, (uint32_t)mj_dlclose, (uint32_t **) &old_dlclose);
 //    hook((uint32_t) malloc, (uint32_t)mj_malloc, (uint32_t **) &old_malloc);
