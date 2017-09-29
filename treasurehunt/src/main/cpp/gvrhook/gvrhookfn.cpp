@@ -39,7 +39,7 @@ int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
 {
     // sub_28DC8  sub_95960
     LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x, tid=%d", a1, gettid());
-    return  false;
+    return  true;
 //    int re = old_gvr_set_async_reprojection_enabled(a1, a2);
     fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
     int re = pfun(a1->user_prefs);
@@ -76,6 +76,16 @@ long mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(
     long re = 0;
     re = old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate(env, obj, paramClassLoader, paramContext, paramLong,
                                                            paramWidth, paramHeight, paramFloat1, paramFloat2, paramPoseTracker);
+    return re;
+}
+
+#define fn_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService "Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService"
+bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService)(JNIEnv* env, jobject obj, jlong paramLong) = NULL;
+bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
+{
+    LOGITAG("mjgvr","mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService, tid=%d", gettid());
+    bool re = true;
+//    bool re = old_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
     return re;
 }
 
@@ -724,6 +734,7 @@ bool InitHook()
 			   &&HookToFunction(g_hGVR, fn_gvr_set_display_metrics, (void*)mj_gvr_set_display_metrics, (void**)&old_gvr_set_display_metrics)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void*)mj_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate, (void**)&old_Java_com_google_vr_cardboard_DisplaySynchronizer_nativeCreate)
                &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeGetAsyncReprojectionEnabled)
+               &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService)
 			   &&HookToFunction(g_hGVR, fn_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeCreate, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeCreate);
 
 		if (bRet)
