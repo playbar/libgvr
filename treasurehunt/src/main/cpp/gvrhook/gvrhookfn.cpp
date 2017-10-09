@@ -84,8 +84,8 @@ bool (*old_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService)(JNIEn
 bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* env, jobject obj, jlong paramLong)
 {
     LOGITAG("mjgvr","mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService, tid=%d", gettid());
-    bool re = true;
-//    bool re = old_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
+//    bool re = true;
+    bool re = old_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
     return re;
 }
 

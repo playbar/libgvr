@@ -10,7 +10,7 @@ add_library(gvr SHARED
             gvrfn.cpp)
 
 # Include libraries needed for hello-jnicallback lib
-target_link_libraries(gvr log android)
+target_link_libraries(gvr log android GLESv3)
 
 ###########################
 

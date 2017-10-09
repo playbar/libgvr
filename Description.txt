@@ -100,4 +100,31 @@ MutableEglConfigChooser
         return null;
     }
 
+GvrLayoutImpl
+  public boolean enableAsyncReprojection(int var1) {
+        if(Looper.getMainLooper() != Looper.myLooper()) {
+            throw new IllegalStateException("Async reprojection may only be enabled from the UI thread");
+        } else if(this.asyncReprojectionFlags != -1) {
+            if((this.asyncReprojectionFlags & var1) != var1) {
+                throw new UnsupportedOperationException("Async reprojection flags cannot be added once initialized.");
+            } else {
+                int var2 = this.asyncReprojectionFlags;
+                Log.d("GvrLayoutImpl", (new StringBuilder(58)).append("Async reprojection already enabled with flags: ").append(var2).toString());
+                return true;
+            }
+        } else if(this.scanlineRacingView != null) {
+            return true;
+        } else if(!this.daydreamUtils.isDaydreamPhone(this.getContext())) {
+            return false;
+        } else if(!this.gvrApi.setAsyncReprojectionEnabled(true)) {
+            Log.e("GvrLayoutImpl", "Failed to initialize async reprojection, unsupported device.");
+            return false;
+        } else {
+            this.asyncReprojectionFlags = var1;
+            if(!this.gvrApi.usingVrDisplayService()) {
+                this.addScanlineRacingView();
+            }
 
+            return true;
+        }
+    }
