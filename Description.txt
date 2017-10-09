@@ -6,6 +6,14 @@ Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled  --> 直接
 
 --->Java_com_google_vr_ndk_base_GvrApi_nativeSetIgnoreManualPauseResumeTracker
 
+
+
+addScanlineRacingView
+ this.scanlineRacingView.setSwapMode(1);
+
+ const/4 v2, 0x0
+ invoke-virtual {v0, v2}, Lcom/google/vr/ndk/base/GvrLayoutImpl$AsyncReprojectionSurfaceView;->setSwapMode(I)V
+
 DaydreamUtils  isDaydreamPhone -->直接返回true
 
     static int getComponentDaydreamCompatibility(Context var0, PackageManager var1, ComponentName var2) {
