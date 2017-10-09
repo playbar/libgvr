@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_com_google_hook_GLESHook_initHook(JNIEnv* env, jobje
 {
     LOGI("initHook begin");
     hookGLESFun();
-    hookThreadFun();
+//    hookThreadFun();
 //    hookVulkanFun();
     LOGI("initHook after");
 }

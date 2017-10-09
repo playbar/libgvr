@@ -82,6 +82,11 @@ target_include_directories(gvrhook PRIVATE
 target_link_libraries(gvrhook gvr log texresource)
 
 #############################################
+
+add_library(lib_EH SHARED IMPORTED)
+set_target_properties(lib_EH PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libEH.so)
+
 add_library(glhook SHARED
                gleshook/inlineHook.c
                gleshook/hookutils.c
@@ -103,6 +108,7 @@ target_include_directories(glhook PRIVATE
 target_link_libraries(glhook
                      log
                      android
+                     lib_EH
  #                    vulkan
                      texresource
                      GLESv3

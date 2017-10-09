@@ -12,7 +12,7 @@
 
 //eglext
 
-#define USE_TEXTURE_BUFFER
+//#define USE_TEXTURE_BUFFER
 
 
 EGLBoolean (*old_eglLockSurfaceKHR) (EGLDisplay display, EGLSurface surface, const EGLint *attrib_list) = NULL;

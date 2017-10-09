@@ -8,8 +8,59 @@
 #include <syscallstack.h>
 #include <glresource.h>
 #include <libpng/pngutils.h>
+#include <EGL/eglext.h>
+#include <stdlib.h>
 #include "hookutils.h"
 #include "log.h"
+
+void* get_module_base(pid_t pid,const char* module_name)
+{
+    FILE* fp;
+    long addr = 0;
+    char *pch;
+    char filename[32];
+    char line[1024];
+
+    if(pid<0){
+        snprintf(filename,sizeof(filename),"/proc/self/maps",pid);
+    }else{
+        snprintf(filename,sizeof(filename),"/proc/%d/maps",pid);
+    }
+    fp = fopen(filename,"r");
+    if(fp!=NULL){
+        while(fgets(line,sizeof(line),fp)){
+            if(strstr(line,module_name)){
+                pch = strtok(line,"-");
+                addr = strtoul(pch,NULL,16);
+                if(addr==0x8000)
+                    addr = 0;
+                break;
+            }
+        }
+        fclose(fp);
+    }
+    return (void*)addr;
+}
+
+bool HookToFunctionBase(int base, void * fpReplactToFunction, void ** fpOutRealFunction)
+{
+    bool bRet = false;
+    void *pModule = get_module_base(getpid(), "libEGL.so");
+    void *pFunc = (void*)((int)pModule + base + 1);
+    if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == 0)
+    {
+        if (inlineHook((uint32_t)pFunc) == 0)
+        {
+            bRet = true;
+        }
+    }
+    else
+    {
+        LOGE("Try registerInlineHook error!!, tid=%d", gettid());
+    }
+
+    return bRet;
+}
 
 EGLint (*old_eglGetError)(void) = NULL;
 EGLint mj_eglGetError(void)
@@ -175,6 +226,7 @@ EGLBoolean mj_eglSwapInterval(EGLDisplay dpy, EGLint interval)
 EGLContext (*old_eglCreateContext)(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list) = NULL;
 EGLContext mj_eglCreateContext(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list)
 {
+    void *baseadd = get_module_base(getpid(), "libEGL.so");
     EGLContext context = old_eglCreateContext(dpy, config, share_context, attrib_list);
     LOGITAG("mjgl","mj_eglCreateContext context=%x, share_context=%x, pid=%d", context, share_context, getpid());
     return context;
@@ -462,135 +514,182 @@ void mjglFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum rende
     return pfun_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 
-//typedef void (*__eglMustCastToProperFunctionPointerType)(void);
-__eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
-__eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
+EGLImageKHR (*pfun_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list) = NULL;
+EGLImageKHR mjeglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list)
 {
+//    EGLDisplay display = eglGetCurrentDisplay();
+    int i = 0;
+    while(attrib_list[i] != EGL_NONE){
+        LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
+        i = i+2;
+    }
+    EGLint eglImgAttrs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE, EGL_NONE };
+    EGLImageKHR img = pfun_eglCreateImageKHR(dpy, eglGetCurrentContext(), EGL_GL_TEXTURE_2D_KHR, buffer, eglImgAttrs);
+    return img;
+
+}
+
+EGLClientBuffer (*pfun_eglCreateNativeClientBufferANDROID)(const EGLint *attrib_list) = NULL;
+EGLClientBuffer mjeglCreateNativeClientBufferANDROID (const EGLint *attrib_list)
+{
+    GLuint textureId;
+    glGenTextures ( 1, &textureId );
+    glBindTexture ( GL_TEXTURE_2D, textureId );
+    int width = attrib_list[1];
+    int height = attrib_list[3];
+    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+    LOGITAG("mjgl", "mj_eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d",textureId , gettid());
+    return textureId;
+}
+
+
+//typedef void (*__eglMustCastToProperFunctionPointerType)(void);
+EGLAPI __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
+EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
+{
+    void *baseadd = get_module_base(getpid(), "libEGL.so");
 //    sys_call_stack();
+//    old_eglGetProcAddress(procname);
     __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
     LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s, tid=%d", procname, gettid());
-    if( strcmp(procname, "glEGLImageTargetTexture2DOES") == 0)
+//    if( strcmp(procname, "glEGLImageTargetTexture2DOES") == 0)
+//    {
+//        pfun_gImageTargetTexture2DOES = pfun;
+//        pfun = mjImageTargetTexture2DOES;
+//    }
+//    if(strcmp(procname, "glBindRenderbuffer") == 0)
+//    {
+//        pfun_glBindRenderbuffer = pfun;
+//        pfun = mjBindRenderbuffer;
+//    }
+//    if( strcmp(procname, "glEGLImageTargetRenderbufferStorageOES") == 0 )
+//    {
+//        pfun_glEGLImageTargetRenderbufferStorageOES = pfun;
+//        pfun = mjEGLImageTargetRenderbufferStorageOES;
+//    }
+//    if( strcmp(procname, "glBindTexture") == 0 )
+//    {
+//        pfun_glBindTexture = pfun;
+//        pfun = mjglBindTexture;
+//    }
+//    if(strcmp(procname, "glBindFramebuffer") == 0 )
+//    {
+//        pfun_glBindFramebuffer = pfun;
+//        pfun = mjBindFramebuffer;
+//    }
+//    if(strcmp(procname, "glGenTextures") == 0 )
+//    {
+//        pfun_glGenTextures = pfun;
+//        pfun = mjglGenTextures;
+//    }
+//    if(strcmp(procname, "glDeleteTextures") == 0)
+//    {
+//        pfun_glDeleteTextures = pfun;
+//        pfun = mjglDeleteTextures;
+//    }
+//    if(strcmp(procname, "glFramebufferTexture2D") == 0 )
+//    {
+//        pfun_glFramebufferTexture2D = pfun;
+//        pfun = mjglFramebufferTexture2D;
+//    }
+//    if(strcmp(procname, "glGenFramebuffers") == 0 )
+//    {
+//        pfun_glGenFramebuffers = pfun;
+//        pfun = mjglGenFramebuffers;
+//    }
+//    if(strcmp(procname, "glGenRenderbuffers") == 0)
+//    {
+//        pfun_glGenRenderbuffers = pfun;
+//        pfun = mjglGenRenderbuffers;
+//    }
+//    if(strcmp(procname, "glDrawArrays") == 0)
+//    {
+//        pfun_glDrawArrays = pfun;
+//        pfun = mjglDrawArrays;
+//    }
+//    if(strcmp(procname, "glDrawElements") == 0)
+//    {
+//        pfun_glDrawElements = pfun;
+//        pfun = mjglDrawElements;
+//    }
+//    if(strcmp(procname, "glDrawBuffers") == 0)
+//    {
+//        pfun_glDrawBuffers = pfun;
+//        pfun = mjglDrawBuffers;
+//    }
+//    if(strcmp(procname, "glDrawArraysInstanced") == 0)
+//    {
+//        pfun_glDrawArraysInstanced = pfun;
+//        pfun = mjglDrawArraysInstanced;
+//    }
+//    if(strcmp(procname, "glDrawElementsInstanced") == 0)
+//    {
+//        pfun_glDrawElementsInstanced = pfun;
+//        pfun = mjglDrawElementsInstanced;
+//    }
+//    if(strcmp(procname, "glTexImage2D") == 0)
+//    {
+//        pfun_glTexImage2D = pfun;
+//        pfun = mjglTexImage2D;
+//    }
+//    if(strcmp(procname, "glBindImageTexture") == 0)
+//    {
+//        pfun_glBindImageTexture = pfun;
+//        pfun = mjglBindImageTexture;
+//    }
+//    if(strcmp(procname, "glVertexAttribPointer") == 0)
+//    {
+//        pfun_glVertexAttribPointer = pfun;
+//        pfun = mjglVertexAttribPointer;
+//    }
+//    if(strcmp(procname, "glUseProgram") == 0)
+//    {
+//        pfun_glUseProgram = pfun;
+//        pfun = mjglUseProgram;
+//    }
+//    if(strcmp(procname, "glViewport") == 0)
+//    {
+//        pfun_glViewport = pfun;
+//        pfun = mjglViewport;
+//    }
+//    if(strcmp(procname, "glBindBuffer") == 0)
+//    {
+//        pfun_glBindBuffer = pfun;
+//        pfun = mjglBindBuffer;
+//    }
+//    if(strcmp(procname, "glRenderbufferStorage") == 0)
+//    {
+//        pfun_glRenderbufferStorage = pfun;
+//        pfun = mjglRenderbufferStorage;
+//    }
+//    if(strcmp(procname, "glFramebufferRenderbuffer") == 0)
+//    {
+//        pfun_glFramebufferRenderbuffer = pfun;
+//        pfun = mjglFramebufferRenderbuffer;
+//    }
+    if(strcmp(procname, "eglCreateImageKHR") == 0)
     {
-        pfun_gImageTargetTexture2DOES = pfun;
-        pfun = mjImageTargetTexture2DOES;
+        pfun_eglCreateImageKHR = pfun;
+        pfun = mjeglCreateImageKHR;
     }
-    if(strcmp(procname, "glBindRenderbuffer") == 0)
+    if(strcmp(procname, "eglCreateNativeClientBufferANDROID") == 0 )
     {
-        pfun_glBindRenderbuffer = pfun;
-        pfun = mjBindRenderbuffer;
-    }
-    if( strcmp(procname, "glEGLImageTargetRenderbufferStorageOES") == 0 )
-    {
-        pfun_glEGLImageTargetRenderbufferStorageOES = pfun;
-        pfun = mjEGLImageTargetRenderbufferStorageOES;
-    }
-    if( strcmp(procname, "glBindTexture") == 0 )
-    {
-        pfun_glBindTexture = pfun;
-        pfun = mjglBindTexture;
-    }
-    if(strcmp(procname, "glBindFramebuffer") == 0 )
-    {
-        pfun_glBindFramebuffer = pfun;
-        pfun = mjBindFramebuffer;
-    }
-    if(strcmp(procname, "glGenTextures") == 0 )
-    {
-        pfun_glGenTextures = pfun;
-        pfun = mjglGenTextures;
-    }
-    if(strcmp(procname, "glDeleteTextures") == 0)
-    {
-        pfun_glDeleteTextures = pfun;
-        pfun = mjglDeleteTextures;
-    }
-    if(strcmp(procname, "glFramebufferTexture2D") == 0 )
-    {
-        pfun_glFramebufferTexture2D = pfun;
-        pfun = mjglFramebufferTexture2D;
-    }
-    if(strcmp(procname, "glGenFramebuffers") == 0 )
-    {
-        pfun_glGenFramebuffers = pfun;
-        pfun = mjglGenFramebuffers;
-    }
-    if(strcmp(procname, "glGenRenderbuffers") == 0)
-    {
-        pfun_glGenRenderbuffers = pfun;
-        pfun = mjglGenRenderbuffers;
-    }
-    if(strcmp(procname, "glDrawArrays") == 0)
-    {
-        pfun_glDrawArrays = pfun;
-        pfun = mjglDrawArrays;
-    }
-    if(strcmp(procname, "glDrawElements") == 0)
-    {
-        pfun_glDrawElements = pfun;
-        pfun = mjglDrawElements;
-    }
-    if(strcmp(procname, "glDrawBuffers") == 0)
-    {
-        pfun_glDrawBuffers = pfun;
-        pfun = mjglDrawBuffers;
-    }
-    if(strcmp(procname, "glDrawArraysInstanced") == 0)
-    {
-        pfun_glDrawArraysInstanced = pfun;
-        pfun = mjglDrawArraysInstanced;
-    }
-    if(strcmp(procname, "glDrawElementsInstanced") == 0)
-    {
-        pfun_glDrawElementsInstanced = pfun;
-        pfun = mjglDrawElementsInstanced;
-    }
-    if(strcmp(procname, "glTexImage2D") == 0)
-    {
-        pfun_glTexImage2D = pfun;
-        pfun = mjglTexImage2D;
-    }
-    if(strcmp(procname, "glBindImageTexture") == 0)
-    {
-        pfun_glBindImageTexture = pfun;
-        pfun = mjglBindImageTexture;
-    }
-    if(strcmp(procname, "glVertexAttribPointer") == 0)
-    {
-        pfun_glVertexAttribPointer = pfun;
-        pfun = mjglVertexAttribPointer;
-    }
-    if(strcmp(procname, "glUseProgram") == 0)
-    {
-        pfun_glUseProgram = pfun;
-        pfun = mjglUseProgram;
-    }
-    if(strcmp(procname, "glViewport") == 0)
-    {
-        pfun_glViewport = pfun;
-        pfun = mjglViewport;
-    }
-    if(strcmp(procname, "glBindBuffer") == 0)
-    {
-        pfun_glBindBuffer = pfun;
-        pfun = mjglBindBuffer;
-    }
-    if(strcmp(procname, "glRenderbufferStorage") == 0)
-    {
-        pfun_glRenderbufferStorage = pfun;
-        pfun = mjglRenderbufferStorage;
-    }
-    if(strcmp(procname, "glFramebufferRenderbuffer") == 0)
-    {
-        pfun_glFramebufferRenderbuffer = pfun;
-        pfun = mjglFramebufferRenderbuffer;
+        pfun_eglCreateNativeClientBufferANDROID = pfun;
+        pfun = mjeglCreateNativeClientBufferANDROID;
     }
     return pfun;
 }
 
-
+//void hookEglGetProcAddress(void * myEglGetProcAddress,void ** oldEglSwapBuffers)
+//{
+//
+//}
 
 void hookEGLFun()
 {
+    void *baseadd = get_module_base(getpid(), "libEGL.so");
     hook((uint32_t) eglGetError, (uint32_t)mj_eglGetError, (uint32_t **) &old_eglGetError);
     hook((uint32_t) eglGetDisplay, (uint32_t)mj_eglGetDisplay, (uint32_t **) &old_eglGetDisplay);
     hook((uint32_t) eglInitialize, (uint32_t)mj_eglInitialize, (uint32_t **) &old_eglInitialize);
@@ -622,9 +721,13 @@ void hookEGLFun()
     hook((uint32_t) eglQueryContext, (uint32_t)mj_eglQueryContext, (uint32_t **) &old_eglQueryContext);
     hook((uint32_t) eglWaitGL, (uint32_t)mj_eglWaitGL, (uint32_t **) &old_eglWaitGL);
     hook((uint32_t) eglWaitNative, (uint32_t)mj_eglWaitNative, (uint32_t **) &old_eglWaitNative);
-    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
+//    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
     hook((uint32_t) eglCopyBuffers, (uint32_t)mj_eglCopyBuffers, (uint32_t **) &old_eglCopyBuffers);
-    hook((uint32_t) eglGetProcAddress, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
+//    hook((uint32_t) eglGetProcAddress, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
+
+    hookEglGetProcAddress((void*)mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
+
+    //    HookToFunctionBase((uint32_t) 0x00012144, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
 
     return;
 }

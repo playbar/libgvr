@@ -204,7 +204,7 @@ namespace {
         if (gl_error != GL_NO_ERROR) {
             LOGW("GL error @ %s: %d", label, gl_error);
             // Crash immediately to make OpenGL errors obvious.
-            abort();
+//            abort();
         }
     }
 
@@ -307,23 +307,27 @@ void TreasureHuntRenderer::InitializeGl() {
     gvr_api_->InitializeGl();
     multiview_enabled_ = gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
     LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
-
+    CheckGLError("Cube program params");
     int index = multiview_enabled_ ? 1 : 0;
     const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
+    CheckGLError("Cube program params");
     const int grid_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
     const int pass_through_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
     const int reticle_vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
     const int reticle_fragment_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
-
+    CheckGLError("Cube program params");
     cube_program_ = glCreateProgram();
     glAttachShader(cube_program_, vertex_shader);
     glAttachShader(cube_program_, pass_through_shader);
     glLinkProgram(cube_program_);
     glUseProgram(cube_program_);
 
+    CheckGLError("Cube program params");
     cube_position_param_ = glGetAttribLocation(cube_program_, "a_Position");
     cube_normal_param_ = glGetAttribLocation(cube_program_, "a_Normal");
     cube_color_param_ = glGetAttribLocation(cube_program_, "a_Color");
+
+    CheckGLError("Cube program params");
 
     cube_model_param_ = glGetUniformLocation(cube_program_, "u_Model");
     cube_modelview_param_ = glGetUniformLocation(cube_program_, "u_MVMatrix");
@@ -713,6 +717,7 @@ void TreasureHuntRenderer::OnResume() {
  */
 int TreasureHuntRenderer::LoadGLShader(int type, const char** shadercode) {
     int shader = glCreateShader(type);
+    CheckGLError("Cube program params");
     glShaderSource(shader, 1, shadercode, nullptr);
     glCompileShader(shader);
 
