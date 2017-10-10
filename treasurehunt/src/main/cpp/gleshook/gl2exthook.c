@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <GLES3/gl31.h>
-#include <GLES2/gl2ext.h>
+#include <GLES3/gl3.h>
+#include <GLES3/gl3ext.h>
 #include "callstack.h"
 #include <android/log.h>
 #include <string.h>
@@ -59,19 +59,19 @@ void mj_glCopyTexSubImage3DOES (GLenum target, GLint level, GLint xoffset, GLint
     return old_glCopyTexSubImage3DOES(target, level, xoffset, yoffset, zoffset, x, y, width, height);
 }
 
-void (*old_glEGLImageTargetRenderbufferStorageOES)(GLenum target, GLeglImageOES image) = NULL;
-void mj_glEGLImageTargetRenderbufferStorageOES (GLenum target, GLeglImageOES image)
-{
-    LOGITAG("mjgl","mj_glEGLImageTargetRenderbufferStorageOES, tid=%d", gettid());
-    return old_glEGLImageTargetRenderbufferStorageOES(target, image);
-}
-
-void (*old_glEGLImageTargetTexture2DOES)(GLenum target, GLeglImageOES image) = NULL;
-void mj_glEGLImageTargetTexture2DOES (GLenum target, GLeglImageOES image)
-{
-    LOGITAG("mjgl","mj_glEGLImageTargetTexture2DOES, tid=%d", gettid());
-    return old_glEGLImageTargetTexture2DOES(target, image);
-}
+//void (*old_glEGLImageTargetRenderbufferStorageOES)(GLenum target, GLeglImageOES image) = NULL;
+//void mj_glEGLImageTargetRenderbufferStorageOES (GLenum target, GLeglImageOES image)
+//{
+//    LOGITAG("mjgl","mj_glEGLImageTargetRenderbufferStorageOES, tid=%d", gettid());
+//    return old_glEGLImageTargetRenderbufferStorageOES(target, image);
+//}
+//
+//void (*old_glEGLImageTargetTexture2DOES)(GLenum target, GLeglImageOES image) = NULL;
+//void mj_glEGLImageTargetTexture2DOES (GLenum target, GLeglImageOES image)
+//{
+//    LOGITAG("mjgl","mj_glEGLImageTargetTexture2DOES, tid=%d", gettid());
+//    return old_glEGLImageTargetTexture2DOES(target, image);
+//}
 
 void (*old_glFramebufferTexture3DOES)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset) = NULL;
 void mj_glFramebufferTexture3DOES (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)
@@ -117,19 +117,19 @@ GLboolean mj_glUnmapBufferOES (GLenum target)
 
 void hookgl2extFun()
 {
-    hook((uint32_t) glTexImage3DOES, (uint32_t)mj_glTexImage3DOES, (uint32_t **) &old_glTexImage3DOES);
-    hook((uint32_t) glTexSubImage3DOES, (uint32_t)mj_glTexSubImage3DOES, (uint32_t **) &old_glTexSubImage3DOES);
-    hook((uint32_t) glCompressedTexImage3DOES, (uint32_t)mj_glCompressedTexImage3DOES, (uint32_t **) &old_glCompressedTexImage3DOES);
-    hook((uint32_t) glCompressedTexSubImage3DOES, (uint32_t)mj_glCompressedTexSubImage3DOES, (uint32_t **) &old_glCompressedTexSubImage3DOES);
-    hook((uint32_t) glCopyTexSubImage3DOES, (uint32_t)mj_glCopyTexSubImage3DOES, (uint32_t **) &old_glCopyTexSubImage3DOES);
-    hook((uint32_t) glEGLImageTargetRenderbufferStorageOES, (uint32_t)mj_glEGLImageTargetRenderbufferStorageOES, (uint32_t **) &old_glEGLImageTargetRenderbufferStorageOES);
-    hook((uint32_t) glEGLImageTargetTexture2DOES, (uint32_t)mj_glEGLImageTargetTexture2DOES, (uint32_t **) &old_glEGLImageTargetTexture2DOES);
-    hook((uint32_t) glFramebufferTexture3DOES, (uint32_t)mj_glFramebufferTexture3DOES, (uint32_t **) &old_glFramebufferTexture3DOES);
-    hook((uint32_t) glGetBufferPointervOES, (uint32_t)mj_glGetBufferPointervOES, (uint32_t **) &old_glGetBufferPointervOES);
-    hook((uint32_t) glGetProgramBinaryOES, (uint32_t)mj_glGetProgramBinaryOES, (uint32_t **) &old_glGetProgramBinaryOES);
-    hook((uint32_t) glProgramBinaryOES, (uint32_t)mj_glProgramBinaryOES, (uint32_t **) &old_glProgramBinaryOES);
-    hook((uint32_t) glMapBufferOES, (uint32_t)mj_glMapBufferOES, (uint32_t **) &old_glMapBufferOES);
-    hook((uint32_t) glUnmapBufferOES, (uint32_t)mj_glUnmapBufferOES, (uint32_t **) &old_glUnmapBufferOES);
+//    hook((uint32_t) glTexImage3DOES, (uint32_t)mj_glTexImage3DOES, (uint32_t **) &old_glTexImage3DOES);
+//    hook((uint32_t) glTexSubImage3DOES, (uint32_t)mj_glTexSubImage3DOES, (uint32_t **) &old_glTexSubImage3DOES);
+//    hook((uint32_t) glCompressedTexImage3DOES, (uint32_t)mj_glCompressedTexImage3DOES, (uint32_t **) &old_glCompressedTexImage3DOES);
+//    hook((uint32_t) glCompressedTexSubImage3DOES, (uint32_t)mj_glCompressedTexSubImage3DOES, (uint32_t **) &old_glCompressedTexSubImage3DOES);
+//    hook((uint32_t) glCopyTexSubImage3DOES, (uint32_t)mj_glCopyTexSubImage3DOES, (uint32_t **) &old_glCopyTexSubImage3DOES);
+//    hook((uint32_t) glEGLImageTargetRenderbufferStorageOES, (uint32_t)mj_glEGLImageTargetRenderbufferStorageOES, (uint32_t **) &old_glEGLImageTargetRenderbufferStorageOES);
+//    hook((uint32_t) glEGLImageTargetTexture2DOES, (uint32_t)mj_glEGLImageTargetTexture2DOES, (uint32_t **) &old_glEGLImageTargetTexture2DOES);
+//    hook((uint32_t) glFramebufferTexture3DOES, (uint32_t)mj_glFramebufferTexture3DOES, (uint32_t **) &old_glFramebufferTexture3DOES);
+//    hook((uint32_t) glGetBufferPointervOES, (uint32_t)mj_glGetBufferPointervOES, (uint32_t **) &old_glGetBufferPointervOES);
+//    hook((uint32_t) glGetProgramBinaryOES, (uint32_t)mj_glGetProgramBinaryOES, (uint32_t **) &old_glGetProgramBinaryOES);
+//    hook((uint32_t) glProgramBinaryOES, (uint32_t)mj_glProgramBinaryOES, (uint32_t **) &old_glProgramBinaryOES);
+//    hook((uint32_t) glMapBufferOES, (uint32_t)mj_glMapBufferOES, (uint32_t **) &old_glMapBufferOES);
+//    hook((uint32_t) glUnmapBufferOES, (uint32_t)mj_glUnmapBufferOES, (uint32_t **) &old_glUnmapBufferOES);
 
 
 //    hook((uint32_t) glEGLImageTargetTexture2DOES, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
