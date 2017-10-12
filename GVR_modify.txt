@@ -1,0 +1,313 @@
+GVR修改
+
+
+修改sDaydreamPhoneOverrideForTesting
+修改libgvr.so
+修改MutableEGLConfigChooser
+修改scanlineRacer的swapmode
+
+a.编辑*\smali\com\google\vr\vrcore\base\api\VrCoreUtils.smali，修改"com.google.vr.vrcore"为 "com.baofeng.mj"
+a.编辑*\smali\com\google\vr\internal\controller\ControllerServiceBridge.smali，修改"com.google.vr.vrcore"为"com.baofeng.mj"
+a.编辑*\smali\com\google\vr\internal\controller\ServiceBridge.smali，修改"com.google.vr.vrcore"为"com.baofeng.mj"
+b.编辑*\smali\com\google\vr\sdk\controller\ControllerManager.smali，修改"com.google.vr.vrcore"为"com.baofeng.mj"
+
+
+1.0.2
+.text:000834F6                 CMP             R4, #0
+.text:000834F8                 ITE NE
+.text:000834FA                 MOVNE           R4, #4
+.text:000834FC                 MOVEQ           R4, #0
+00 2C 14 BF 04 24 00 24
+只有dev-keys
+
+1.0.3
+.text:000834F6                 CMP             R4, #0
+.text:000834F8                 ITE NE
+.text:000834FA                 MOVNE           R4, #4
+.text:000834FC                 MOVEQ           R4, #0
+有dev-keys和test-keys
+
+1.1.0
+.text:000834F6                 CMP             R4, #0
+.text:000834F8                 ITE NE
+.text:000834FA                 MOVNE           R4, #4
+.text:000834FC                 MOVEQ           R4, #0
+00 2C 14 BF 04 24 00 24
+有dev-keys和test-keys
+
+2,3,4,6,7同上
+
+8
+.text:000A6CC2                 CMP             R3, #0
+.text:000A6CC4                 ITE EQ
+.text:000A6CC6                 MOVEQ           R4, #0
+.text:000A6CC8                 MOVNE           R4, #4
+00 2B 0C BF 00 24  04 24
+
+1.libgvr.so修改
+FEATURE_VR_MODE_HIGH_PERFORMANCE
+46 45 41 54 55 52 45 5F 56 52 5F 4D 4F 44 45 5F 48 49 47 48 5F 50 45
+52 46 4F 52 4D 41 4E 43 45 0setSwapMode0
+
+FEATURE_WIFI
+46 45 41 54 55 52 45 5F 57 49 46 49 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00
+
+2.GvrSurfaceView$GLThread.smali修改
+com/google/vr/ndk/base/GvrSurfaceView$GLThread
+.method public setSwapMode(I)V
+    .locals 2
+
+    .prologue
+
+    添加
+	const/4 p1, 0x0
+
+
+
+3.在较早时间点运行
+    private static void setsDaydreamPhoneOverrideForTesting() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                Class cls = Class.forName("com.google.vr.ndk.base.DaydreamUtils");
+                Field f = cls.getDeclaredField("sDaydreamPhoneOverrideForTesting");
+                f.setAccessible(true);
+                f.set(null, true);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private static void setsFingerprint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                Class cls = Class.forName("android.os.Build");
+                Field f = cls.getDeclaredField("FINGERPRINT");
+                f.setAccessible(true);
+                String fingerPrint = (String) f.get(null);
+                if (!TextUtils.isEmpty(fingerPrint)) {
+                    if (!fingerPrint.endsWith("dev-keys")) {
+                        String end = fingerPrint.substring(fingerPrint.length() - 8);
+                        String newFingerPrint = fingerPrint.replace(end, "dev-keys");
+                        f.set(null, newFingerPrint);
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+.method private static setsDaydreamPhoneOverrideForTesting()V
+    .locals 5
+
+    .prologue
+    .line 253
+    :try_start_0
+    const-string v3, "com.google.vr.ndk.base.DaydreamUtils"
+
+    invoke-static {v3}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
+
+    move-result-object v0
+
+    .line 254
+    .local v0, "cls":Ljava/lang/Class;
+    const-string v3, "sDaydreamPhoneOverrideForTesting"
+
+    invoke-virtual {v0, v3}, Ljava/lang/Class;->getDeclaredField(Ljava/lang/String;)Ljava/lang/reflect/Field;
+
+    move-result-object v2
+
+    .line 255
+    .local v2, "f":Ljava/lang/reflect/Field;
+    const/4 v3, 0x1
+
+    invoke-virtual {v2, v3}, Ljava/lang/reflect/Field;->setAccessible(Z)V
+
+    .line 256
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-static {v4}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+
+    move-result-object v4
+
+    invoke-virtual {v2, v3, v4}, Ljava/lang/reflect/Field;->set(Ljava/lang/Object;Ljava/lang/Object;)V
+    :try_end_0
+    .catch Ljava/lang/ClassNotFoundException; {:try_start_0 .. :try_end_0} :catch_0
+    .catch Ljava/lang/NoSuchFieldException; {:try_start_0 .. :try_end_0} :catch_1
+    .catch Ljava/lang/IllegalAccessException; {:try_start_0 .. :try_end_0} :catch_2
+
+    .line 266
+    .end local v2    # "f":Ljava/lang/reflect/Field;
+    :goto_0
+    return-void
+
+    .line 257
+    :catch_0
+    move-exception v1
+
+    .line 258
+    .local v1, "e":Ljava/lang/ClassNotFoundException;
+    invoke-virtual {v1}, Ljava/lang/ClassNotFoundException;->printStackTrace()V
+
+    goto :goto_0
+
+    .line 259
+    .end local v1    # "e":Ljava/lang/ClassNotFoundException;
+    :catch_1
+    move-exception v1
+
+    .line 260
+    .local v1, "e":Ljava/lang/NoSuchFieldException;
+    invoke-virtual {v1}, Ljava/lang/NoSuchFieldException;->printStackTrace()V
+
+    goto :goto_0
+
+    .line 261
+    .end local v1    # "e":Ljava/lang/NoSuchFieldException;
+    :catch_2
+    move-exception v1
+
+    .line 262
+    .local v1, "e":Ljava/lang/IllegalAccessException;
+    invoke-virtual {v1}, Ljava/lang/IllegalAccessException;->printStackTrace()V
+
+    goto :goto_0
+.end method
+
+
+.method private static setsFingerprint()V
+    .locals 7
+
+    .prologue
+    .line 270
+    :try_start_0
+    const-string v6, "android.os.Build"
+
+    invoke-static {v6}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
+
+    move-result-object v0
+
+    .line 271
+    .local v0, "cls":Ljava/lang/Class;
+    const-string v6, "FINGERPRINT"
+
+    invoke-virtual {v0, v6}, Ljava/lang/Class;->getDeclaredField(Ljava/lang/String;)Ljava/lang/reflect/Field;
+
+    move-result-object v3
+
+    .line 272
+    .local v3, "f":Ljava/lang/reflect/Field;
+    const/4 v6, 0x1
+
+    invoke-virtual {v3, v6}, Ljava/lang/reflect/Field;->setAccessible(Z)V
+
+    .line 273
+    const/4 v6, 0x0
+
+    invoke-virtual {v3, v6}, Ljava/lang/reflect/Field;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/lang/String;
+
+    .line 274
+    .local v4, "fingerPrint":Ljava/lang/String;
+    invoke-static {v4}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v6
+
+    if-nez v6, :cond_0
+
+    .line 276
+    const-string v6, "dev-keys"
+
+    invoke-virtual {v4, v6}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v6
+
+    if-nez v6, :cond_0
+
+    .line 277
+    invoke-virtual {v4}, Ljava/lang/String;->length()I
+
+    move-result v6
+
+    add-int/lit8 v6, v6, -0x8
+
+    invoke-virtual {v4, v6}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+
+    move-result-object v2
+
+    .line 278
+    .local v2, "end":Ljava/lang/String;
+    const-string v6, "dev-keys"
+
+    invoke-virtual {v4, v2, v6}, Ljava/lang/String;->replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+
+    move-result-object v5
+
+    .line 279
+    .local v5, "newFingerPrint":Ljava/lang/String;
+    const/4 v6, 0x0
+
+    invoke-virtual {v3, v6, v5}, Ljava/lang/reflect/Field;->set(Ljava/lang/Object;Ljava/lang/Object;)V
+    :try_end_0
+    .catch Ljava/lang/ClassNotFoundException; {:try_start_0 .. :try_end_0} :catch_0
+    .catch Ljava/lang/NoSuchFieldException; {:try_start_0 .. :try_end_0} :catch_1
+    .catch Ljava/lang/IllegalAccessException; {:try_start_0 .. :try_end_0} :catch_2
+
+    .line 289
+    .end local v2    # "end":Ljava/lang/String;
+    .end local v3    # "f":Ljava/lang/reflect/Field;
+    .end local v4    # "fingerPrint":Ljava/lang/String;
+    .end local v5    # "newFingerPrint":Ljava/lang/String;
+    :cond_0
+    :goto_0
+    return-void
+
+    .line 282
+    :catch_0
+    move-exception v1
+
+    .line 283
+    .local v1, "e":Ljava/lang/ClassNotFoundException;
+    invoke-virtual {v1}, Ljava/lang/ClassNotFoundException;->printStackTrace()V
+
+    goto :goto_0
+
+    .line 284
+    .end local v1    # "e":Ljava/lang/ClassNotFoundException;
+    :catch_1
+    move-exception v1
+
+    .line 285
+    .local v1, "e":Ljava/lang/NoSuchFieldException;
+    invoke-virtual {v1}, Ljava/lang/NoSuchFieldException;->printStackTrace()V
+
+    goto :goto_0
+
+    .line 286
+    .end local v1    # "e":Ljava/lang/NoSuchFieldException;
+    :catch_2
+    move-exception v1
+
+    .line 287
+    .local v1, "e":Ljava/lang/IllegalAccessException;
+    invoke-virtual {v1}, Ljava/lang/IllegalAccessException;->printStackTrace()V
+
+    goto :goto_0
+.end method

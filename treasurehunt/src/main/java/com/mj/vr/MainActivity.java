@@ -20,8 +20,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.google.hook.GLESHook;
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +107,8 @@ public class MainActivity extends Activity {
         checkRuntimePermissionsRunnable();
         // Ensure fullscreen immersion.
         setImmersiveSticky();
+        setsDaydreamPhoneOverrideForTesting();
+        setsFingerprint();
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
                 new View.OnSystemUiVisibilityChangeListener() {
                     @Override
@@ -231,6 +236,48 @@ public class MainActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    private static void setsDaydreamPhoneOverrideForTesting() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                Class cls = Class.forName("com.google.vr.ndk.base.DaydreamUtils");
+                Field f = cls.getDeclaredField("sDaydreamPhoneOverrideForTesting");
+                f.setAccessible(true);
+                f.set(null, true);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private static void setsFingerprint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                Class cls = Class.forName("android.os.Build");
+                Field f = cls.getDeclaredField("FINGERPRINT");
+                f.setAccessible(true);
+                String fingerPrint = (String) f.get(null);
+                if (!TextUtils.isEmpty(fingerPrint)) {
+                    if (!fingerPrint.endsWith("dev-keys")) {
+                        String end = fingerPrint.substring(fingerPrint.length() - 8);
+                        String newFingerPrint = fingerPrint.replace(end, "dev-keys");
+                        f.set(null, newFingerPrint);
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private native long nativeCreateRenderer(ClassLoader appClassLoader, Context context, long nativeGvrContext);
