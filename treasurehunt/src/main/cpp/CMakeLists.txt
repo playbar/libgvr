@@ -114,8 +114,8 @@ target_link_libraries(glhook
                      android
  #                   lib_EH
  #                   vulkan
-                     texresource
-                     GLESv3
+ #                   texresource
+                     GLESv2
                      EGL)
 
 

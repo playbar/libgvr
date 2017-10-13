@@ -6,7 +6,7 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <pthread.h>
-#include <glresource.h>
+//#include <glresource.h>
 #include "hookutils.h"
 #include "log.h"
 
@@ -50,9 +50,9 @@ EGLImageKHR mj_eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target,
     }
     EGLImageKHR img = old_eglCreateImageKHR(dpy, ctx, target, buffer, attrib_list);
     LOGITAG("mjgl", "mj_eglCreateImageKHR, buffer=%0X, image=%0X, tid=%d", buffer, img, gettid());
-    if( gMJTexture[gIndex].tid == gettid()) {
-        gMJTexture[gIndex].eglImage = img;
-    }
+//    if( gMJTexture[gIndex].tid == gettid()) {
+//        gMJTexture[gIndex].eglImage = img;
+//    }
     return img;
 #endif
 }
@@ -304,7 +304,7 @@ EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
     LOGITAG("mjgl", "mj_eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d",textureId , gettid());
     return textureId;
 #else
-    gMJTexture[gIndex].texStatus = TEX_STATUS_BEGIN;
+//    gMJTexture[gIndex].texStatus = TEX_STATUS_BEGIN;
     int i = 0;
     while(attrib_list[i] != EGL_NONE){
         LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
@@ -312,12 +312,12 @@ EGLClientBuffer mj_eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
     }
     EGLClientBuffer buffer = old_eglCreateNativeClientBufferANDROID(attrib_list);
     LOGITAG("mjgl", "mj_eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d", buffer, gettid());
-    if( buffer ){
-        gMJTexture[gIndex].width = attrib_list[1];
-        gMJTexture[gIndex].height = attrib_list[3];
-        gMJTexture[gIndex].buffer = buffer;
-        gMJTexture[gIndex].tid = gettid();
-    }
+//    if( buffer ){
+//        gMJTexture[gIndex].width = attrib_list[1];
+//        gMJTexture[gIndex].height = attrib_list[3];
+//        gMJTexture[gIndex].buffer = buffer;
+//        gMJTexture[gIndex].tid = gettid();
+//    }
     return buffer;
 #endif
 }

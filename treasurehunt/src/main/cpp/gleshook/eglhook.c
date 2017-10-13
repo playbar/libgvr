@@ -6,7 +6,7 @@
 #include <EGL/egl.h>
 #include <pthread.h>
 #include <syscallstack.h>
-#include <glresource.h>
+//#include <glresource.h>
 #include <libpng/pngutils.h>
 #include <EGL/eglext.h>
 #include <stdlib.h>
@@ -310,11 +310,11 @@ void mjImageTargetTexture2DOES(GLenum target, void *image)
 {
     LOGITAG("mjgl","mjImageTargetTexture2DOES, image=%X, tid=%d", image, gettid());
     pfun_gImageTargetTexture2DOES(target, image);
-    if( gMJTexture[gIndex].eglImage == image && gMJTexture[gIndex].tid == gettid())
-    {
-        gMJTexture[gIndex].texStatus = TEX_STATUS_END;
-        ++gIndex;
-    }
+//    if( gMJTexture[gIndex].eglImage == image && gMJTexture[gIndex].tid == gettid())
+//    {
+//        gMJTexture[gIndex].texStatus = TEX_STATUS_END;
+//        ++gIndex;
+//    }
     return;
 }
 
@@ -358,18 +358,18 @@ void (*pfun_glGenTextures)(GLsizei n, GLuint *textures) = NULL;
 void mjglGenTextures (GLsizei n, GLuint *textures)
 {
 //    sys_call_stack();
-    if(gettid() == gRendThread )
-    {
-        if(gTexture == 0 ) {
-            gTexture = CreateSimpleTexture2D();
-        }
-    }
+//    if(gettid() == gRendThread )
+//    {
+//        if(gTexture == 0 ) {
+//            gTexture = CreateSimpleTexture2D();
+//        }
+//    }
     pfun_glGenTextures(n, textures);
     LOGITAG("mjgl", "mjglGenTextures, texid=%d, tid=%d", textures[0], gettid());
-    if(gMJTexture[gIndex].texStatus == TEX_STATUS_BEGIN && gMJTexture[gIndex].tid == gettid())
-    {
-        gMJTexture[gIndex].textureid = textures[0];
-    }
+//    if(gMJTexture[gIndex].texStatus == TEX_STATUS_BEGIN && gMJTexture[gIndex].tid == gettid())
+//    {
+//        gMJTexture[gIndex].textureid = textures[0];
+//    }
     return;
 }
 
@@ -525,6 +525,7 @@ EGLImageKHR mjeglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, 
     }
     EGLint eglImgAttrs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE, EGL_NONE };
     EGLImageKHR img = pfun_eglCreateImageKHR(dpy, eglGetCurrentContext(), EGL_GL_TEXTURE_2D_KHR, buffer, eglImgAttrs);
+    LOGITAG("mjgl", "mjeglCreateImageKHR, image=%0X, tid=%d", img, gettid());
     return img;
 
 }
@@ -689,6 +690,7 @@ EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char 
 
 void hookEGLFun()
 {
+    LOGITAG("mjgl", "hookEGLFun, tid=%d",  gettid());
     void *baseadd = get_module_base(getpid(), "libEGL.so");
     hook((uint32_t) eglGetError, (uint32_t)mj_eglGetError, (uint32_t **) &old_eglGetError);
     hook((uint32_t) eglGetDisplay, (uint32_t)mj_eglGetDisplay, (uint32_t **) &old_eglGetDisplay);
