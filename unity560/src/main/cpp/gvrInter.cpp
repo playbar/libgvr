@@ -2,6 +2,7 @@
 // Created by houguoli on 2017/1/3.
 //
 
+#include <GLES3/gl3.h>
 #include "gvrInter.h"
 #include "gvrfn.h"
 #include "gvrglobal.h"
@@ -261,8 +262,8 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
 {
     CLogMessage msg(__FUNCTION__);
     LOGI("mjgvr env:%0x, obj:%0X, paramLong:%lld, paramBool:%d", env, obj, paramLong, paramBool);
-    bool re = false;
-//    re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+    bool re = true;
+    re = gGvrApi.GvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
 //    re = true;
     LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
     return re;
@@ -292,7 +293,9 @@ JNIEXPORT jobject JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRenderReproje
         JNIEnv* env, jobject obj, jlong paramLong)
 {
     CLogMessage msg(__FUNCTION__);
-    return gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0 );
+    jobject re = gGvrApi.GvrApi_nativeRenderReprojectionThread(env, obj, paramLong);
+    return NULL;
 }
 
 JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeRequestContextSharing(
@@ -376,7 +379,7 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplaySe
         JNIEnv* env, jobject obj, jlong paramLong)
 {
     CLogMessage msg(__FUNCTION__);
-    bool re = false;
+    bool re = true;
     re = gGvrApi.GvrApi_nativeUsingVrDisplayService(env, obj, paramLong);
     LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
     return re;
@@ -457,6 +460,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_cardboard_DisplaySynchronizer_nativeUp
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jint paramInt)
 {
     CLogMessage msg(__FUNCTION__);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     gGvrApi.DisplaySynchronizer_nativeUpdate(env, obj, paramLong1, paramLong2, paramInt);
 }
 
@@ -761,6 +765,7 @@ JNIEXPORT void JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeFrameSubmit(
         JNIEnv* env, jobject obj, jlong paramLong1, jlong paramLong2, jfloatArray paramArrayOfFloat)
 {
     CLogMessage msg(__FUNCTION__);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     gGvrApi.GvrApi_nativeFrameSubmit(env, obj, paramLong1, paramLong2, paramArrayOfFloat);
 }
 //todo

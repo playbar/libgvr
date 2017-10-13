@@ -93,6 +93,9 @@ public class MainActivity extends Activity {
             if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 permissionsNeeded.add("Write External Storage");
 
+            if (!addPermission(permissionsList, Manifest.permission.WRITE_SETTINGS))
+                permissionsNeeded.add("Write SETTINGS Storage");
+
             if (permissionsList.size() > 0)
             {
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), 124);
@@ -107,8 +110,8 @@ public class MainActivity extends Activity {
         checkRuntimePermissionsRunnable();
         // Ensure fullscreen immersion.
         setImmersiveSticky();
-        GLESHook.setsDaydreamPhoneOverrideForTesting();
-        GLESHook.setsFingerprint();
+        setsDaydreamPhoneOverrideForTesting();
+        setsFingerprint();
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
                 new View.OnSystemUiVisibilityChangeListener() {
                     @Override

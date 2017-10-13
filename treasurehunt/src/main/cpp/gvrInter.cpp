@@ -1989,9 +1989,9 @@ JNIEXPORT bool JNICALL Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojec
     CLogMessage msg(__FUNCTION__);
     bool re = false;
     InitLoadFun();
-//    if( g_fpGvrApi_nativeSetAsyncReprojectionEnabled)
-//        re = g_fpGvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
-    re = false;
+    if( g_fpGvrApi_nativeSetAsyncReprojectionEnabled)
+        re = g_fpGvrApi_nativeSetAsyncReprojectionEnabled(env, obj, paramLong, paramBool);
+//    re = false;
     LOGI("mjgvr F:%s, bool:%d", __FUNCTION__, re );
     return re;
 }

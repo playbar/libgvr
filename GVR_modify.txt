@@ -318,7 +318,9 @@ com/google/vr/ndk/base/GvrSurfaceView$GLThread
 .end method
 
 
-4，hook 代码并且实现
+4，封装egl hook接口，添加位置：GvrLayout->init-> return-void 前，
+  invoke-static {}, Lcom/google/hook/GLESHook;->initHook()V
+代码并且实现如下：
 typedef EGLImageKHR (*FP_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list);
 FP_eglCreateImageKHR pfun_eglCreateImageKHR = NULL;
 EGLImageKHR mjeglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list)
