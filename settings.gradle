@@ -3,7 +3,7 @@
 //include ':gvrres'
 //include ':sdk-treasurehunt'
 include ':gvr16'
-include ':treasurehunt'
+include ':treasurehunt16'
 //include ':hello-jni'
 //include ':gvrres12'
 //include ':unitygvr12'
