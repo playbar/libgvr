@@ -19,7 +19,7 @@ public class GLESHook {
     public static native void hookTest();
 
     public static void setsDaydreamPhoneOverrideForTesting() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 Class cls = Class.forName("com.google.vr.ndk.base.DaydreamUtils");
                 Field f = cls.getDeclaredField("sDaydreamPhoneOverrideForTesting");

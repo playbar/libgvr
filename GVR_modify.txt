@@ -62,9 +62,7 @@ FEATURE_WIFI
 com/google/vr/ndk/base/GvrSurfaceView$GLThread
 .method public setSwapMode(I)V
     .locals 2
-
     .prologue
-
     添加
 	const/4 p1, 0x0
 

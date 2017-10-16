@@ -110,8 +110,8 @@ public class MainActivity extends Activity {
         checkRuntimePermissionsRunnable();
         // Ensure fullscreen immersion.
         setImmersiveSticky();
-        setsDaydreamPhoneOverrideForTesting();
-        setsFingerprint();
+        GLESHook.setsDaydreamPhoneOverrideForTesting();
+        GLESHook.setsFingerprint();
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
                 new View.OnSystemUiVisibilityChangeListener() {
                     @Override
