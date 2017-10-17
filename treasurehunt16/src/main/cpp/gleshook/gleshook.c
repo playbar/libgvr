@@ -200,6 +200,36 @@ void mj_glBlitFramebuffer (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, G
     return old_glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 }
 
+void (*old_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
+void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
+{
+    LOGITAG("mjgl", "mj_glViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
+    if( x == 1031) {
+        x = 0;
+        width = width * 2;
+    }
+//    if( x == 960)
+//    {
+//        x = 0;
+//        width = width * 2;
+//    }
+    return old_glViewport(x, y, width, height);
+}
+
+void (*old_glClear)(GLbitfield mask) = NULL;
+void mj_glClear (GLbitfield mask)
+{
+    LOGITAG("mjgl", "mj_glClear, mask=%d, tid=%d", mask, gettid());
+    return old_glClear(mask);
+}
+
+void (*old_glClearColor)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = NULL;
+void mj_glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
+{
+    LOGITAG("mjgl", "mj_glClearColor, r=%06.5f, g=%06.5f, b=%06.5f, a=%06.5f tid=%d", red, green, blue, alpha,  gettid());
+    return old_glClearColor(red, green, blue, alpha);
+}
+
 void hookESFun()
 {
     hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
@@ -225,16 +255,20 @@ void hookESFun()
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
     hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
     hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
+    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
+
 //    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
+    hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
+    hook((uint32_t) glClearColor, (uint32_t)mj_glClearColor, (uint32_t **) &old_glClearColor);
 
 }
 
 void hookGLESFun()
 {
     hookEGLFun();
-//    hookEglextFun();
-//    hookgl2extFun();
-//    hookESFun();
+    hookEglextFun();
+    hookgl2extFun();
+    hookESFun();
     return;
 }
 

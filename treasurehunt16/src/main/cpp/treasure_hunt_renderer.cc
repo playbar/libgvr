@@ -305,7 +305,7 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
 
 void TreasureHuntRenderer::InitializeGl() {
     gvr_api_->InitializeGl();
-    multiview_enabled_ = gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
+    multiview_enabled_ = false; //gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
     LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
     CheckGLError("Cube program params");
     int index = multiview_enabled_ ? 1 : 0;
@@ -533,7 +533,7 @@ void TreasureHuntRenderer::DrawFrame() {
     gvr_sizei size =  frame.GetBufferSize(0);
     // Draw the world.
     frame.BindBuffer(0);
-    glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
+    glClearColor(1.0f, 1.0f, 1.0f, 0.5f);  // Dark background so text shows up.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (multiview_enabled_) {
         DrawWorld(kMultiview);

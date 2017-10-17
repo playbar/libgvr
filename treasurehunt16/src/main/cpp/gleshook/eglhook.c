@@ -228,7 +228,7 @@ EGLContext mj_eglCreateContext(EGLDisplay dpy, EGLConfig config, EGLContext shar
 {
     void *baseadd = get_module_base(getpid(), "libEGL.so");
     EGLContext context = old_eglCreateContext(dpy, config, share_context, attrib_list);
-    LOGITAG("mjgl","mj_eglCreateContext context=%x, share_context=%x, pid=%d", context, share_context, getpid());
+    LOGITAG("mjgl","mj_eglCreateContext context=%0X, share_context=%0X, pid=%d", context, share_context, getpid());
     return context;
 }
 
@@ -514,6 +514,38 @@ void mjglFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum rende
     return pfun_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 
+
+void (*pfun_glClear)(GLbitfield mask) = NULL;
+void mjglClear (GLbitfield mask)
+{
+    LOGITAG("mjgl", "mjglClear, mask=%d, tid=%d", mask, gettid());
+    return pfun_glClear(mask);
+}
+
+void (*pfun_glClearColor)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = NULL;
+void mjglClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
+{
+    LOGITAG("mjgl", "mjglClearColor, tid=%d",  gettid());
+    return pfun_glClearColor(red, green, blue, alpha);
+}
+
+void (*pfun_glClearDepthf)(GLfloat depth) = NULL;
+void mjglClearDepthf (GLfloat depth)
+{
+    LOGITAG("mjgl", "glClearDepthf, tid=%d",  gettid());
+    return pfun_glClearDepthf(depth);
+}
+
+void (*pfun_glClearStencil)(GLint s) = NULL;
+void mjglClearStencil (GLint s)
+{
+    LOGITAG("mjgl", "mjglClearStencil, tid=%d",  gettid());
+    return pfun_glClearStencil(s);
+}
+
+int ImageWidth;
+int ImageHeight;
+
 EGLImageKHR (*pfun_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list) = NULL;
 EGLImageKHR mjeglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list)
 {
@@ -523,12 +555,21 @@ EGLImageKHR mjeglCreateImageKHR(EGLDisplay dpy, EGLContext ctx, EGLenum target, 
         LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
         i = i+2;
     }
-    EGLint eglImgAttrs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE, EGL_NONE };
+
+    EGLint eglImageAttributes[] = {
+//            EGL_WIDTH, ImageWidth,
+//            EGL_HEIGHT, ImageHeight,
+//            EGL_MATCH_FORMAT_KHR,  EGL_FORMAT_RGBA_8888_KHR,
+            EGL_GL_TEXTURE_LEVEL_KHR, 0,
+            EGL_IMAGE_PRESERVED_KHR, EGL_FALSE,
+            EGL_NONE};
+
+    EGLint eglImgAttrs[] = { EGL_GL_TEXTURE_LEVEL_KHR, 0, EGL_IMAGE_PRESERVED_KHR,EGL_FALSE, EGL_NONE };
     EGLImageKHR img = pfun_eglCreateImageKHR(dpy, eglGetCurrentContext(),
                                              EGL_GL_TEXTURE_2D_KHR,
 //                                             EGL_GL_RENDERBUFFER_KHR,
-                                             buffer, eglImgAttrs);
-    LOGITAG("mjgl", "mjeglCreateImageKHR, image=%0X, tid=%d", img, gettid());
+                                             buffer, eglImageAttributes);
+    LOGITAG("mjgl", "mjeglCreateImageKHR, image=%0X, context=%0X tid=%d", img, eglGetCurrentContext(), gettid());
     return img;
 
 }
@@ -538,13 +579,16 @@ EGLClientBuffer mjeglCreateNativeClientBufferANDROID (const EGLint *attrib_list)
 {
     int width = attrib_list[1];
     int height = attrib_list[3];
+    ImageWidth = width;
+    ImageHeight = height;
+    eglMakeCurrent(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW), eglGetCurrentSurface(EGL_READ), eglGetCurrentContext());
     GLuint textureId;
     glGenTextures ( 1, &textureId );
     glBindTexture ( GL_TEXTURE_2D, textureId );
     glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
-    LOGITAG("mjgl", "mj_eglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d",textureId , gettid());
+    LOGITAG("mjgl", "mjeglCreateNativeClientBufferANDROID, buffer=%0X, tid=%d",textureId , gettid());
     return textureId;
 
 //    ///////////////////
@@ -559,7 +603,6 @@ EGLClientBuffer mjeglCreateNativeClientBufferANDROID (const EGLint *attrib_list)
 //    return renderBuffer;
 }
 
-
 //typedef void (*__eglMustCastToProperFunctionPointerType)(void);
 EGLAPI __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
@@ -569,121 +612,6 @@ EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char 
 //    old_eglGetProcAddress(procname);
     __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
     LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s, tid=%d", procname, gettid());
-//    if( strcmp(procname, "glEGLImageTargetTexture2DOES") == 0)
-//    {
-//        pfun_gImageTargetTexture2DOES = pfun;
-//        pfun = mjImageTargetTexture2DOES;
-//    }
-//    if(strcmp(procname, "glBindRenderbuffer") == 0)
-//    {
-//        pfun_glBindRenderbuffer = pfun;
-//        pfun = mjBindRenderbuffer;
-//    }
-//    if( strcmp(procname, "glEGLImageTargetRenderbufferStorageOES") == 0 )
-//    {
-//        pfun_glEGLImageTargetRenderbufferStorageOES = pfun;
-//        pfun = mjEGLImageTargetRenderbufferStorageOES;
-//    }
-//    if( strcmp(procname, "glBindTexture") == 0 )
-//    {
-//        pfun_glBindTexture = pfun;
-//        pfun = mjglBindTexture;
-//    }
-//    if(strcmp(procname, "glBindFramebuffer") == 0 )
-//    {
-//        pfun_glBindFramebuffer = pfun;
-//        pfun = mjBindFramebuffer;
-//    }
-//    if(strcmp(procname, "glGenTextures") == 0 )
-//    {
-//        pfun_glGenTextures = pfun;
-//        pfun = mjglGenTextures;
-//    }
-//    if(strcmp(procname, "glDeleteTextures") == 0)
-//    {
-//        pfun_glDeleteTextures = pfun;
-//        pfun = mjglDeleteTextures;
-//    }
-//    if(strcmp(procname, "glFramebufferTexture2D") == 0 )
-//    {
-//        pfun_glFramebufferTexture2D = pfun;
-//        pfun = mjglFramebufferTexture2D;
-//    }
-//    if(strcmp(procname, "glGenFramebuffers") == 0 )
-//    {
-//        pfun_glGenFramebuffers = pfun;
-//        pfun = mjglGenFramebuffers;
-//    }
-//    if(strcmp(procname, "glGenRenderbuffers") == 0)
-//    {
-//        pfun_glGenRenderbuffers = pfun;
-//        pfun = mjglGenRenderbuffers;
-//    }
-//    if(strcmp(procname, "glDrawArrays") == 0)
-//    {
-//        pfun_glDrawArrays = pfun;
-//        pfun = mjglDrawArrays;
-//    }
-//    if(strcmp(procname, "glDrawElements") == 0)
-//    {
-//        pfun_glDrawElements = pfun;
-//        pfun = mjglDrawElements;
-//    }
-//    if(strcmp(procname, "glDrawBuffers") == 0)
-//    {
-//        pfun_glDrawBuffers = pfun;
-//        pfun = mjglDrawBuffers;
-//    }
-//    if(strcmp(procname, "glDrawArraysInstanced") == 0)
-//    {
-//        pfun_glDrawArraysInstanced = pfun;
-//        pfun = mjglDrawArraysInstanced;
-//    }
-//    if(strcmp(procname, "glDrawElementsInstanced") == 0)
-//    {
-//        pfun_glDrawElementsInstanced = pfun;
-//        pfun = mjglDrawElementsInstanced;
-//    }
-//    if(strcmp(procname, "glTexImage2D") == 0)
-//    {
-//        pfun_glTexImage2D = pfun;
-//        pfun = mjglTexImage2D;
-//    }
-//    if(strcmp(procname, "glBindImageTexture") == 0)
-//    {
-//        pfun_glBindImageTexture = pfun;
-//        pfun = mjglBindImageTexture;
-//    }
-//    if(strcmp(procname, "glVertexAttribPointer") == 0)
-//    {
-//        pfun_glVertexAttribPointer = pfun;
-//        pfun = mjglVertexAttribPointer;
-//    }
-//    if(strcmp(procname, "glUseProgram") == 0)
-//    {
-//        pfun_glUseProgram = pfun;
-//        pfun = mjglUseProgram;
-//    }
-//    if(strcmp(procname, "glViewport") == 0)
-//    {
-//        pfun_glViewport = pfun;
-//        pfun = mjglViewport;
-//    }
-//    if(strcmp(procname, "glBindBuffer") == 0)
-//    {
-//        pfun_glBindBuffer = pfun;
-//        pfun = mjglBindBuffer;
-//    }
-//    if(strcmp(procname, "glRenderbufferStorage") == 0)
-//    {
-//        pfun_glRenderbufferStorage = pfun;
-//        pfun = mjglRenderbufferStorage;
-//    }
-//    if(strcmp(procname, "glFramebufferRenderbuffer") == 0)
-//    {
-//        pfun_glFramebufferRenderbuffer = pfun;
-//        pfun = mjglFramebufferRenderbuffer;
-//    }
     if(strcmp(procname, "eglCreateImageKHR") == 0)
     {
         pfun_eglCreateImageKHR = pfun;
@@ -694,6 +622,143 @@ EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char 
         pfun_eglCreateNativeClientBufferANDROID = pfun;
         pfun = mjeglCreateNativeClientBufferANDROID;
     }
+    if( strcmp(procname, "glEGLImageTargetTexture2DOES") == 0)
+    {
+        pfun_gImageTargetTexture2DOES = pfun;
+        pfun = mjImageTargetTexture2DOES;
+    }
+    if(strcmp(procname, "glBindRenderbuffer") == 0)
+    {
+        pfun_glBindRenderbuffer = pfun;
+        pfun = mjBindRenderbuffer;
+    }
+    if( strcmp(procname, "glEGLImageTargetRenderbufferStorageOES") == 0 )
+    {
+        pfun_glEGLImageTargetRenderbufferStorageOES = pfun;
+        pfun = mjEGLImageTargetRenderbufferStorageOES;
+    }
+    if( strcmp(procname, "glBindTexture") == 0 )
+    {
+        pfun_glBindTexture = pfun;
+        pfun = mjglBindTexture;
+    }
+    if(strcmp(procname, "glBindFramebuffer") == 0 )
+    {
+        pfun_glBindFramebuffer = pfun;
+        pfun = mjBindFramebuffer;
+    }
+    if(strcmp(procname, "glGenTextures") == 0 )
+    {
+        pfun_glGenTextures = pfun;
+        pfun = mjglGenTextures;
+    }
+    if(strcmp(procname, "glDeleteTextures") == 0)
+    {
+        pfun_glDeleteTextures = pfun;
+        pfun = mjglDeleteTextures;
+    }
+    if(strcmp(procname, "glFramebufferTexture2D") == 0 )
+    {
+        pfun_glFramebufferTexture2D = pfun;
+        pfun = mjglFramebufferTexture2D;
+    }
+    if(strcmp(procname, "glGenFramebuffers") == 0 )
+    {
+        pfun_glGenFramebuffers = pfun;
+        pfun = mjglGenFramebuffers;
+    }
+    if(strcmp(procname, "glGenRenderbuffers") == 0)
+    {
+        pfun_glGenRenderbuffers = pfun;
+        pfun = mjglGenRenderbuffers;
+    }
+    if(strcmp(procname, "glDrawArrays") == 0)
+    {
+        pfun_glDrawArrays = pfun;
+        pfun = mjglDrawArrays;
+    }
+    if(strcmp(procname, "glDrawElements") == 0)
+    {
+        pfun_glDrawElements = pfun;
+        pfun = mjglDrawElements;
+    }
+    if(strcmp(procname, "glDrawBuffers") == 0)
+    {
+        pfun_glDrawBuffers = pfun;
+        pfun = mjglDrawBuffers;
+    }
+    if(strcmp(procname, "glDrawArraysInstanced") == 0)
+    {
+        pfun_glDrawArraysInstanced = pfun;
+        pfun = mjglDrawArraysInstanced;
+    }
+    if(strcmp(procname, "glDrawElementsInstanced") == 0)
+    {
+        pfun_glDrawElementsInstanced = pfun;
+        pfun = mjglDrawElementsInstanced;
+    }
+    if(strcmp(procname, "glTexImage2D") == 0)
+    {
+        pfun_glTexImage2D = pfun;
+        pfun = mjglTexImage2D;
+    }
+    if(strcmp(procname, "glBindImageTexture") == 0)
+    {
+        pfun_glBindImageTexture = pfun;
+        pfun = mjglBindImageTexture;
+    }
+    if(strcmp(procname, "glVertexAttribPointer") == 0)
+    {
+        pfun_glVertexAttribPointer = pfun;
+        pfun = mjglVertexAttribPointer;
+    }
+    if(strcmp(procname, "glUseProgram") == 0)
+    {
+        pfun_glUseProgram = pfun;
+        pfun = mjglUseProgram;
+    }
+    if(strcmp(procname, "glViewport") == 0)
+    {
+        pfun_glViewport = pfun;
+        pfun = mjglViewport;
+    }
+    if(strcmp(procname, "glBindBuffer") == 0)
+    {
+        pfun_glBindBuffer = pfun;
+        pfun = mjglBindBuffer;
+    }
+    if(strcmp(procname, "glRenderbufferStorage") == 0)
+    {
+        pfun_glRenderbufferStorage = pfun;
+        pfun = mjglRenderbufferStorage;
+    }
+    if(strcmp(procname, "glFramebufferRenderbuffer") == 0)
+    {
+        pfun_glFramebufferRenderbuffer = pfun;
+        pfun = mjglFramebufferRenderbuffer;
+    }
+    if(strcmp(procname, "glClear") == 0 )
+    {
+        pfun_glClear = pfun;
+        pfun = mjglClear;
+    }
+    if(strcmp(procname, "glClearColor") == 0 )
+    {
+        pfun_glClearColor = pfun;
+        pfun = mjglClearColor;
+    }
+    if(strcmp(procname, "glClearDepthf") == 0) {
+        pfun_glClearDepthf = pfun;
+        pfun = mjglClearDepthf;
+    }
+    if(strcmp(procname, "glClearStencil") ==0)
+    {
+        pfun_glClearStencil = pfun;
+        pfun = mjglClearStencil;
+    }
+
+
+
     return pfun;
 }
 
