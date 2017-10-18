@@ -39,10 +39,10 @@ int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
 {
     // sub_28DC8  sub_95960
     LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x, tid=%d", a1, gettid());
-    return  true;
-//    int re = old_gvr_set_async_reprojection_enabled(a1, a2);
-    fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
-    int re = pfun(a1->user_prefs);
+//    return  true;
+    int re = old_gvr_set_async_reprojection_enabled(a1, a2);
+//    fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
+//    int re = pfun(a1->user_prefs);
     return re;
 }
 
@@ -133,7 +133,7 @@ gvr_context * mj_gvr_create(JNIEnv *env, jobject app_context, jobject class_load
 	sys_call_stack();
 	LOGITAG("mjgvr","mj_gvr_create, tid=%d", gettid());
     gvr_context *re = NULL;
-    sub_C1324("GVR");
+//    sub_C1324("GVR");
 	re = old_gvr_create(env, app_context, class_loader);
     return re;
 }
@@ -225,11 +225,11 @@ int32_t (*old_gvr_get_viewer_type)(const gvr_context* gvr) = NULL;
 int32_t mj_gvr_get_viewer_type(const gvr_context* gvr)
 {
     LOGITAG("mjgvr","mj_gvr_get_viewer_type, tid=%d", gettid());
-	fn_get_viewer_type get_viewer_type = NULL;
-    void *pdata = (void*)((int)gvr->user_prefs->p001 + 0xAC);
-    get_viewer_type = (gvr->user_prefs->p001->pfun43);
-    int32_t re = get_viewer_type(gvr->user_prefs);
-//    int32_t re = old_gvr_get_viewer_type(gvr);
+//	fn_get_viewer_type get_viewer_type = NULL;
+//    void *pdata = (void*)((int)gvr->user_prefs->p001 + 0xAC);
+//    get_viewer_type = (gvr->user_prefs->p001->pfun43);
+//    int32_t re = get_viewer_type(gvr->user_prefs);
+    int32_t re = old_gvr_get_viewer_type(gvr);
     return re;
 }
 
@@ -352,16 +352,16 @@ gvr_buffer_viewport* (*old_gvr_buffer_viewport_create)(gvr_context* gvr) = NULL;
 gvr_buffer_viewport* mj_gvr_buffer_viewport_create(gvr_context* gvr)
 {
     LOGITAG("mjgvr","mj_gvr_buffer_viewport_create, tid=%d", gettid());
-//    gvr_buffer_viewport *viewport = old_gvr_buffer_viewport_create(gvr);
-    int ilen = sizeof(gvr_buffer_viewport);
-    gvr_buffer_viewport *viewport = (gvr_buffer_viewport*)malloc(ilen);
-    memset(viewport, 0, ilen);
-    viewport->eye = GVR_LEFT_EYE;
-    viewport->buffer_index = 0;
-    memset(viewport->data1, 0xff, 8);
-    viewport->layer_index = 0;
-    memset(viewport->data11, 0xff, 4);
-    viewport->reprojection = GVR_REPROJECTION_FULL;
+    gvr_buffer_viewport *viewport = old_gvr_buffer_viewport_create(gvr);
+//    int ilen = sizeof(gvr_buffer_viewport);
+//    gvr_buffer_viewport *viewport = (gvr_buffer_viewport*)malloc(ilen);
+//    memset(viewport, 0, ilen);
+//    viewport->eye = GVR_LEFT_EYE;
+//    viewport->buffer_index = 0;
+//    memset(viewport->data1, 0xff, 8);
+//    viewport->layer_index = 0;
+//    memset(viewport->data11, 0xff, 4);
+//    viewport->reprojection = GVR_REPROJECTION_FULL;
     return viewport;
 }
 
@@ -397,19 +397,19 @@ gvr_buffer_spec* (*old_gvr_buffer_spec_create)(gvr_context* gvr) = NULL;
 gvr_buffer_spec* mj_gvr_buffer_spec_create(gvr_context* gvr)
 {
     LOGITAG("mjgvr","mj_gvr_buffer_spec_create, tid=%d", gettid());
-    int ilen = sizeof(gvr_buffer_spec);
-    gvr_buffer_spec *buff = (gvr_buffer_spec*)malloc(ilen);
-    memset(buff, 0, ilen);
-    buff->size.width = 0;
-    buff->size.height = 0;
-    buff->depth_stencil_format = GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F_STENCIL_8;
-    buff->color_format = GVR_COLOR_FORMAT_RGBA_8888;
-    buff->num_samples = 1;
-    buff->num_layers = 1;
-    fn_buffer_spec_create pfun =  gvr->user_prefs->p001->pfun10;
-    pfun(&buff->size, gvr->user_prefs);
+//    int ilen = sizeof(gvr_buffer_spec);
+//    gvr_buffer_spec *buff = (gvr_buffer_spec*)malloc(ilen);
+//    memset(buff, 0, ilen);
+//    buff->size.width = 0;
+//    buff->size.height = 0;
+//    buff->depth_stencil_format = GVR_DEPTH_STENCIL_FORMAT_DEPTH_32_F_STENCIL_8;
+//    buff->color_format = GVR_COLOR_FORMAT_RGBA_8888;
+//    buff->num_samples = 1;
+//    buff->num_layers = 1;
+//    fn_buffer_spec_create pfun =  gvr->user_prefs->p001->pfun10;
+//    pfun(&buff->size, gvr->user_prefs);
 
-//    gvr_buffer_spec *buff = old_gvr_buffer_spec_create(gvr);
+    gvr_buffer_spec *buff = old_gvr_buffer_spec_create(gvr);
     return buff;
 }
 
@@ -497,10 +497,10 @@ gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
     gvr_frame *frame = old_gvr_swap_chain_acquire_frame(swap_chain);
     if( (int)frame != (int)swap_chain)
         LOGITAG("mjgvr","error, tid=%d", gettid());
-    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
-//    pfun(swap_chain->context->user_prefs);
-//    gvr_frame *frame = (gvr_frame*)swap_chain;
-//    swap_chain->data04[0] = 1;
+//    fn_sub_271AC pfun = swap_chain->context->user_prefs->p001->pfun13;
+////    pfun(swap_chain->context->user_prefs);
+////    gvr_frame *frame = (gvr_frame*)swap_chain;
+////    swap_chain->data04[0] = 1;
     return frame;
 }
 
@@ -574,9 +574,9 @@ int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
 //    sys_call_stack();
     gRendThread = gettid();
     LOGITAG("mjgvr","mj_gvr_render_reprojection_thread, tid=%d", gettid());
-    fn_sub_28A86 pfun = gvr->user_prefs->p001->pfun17;
-    int re = pfun(gvr->user_prefs);
-//    int re = old_gvr_render_reprojection_thread(gvr);
+//    fn_sub_28A86 pfun = gvr->user_prefs->p001->pfun17;
+//    int re = pfun(gvr->user_prefs);
+    int re = old_gvr_render_reprojection_thread(gvr);
     return re;
 }
 
@@ -684,7 +684,7 @@ bool InitHook()
 			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
 			   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)
 //		   &&HookToFunctionBase(g_hGVR, 0x6722, (void*)mj_sub_24738, (void**)&old_sub_24738)
-               &&HookToFunctionBase( 0x68CA4,(void*)mj_sub_68CA4, (void**)&old_sub_68CA4)
+//               &&HookToFunctionBase( 0x68CA4,(void*)mj_sub_68CA4, (void**)&old_sub_68CA4)
 			   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_get_error, (void*)mj_gvr_get_error, (void**)&old_gvr_get_error)
 			   &&HookToFunction(g_hGVR, fn_gvr_clear_error,(void*)mj_gvr_clear_error, (void**)&old_gvr_clear_error)

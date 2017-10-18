@@ -204,9 +204,10 @@ void (*old_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
 void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
 {
     LOGITAG("mjgl", "mj_glViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
-    if( x == 1031) {
-        x = 0;
-        width = width * 2;
+//    if( x == 1031)
+    {
+//        x = 1031;
+        width = width;
     }
 //    if( x == 960)
 //    {

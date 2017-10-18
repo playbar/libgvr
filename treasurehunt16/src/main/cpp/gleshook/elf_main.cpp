@@ -210,10 +210,16 @@ void hookswapInImpl() {
     }
 }
 extern "C" {
-void hookEglGetProcAddress(void *myEglGetProcAddress, void **oldEglSwapBuffers) {
+
+void hookImportFunInit()
+{
     __hooker.phrase_proc_maps();
     __hooker.dump_module_list();
-    __hooker.hook_module("libgvr.so", "eglGetProcAddress", myEglGetProcAddress, oldEglSwapBuffers);
+}
+
+void hookImportFun(const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers)
+{
+    __hooker.hook_module("libgvr.so", funname, myEglGetProcAddress, oldEglSwapBuffers);
 }
 }
 

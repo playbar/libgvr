@@ -20,7 +20,8 @@ void hookESFun();
 void hookGLESFun();
 void unhookAllFun();
 
-void hookEglGetProcAddress(void * myEglGetProcAddress,void ** oldEglSwapBuffers);
+void hookImportFunInit();
+void hookImportFun(const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers);
 
 void hookThreadFun();
 void hookVulkanFun();
