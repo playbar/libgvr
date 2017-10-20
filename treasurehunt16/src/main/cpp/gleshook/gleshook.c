@@ -6,6 +6,7 @@
 #include <string.h>
 #include <EGL/egl.h>
 #include <pthread.h>
+#include <EGL/eglext.h>
 #include "hookutils.h"
 #include "log.h"
 
@@ -75,9 +76,11 @@ void mj_glGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
     return old_glGenRenderbuffers(n, renderbuffers);
 }
 
+extern int rendertid;
 void (*old_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
 void mj_glBindFramebuffer (GLenum target, GLuint framebuffer)
 {
+    rendertid = gettid();
     LOGITAG("mjgl","mj_glBindFramebuffer, framebuffer=%d, tid=%d", framebuffer, gettid());
     return old_glBindFramebuffer(target, framebuffer);
 }
@@ -144,18 +147,48 @@ void mj_glDrawArrays (GLenum mode, GLint first, GLsizei count)
     return old_glDrawArrays(mode, first, count);
 }
 
+extern int swapbuffer;
+extern EGLBoolean (*old_eglSwapBuffers)(EGLDisplay dpy, EGLSurface surface);
+//extern EGLenum gtype;
+//extern const EGLint *gattrib_list;
+//extern EGLSyncKHR (*old_eglCreateSyncKHR)(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list) = NULL;
+
 void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices) = NULL;
 void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
     LOGITAG("mjgl","mj_glDrawElements, tid=%d", gettid());
-    return old_glDrawElements(mode, count, type, indices);
+    old_glDrawElements(mode, count, type, indices);
+//    glFlush();
+//    glFinish();
+
+//    sleep(1);
+    static int scount = 0;
+//    glFlush();
+    if( swapbuffer)
+    {
+//        glFinish();
+//        glFlush();
+//        old_eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
+        ++scount;
+        if(scount == 2 )
+        {
+            old_eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
+//            old_eglCreateSyncKHR(eglGetCurrentDisplay(), gtype, gattrib_list);
+            swapbuffer = 0;
+            scount = 0;
+        }
+    }
+
+    return;
 }
 
 void (*old_glUseProgram) (GLuint program) = NULL;
 void mj_glUseProgram (GLuint program)
 {
     const unsigned char *version = glGetString(GL_VERSION);
+    const unsigned char *strexten = glGetString(GL_EXTENSIONS) ;
     LOGITAG("mjgl","mj_glUseProgram, programid=%d, tid=%d", program, gettid());
+    LOGITAG("mjgl","mj_glUseProgram, extension=%s, tid=%d",  strexten, gettid());
     return old_glUseProgram(program);
 }
 
@@ -267,8 +300,8 @@ void hookESFun()
 void hookGLESFun()
 {
     hookEGLFun();
-    hookEglextFun();
-    hookgl2extFun();
+//    hookEglextFun();
+//    hookgl2extFun();
     hookESFun();
     return;
 }

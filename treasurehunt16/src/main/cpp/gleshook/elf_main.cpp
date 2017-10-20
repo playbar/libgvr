@@ -36,12 +36,12 @@ double getSeconds() {
 }
 
 
-static unsigned int (*old_eglSwapBuffers)(void *dpy, void *draw) = NULL;
-static unsigned int my_eglSwapBuffers(void *dpy, void *draw) {
-    log_info("eglSwapBuffers called,arg display:%p,surface:%p", dpy, draw);
-    int result = old_eglSwapBuffers(dpy, draw);
-    return result;
-}
+//static unsigned int (*old_eglSwapBuffers)(void *dpy, void *draw) = NULL;
+//static unsigned int my_eglSwapBuffers(void *dpy, void *draw) {
+//    log_info("eglSwapBuffers called,arg display:%p,surface:%p", dpy, draw);
+//    int result = old_eglSwapBuffers(dpy, draw);
+//    return result;
+//}
 
 
 static unsigned int my_skipEglSwapBuffers(void *dpy, void *draw) {
@@ -62,32 +62,32 @@ static void logDeviceStatus(){
 }
 
 
-static unsigned int count_eglSwapBuffers(void *dpy, void *draw) {
-    static int count = 0;
-    static double prev;
-    static double lastCount = 0;
-    static double maxInterval = 0;
-    static double minInterval;
-    double countInterval = 10.0;
-
-    double current = getSeconds();
-    double inteval = current - prev;
-    prev = current;
-    maxInterval = (maxInterval > inteval) ? maxInterval : inteval;
-    minInterval = (minInterval < inteval) ? minInterval : inteval;
-    count++;
-    if (current - lastCount >= countInterval) {
-        log_info("eglSwapBuffers:%d Times,average fps:%g,maxInterval:%g,minInterval:%g",count,count/(current-lastCount),maxInterval*1000,minInterval*1000);
-        maxInterval = 0;
-        minInterval = 10000;
-        count = 0;
-        lastCount = current;
-//        logDeviceStatus();
-    }
-
-
-    return old_eglSwapBuffers(dpy, draw);
-}
+//static unsigned int count_eglSwapBuffers(void *dpy, void *draw) {
+//    static int count = 0;
+//    static double prev;
+//    static double lastCount = 0;
+//    static double maxInterval = 0;
+//    static double minInterval;
+//    double countInterval = 10.0;
+//
+//    double current = getSeconds();
+//    double inteval = current - prev;
+//    prev = current;
+//    maxInterval = (maxInterval > inteval) ? maxInterval : inteval;
+//    minInterval = (minInterval < inteval) ? minInterval : inteval;
+//    count++;
+//    if (current - lastCount >= countInterval) {
+//        log_info("eglSwapBuffers:%d Times,average fps:%g,maxInterval:%g,minInterval:%g",count,count/(current-lastCount),maxInterval*1000,minInterval*1000);
+//        maxInterval = 0;
+//        minInterval = 10000;
+//        count = 0;
+//        lastCount = current;
+////        logDeviceStatus();
+//    }
+//
+//
+//    return old_eglSwapBuffers(dpy, draw);
+//}
 
 
 
@@ -192,23 +192,23 @@ static int __set_hook(JNIEnv *env, jobject thiz) {
 
 
 
-void hsiu() {
-    log_info("hookSwapInUnity\r\n");
-    __hooker.phrase_proc_maps();
-    __hooker.dump_module_list();
-    __hooker.hook_module("unity", "eglSwapBuffers", (void *) my_skipEglSwapBuffers, (void **) &old_eglSwapBuffers);
+//void hsiu() {
+//    log_info("hookSwapInUnity\r\n");
+//    __hooker.phrase_proc_maps();
+//    __hooker.dump_module_list();
+//    __hooker.hook_module("unity", "eglSwapBuffers", (void *) my_skipEglSwapBuffers, (void **) &old_eglSwapBuffers);
+//
+//}
 
-}
-
-void hookswapInImpl() {
-    log_info("hookswapInImpl\r\n");
-    static bool hasHook = false;
-    if (!hasHook) {
-        __hooker.hook_module("vrapiimpl", "eglSwapBuffers", (void *) my_skipEglSwapBuffers,
-                             (void **) &old_eglSwapBuffers);
-        hasHook = true;
-    }
-}
+//void hookswapInImpl() {
+//    log_info("hookswapInImpl\r\n");
+//    static bool hasHook = false;
+//    if (!hasHook) {
+//        __hooker.hook_module("vrapiimpl", "eglSwapBuffers", (void *) my_skipEglSwapBuffers,
+//                             (void **) &old_eglSwapBuffers);
+//        hasHook = true;
+//    }
+//}
 extern "C" {
 
 void hookImportFunInit()
@@ -217,24 +217,24 @@ void hookImportFunInit()
     __hooker.dump_module_list();
 }
 
-void hookImportFun(const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers)
+void hookImportFun(const char *modulename, const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers)
 {
-    __hooker.hook_module("libgvr.so", funname, myEglGetProcAddress, oldEglSwapBuffers);
+    __hooker.hook_module(modulename, funname, myEglGetProcAddress, oldEglSwapBuffers);
 }
 }
 
-void hookSwapForCount() {
-    log_info("enableCountFps");
-    __hooker.phrase_proc_maps();
-    __hooker.hook_module("vrapiimpl", "eglSwapBuffers", (void *) count_eglSwapBuffers,
-                         (void **) &old_eglSwapBuffers);
-
-    __hooker.hook_module("vrapi.so", "eglSwapBuffers", (void *) count_eglSwapBuffers, (void **) &old_eglSwapBuffers);
-    __hooker.hook_module("OculusPlugin", "eglSwapBuffers", (void *) count_eglSwapBuffers,
-                         (void **) &old_eglSwapBuffers);
-
-    __hooker.hook_module("OvrPlugin", "eglSwapBuffers", (void *) count_eglSwapBuffers, (void **) &old_eglSwapBuffers);
-}
+//void hookSwapForCount() {
+//    log_info("enableCountFps");
+//    __hooker.phrase_proc_maps();
+//    __hooker.hook_module("vrapiimpl", "eglSwapBuffers", (void *) count_eglSwapBuffers,
+//                         (void **) &old_eglSwapBuffers);
+//
+//    __hooker.hook_module("vrapi.so", "eglSwapBuffers", (void *) count_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+//    __hooker.hook_module("OculusPlugin", "eglSwapBuffers", (void *) count_eglSwapBuffers,
+//                         (void **) &old_eglSwapBuffers);
+//
+//    __hooker.hook_module("OvrPlugin", "eglSwapBuffers", (void *) count_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+//}
 
 
 

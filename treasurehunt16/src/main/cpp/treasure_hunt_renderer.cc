@@ -25,7 +25,7 @@
 #include <random>
 #include <unistd.h>
 
-#define LOG_TAG "TreasureHuntRenderer"
+#define LOG_TAG "render"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
@@ -559,6 +559,8 @@ void TreasureHuntRenderer::DrawFrame() {
     // Submit frame.
     frame.Submit(*viewport_list_, head_view_);
 
+//    glFinish();
+
     CheckGLError("onDrawFrame");
 
     // Update audio head rotation in audio API.
@@ -566,7 +568,6 @@ void TreasureHuntRenderer::DrawFrame() {
     gvr_audio_api_->Update();
     LOGE("DrawFrame  -- end");
 }
-
 
 void TreasureHuntRenderer::Draw() {
     LOGE("DrawFrame  -- begin");
@@ -757,7 +758,7 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 }
 
 void TreasureHuntRenderer::DrawCube(ViewType view) {
-    LOGE("DrawCube");
+    LOGE("DrawCube begin");
     glUseProgram(cube_program_);
 
     if (view == kMultiview) {

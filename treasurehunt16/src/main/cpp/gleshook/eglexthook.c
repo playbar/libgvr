@@ -64,10 +64,19 @@ EGLBoolean mj_eglDestroyImageKHR(EGLDisplay dpy, EGLImageKHR image)
     return old_eglDestroyImageKHR(dpy, image);
 }
 
+//extern int rendertid;
+//EGLenum gtype;
+//const EGLint *gattrib_list;
 EGLSyncKHR (*old_eglCreateSyncKHR)(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list) = NULL;
 EGLSyncKHR mj_eglCreateSyncKHR(EGLDisplay dpy, EGLenum type, const EGLint *attrib_list)
 {
-    EGLSyncKHR sync = old_eglCreateSyncKHR(dpy, type, attrib_list);
+//    gtype = type;
+//    gattrib_list = attrib_list;
+    EGLSyncKHR sync = NULL;
+//    if( rendertid == gettid())
+    {
+        sync = old_eglCreateSyncKHR(dpy, type, attrib_list);
+    }
     LOGITAG("mjgl", "mj_eglCreateSyncKHR, sync=%0X, tid=%d", sync, gettid());
     return sync;
 }

@@ -13,7 +13,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 public class MutableEglConfigChooser implements EGLConfigChooser {
     private static final int EGL_MUTABLE_RENDER_BUFFER_BIT = 4096;
     private static final int EGL_OPENGL_ES3_BIT_KHR = 64;
-    private boolean forceMutableBuffer = true;
+    private boolean forceMutableBuffer = false;
 
     public MutableEglConfigChooser() {
     }
@@ -31,7 +31,7 @@ public class MutableEglConfigChooser implements EGLConfigChooser {
                 EGL10.EGL_ALPHA_SIZE, 0,
                 EGL10.EGL_DEPTH_SIZE, 0,
                 EGL10.EGL_STENCIL_SIZE, 0,
-                EGL10.EGL_RENDERABLE_TYPE, 4,
+                EGL10.EGL_RENDERABLE_TYPE, 64,
                 EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
 //                EGLExt.EGL_MUTABLE_RENDER_BUFFER_BIT_KHR,
 //                EGL10.EGL_SURFACE_TYPE, 0x1004,

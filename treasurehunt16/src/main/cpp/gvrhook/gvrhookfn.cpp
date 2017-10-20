@@ -577,6 +577,7 @@ int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
 //    fn_sub_28A86 pfun = gvr->user_prefs->p001->pfun17;
 //    int re = pfun(gvr->user_prefs);
     int re = old_gvr_render_reprojection_thread(gvr);
+//    glFinish();
     return re;
 }
 

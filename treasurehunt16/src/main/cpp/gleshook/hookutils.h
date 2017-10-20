@@ -21,7 +21,7 @@ void hookGLESFun();
 void unhookAllFun();
 
 void hookImportFunInit();
-void hookImportFun(const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers);
+void hookImportFun(const char *modulename, const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers);
 
 void hookThreadFun();
 void hookVulkanFun();

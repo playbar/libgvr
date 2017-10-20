@@ -13,6 +13,12 @@
 #include "hookutils.h"
 #include "log.h"
 
+int rendertid = 0;
+int reprojectiontid = 0;
+int viewport = 0;
+int swapbuffer = 0;
+int gismaligpu = false;
+
 void* get_module_base(pid_t pid,const char* module_name)
 {
     FILE* fp;
@@ -109,6 +115,11 @@ EGLBoolean (*old_eglChooseConfig)(EGLDisplay dpy, const EGLint *attrib_list, EGL
 EGLBoolean mj_eglChooseConfig(EGLDisplay dpy, const EGLint *attrib_list, EGLConfig *configs, EGLint config_size, EGLint *num_config)
 {
     LOGITAG("mjgl","mj_eglChooseConfig, tid=%d", gettid());
+    int i = 0;
+    while(attrib_list[i] != EGL_NONE){
+        LOGITAG("mjgl", "attr:%0X, value:%d", attrib_list[i], attrib_list[i+1]);
+        i = i+2;
+    }
     return old_eglChooseConfig(dpy, attrib_list, configs, config_size, num_config);
 }
 
@@ -243,7 +254,12 @@ EGLBoolean (*old_eglMakeCurrent)(EGLDisplay dpy, EGLSurface draw, EGLSurface rea
 EGLBoolean mj_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx)
 {
     LOGITAG("mjgl","mj_eglMakeCurrent draw=%0X, read=%0X, context=%X, tid=%d", draw, read, ctx, gettid());
-    return old_eglMakeCurrent(dpy, draw, read, ctx);
+    EGLBoolean re = old_eglMakeCurrent(dpy, draw, read, ctx);
+    const char *glrender = glGetString(GL_RENDERER);
+    if(glrender && strstr(glrender, "Mali") != NULL ){
+        gismaligpu = true;
+    }
+    return re;
 }
 
 EGLContext (*old_eglGetCurrentContext)(void) = NULL;
@@ -294,7 +310,19 @@ EGLBoolean (*old_eglSwapBuffers)(EGLDisplay dpy, EGLSurface surface) = NULL;
 EGLBoolean mj_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 {
     LOGITAG("mjgl","mj_eglSwapBuffers, surface=%X, tid=%d", surface, gettid());
-    EGLBoolean re = old_eglSwapBuffers(dpy, surface);
+    sys_call_stack();
+    EGLBoolean re = true;
+//    eglMakeCurrent(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW), eglGetCurrentSurface(EGL_READ), eglGetCurrentContext());
+    if( gismaligpu && rendertid != gettid())
+    {
+        glFinish();
+//        glViewport(0, 0, 300, 1440);
+//        glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+//        glClear(  GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+//        re = old_eglSwapBuffers(dpy, surface);
+    }else{
+        re = old_eglSwapBuffers(dpy, surface);
+    }
     return re;
 }
 
@@ -489,6 +517,15 @@ void (*pfun_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
 void mjglViewport (GLint x, GLint y, GLsizei width, GLsizei height)
 {
     LOGITAG("mjgl", "mjglViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
+//    sys_call_stack();
+//    if( rendertid != gettid())
+//    {
+//        glFinish();
+//    }
+    if( gismaligpu && rendertid != gettid() && x == 0 )
+    {
+        swapbuffer = 1;
+    }
     return pfun_glViewport(x, y, width, height);
 
 }
@@ -798,14 +835,14 @@ void hookEGLFun()
     hook((uint32_t) eglQueryContext, (uint32_t)mj_eglQueryContext, (uint32_t **) &old_eglQueryContext);
     hook((uint32_t) eglWaitGL, (uint32_t)mj_eglWaitGL, (uint32_t **) &old_eglWaitGL);
     hook((uint32_t) eglWaitNative, (uint32_t)mj_eglWaitNative, (uint32_t **) &old_eglWaitNative);
-    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
+//    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
     hook((uint32_t) eglCopyBuffers, (uint32_t)mj_eglCopyBuffers, (uint32_t **) &old_eglCopyBuffers);
 //    hook((uint32_t) eglGetProcAddress, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
 
 
     hookImportFunInit();
-//    hookImportFun("eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
-    hookImportFun("eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
+    hookImportFun("libandroid_runtime.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+    hookImportFun("libgvr.so", "eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
 
 
 //        HookToFunctionBase((uint32_t) 0x00012144, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
