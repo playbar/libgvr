@@ -574,10 +574,11 @@ int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
     // ->sub_5EB60[0005eb69]->>mjglBindTexture
 //    sys_call_stack();
     gRendThread = gettid();
-    LOGITAG("mjgvr","mj_gvr_render_reprojection_thread, tid=%d", gettid());
+    LOGITAG("mjgvr","mj_gvr_render_reprojection_thread ------------begin, tid=%d", gettid());
 //    fn_sub_28A86 pfun = gvr->user_prefs->p001->pfun17;
 //    int re = pfun(gvr->user_prefs);
     int re = old_gvr_render_reprojection_thread(gvr);
+    LOGITAG("mjgvr","mj_gvr_render_reprojection_thread =============end, tid=%d", gettid());
 //    glFinish();
     return re;
 }

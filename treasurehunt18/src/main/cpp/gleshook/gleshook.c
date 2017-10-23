@@ -13,6 +13,9 @@
 
 //egl
 
+extern int rendertid;
+extern int gismaligpu;
+
 /////////////////////////////
 //gles
 void (*old_glShaderSource) (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) = NULL;
@@ -77,7 +80,7 @@ void mj_glGenRenderbuffers (GLsizei n, GLuint *renderbuffers)
     return old_glGenRenderbuffers(n, renderbuffers);
 }
 
-extern int rendertid;
+
 void (*old_glBindFramebuffer)(GLenum target, GLuint framebuffer) = NULL;
 void mj_glBindFramebuffer (GLenum target, GLuint framebuffer)
 {
@@ -168,11 +171,11 @@ void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
 //    glFlush();
     if( swapbuffer)
     {
-//        glFinish();
+        glFinish();
 //        glFlush();
 //        old_eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
         ++scount;
-        if(scount == 2 )
+//        if(scount == 2 )
         {
             old_eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
 //            old_eglCreateSyncKHR(eglGetCurrentDisplay(), gtype, gattrib_list);
@@ -188,9 +191,9 @@ void (*old_glUseProgram) (GLuint program) = NULL;
 void mj_glUseProgram (GLuint program)
 {
     const unsigned char *version = glGetString(GL_VERSION);
-    const unsigned char *strexten = glGetString(GL_EXTENSIONS) ;
+//    const unsigned char *strexten = glGetString(GL_EXTENSIONS) ;
     LOGITAG("mjgl","mj_glUseProgram, programid=%d, tid=%d", program, gettid());
-    LOGITAG("mjgl","mj_glUseProgram, extension=%s, tid=%d",  strexten, gettid());
+//    LOGITAG("mjgl","mj_glUseProgram, extension=%s, tid=%d",  strexten, gettid());
     return old_glUseProgram(program);
 }
 
@@ -249,6 +252,10 @@ void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
 //        x = 0;
 //        width = width * 2;
 //    }
+    if( gismaligpu && rendertid != gettid() && x == 0 )
+    {
+        swapbuffer = 1;
+    }
     return old_glViewport(x, y, width, height);
 }
 
