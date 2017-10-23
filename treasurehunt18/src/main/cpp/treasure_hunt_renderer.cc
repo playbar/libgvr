@@ -199,9 +199,9 @@ static float RandomUniformFloat() {
 static void CheckGLError(const char* label) {
   int gl_error = glGetError();
   if (gl_error != GL_NO_ERROR) {
-    LOGW("GL error @ %s: %d", label, gl_error);
+    LOGE("GL error @ %s: %d", label, gl_error);
     // Crash immediately to make OpenGL errors obvious.
-    abort();
+//    abort();
   }
 }
 
@@ -301,20 +301,17 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
 
 void TreasureHuntRenderer::InitializeGl() {
   gvr_api_->InitializeGl();
+    CheckGLError("Cube program params");
   multiview_enabled_ = gvr_api_->IsFeatureSupported(GVR_FEATURE_MULTIVIEW);
   LOGD(multiview_enabled_ ? "Using multiview." : "Not using multiview.");
 
+    CheckGLError("Cube program params");
   int index = multiview_enabled_ ? 1 : 0;
-  const int vertex_shader =
-      LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
-  const int grid_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
-  const int pass_through_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
-  const int reticle_vertex_shader =
-      LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
-  const int reticle_fragment_shader =
-      LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
+  const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
+  const int grid_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
+  const int pass_through_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
+  const int reticle_vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kReticleVertexShaders[index]);
+  const int reticle_fragment_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kReticleFragmentShaders[index]);
 
   cube_program_ = glCreateProgram();
   glAttachShader(cube_program_, vertex_shader);
@@ -322,14 +319,15 @@ void TreasureHuntRenderer::InitializeGl() {
   glLinkProgram(cube_program_);
   glUseProgram(cube_program_);
 
+    CheckGLError("Cube program params");
+
   cube_position_param_ = glGetAttribLocation(cube_program_, "a_Position");
   cube_normal_param_ = glGetAttribLocation(cube_program_, "a_Normal");
   cube_color_param_ = glGetAttribLocation(cube_program_, "a_Color");
 
   cube_model_param_ = glGetUniformLocation(cube_program_, "u_Model");
   cube_modelview_param_ = glGetUniformLocation(cube_program_, "u_MVMatrix");
-  cube_modelview_projection_param_ =
-      glGetUniformLocation(cube_program_, "u_MVP");
+  cube_modelview_projection_param_ = glGetUniformLocation(cube_program_, "u_MVP");
   cube_light_pos_param_ = glGetUniformLocation(cube_program_, "u_LightPos");
 
   CheckGLError("Cube program params");
@@ -348,8 +346,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   floor_model_param_ = glGetUniformLocation(floor_program_, "u_Model");
   floor_modelview_param_ = glGetUniformLocation(floor_program_, "u_MVMatrix");
-  floor_modelview_projection_param_ =
-      glGetUniformLocation(floor_program_, "u_MVP");
+  floor_modelview_projection_param_ = glGetUniformLocation(floor_program_, "u_MVP");
   floor_light_pos_param_ = glGetUniformLocation(floor_program_, "u_LightPos");
 
   CheckGLError("Floor program params");
@@ -363,8 +360,7 @@ void TreasureHuntRenderer::InitializeGl() {
   CheckGLError("Reticle program");
 
   reticle_position_param_ = glGetAttribLocation(reticle_program_, "a_Position");
-  reticle_modelview_projection_param_ =
-      glGetUniformLocation(reticle_program_, "u_MVP");
+  reticle_modelview_projection_param_ = glGetUniformLocation(reticle_program_, "u_MVP");
 
   CheckGLError("Reticle program params");
 
