@@ -7,6 +7,7 @@
 #include <EGL/egl.h>
 #include <pthread.h>
 #include <EGL/eglext.h>
+#include <syscallstack.h>
 #include "hookutils.h"
 #include "log.h"
 
@@ -157,6 +158,7 @@ void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid
 void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
     LOGITAG("mjgl","mj_glDrawElements, tid=%d", gettid());
+//    sys_call_stack();
     old_glDrawElements(mode, count, type, indices);
 //    glFlush();
 //    glFinish();
