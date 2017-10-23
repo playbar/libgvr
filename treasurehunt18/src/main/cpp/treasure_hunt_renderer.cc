@@ -468,6 +468,7 @@ void TreasureHuntRenderer::ProcessControllerInput() {
 }
 
 void TreasureHuntRenderer::DrawFrame() {
+  gvr_version ver = gvr_get_version();
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
     ProcessControllerInput();
   }

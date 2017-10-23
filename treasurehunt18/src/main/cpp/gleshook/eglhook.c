@@ -257,7 +257,7 @@ EGLBoolean mj_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, E
     EGLBoolean re = old_eglMakeCurrent(dpy, draw, read, ctx);
     const char *glrender = glGetString(GL_RENDERER);
     if(glrender && strstr(glrender, "Mali") != NULL ){
-//        gismaligpu = true;
+        gismaligpu = true;
     }
     return re;
 }
@@ -316,6 +316,7 @@ EGLBoolean mj_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
     if( gismaligpu && rendertid != gettid())
     {
         glFinish();
+        swapbuffer = 1;
 //        glViewport(0, 0, 300, 1440);
 //        glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 //        glClear(  GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
@@ -522,10 +523,10 @@ void mjglViewport (GLint x, GLint y, GLsizei width, GLsizei height)
 //    {
 //        glFinish();
 //    }
-    if( gismaligpu && rendertid != gettid() && x == 0 )
-    {
-        swapbuffer = 1;
-    }
+//    if( gismaligpu && rendertid != gettid() && x == 0 )
+//    {
+//        swapbuffer = 1;
+//    }
     return pfun_glViewport(x, y, width, height);
 
 }
