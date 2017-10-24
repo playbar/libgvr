@@ -36,6 +36,13 @@ FILE *mj_fopen(const char * name , const char * mode)
     return pfile;
 }
 
+void* (*old_dlsym)(void*  handle, const char*  symbol) = NULL;
+void* mj_dlsym(void*  handle, const char*  symbol)
+{
+    LOGITAG("mjhook", "mj_dlsym, symbol=%s", symbol);
+    return old_dlsym(handle, symbol);
+}
+
 int (*old_dlclose)(void* handle) = NULL;
 int mj_dlclose(void*  handle)
 {
@@ -107,7 +114,8 @@ void hookThreadFun()
 {
 //    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
     hook((uint32_t) fopen, (uint32_t)mj_fopen, (uint32_t **) &old_fopen);
-//    hook((uint32_t) dlopen, (uint32_t)mj_dlopen, (uint32_t **) &old_dlopen);
+    hook((uint32_t) dlopen, (uint32_t)mj_dlopen, (uint32_t **) &old_dlopen);
+    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
     hook((uint32_t) dlclose, (uint32_t)mj_dlclose, (uint32_t **) &old_dlclose);
 //    hook((uint32_t) malloc, (uint32_t)mj_malloc, (uint32_t **) &old_malloc);
     hook((uint32_t) calloc, (uint32_t)mj_calloc, (uint32_t **) &old_calloc);
