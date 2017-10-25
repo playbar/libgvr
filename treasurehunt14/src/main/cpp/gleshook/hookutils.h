@@ -17,6 +17,7 @@ void hookgl2extFun();
 void hookEglextFun();
 void hookEGLFun();
 void hookESFun();
+void hookExportHook();
 void hookGLESFun();
 void unhookAllFun();
 

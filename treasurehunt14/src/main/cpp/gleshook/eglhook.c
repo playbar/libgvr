@@ -257,7 +257,7 @@ EGLBoolean mj_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, E
     EGLBoolean re = old_eglMakeCurrent(dpy, draw, read, ctx);
     const char *glrender = glGetString(GL_RENDERER);
     if(glrender && strstr(glrender, "Mali") != NULL ){
-        gismaligpu = true;
+//        gismaligpu = true;
     }
     return re;
 }

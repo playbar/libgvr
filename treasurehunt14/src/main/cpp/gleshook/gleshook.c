@@ -8,8 +8,11 @@
 #include <pthread.h>
 #include <EGL/eglext.h>
 #include <syscallstack.h>
+#include <dlfcn.h>
 #include "hookutils.h"
 #include "log.h"
+#include "exporthook.h"
+#include "andhook.h"
 
 //egl
 
@@ -161,7 +164,7 @@ void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid
 void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
     LOGITAG("mjgl","mj_glDrawElements, tid=%d", gettid());
-//    sys_call_stack();
+    sys_call_stack();
     old_glDrawElements(mode, count, type, indices);
 //    glFlush();
 //    glFinish();
@@ -273,8 +276,25 @@ void mj_glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
     return old_glClearColor(red, green, blue, alpha);
 }
 
+void* (*old_dlsym)(void*  handle, const char*  symbol) = NULL;
+void* mj_dlsym(void*  handle, const char*  symbol)
+{
+    LOGITAG("mjhook", "mj_dlsym, symbol=%s", symbol);
+    sys_call_stack();
+    void *pfun = old_dlsym(handle, symbol);
+    if(strcmp(symbol, "glDrawElements") == 0)
+    {
+        old_glDrawElements = pfun;
+        pfun = mj_glDrawElements;
+    }
+    return pfun;
+}
+
 void hookESFun()
 {
+//    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
+    hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
+    return;
     hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
     hook((uint32_t) glBindFramebuffer, (uint32_t)mj_glBindFramebuffer, (uint32_t **) &old_glBindFramebuffer);
     hook((uint32_t) glBindRenderbuffer, (uint32_t)mj_glBindRenderbuffer, (uint32_t **) &old_glBindRenderbuffer);
@@ -306,12 +326,23 @@ void hookESFun()
 
 }
 
+void hookExportHook()
+{
+//    hook_lwp(getpid(), "libGLESv2.", "glDrawElements", mj_glDrawElements, (void **)&old_glDrawElements);
+//    hook_lwp(getpid(), "libgvr.", "dlsym", mj_dlsym, (void **)&old_dlsym);
+//    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
+//    void and_hook(void *orig_fcn, void* new_fcn, void **orig_fcn_ptr);
+    and_hook(glDrawElements, mj_glDrawElements, &old_glDrawElements);
+    return;
+}
+
 void hookGLESFun()
 {
     hookEGLFun();
 //    hookEglextFun();
 //    hookgl2extFun();
-    hookESFun();
+//    hookESFun();
+//    hookExportHook();
     return;
 }
 

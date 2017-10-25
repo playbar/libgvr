@@ -106,6 +106,33 @@ int mj_sub_24738()
     return re;
 }
 
+typedef void (*FP_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const void *indices);
+FP_glDrawElements pfun_glDrawElements = NULL;
+void mjglDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices)
+{
+    LOGITAG("mjgl", "mjglDrawElements, count=%d, indices=%0X, tid=%d", count, indices, gettid());
+    pfun_glDrawElements(mode, count, type, indices);
+    return;
+}
+
+bool (*old_sub_71FE8)(int a1, int a2,  int a3) = NULL;
+bool mj_sub_71FE8(int a1, int a2,  int a3)
+{
+    LOGITAG("mjgvr","mj_sub_71FE8, tid=%d", gettid());
+    void *p = (void*)a1;
+    void *p1 = *(void**)a1;
+    char *pstr = *(char**)((char*)p + 4);
+    bool re = old_sub_71FE8(a1, a2, a3);
+    void *pfun = *(void**)a1;
+    if(strcmp(pstr, "DrawElements") == 0)
+    {
+        pfun_glDrawElements = (FP_glDrawElements)pfun;
+        *(void**)a1 = (void*)mjglDrawElements;
+    }
+
+    return re;
+}
+
 //st68CA4 * gst68CA4;
 //st68CA4 *(*old_sub_68CA4)(void *a1, int a2) = NULL;
 //st68CA4 *mj_sub_68CA4(void *a1, int a2)
@@ -685,8 +712,7 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_JNI_OnLoad, (void*)GVR_JNI_OnLoad, (void**)&old_JNI_OnLoad)
 //           &&HookToFunctionBase(g_hGVR, 0x9B37E, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
 			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
-			   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)
-//		   &&HookToFunctionBase(g_hGVR, 0x6722, (void*)mj_sub_24738, (void**)&old_sub_24738)
+		   &&HookToFunctionBase(0x71FE8, (void*)mj_sub_71FE8, (void**)&old_sub_71FE8)
 //               &&HookToFunctionBase( 0x68CA4,(void*)mj_sub_68CA4, (void**)&old_sub_68CA4)
 //			   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_get_error, (void*)mj_gvr_get_error, (void**)&old_gvr_get_error)

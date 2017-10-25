@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 #set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC  -shared")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC  -shared -Wa,-mimplicit-it=thumb")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wa,-mimplicit-it=thumb ")
 
 ADD_DEFINITIONS(-DEGL_EGLEXT_PROTOTYPES)
 ADD_DEFINITIONS(-DGL_GLEXT_PROTOTYPES)
@@ -102,6 +104,9 @@ add_library(glhook SHARED
                gleshook/elf_hooker.cpp
                gleshook/elf_main.cpp
                gleshook/elf_module.cpp
+               gleshook/exporthook.c
+               gleshook/exportutil.c
+               gleshook/andhook.c
                syscallstack.cc)
 
 target_include_directories(glhook PRIVATE
