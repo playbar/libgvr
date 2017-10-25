@@ -255,10 +255,6 @@ EGLBoolean mj_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, E
 {
     LOGITAG("mjgl","mj_eglMakeCurrent draw=%0X, read=%0X, context=%X, tid=%d", draw, read, ctx, gettid());
     EGLBoolean re = old_eglMakeCurrent(dpy, draw, read, ctx);
-    const char *glrender = glGetString(GL_RENDERER);
-    if(glrender && strstr(glrender, "Mali") != NULL ){
-        gismaligpu = true;
-    }
     return re;
 }
 
@@ -446,6 +442,19 @@ void mjglDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indi
 {
     LOGITAG("mjgl", "mjglDrawElements, count=%d, indices=%0X, tid=%d", count, indices, gettid());
     pfun_glDrawElements(mode, count, type, indices);
+
+    static int scount = 0;
+    if( swapbuffer)
+    {
+
+        ++scount;
+        if(scount == 2 )
+        {
+            old_eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
+            swapbuffer = 0;
+            scount = 0;
+        }
+    }
 //    if(gRendThread == gettid()) {
 //        unsigned char *pdata = malloc(960 * 1080 * 4);
 //        glReadPixels(0, 0, 960, 1080, GL_RGB, GL_UNSIGNED_BYTE, pdata);
@@ -645,9 +654,14 @@ EGLAPI __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const c
 EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
     void *baseadd = get_module_base(getpid(), "libEGL.so");
-    const char *glrender = glGetString(GL_RENDERER);
 //    sys_call_stack();
 //    old_eglGetProcAddress(procname);
+
+    const char *glrender = glGetString(GL_RENDERER);
+    if(glrender && strstr(glrender, "Mali") != NULL ){
+        gismaligpu = true;
+    }
+
     __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
     LOGITAG("mjgl","mj_eglGetProcAddress, procename=%s, tid=%d", procname, gettid());
     if(strcmp(procname, "eglCreateImageKHR") == 0)
@@ -846,6 +860,8 @@ void hookEGLFun()
     hookImportFun("libandroid_runtime.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
 //    hookImportFun("libunity.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
     hookImportFun("libgvr.so", "eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
+
+//    hook((uint32_t) glDrawElements, (uint32_t)mjglDrawElements, (uint32_t **) &pfun_glDrawElements);
 
 //        HookToFunctionBase((uint32_t) 0x00012144, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
 

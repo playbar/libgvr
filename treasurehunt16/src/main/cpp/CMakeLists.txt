@@ -102,6 +102,8 @@ add_library(glhook SHARED
                gleshook/elf_hooker.cpp
                gleshook/elf_main.cpp
                gleshook/elf_module.cpp
+               gleshook/exporthook.c
+               gleshook/exportutil.c
                syscallstack.cc)
 
 target_include_directories(glhook PRIVATE

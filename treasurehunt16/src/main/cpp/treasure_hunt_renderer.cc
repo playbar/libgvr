@@ -204,7 +204,7 @@ namespace {
         if (gl_error != GL_NO_ERROR) {
             LOGW("GL error @ %s: %d", label, gl_error);
             // Crash immediately to make OpenGL errors obvious.
-//            abort();
+            abort();
         }
     }
 
@@ -420,6 +420,7 @@ void TreasureHuntRenderer::InitializeGl() {
     if (!audio_initialization_thread_.joinable()) {
         audio_initialization_thread_ = std::thread(&TreasureHuntRenderer::LoadAndPlayCubeSound, this);
     }
+    CheckGLError("Drawing cube");
 
 }
 
@@ -468,6 +469,7 @@ void TreasureHuntRenderer::ProcessControllerInput() {
 void TreasureHuntRenderer::DrawFrame() {
     gDrawThread = gettid();
     LOGE("DrawFrame  -- begin");
+    CheckGLError("Drawing cube");
     const unsigned char *version = glGetString(GL_VERSION);
     if (gvr_viewer_type_ == GVR_VIEWER_TYPE_DAYDREAM) {
         ProcessControllerInput();
@@ -528,13 +530,17 @@ void TreasureHuntRenderer::DrawFrame() {
     glDisable(GL_SCISSOR_TEST);
     glDisable(GL_BLEND);
 
+    CheckGLError("Drawing cube");
+
 //    sys_call_stack();
     int fbo = frame.GetFramebufferObject(0);
     gvr_sizei size =  frame.GetBufferSize(0);
     // Draw the world.
     frame.BindBuffer(0);
+    CheckGLError("Drawing cube");
     glClearColor(1.0f, 1.0f, 1.0f, 0.5f);  // Dark background so text shows up.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    CheckGLError("Drawing cube");
     if (multiview_enabled_) {
         DrawWorld(kMultiview);
     } else {
@@ -742,6 +748,7 @@ int TreasureHuntRenderer::LoadGLShader(int type, const char** shadercode) {
  */
 void TreasureHuntRenderer::DrawWorld(ViewType view) {
     LOGE("DrawWorld -- begin");
+    CheckGLError("Drawing cube");
     if (view == kMultiview) {
         glViewport(0, 0, render_size_.width / 2, render_size_.height);
     } else {
@@ -760,7 +767,7 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
 void TreasureHuntRenderer::DrawCube(ViewType view) {
     LOGE("DrawCube begin");
     glUseProgram(cube_program_);
-
+    CheckGLError("Drawing cube");
     if (view == kMultiview) {
         glUniform3fv(cube_light_pos_param_, 2, VectorPairToGLArray(light_pos_eye_space_).data());
         glUniformMatrix4fv(cube_modelview_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_cube_).data());
@@ -773,7 +780,7 @@ void TreasureHuntRenderer::DrawCube(ViewType view) {
 
     // Set the Model in the shader, used to calculate lighting
     glUniformMatrix4fv(cube_model_param_, 1, GL_FALSE, MatrixToGLArray(model_cube_).data());
-
+    CheckGLError("Drawing cube");
     // Set the position of the cube
     glVertexAttribPointer(cube_position_param_, kCoordsPerVertex, GL_FLOAT, false, 0, cube_vertices_);
     glEnableVertexAttribArray(cube_position_param_);
@@ -793,6 +800,7 @@ void TreasureHuntRenderer::DrawCube(ViewType view) {
     }
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
+    CheckGLError("Drawing cube");
 
     glDisableVertexAttribArray(cube_position_param_);
     glDisableVertexAttribArray(cube_normal_param_);

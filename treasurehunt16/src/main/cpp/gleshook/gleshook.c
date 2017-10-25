@@ -10,6 +10,7 @@
 #include <syscallstack.h>
 #include "hookutils.h"
 #include "log.h"
+#include "exporthook.h"
 
 //egl
 
@@ -158,7 +159,7 @@ void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid
 void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
     LOGITAG("mjgl","mj_glDrawElements, tid=%d", gettid());
-//    sys_call_stack();
+    sys_call_stack();
     old_glDrawElements(mode, count, type, indices);
 //    glFlush();
 //    glFinish();
@@ -276,7 +277,7 @@ void hookESFun()
     hook((uint32_t) glGenTextures, (uint32_t)mj_glGenTextures, (uint32_t**)&old_glGenTextures);
     hook((uint32_t) glBindTexture, (uint32_t)mj_glBindTexture, (uint32_t**)&old_glBindTexture);
     hook((uint32_t) glFramebufferTexture2D, (uint32_t)mj_glFramebufferTexture2D, (uint32_t**)&old_glFramebufferTexture2D);
-
+//
     hook((uint32_t) glGenRenderbuffers, (uint32_t)mj_glGenRenderbuffers, (uint32_t**)&old_glGenRenderbuffers);
 //    hook((uint32_t) glBindBufferRange, (uint32_t)mj_glBindBufferRange, (uint32_t **) &old_glBindBufferRange);
 //    hook((uint32_t) glBindBufferBase, (uint32_t)mj_glBindBufferBase, (uint32_t **) &old_glBindBufferBase);
@@ -291,7 +292,7 @@ void hookESFun()
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
     hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
     hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
-    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
+//    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
 
 //    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
     hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
@@ -299,12 +300,19 @@ void hookESFun()
 
 }
 
+void hookExportHook()
+{
+    hook_lwp(getpid(), "libGLESv2.", "glDrawElements", mj_glDrawElements, (void **)&old_glDrawElements);
+    return;
+}
+
 void hookGLESFun()
 {
     hookEGLFun();
 //    hookEglextFun();
 //    hookgl2extFun();
-    hookESFun();
+//    hookESFun();
+//    hookExportHook();
     return;
 }
 

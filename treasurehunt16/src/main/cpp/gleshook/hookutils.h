@@ -19,6 +19,7 @@ void hookEGLFun();
 void hookESFun();
 void hookGLESFun();
 void unhookAllFun();
+void hookExportHook();
 
 void hookImportFunInit();
 void hookImportFun(const char *modulename, const char *funname, void *myEglGetProcAddress, void **oldEglSwapBuffers);
