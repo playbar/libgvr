@@ -10,6 +10,7 @@
 #include <syscallstack.h>
 #include "hookutils.h"
 #include "log.h"
+#include "hook_libc.h"
 
 //egl
 
@@ -302,7 +303,8 @@ void hookGLESFun()
     hookEGLFun();
 //    hookEglextFun();
 //    hookgl2extFun();
-    hookESFun();
+//    hookESFun();
+//    init_hook_libc();
     return;
 }
 
