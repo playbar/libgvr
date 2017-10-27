@@ -58,17 +58,34 @@ FEATURE_WIFI
 46 45 41 54 55 52 45 5F 57 49 46 49 00 00 00 00 00 00 00 00 00 00 00 
 00 00 00 00 00 00 00 00 00 00
 
-2.GvrSurfaceView$GLThread.smali修改
-com/google/vr/ndk/base/GvrSurfaceView$GLThread
+2.0 替换MojingSDK.smali， 替换libmojing.so
+
+2.1 GvrSurfaceView.smali修改
+
+com/google/vr/ndk/base/GvrSurfaceView
 .method public setSwapMode(I)V
     .locals 2
     .prologue
     添加
-	const/4 p1, 0x0
+    invoke-static {}, Lcom/baofeng/mojing/MojingSDK;->getSwapMode()I
+    move-result p1
 
+2.2 com/baofeng/mojing/unity/MojingVrActivity,onCreate函数 添加
 
+    invoke-virtual {p0}, Lcom/baofeng/mojing/unity/MojingVrActivity;->getApplicationContext()Landroid/content/Context;
+    move-result-object v3
+    sput-object v3, Lcom/baofeng/mojing/MojingSDK;->mContext:Landroid/content/Context;
 
-3.在较早时间点运行
+2.3  com/baofeng/mojing/unity/MojingVrActivity,onCreate函数
+          invoke-virtual {v3, v4}, Ljava/lang/reflect/Constructor;->newInstance([Ljava/lang/Object;)Ljava/lang/Object;
+          move-result-object v4
+          check-cast v4, Lcom/unity3d/player/UnityPlayer;
+          iput-object v4, p0, Lcom/baofeng/mojing/unity/MojingVrActivity;->mUnityPlayer:Lcom/unity3d/player/UnityPlayer;
+      后面添加
+ invoke-static {}, Lcom/baofeng/mojing/MojingSDK;->hookUnityFun()V
+
+3.在程序启动时运行，在
+    com/baofeng/mojing/unity/MojingVrActivity,onCreate函数 添加
 
     .line 121
     invoke-static {}, Lcom/baofeng/mojing/MojingSDK;->setsDaydreamPhoneOverrideForTesting()V
@@ -122,6 +139,7 @@ com/google/vr/ndk/base/GvrSurfaceView$GLThread
 
 4，封装egl hook接口，添加位置：com/google/vr/ndk/base/GvrLayout->init-> return-void 前，
   invoke-static {}, Lcom/baofeng/mojing/MojingSDK;->hookFun()V
+
 代码并且实现如下：
 typedef EGLImageKHR (*FP_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list);
 FP_eglCreateImageKHR pfun_eglCreateImageKHR = NULL;

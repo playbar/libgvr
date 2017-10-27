@@ -171,8 +171,16 @@ public class GvrSurfaceView extends SurfaceView implements Callback2 {
         this.mGLThread.requestRender();
     }
 
+    public int getSwapMode()
+    {
+        if(VERSION.SDK_INT > 24 )
+            return 1;
+        else
+            return 0;
+    }
+
     public void setSwapMode(int var1) {
-        var1 = 0;
+        var1 = getSwapMode();
         if(var1 == 1 && VERSION.SDK_INT < 17) {
             Log.e("GvrSurfaceView", "setSwapMode(SWAPMODE_SINGLE) requires Jellybean MR1 (EGL14 dependency)");
         } else {
