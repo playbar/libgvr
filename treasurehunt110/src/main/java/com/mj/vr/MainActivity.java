@@ -17,6 +17,7 @@ package com.mj.vr;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -75,6 +76,8 @@ public class MainActivity extends Activity {
 
       GLESHook.setsDaydreamPhoneOverrideForTesting();
       GLESHook.setsFingerprint();
+      ApplicationInfo appInfo = getApplicationInfo();
+      String nativeStr = getApplicationInfo().nativeLibraryDir;
 
     // Ensure fullscreen immersion.
     setImmersiveSticky();

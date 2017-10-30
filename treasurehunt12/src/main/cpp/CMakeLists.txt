@@ -42,18 +42,18 @@ target_link_libraries(png
 
 ########################################
 
-add_library(gvr SHARED
+add_library(gvr_back SHARED
             gvrglobal.cpp
             gvrInter.cpp
             syscallstack.cc
             LogMessage.cpp)
 
-target_include_directories(gvr PRIVATE
+target_include_directories(gvr_back PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
                           )
 
 # Include libraries needed for hello-jnicallback lib
-target_link_libraries(gvr
+target_link_libraries(gvr_back
                       log
                       android
                       GLESv3
@@ -79,7 +79,7 @@ target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
                           ${CMAKE_CURRENT_SOURCE_DIR}/gvrhook )
 
-target_link_libraries(gvrhook gvr log texresource)
+target_link_libraries(gvrhook lib_gvr log texresource)
 
 #############################################
 
@@ -149,6 +149,6 @@ target_link_libraries(draw
                       android
                       EGL
                       GLESv3
-                      gvr
+                      lib_gvr
                       lib_audio
                       texresource)

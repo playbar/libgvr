@@ -1,6 +1,6 @@
 //include ':sdk-treasurehunt'
-include ':gvr110'
-include ':treasurehunt110'
+include ':gvr12'
+include ':treasurehunt12'
 //include ':gvrres12'
 //include ':unitygvr12'
 //include ':gvrres13'
