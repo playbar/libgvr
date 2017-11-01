@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <gleshook/log.h>
 #include <glresource.h>
+#include <gvr.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
@@ -40,6 +41,8 @@ int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
     // sub_28DC8  sub_95960
     LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x, tid=%d", a1, gettid());
 //    return  true;
+    const char *vendor = gvr_get_viewer_vendor(a1);
+    LOGITAG("mjgvr","gvr_get_viewer_vendor, vendor=%s, tid=%d", vendor, gettid());
     int re = old_gvr_set_async_reprojection_enabled(a1, a2);
 //    fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
 //    int re = pfun(a1->user_prefs);

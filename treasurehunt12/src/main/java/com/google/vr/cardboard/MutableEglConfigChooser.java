@@ -33,7 +33,7 @@ public class MutableEglConfigChooser implements EGLConfigChooser {
                 EGL10.EGL_STENCIL_SIZE, EGL10.EGL_DONT_CARE,
                 EGL10.EGL_SAMPLE_BUFFERS, 0,
                 EGL10.EGL_RENDERABLE_TYPE, 64,
-//                EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
+                EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
 //                EGLExt.EGL_MUTABLE_RENDER_BUFFER_BIT_KHR,
 //                EGL10.EGL_SURFACE_TYPE, 0x1004,
                 EGL10.EGL_NONE

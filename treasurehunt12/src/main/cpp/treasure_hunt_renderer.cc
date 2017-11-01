@@ -230,7 +230,7 @@ static float RandomUniformFloat() {
 static void CheckGLError(const char* label) {
   int gl_error = glGetError();
   if (gl_error != GL_NO_ERROR) {
-    LOGW("GL error @ %s: %d", label, gl_error);
+    LOGW("GL error ************** @ %s: %d", label, gl_error);
     // Crash immediately to make OpenGL errors obvious.
     abort();
   }
@@ -514,16 +514,20 @@ void TreasureHuntRenderer::DrawFrame() {
   glEnable(GL_CULL_FACE);
   glDisable(GL_SCISSOR_TEST);
   glDisable(GL_BLEND);
+  CheckGLError("World drawing setup");
 
   // Draw the world.
   frame.BindBuffer(0);
-  glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//  glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
+//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   viewport_list_->GetBufferViewport(0, &scratch_viewport_);
+  CheckGLError("World drawing setup");
   DrawWorld(left_eye_view, scratch_viewport_);
   viewport_list_->GetBufferViewport(1, &scratch_viewport_);
   DrawWorld(right_eye_view, scratch_viewport_);
   frame.Unbind();
+
+  CheckGLError("World drawing setup");
 
   frame.BindBuffer(1);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.

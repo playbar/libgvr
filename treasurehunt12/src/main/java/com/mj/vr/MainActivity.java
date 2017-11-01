@@ -20,6 +20,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +28,9 @@ import android.view.View;
 import com.google.hook.GLESHook;
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
+
+import java.io.File;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -69,12 +73,34 @@ public class MainActivity extends Activity {
         }
       };
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    private boolean isDDAPP()
+    {
+        try {
+            String path = getApplicationContext().getApplicationInfo().nativeLibraryDir+"/libgvr.so";
+            File f = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir+"/libgvr.so");
+//            File f = new File("libgvr.so ");
+            if (!f.exists()) {
+                return false;
+            }
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
-      GLESHook.setsDaydreamPhoneOverrideForTesting();
-      GLESHook.setsFingerprint();
+
+    @Override
+  protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        GLESHook.setsDaydreamPhoneOverrideForTesting();
+        GLESHook.setsFingerprint();
+
+        if (isDDAPP())
+        {
+            Log.e("dd", "ddapp");
+        }
 
     // Ensure fullscreen immersion.
     setImmersiveSticky();

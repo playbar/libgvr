@@ -37,7 +37,7 @@ public class GLESHook {
 
 
     public static void setsFingerprint() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 Class cls = Class.forName("android.os.Build");
                 Field f = cls.getDeclaredField("FINGERPRINT");
