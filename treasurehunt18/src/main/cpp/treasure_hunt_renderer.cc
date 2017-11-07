@@ -632,10 +632,8 @@ void TreasureHuntRenderer::DrawWorld(ViewType view) {
   if (view == kMultiview) {
     glViewport(0, 0, render_size_.width / 2, render_size_.height);
   } else {
-    const gvr::BufferViewport& viewport =
-        view == kLeftView ? viewport_left_ : viewport_right_;
-    const gvr::Recti pixel_rect =
-        CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
+    const gvr::BufferViewport& viewport = view == kLeftView ? viewport_left_ : viewport_right_;
+    const gvr::Recti pixel_rect = CalculatePixelSpaceRect(render_size_, viewport.GetSourceUv());
     glViewport(pixel_rect.left, pixel_rect.bottom,
                pixel_rect.right - pixel_rect.left,
                pixel_rect.top - pixel_rect.bottom);

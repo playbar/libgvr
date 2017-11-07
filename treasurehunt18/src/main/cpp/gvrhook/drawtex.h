@@ -19,7 +19,7 @@ typedef struct
 } UserData;
 
 GLuint createTexture( );
-int InitTex ( UserData *userData);
+int InitTex ( UserData *userData, int index = 0);
 void DrawTex ( UserData *userData);
 void ShutDownTex ( UserData *userData );
 

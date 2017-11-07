@@ -1,8 +1,13 @@
 #include <GLES2/gl2.h>
 #include <malloc.h>
 #include <cstdlib>
+#include <android/log.h>
 #include "drawtex.h"
-#include "gvrhookfn.h"
+
+#define LOG_TAG "drawtex"
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
 UserData gUserData;
 
@@ -11,7 +16,7 @@ static void CheckGLError(const char* label) {
     if (gl_error != GL_NO_ERROR) {
         LOGE("GL error @ %s: %d", label, gl_error);
         // Crash immediately to make OpenGL errors obvious.
-//        abort();
+        abort();
     }
 }
 
@@ -139,12 +144,12 @@ GLuint createTexture( )
     GLuint textureId;
 
     // 2x2 Image, 3 bytes per pixel (R, G, B)
-    GLubyte pixels[4 * 3] =
+    GLubyte pixels[4 * 4] =
             {
-                    255,   0,   0, // Red
-                    0, 255,   0, // Green
-                    0,   0, 255, // Blue
-                    255, 255,   0  // Yellow
+                    255,   0,   0, 255,// Red
+                    0, 255,   0,  255, // Green
+                    0,   0, 255, 255, // Blue
+                    255, 255,   0, 255  // Yellow
             };
 
     // Use tightly packed data
@@ -157,7 +162,7 @@ GLuint createTexture( )
     glBindTexture ( GL_TEXTURE_2D, textureId );
 
     // Load the texture
-    glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels );
+    glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
 
     // Set the filtering mode
     glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
@@ -174,32 +179,56 @@ GLuint createTexture( )
 ///
 // Initialize the shader and program object
 //
-int InitTex( UserData *userData)
+int InitTex( UserData *userData, int index)
 {
-    char vShaderStr[] =
-            "#version 300 es                            \n"
-            "layout(location = 0) in vec4 a_position;   \n"
-            "layout(location = 1) in vec2 a_texCoord;   \n"
-            "out vec2 v_texCoord;                       \n"
-            "void main()                                \n"
-            "{                                          \n"
-            "   gl_Position = a_position;               \n"
-            "   v_texCoord = a_texCoord;                \n"
-            "}                                          \n";
+    char * vShaderStr[] = {
+            R"glsl(#version 300 es
+                    layout(location = 0) in vec4 a_position;
+                    layout(location = 1) in vec2 a_texCoord;
+                    out vec2 v_texCoord;
+                    void main()
+                    {
+                       gl_Position = a_position;
+                       v_texCoord = a_texCoord;
+                    })glsl",
 
-    char fShaderStr[] =
-            "#version 300 es                                     \n"
-            "precision mediump float;                            \n"
-            "in vec2 v_texCoord;                                 \n"
-            "layout(location = 0) out vec4 outColor;             \n"
-            "uniform sampler2D s_texture;                        \n"
-            "void main()                                         \n"
-            "{                                                   \n"
-            "  outColor = texture( s_texture, v_texCoord );   \n"
-            "}                                                   \n";
+            R"glsl(#version 300 es
+                    #extension GL_OVR_multiview2 : enable
+                    layout(num_views=2) in;
+                    layout(location = 0) in vec4 a_position;
+                    layout(location = 1) in vec2 a_texCoord;
+                    out vec2 v_texCoord;
+                    void main()
+                    {
+                       gl_Position = a_position;
+                       v_texCoord = a_texCoord;
+                    })glsl"
+            };
+
+    char *fShaderStr[] = {
+            R"glsl(#version 300 es
+            precision mediump float;
+            in vec2 v_texCoord;
+            layout(location = 0) out vec4 outColor;
+            uniform sampler2D s_texture;
+            void main()
+            {
+              outColor = texture( s_texture, v_texCoord );
+            }   )glsl",
+
+            R"glsl(#version 300 es
+            precision mediump float;
+            in vec2 v_texCoord;
+            layout(location = 0) out vec4 outColor;
+            uniform sampler2D s_texture;
+            void main()
+            {
+              outColor = texture( s_texture, v_texCoord );
+            }   )glsl"
+    };
 
     // Load the shaders and get a linked program object
-    userData->programObject = esLoadProgram ( vShaderStr, fShaderStr );
+    userData->programObject = esLoadProgram ( vShaderStr[index], fShaderStr[index] );
 
 //   GLsizei len = 1000;
 //    GLchar data[1000];
@@ -212,8 +241,6 @@ int InitTex( UserData *userData)
     userData->textureId = createTexture ();
     CheckGLError("InitTex");
 
-    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
-
     return true;
 }
 
@@ -221,7 +248,8 @@ int InitTex( UserData *userData)
 void DrawTex( UserData *userData)
 {
     CheckGLError("drawtex begin");
-    GLfloat vVertices[] = { -0.5f,  0.5f, 0.0f,  // Position 0
+
+    static GLfloat vVertices[] = { -0.5f,  0.5f, 0.0f,  // Position 0
                             0.0f,  0.0f,        // TexCoord 0
                             -0.5f, -0.5f, 0.0f,  // Position 1
                             0.0f,  1.0f,        // TexCoord 1
@@ -230,16 +258,17 @@ void DrawTex( UserData *userData)
                             0.5f,  0.5f, 0.0f,  // Position 3
                             1.0f,  0.0f         // TexCoord 3
     };
-    GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
+    static GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
+
+    // Use the program object
+    glUseProgram ( userData->programObject );
 
     // Set the viewport
 //    glViewport ( 0, 0, esContext->width, esContext->height );
 
     // Clear the color buffer
-    glClear ( GL_COLOR_BUFFER_BIT );
-
-    // Use the program object
-    glUseProgram ( userData->programObject );
+//    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+//    glClear ( GL_COLOR_BUFFER_BIT );
 
     // Load the vertex position
     glEnableVertexAttribArray ( 0 );
@@ -254,10 +283,7 @@ void DrawTex( UserData *userData)
 //    glEnable(GL_TEXTURE_2D);
     glActiveTexture ( GL_TEXTURE0 );
     glBindTexture ( GL_TEXTURE_2D, userData->textureId );
-//    glBindImageTexture(0, userData->textureId, 0, GL_FALSE, 0, GL_READ_ONLY, GL_R32F);
 
-
-    // Set the sampler texture unit to 0
     glUniform1i ( userData->samplerLoc, 0 );
 
     glDrawElements ( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, indices );
