@@ -1,4 +1,5 @@
-
+#ifndef __GVRHOOK_H__
+#define __GVRHOOK_H__
 #include <jni.h>
 
 #ifdef __cplusplus
@@ -16,3 +17,4 @@ JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_unInitHook(JNIEnv* env, jobj
 }
 #endif
 
+#endif

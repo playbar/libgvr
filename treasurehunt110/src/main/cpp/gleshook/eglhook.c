@@ -311,6 +311,11 @@ EGLBoolean mj_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 {
     LOGITAG("mjgl","mj_eglSwapBuffers, surface=%X, tid=%d", surface, gettid());
 //    sys_call_stack();
+
+//    glViewport(0, 0, 300, 1440);
+//    glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+//    glClear(  GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+
     EGLBoolean re = true;
 //    eglMakeCurrent(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW), eglGetCurrentSurface(EGL_READ), eglGetCurrentContext());
     if( gismaligpu && rendertid != gettid())
@@ -645,8 +650,8 @@ EGLClientBuffer mjeglCreateNativeClientBufferANDROID (const EGLint *attrib_list)
 EGLAPI __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
-    void *baseadd = get_module_base(getpid(), "libEGL.so");
-    const char *glrender = glGetString(GL_RENDERER);
+//    void *baseadd = get_module_base(getpid(), "libEGL.so");
+//    const char *glrender = glGetString(GL_RENDERER);
 //    sys_call_stack();
 //    old_eglGetProcAddress(procname);
     __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
@@ -837,14 +842,14 @@ void hookEGLFun()
     hook((uint32_t) eglQueryContext, (uint32_t)mj_eglQueryContext, (uint32_t **) &old_eglQueryContext);
     hook((uint32_t) eglWaitGL, (uint32_t)mj_eglWaitGL, (uint32_t **) &old_eglWaitGL);
     hook((uint32_t) eglWaitNative, (uint32_t)mj_eglWaitNative, (uint32_t **) &old_eglWaitNative);
-//    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
+    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
     hook((uint32_t) eglCopyBuffers, (uint32_t)mj_eglCopyBuffers, (uint32_t **) &old_eglCopyBuffers);
 //    hook((uint32_t) eglGetProcAddress, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
 
 
     hookImportFunInit();
 
-    hookImportFun("libandroid_runtime.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+//    hookImportFun("libandroid_runtime.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
 //    hookImportFun("libunity.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
     hookImportFun("libgvr.so", "eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
 

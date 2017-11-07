@@ -11,6 +11,7 @@
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
+#include "drawtex.h"
 
 
 void * g_hGVR = NULL;
@@ -283,7 +284,9 @@ void mj_gvr_initialize_gl(gvr_context* gvr)
     LOGITAG("mjgvr","mj_gvr_initialize_gl, tid=%d", gettid());
 //    fn_initialize_gl initgl = gvr->user_prefs->p001->pfun06;
 //    return initgl(gvr->user_prefs);
-	return old_gvr_initialize_gl(gvr);
+    old_gvr_initialize_gl(gvr);
+//    InitTex(&gUserData);
+	return;
 }
 
 #define fn_gvr_get_async_reprojection_enabled "gvr_get_async_reprojection_enabled"
@@ -504,13 +507,14 @@ gvr_frame* mj_gvr_swap_chain_acquire_frame(gvr_swap_chain* swap_chain)
 ////    swap_chain->data04[0] = 1;
     return frame;
 }
-
+int gindex = 0;
 #define fn_gvr_frame_bind_buffer "gvr_frame_bind_buffer"
 void (*old_gvr_frame_bind_buffer)(gvr_frame* frame, int32_t index) = NULL;
 void mj_gvr_frame_bind_buffer(gvr_frame* frame, int32_t index)
 {
     LOGITAG("mjgvr","mj_gvr_frame_bind_buffer, index=%d, tid=%d", index, gettid());
     old_gvr_frame_bind_buffer(frame, index);
+    gindex = index;
 //    fn_sub_26C04 pFun =  frame->context->user_prefs->p001->pfun22;
 //    pFun(frame->context->user_prefs, frame->data00, index);
     return;
@@ -521,6 +525,11 @@ void (*old_gvr_frame_unbind)(gvr_frame* frame) = NULL;
 void mj_gvr_frame_unbind(gvr_frame* frame)
 {
     LOGITAG("mjgvr","mj_gvr_frame_unbind, tid=%d", gettid());
+//    if(gindex ==1 ) {
+//        DrawTex(&gUserData);
+//    }
+//    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+//    glClear ( GL_COLOR_BUFFER_BIT );
     old_gvr_frame_unbind(frame);
     return;
 }
@@ -578,6 +587,9 @@ int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
 //    fn_sub_28A86 pfun = gvr->user_prefs->p001->pfun17;
 //    int re = pfun(gvr->user_prefs);
     int re = old_gvr_render_reprojection_thread(gvr);
+
+//    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+//    glClear ( GL_COLOR_BUFFER_BIT );
     LOGITAG("mjgvr","mj_gvr_render_reprojection_thread =============end, tid=%d", gettid());
 //    glFinish();
     return re;

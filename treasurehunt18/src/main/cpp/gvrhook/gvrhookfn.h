@@ -2,6 +2,7 @@
 
 #include "gvr_types.h"
 #include "android/log.h"
+#include "sys/types.h"
 
 //typedef struct gvr_context_ gvr_context;
 //typedef struct gvr_clock_time_point

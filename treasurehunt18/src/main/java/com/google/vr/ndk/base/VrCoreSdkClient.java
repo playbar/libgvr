@@ -252,7 +252,7 @@ class VrCoreSdkClient {
             if(this.shouldBind) {
                 Intent var1;
                 (var1 = new Intent("com.google.vr.vrcore.BIND_SDK_SERVICE")).setPackage("com.google.vr.vrcore");
-                this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
+//                this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
             }
 
             if(!this.isBound) {

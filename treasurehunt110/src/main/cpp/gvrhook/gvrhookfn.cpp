@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <gleshook/log.h>
 #include <glresource.h>
+#include <gvr.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
@@ -574,8 +575,15 @@ int32_t mj_gvr_frame_get_framebuffer_object(const gvr_frame* frame, int32_t inde
 void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space) = NULL;
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_submit, tid=%d", gettid());
+    LOGITAG("mjgvr","mj_gvr_frame_submit begin, tid=%d", gettid());
+
+//    gvr_frame_bind_buffer(*frame, 1 );
+//    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    gvr_frame_unbind(*frame);
+
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
+    LOGITAG("mjgvr","mj_gvr_frame_submit end, tid=%d", gettid());
     return;
 }
 

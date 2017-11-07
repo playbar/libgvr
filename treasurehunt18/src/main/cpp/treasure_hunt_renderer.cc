@@ -1,18 +1,3 @@
-/* Copyright 2017 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #include "treasure_hunt_renderer.h"  // NOLINT
 #include "treasure_hunt_shaders.h"  // NOLINT
 
@@ -21,6 +6,7 @@
 #include <stdlib.h>
 #include <cmath>
 #include <random>
+#include "drawtex.h"
 
 #define LOG_TAG "TreasureHuntCPP"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
@@ -87,10 +73,11 @@ static std::array<float, 32> MatrixPairToGLArray(const gvr::Mat4f matrix[]) {
 
 // Flatten a pair of vec3's into an array of 6 floats, useful when feeding
 // uniform values to OpenGL for multiview.
-static std::array<float, 6> VectorPairToGLArray(
-    const std::array<float, 3> vec[]) {
+static std::array<float, 6> VectorPairToGLArray(const std::array<float, 3> vec[])
+{
   std::array<float, 6> result;
-  for (int k = 0; k < 3; ++k) {
+  for (int k = 0; k < 3; ++k)
+  {
     result[k] = vec[0][k];
     result[k + 3] = vec[1][k];
   }
@@ -307,6 +294,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
     CheckGLError("Cube program params");
   int index = multiview_enabled_ ? 1 : 0;
+  InitTex(&gUserData, index);
   const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
   const int grid_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
   const int pass_through_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
@@ -539,7 +527,11 @@ void TreasureHuntRenderer::DrawFrame() {
   } else {
     DrawWorld(kLeftView);
     DrawWorld(kRightView);
+//    DrawTex(&gUserData);
   }
+    DrawTex(&gUserData);
+  CheckGLError("onDrawFrame");
+
   frame.Unbind();
 
   frame.BindBuffer(1);
@@ -553,6 +545,7 @@ void TreasureHuntRenderer::DrawFrame() {
   if (gvr_viewer_type_ == GVR_VIEWER_TYPE_CARDBOARD) {
     DrawCardboardReticle();
   }
+//    DrawTex(&gUserData);
   frame.Unbind();
 
   // Submit frame.
@@ -658,44 +651,34 @@ void TreasureHuntRenderer::DrawCube(ViewType view) {
   glUseProgram(cube_program_);
 
   if (view == kMultiview) {
-    glUniform3fv(cube_light_pos_param_, 2,
-                 VectorPairToGLArray(light_pos_eye_space_).data());
-    glUniformMatrix4fv(cube_modelview_param_, 2, GL_FALSE,
-                       MatrixPairToGLArray(modelview_cube_).data());
-    glUniformMatrix4fv(cube_modelview_projection_param_, 2, GL_FALSE,
-                       MatrixPairToGLArray(modelview_projection_cube_).data());
+    glUniform3fv(cube_light_pos_param_, 2, VectorPairToGLArray(light_pos_eye_space_).data());
+    glUniformMatrix4fv(cube_modelview_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_cube_).data());
+    glUniformMatrix4fv(cube_modelview_projection_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_projection_cube_).data());
   } else {
     glUniform3fv(cube_light_pos_param_, 1, light_pos_eye_space_[view].data());
-    glUniformMatrix4fv(cube_modelview_param_, 1, GL_FALSE,
-                       MatrixToGLArray(modelview_cube_[view]).data());
-    glUniformMatrix4fv(
-        cube_modelview_projection_param_, 1, GL_FALSE,
-        MatrixToGLArray(modelview_projection_cube_[view]).data());
+    glUniformMatrix4fv(cube_modelview_param_, 1, GL_FALSE, MatrixToGLArray(modelview_cube_[view]).data());
+    glUniformMatrix4fv(cube_modelview_projection_param_, 1, GL_FALSE, MatrixToGLArray(modelview_projection_cube_[view]).data());
   }
 
   // Set the Model in the shader, used to calculate lighting
-  glUniformMatrix4fv(cube_model_param_, 1, GL_FALSE,
-                     MatrixToGLArray(model_cube_).data());
+  glUniformMatrix4fv(cube_model_param_, 1, GL_FALSE, MatrixToGLArray(model_cube_).data());
+
 
   // Set the position of the cube
-  glVertexAttribPointer(cube_position_param_, kCoordsPerVertex, GL_FLOAT, false,
-                        0, cube_vertices_);
+  glVertexAttribPointer(cube_position_param_, kCoordsPerVertex, GL_FLOAT, false, 0, cube_vertices_);
   glEnableVertexAttribArray(cube_position_param_);
 
   // Set the normal positions of the cube, again for shading
-  glVertexAttribPointer(cube_normal_param_, 3, GL_FLOAT, false, 0,
-                        cube_normals_);
+  glVertexAttribPointer(cube_normal_param_, 3, GL_FLOAT, false, 0, cube_normals_);
   glEnableVertexAttribArray(cube_normal_param_);
 
   // Set vertex colors
   if (ObjectIsFound()) {
     const float* found_color = world_layout_data_.cube_found_color.data();
-    glVertexAttrib4f(cube_color_param_, found_color[0], found_color[1],
-                     found_color[2], 1.0f);
+    glVertexAttrib4f(cube_color_param_, found_color[0], found_color[1], found_color[2], 1.0f);
     glDisableVertexAttribArray(cube_color_param_);
   } else {
-    glVertexAttribPointer(cube_color_param_, 3, GL_FLOAT, false, 0,
-                          cube_colors_);
+    glVertexAttribPointer(cube_color_param_, 3, GL_FLOAT, false, 0, cube_colors_);
     glEnableVertexAttribArray(cube_color_param_);
   }
 
@@ -712,25 +695,17 @@ void TreasureHuntRenderer::DrawFloor(ViewType view) {
   glUseProgram(floor_program_);
 
   if (view == kMultiview) {
-    glUniform3fv(floor_light_pos_param_, 2,
-                 VectorPairToGLArray(light_pos_eye_space_).data());
-    glUniformMatrix4fv(floor_modelview_param_, 2, GL_FALSE,
-                       MatrixPairToGLArray(modelview_floor_).data());
-    glUniformMatrix4fv(floor_modelview_projection_param_, 2, GL_FALSE,
-                       MatrixPairToGLArray(modelview_projection_floor_).data());
+    glUniform3fv(floor_light_pos_param_, 2, VectorPairToGLArray(light_pos_eye_space_).data());
+    glUniformMatrix4fv(floor_modelview_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_floor_).data());
+    glUniformMatrix4fv(floor_modelview_projection_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_projection_floor_).data());
   } else {
     glUniform3fv(floor_light_pos_param_, 1, light_pos_eye_space_[view].data());
-    glUniformMatrix4fv(floor_modelview_param_, 1, GL_FALSE,
-                       MatrixToGLArray(modelview_floor_[view]).data());
-    glUniformMatrix4fv(
-        floor_modelview_projection_param_, 1, GL_FALSE,
-        MatrixToGLArray(modelview_projection_floor_[view]).data());
+    glUniformMatrix4fv(floor_modelview_param_, 1, GL_FALSE, MatrixToGLArray(modelview_floor_[view]).data());
+    glUniformMatrix4fv(floor_modelview_projection_param_, 1, GL_FALSE, MatrixToGLArray(modelview_projection_floor_[view]).data());
   }
 
-  glUniformMatrix4fv(floor_model_param_, 1, GL_FALSE,
-                     MatrixToGLArray(model_floor_).data());
-  glVertexAttribPointer(floor_position_param_, kCoordsPerVertex, GL_FLOAT,
-                        false, 0, floor_vertices_);
+  glUniformMatrix4fv(floor_model_param_, 1, GL_FALSE, MatrixToGLArray(model_floor_).data());
+  glVertexAttribPointer(floor_position_param_, kCoordsPerVertex, GL_FLOAT, false, 0, floor_vertices_);
   glVertexAttrib3f(floor_normal_param_, 0.0f, 1.0f, 0.0f);
   glVertexAttrib4f(floor_color_param_, 0.0f, 0.3398f, 0.9023f, 1.0f);
 
@@ -744,16 +719,11 @@ void TreasureHuntRenderer::DrawFloor(ViewType view) {
 void TreasureHuntRenderer::DrawDaydreamCursor(ViewType view) {
   glUseProgram(reticle_program_);
   if (view == kMultiview) {
-    glUniformMatrix4fv(
-        reticle_modelview_projection_param_, 2, GL_FALSE,
-        MatrixPairToGLArray(modelview_projection_cursor_).data());
+    glUniformMatrix4fv(reticle_modelview_projection_param_, 2, GL_FALSE, MatrixPairToGLArray(modelview_projection_cursor_).data());
   } else {
-    glUniformMatrix4fv(
-        reticle_modelview_projection_param_, 1, GL_FALSE,
-        MatrixToGLArray(modelview_projection_cursor_[view]).data());
+    glUniformMatrix4fv(reticle_modelview_projection_param_, 1, GL_FALSE, MatrixToGLArray(modelview_projection_cursor_[view]).data());
   }
-  glVertexAttribPointer(reticle_position_param_, kCoordsPerVertex, GL_FLOAT,
-                        false, 0, reticle_vertices_);
+  glVertexAttribPointer(reticle_position_param_, kCoordsPerVertex, GL_FLOAT, false, 0, reticle_vertices_);
   glEnableVertexAttribArray(reticle_position_param_);
   glDrawArrays(GL_TRIANGLES, 0, 6);
   glDisableVertexAttribArray(reticle_position_param_);
@@ -767,10 +737,8 @@ void TreasureHuntRenderer::DrawCardboardReticle() {
                                       {0.f, 1.f, 0.f, 0.f},
                                       {0.f, 0.f, 1.f, 0.f},
                                       {0.f, 0.f, 0.f, 1.f}}};
-  glUniformMatrix4fv(reticle_modelview_projection_param_, 1, GL_FALSE,
-                     MatrixToGLArray(uniform_matrix).data());
-  glVertexAttribPointer(reticle_position_param_, kCoordsPerVertex, GL_FLOAT,
-                        false, 0, reticle_vertices_);
+  glUniformMatrix4fv(reticle_modelview_projection_param_, 1, GL_FALSE, MatrixToGLArray(uniform_matrix).data());
+  glVertexAttribPointer(reticle_position_param_, kCoordsPerVertex, GL_FLOAT, false, 0, reticle_vertices_);
   glEnableVertexAttribArray(reticle_position_param_);
   glDrawArrays(GL_TRIANGLES, 0, 6);
   glDisableVertexAttribArray(reticle_position_param_);
@@ -779,8 +747,7 @@ void TreasureHuntRenderer::DrawCardboardReticle() {
 }
 
 void TreasureHuntRenderer::HideObject() {
-  std::array<float, 4> cube_position = {
-      model_cube_.m[0][3], model_cube_.m[1][3], model_cube_.m[2][3], 1.f};
+  std::array<float, 4> cube_position = {model_cube_.m[0][3], model_cube_.m[1][3], model_cube_.m[2][3], 1.f};
 
   // First rotate in XZ plane, between pi/2 and 3pi/2 radians away, apply this
   // to model_cube_ to keep the front face of the cube towards the user.
@@ -794,9 +761,7 @@ void TreasureHuntRenderer::HideObject() {
 
   // Pick a new distance for the cube, and apply that scale to the position.
   const float old_object_distance = object_distance_;
-  object_distance_ =
-      RandomUniformFloat() * (kMaxCubeDistance - kMinCubeDistance) +
-      kMinCubeDistance;
+  object_distance_ = RandomUniformFloat() * (kMaxCubeDistance - kMinCubeDistance) + kMinCubeDistance;
   const float scale = object_distance_ / old_object_distance;
   cube_position[0] *= scale;
   cube_position[1] *= scale;
@@ -811,8 +776,7 @@ void TreasureHuntRenderer::HideObject() {
   model_cube_.m[2][3] = cube_position[2];
 
   if (audio_source_id_ >= 0) {
-    gvr_audio_api_->SetSoundObjectPosition(audio_source_id_, cube_position[0],
-                                           cube_position[1], cube_position[2]);
+    gvr_audio_api_->SetSoundObjectPosition(audio_source_id_, cube_position[0], cube_position[1], cube_position[2]);
   }
 }
 
@@ -849,11 +813,9 @@ bool TreasureHuntRenderer::IsPointingAtObject() {
   gvr::Mat4f modelview_cursor = MatrixMul(head_view_, model_cursor_);
   gvr::Mat4f modelview_cube = MatrixMul(head_view_, model_cube_);
 
-  const std::array<float, 4> center_cursor_position =
-      MatrixVectorMul(modelview_cursor, {0.f, 0.f, 0.f, 1.f});
+  const std::array<float, 4> center_cursor_position = MatrixVectorMul(modelview_cursor, {0.f, 0.f, 0.f, 1.f});
 
-  const std::array<float, 4> center_cube_position =
-      MatrixVectorMul(modelview_cube, {0.f, 0.f, 0.f, 1.f});
+  const std::array<float, 4> center_cube_position = MatrixVectorMul(modelview_cube, {0.f, 0.f, 0.f, 1.f});
 
   float angle = std::acos(std::max(-1.f, std::min(1.f,
       VectorInnerProduct(center_cursor_position, center_cube_position) /

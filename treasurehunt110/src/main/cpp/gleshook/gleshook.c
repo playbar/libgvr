@@ -164,7 +164,9 @@ void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid
 void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
     LOGITAG("mjgl","mj_glDrawElements, tid=%d", gettid());
-    sys_call_stack();
+//    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    sys_call_stack();
     old_glDrawElements(mode, count, type, indices);
 //    glFlush();
 //    glFinish();
@@ -280,7 +282,7 @@ void* (*old_dlsym)(void*  handle, const char*  symbol) = NULL;
 void* mj_dlsym(void*  handle, const char*  symbol)
 {
     LOGITAG("mjhook", "mj_dlsym, symbol=%s", symbol);
-    sys_call_stack();
+//    sys_call_stack();
     void *pfun = old_dlsym(handle, symbol);
     if(strcmp(symbol, "glDrawElements") == 0)
     {
@@ -292,7 +294,7 @@ void* mj_dlsym(void*  handle, const char*  symbol)
 
 void hookESFun()
 {
-    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
+//    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
 //    hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
 //    return;
     hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
@@ -341,7 +343,7 @@ void hookGLESFun()
     hookEGLFun();
 //    hookEglextFun();
 //    hookgl2extFun();
-//    hookESFun();
+    hookESFun();
 //    hookExportHook();
     return;
 }

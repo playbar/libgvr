@@ -22,7 +22,7 @@
 #include <cmath>
 #include <random>
 
-#define LOG_TAG "TreasureHuntCPP"
+#define LOG_TAG "frame"
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
@@ -476,6 +476,7 @@ void TreasureHuntRenderer::UpdateReticlePosition() {
 }
 
 void TreasureHuntRenderer::DrawFrame() {
+    LOGE("DrawFrame begin--------------");
   PrepareFramebuffer();
   gvr::Frame frame = swapchain_->AcquireFrame();
 
@@ -558,11 +559,13 @@ void TreasureHuntRenderer::DrawFrame() {
     DrawWorld(kLeftView);
     DrawWorld(kRightView);
   }
+//    glClearColor(0.0f, 1.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   frame.Unbind();
 
   // Draw the reticle on a separate layer.
   frame.BindBuffer(1);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+  glClearColor(1.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   DrawReticle();
   frame.Unbind();
@@ -570,11 +573,16 @@ void TreasureHuntRenderer::DrawFrame() {
   // Submit frame.
   frame.Submit(*viewport_list_, head_view_);
 
+    eglMakeCurrent(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW), eglGetCurrentSurface(EGL_READ), eglGetCurrentContext());
+    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+    glClear ( GL_COLOR_BUFFER_BIT );
+
   CheckGLError("onDrawFrame");
 
   // Update audio head rotation in audio API.
   gvr_audio_api_->SetHeadPose(head_view_);
   gvr_audio_api_->Update();
+    LOGE("DrawFrame end =====================");
 }
 
 void TreasureHuntRenderer::PrepareFramebuffer() {
