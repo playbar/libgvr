@@ -26,6 +26,8 @@ static const char* hooktag = "mjgvr";
 extern "C" {
 #endif
 
+int hook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr);
+int unHook(uint32_t target_addr);
 void* get_module_base(pid_t pid,const char* module_name);
 bool HookToFunction(void * hDLL, const char * szFunctionName, void * fpReplactToFunction, void ** fpOutRealFunction);
 bool InitHook();

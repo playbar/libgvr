@@ -294,7 +294,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
     CheckGLError("Cube program params");
   int index = multiview_enabled_ ? 1 : 0;
-  InitTex(&gUserData, index);
+//  InitTex(&gUserData, index);
   const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kDiffuseLightingVertexShaders[index]);
   const int grid_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShaders[index]);
   const int pass_through_shader = LoadGLShader(GL_FRAGMENT_SHADER, &kPassthroughFragmentShaders[index]);
@@ -529,7 +529,7 @@ void TreasureHuntRenderer::DrawFrame() {
     DrawWorld(kRightView);
 //    DrawTex(&gUserData);
   }
-    DrawTex(&gUserData);
+//    DrawTex(&gUserData);
   CheckGLError("onDrawFrame");
 
   frame.Unbind();

@@ -16,6 +16,10 @@
 
 void * g_hGVR = NULL;
 
+static bool gmultiview_enabled = false;
+static int gwidth = 0;
+static int gheight = 0;
+
 #define fn_JNI_OnLoad "JNI_OnLoad"
 jint (*old_JNI_OnLoad)(JavaVM* vm, void* reserved) = NULL;
 jint GVR_JNI_OnLoad(JavaVM* vm, void* reserved)
@@ -285,7 +289,8 @@ void mj_gvr_initialize_gl(gvr_context* gvr)
 //    fn_initialize_gl initgl = gvr->user_prefs->p001->pfun06;
 //    return initgl(gvr->user_prefs);
     old_gvr_initialize_gl(gvr);
-//    InitTex(&gUserData);
+//    int index = gmultiview_enabled ? 1 : 0;
+    InitTex(&gUserData, 1);
 	return;
 }
 
@@ -348,7 +353,12 @@ bool (*old_gvr_is_feature_supported)(const gvr_context* gvr, int32_t feature) = 
 bool mj_gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
 {
     LOGITAG("mjgvr","mj_gvr_is_feature_supported, tid=%d", gettid());
-    return old_gvr_is_feature_supported(gvr, feature);
+    bool re = old_gvr_is_feature_supported(gvr, feature);
+    re = false;
+    if( GVR_FEATURE_MULTIVIEW == feature) {
+        gmultiview_enabled = re;
+    }
+    return re;
 }
 
 #define fn_gvr_buffer_viewport_create "gvr_buffer_viewport_create"
@@ -525,9 +535,13 @@ void (*old_gvr_frame_unbind)(gvr_frame* frame) = NULL;
 void mj_gvr_frame_unbind(gvr_frame* frame)
 {
     LOGITAG("mjgvr","mj_gvr_frame_unbind, tid=%d", gettid());
-//    if(gindex ==1 ) {
-//        DrawTex(&gUserData);
-//    }
+    if(gmultiview_enabled) {
+        DrawTex(&gUserData);
+    } else{
+        DrawTex(&gUserData);
+        glViewport(0, 0, gwidth, gheight);
+        DrawTex(&gUserData);
+    }
 //    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 //    glClear ( GL_COLOR_BUFFER_BIT );
     old_gvr_frame_unbind(frame);
@@ -626,6 +640,36 @@ gvr_mat4f mj_gvr_get_head_space_from_start_space_rotation(const gvr_context *gvr
 }
 
 
+void (*old_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
+void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
+{
+    LOGITAG("mjgl", "mj_glViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
+    gwidth = width;
+    gheight = height;
+    return old_glViewport(x, y, width, height);
+}
+
+int hook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr)
+{
+    if (registerInlineHook(target_addr, new_addr, proto_addr) != DETOUR_OK) {
+        return -1;
+    }
+    if (inlineHook((uint32_t) target_addr) != DETOUR_OK) {
+        return -1;
+    }
+
+    return 0;
+}
+
+int unHook(uint32_t target_addr)
+{
+    if (inlineUnHook(target_addr) != DETOUR_OK) {
+        return -1;
+    }
+
+    return 0;
+}
+
 bool HookToFunctionBase(int base, void * fpReplactToFunction, void ** fpOutRealFunction)
 {
     bool bRet = false;
@@ -688,6 +732,7 @@ bool InitHook()
 {
     void *pModule = get_module_base(getpid(), "libgvr.so");
     LOGITAG("mjgvr","gvrbase: %x", pModule);
+    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
 	bool bRet = false;
 	if (LoadGVR())
 	{
