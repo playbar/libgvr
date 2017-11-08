@@ -131,7 +131,8 @@ public class DaydreamApi implements AutoCloseable {
     }
 
     public static boolean isCaptureEnabled(Context var0) {
-        return SdkConfigurationReader.getParams(var0).screenCaptureConfig != null && SdkConfigurationReader.getParams(var0).screenCaptureConfig.allowCasting.booleanValue();
+//        return SdkConfigurationReader.getParams(var0).screenCaptureConfig != null && SdkConfigurationReader.getParams(var0).screenCaptureConfig.allowCasting.booleanValue();
+        return true;
     }
 
     public static boolean isVrUser(Context var0) {
