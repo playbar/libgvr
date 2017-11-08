@@ -518,8 +518,8 @@ void TreasureHuntRenderer::DrawFrame() {
 
   // Draw the world.
   frame.BindBuffer(0);
-//  glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
-//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(0.1f, 0.1f, 0.1f, 0.5f);  // Dark background so text shows up.
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   viewport_list_->GetBufferViewport(0, &scratch_viewport_);
   CheckGLError("World drawing setup");
   DrawWorld(left_eye_view, scratch_viewport_);
@@ -530,8 +530,8 @@ void TreasureHuntRenderer::DrawFrame() {
   CheckGLError("World drawing setup");
 
   frame.BindBuffer(1);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // In Cardboard viewer, draw head-locked reticle on a separate layer since the
   // cursor is controlled by head movement. In Daydream viewer, this layer is

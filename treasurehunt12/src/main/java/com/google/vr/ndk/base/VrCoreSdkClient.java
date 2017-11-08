@@ -208,7 +208,7 @@ class VrCoreSdkClient {
             if(this.shouldBind) {
                 Intent var1;
                 (var1 = new Intent("com.google.vr.vrcore.BIND_SDK_SERVICE")).setPackage("com.google.vr.vrcore");
-                this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
+//                this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
             }
 
             if(!this.isBound) {
@@ -266,7 +266,7 @@ class VrCoreSdkClient {
                 return;
             }
 
-            this.helpCenterDialog = UiUtils.showDaydreamHelpCenterDialog(this.context, string.dialog_title_incompatible_phone, string.dialog_message_incompatible_phone, this.closeVrRunnable);
+//            this.helpCenterDialog = UiUtils.showDaydreamHelpCenterDialog(this.context, string.dialog_title_incompatible_phone, string.dialog_message_incompatible_phone, this.closeVrRunnable);
         }
 
     }
