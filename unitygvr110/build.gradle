@@ -27,6 +27,12 @@ android {
         }
     }
 
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
@@ -35,7 +41,8 @@ android {
 }
 
 dependencies {
-    compile project(':gvrres110')
+//    compile project(':gvrres110')
+    compile(name:'sdk-common-1.10.0', ext:'aar')
     compile files('libs/libprotobuf-java-nano.jar')
     compile files('libs/gvr.jar')
 }

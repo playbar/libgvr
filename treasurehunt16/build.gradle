@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.mj.vr"
@@ -42,14 +42,14 @@ android {
 
 
 dependencies {
-    //    compile project(':gvr')
-    //    compile project(':sdk-audio')
-    //    compile(name:'sdk-audio-1.10.0', ext:'aar')
-    //    compile(name: 'sdk-base-1.40.0', ext: 'aar')
-    //    compile(name: 'sdk-common-1.40.0', ext: 'aar')
-    //    compile(name: 'sdk-audio-1.40.0', ext: 'aar')
+//    compile project(':gvr')
+//    compile project(':sdk-audio')
+//    compile(name:'sdk-audio-1.10.0', ext:'aar')
+//    compile(name: 'sdk-base-1.40.0', ext: 'aar')
+//    compile(name: 'sdk-audio-1.40.0', ext: 'aar')
 //    compile files('libs/protobuf-javanano-3.1.0.jar')
-    compile project(':gvr16')
+//    compile project(':gvr16')
+    compile(name: 'sdk-common-1.60.1', ext: 'aar')
     compile files('libs/sdk-audio.jar')
     compile files('libs/sdk-base.jar')
     compile files('libs/sdk-common.jar')
