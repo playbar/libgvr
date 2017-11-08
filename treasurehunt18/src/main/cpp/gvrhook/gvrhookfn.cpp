@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <gleshook/log.h>
 #include <glresource.h>
+#include <gvr.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
@@ -535,13 +536,13 @@ void (*old_gvr_frame_unbind)(gvr_frame* frame) = NULL;
 void mj_gvr_frame_unbind(gvr_frame* frame)
 {
     LOGITAG("mjgvr","mj_gvr_frame_unbind, tid=%d", gettid());
-    if(gmultiview_enabled) {
-        DrawTex(&gUserData);
-    } else{
-        DrawTex(&gUserData);
-        glViewport(0, 0, gwidth, gheight);
-        DrawTex(&gUserData);
-    }
+//    if(gmultiview_enabled) {
+//        DrawTex(&gUserData);
+//    } else{
+//        DrawTex(&gUserData);
+//        glViewport(0, 0, gwidth, gheight);
+//        DrawTex(&gUserData);
+//    }
 //    glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 //    glClear ( GL_COLOR_BUFFER_BIT );
     old_gvr_frame_unbind(frame);
@@ -571,6 +572,16 @@ void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* 
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
     LOGITAG("mjgvr","mj_gvr_frame_submit, tid=%d", gettid());
+    gvr_frame_bind_buffer(*frame, 0);
+    if(gmultiview_enabled) {
+        DrawTex(&gUserData);
+    } else{
+        glViewport(gwidth, 0, gwidth, gheight);
+        DrawTex(&gUserData);
+        glViewport(0, 0, gwidth, gheight);
+        DrawTex(&gUserData);
+    }
+    gvr_frame_unbind(*frame);
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
     return;
 }

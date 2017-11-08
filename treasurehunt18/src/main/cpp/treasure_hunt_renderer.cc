@@ -369,8 +369,7 @@ void TreasureHuntRenderer::InitializeGl() {
 
   // Because we are using 2X MSAA, we can render to half as many pixels and
   // achieve similar quality.
-  render_size_ =
-      HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
+  render_size_ = HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
   std::vector<gvr::BufferSpec> specs;
 
   specs.push_back(gvr_api_->CreateBufferSpec());
@@ -501,16 +500,11 @@ void TreasureHuntRenderer::DrawFrame() {
     modelview_cube_[eye] = MatrixMul(eye_views[eye], model_cube_);
     modelview_floor_[eye] = MatrixMul(eye_views[eye], model_floor_);
     const gvr_rectf fov = viewport[eye]->GetSourceFov();
-    const gvr::Mat4f perspective =
-        PerspectiveMatrixFromView(fov, kZNear, kZFar);
-    modelview_projection_cube_[eye] =
-        MatrixMul(perspective, modelview_cube_[eye]);
-    modelview_projection_floor_[eye] =
-        MatrixMul(perspective, modelview_floor_[eye]);
-    light_pos_eye_space_[eye] =
-        Vec4ToVec3(MatrixVectorMul(eye_views[eye], light_pos_world_space_));
-    modelview_projection_cursor_[eye] =
-        MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
+    const gvr::Mat4f perspective = PerspectiveMatrixFromView(fov, kZNear, kZFar);
+    modelview_projection_cube_[eye] = MatrixMul(perspective, modelview_cube_[eye]);
+    modelview_projection_floor_[eye] = MatrixMul(perspective, modelview_floor_[eye]);
+    light_pos_eye_space_[eye] = Vec4ToVec3(MatrixVectorMul(eye_views[eye], light_pos_world_space_));
+    modelview_projection_cursor_[eye] = MatrixMul(perspective, MatrixMul(eye_views[eye], model_cursor_));
   }
 
   glEnable(GL_DEPTH_TEST);
@@ -561,10 +555,9 @@ void TreasureHuntRenderer::DrawFrame() {
 void TreasureHuntRenderer::PrepareFramebuffer() {
   // Because we are using 2X MSAA, we can render to half as many pixels and
   // achieve similar quality.
-  const gvr::Sizei recommended_size =
-      HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
-  if (render_size_.width != recommended_size.width ||
-      render_size_.height != recommended_size.height) {
+  const gvr::Sizei recommended_size = HalfPixelCount(gvr_api_->GetMaximumEffectiveRenderTargetSize());
+  if (render_size_.width != recommended_size.width || render_size_.height != recommended_size.height)
+  {
     // We need to resize the framebuffer. Note that multiview uses two texture
     // layers, each with half the render width.
     gvr::Sizei framebuffer_size = recommended_size;
@@ -587,7 +580,8 @@ void TreasureHuntRenderer::OnTriggerEvent() {
 void TreasureHuntRenderer::OnPause() {
   gvr_api_->PauseTracking();
   gvr_audio_api_->Pause();
-  if (gvr_controller_api_) gvr_controller_api_->Pause();
+  if (gvr_controller_api_)
+      gvr_controller_api_->Pause();
 }
 
 void TreasureHuntRenderer::OnResume() {
