@@ -74,8 +74,8 @@ public class MainActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-      GLESHook.setsDaydreamPhoneOverrideForTesting();
-      GLESHook.setsFingerprint();
+//      GLESHook.setsDaydreamPhoneOverrideForTesting();
+//      GLESHook.setsFingerprint();
       ApplicationInfo appInfo = getApplicationInfo();
       String nativeStr = getApplicationInfo().nativeLibraryDir;
 
