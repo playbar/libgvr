@@ -1,7 +1,6 @@
 #include <malloc.h>
 #include <cstdlib>
 #include <android/log.h>
-#include <GLES3/gl3.h>
 #include "drawtex.h"
 
 #define LOG_TAG "drawtex"

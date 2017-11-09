@@ -326,7 +326,7 @@ TreasureHuntRenderer::~TreasureHuntRenderer() {
 
 void TreasureHuntRenderer::InitializeGl() {
     gvr_api_->InitializeGl();
-    InitTex(&gUserData, 1);
+//    InitTex(&gUserData, 1);
     const int vertex_shader = LoadGLShader(GL_VERTEX_SHADER, &kLightVertexShader);
     const int grid_shader =
             LoadGLShader(GL_FRAGMENT_SHADER, &kGridFragmentShader);
@@ -524,10 +524,10 @@ void TreasureHuntRenderer::DrawFrame() {
     viewport_list_->GetBufferViewport(0, &scratch_viewport_);
     CheckGLError("World drawing setup");
     DrawWorld(left_eye_view, scratch_viewport_);
-    DrawTex(&gUserData);
+//    DrawTex(&gUserData);
     viewport_list_->GetBufferViewport(1, &scratch_viewport_);
     DrawWorld(right_eye_view, scratch_viewport_);
-    DrawTex(&gUserData);
+//    DrawTex(&gUserData);
     frame.Unbind();
 
     CheckGLError("World drawing setup");

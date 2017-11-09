@@ -12,6 +12,7 @@
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
+#include "drawtex.h"
 
 
 void * g_hGVR = NULL;
@@ -277,7 +278,9 @@ void mj_gvr_initialize_gl(gvr_context* gvr)
     LOGITAG("mjgvr","mj_gvr_initialize_gl, tid=%d", gettid());
 //    fn_initialize_gl initgl = gvr->user_prefs->p001->pfun06;
 //    return initgl(gvr->user_prefs);
-	return old_gvr_initialize_gl(gvr);
+    old_gvr_initialize_gl(gvr);
+    InitTex(&gUserData, 1);
+	return;
 }
 
 #define fn_gvr_get_async_reprojection_enabled "gvr_get_async_reprojection_enabled"
@@ -534,6 +537,17 @@ void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* 
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
     LOGITAG("mjgvr","mj_gvr_frame_submit, tid=%d", gettid());
+
+    gvr_frame_bind_buffer(*frame, 0);
+    DrawTex(&gUserData);
+//        glViewport(gwidth, 0, gwidth, gheight);
+//        DrawTex(&gUserData);
+        glViewport(0, 0, 800, 1000);
+    DrawTex(&gUserData);
+
+
+    gvr_frame_unbind(*frame);
+
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
     return;
 }

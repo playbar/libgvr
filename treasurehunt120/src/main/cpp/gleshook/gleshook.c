@@ -290,7 +290,7 @@ void hookESFun()
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
     hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
     hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
-//    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
+    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
 //
 ////    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
     hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
@@ -303,7 +303,7 @@ void hookGLESFun()
     hookEGLFun();
 //    hookEglextFun();
 //    hookgl2extFun();
-//    hookESFun();
+    hookESFun();
 //    init_hook_libc();
     return;
 }

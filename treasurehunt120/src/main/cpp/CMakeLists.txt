@@ -71,6 +71,7 @@ add_library(gvrhook SHARED
             gvrhook/instruction.cpp
             gvrhook/gvrhookfn.cpp
             gvrhook/graphicshook.cpp
+            gvrhook/drawtex.cpp
             gvrhook/mjgvr.cc
             CallStack.cpp
             syscallstack.cc
