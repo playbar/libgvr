@@ -1,5 +1,3 @@
 //include ':sdk-treasurehunt'
-//include ':treasurehunt110'
-//include ':unitygvr103'
-//include ':unitygvr110'
-include ':unitygvr180'
+include ':treasurehunt12'
+//include ':unitygvr120'
