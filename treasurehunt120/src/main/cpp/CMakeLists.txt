@@ -129,6 +129,7 @@ target_link_libraries(glhook
 add_library(draw SHARED
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc
+            drawtex.cpp
              syscallstack.cc)
 
 target_include_directories(draw PRIVATE

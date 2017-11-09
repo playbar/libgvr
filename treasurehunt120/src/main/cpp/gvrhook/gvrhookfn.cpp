@@ -92,15 +92,6 @@ bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* e
     return re;
 }
 
-#define fn_gvr_using_dynamic_library "gvr_using_dynamic_library"
-bool (*old_gvr_using_dynamic_library)() = NULL;
-bool mj_gvr_using_dynamic_library()
-{
-	LOGITAG("mjgvr","mj_gvr_using_dynamic_library, tid=%d", gettid());
-    bool re = old_gvr_using_dynamic_library();
-	return re;
-}
-
 int (*old_sub_24738)() = NULL;
 int mj_sub_24738()
 {
@@ -341,14 +332,6 @@ void mj_gvr_distort_to_screen(gvr_context* gvr, int32_t texture_id, const gvr_bu
     LOGITAG("mjgvr","mj_gvr_distort_to_screen, tid=%d", gettid());
     old_gvr_distort_to_screen(gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
     return;
-}
-
-#define fn_gvr_is_feature_supported "gvr_is_feature_supported"
-bool (*old_gvr_is_feature_supported)(const gvr_context* gvr, int32_t feature) = NULL;
-bool mj_gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
-{
-    LOGITAG("mjgvr","mj_gvr_is_feature_supported, tid=%d", gettid());
-    return old_gvr_is_feature_supported(gvr, feature);
 }
 
 #define fn_gvr_buffer_viewport_create "gvr_buffer_viewport_create"
@@ -688,7 +671,6 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_JNI_OnLoad, (void*)GVR_JNI_OnLoad, (void**)&old_JNI_OnLoad)
 //           &&HookToFunctionBase(g_hGVR, 0x9B37E, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
 			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
-			   &&HookToFunction(g_hGVR, fn_gvr_using_dynamic_library, (void*)mj_gvr_using_dynamic_library, (void**)&old_gvr_using_dynamic_library)
 //		   &&HookToFunctionBase(g_hGVR, 0x6722, (void*)mj_sub_24738, (void**)&old_sub_24738)
 //               &&HookToFunctionBase( 0x68CA4,(void*)mj_sub_68CA4, (void**)&old_sub_68CA4)
 //			   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
@@ -703,7 +685,6 @@ bool InitHook()
 			   &&HookToFunction(g_hGVR, fn_gvr_get_maximum_effective_render_target_size, (void*)mj_gvr_get_maximum_effective_render_target_size, (void**)&old_gvr_get_maximum_effective_render_target_size)
 			   &&HookToFunction(g_hGVR, fn_gvr_get_screen_target_size, (void*)mj_gvr_get_screen_target_size, (void**)&old_gvr_get_screen_target_size)
 			   &&HookToFunction(g_hGVR, fn_gvr_distort_to_screen, (void*)mj_gvr_distort_to_screen, (void**)&old_gvr_distort_to_screen)
-               &&HookToFunction(g_hGVR, fn_gvr_is_feature_supported, (void*)mj_gvr_is_feature_supported, (void**)&old_gvr_is_feature_supported)
 			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_create, (void*)mj_gvr_buffer_viewport_create, (void**)&old_gvr_buffer_viewport_create)
                &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_create, (void*)mj_gvr_buffer_viewport_list_create, (void**)&old_gvr_buffer_viewport_list_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_get_item, (void*)mj_gvr_buffer_viewport_list_get_item, (void**)&old_gvr_buffer_viewport_list_get_item)

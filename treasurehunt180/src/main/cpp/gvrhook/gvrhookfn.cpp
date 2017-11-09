@@ -572,16 +572,16 @@ void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* 
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
     LOGITAG("mjgvr","mj_gvr_frame_submit, tid=%d", gettid());
-    gvr_frame_bind_buffer(*frame, 0);
-    if(gmultiview_enabled) {
-        DrawTex(&gUserData);
-    } else{
-        glViewport(gwidth, 0, gwidth, gheight);
-        DrawTex(&gUserData);
-        glViewport(0, 0, gwidth, gheight);
-        DrawTex(&gUserData);
-    }
-    gvr_frame_unbind(*frame);
+//    gvr_frame_bind_buffer(*frame, 0);
+//    if(gmultiview_enabled) {
+//        DrawTex(&gUserData);
+//    } else{
+//        glViewport(gwidth, 0, gwidth, gheight);
+//        DrawTex(&gUserData);
+//        glViewport(0, 0, gwidth, gheight);
+//        DrawTex(&gUserData);
+//    }
+//    gvr_frame_unbind(*frame);
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
     return;
 }

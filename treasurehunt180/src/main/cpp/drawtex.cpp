@@ -190,11 +190,13 @@ void InitData()
     glGenBuffers(1, &gUserData.vboID);
     glBindBuffer(GL_ARRAY_BUFFER, gUserData.vboID);
     glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(GLfloat), vVertices, GL_STATIC_DRAW);
+    glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
     glGenBuffers(1, &gUserData.iboID);
-    glBindBuffer(GL_ARRAY_BUFFER, gUserData.iboID);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
-    glBindBuffer ( GL_ARRAY_BUFFER, 0 );
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gUserData.iboID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
     return;
 
 }
@@ -298,14 +300,14 @@ void DrawTex( UserData *userData)
 
     // Load the vertex position
     glBindBuffer(GL_ARRAY_BUFFER, gUserData.vboID);
-
+    glEnableVertexAttribArray ( 0 );
+    glEnableVertexAttribArray ( 1 );
 //    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof ( GLfloat ), vVertices );
 //    glVertexAttribPointer ( 1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof ( GLfloat ), &vVertices[3] );
 
-    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof ( GLfloat ), ( const void * ) NULL  );
-    glVertexAttribPointer ( 1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof ( GLfloat ), (void*)(4 * sizeof(GLfloat)) );
-    glEnableVertexAttribArray ( 0 );
-    glEnableVertexAttribArray ( 1 );
+    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof ( GLfloat ), 0 );
+    glVertexAttribPointer ( 1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof ( GLfloat ), (void*)(3 * sizeof(GLfloat)) );
+
 
     // Bind the texture
 //    glEnable(GL_TEXTURE_2D);
@@ -313,7 +315,7 @@ void DrawTex( UserData *userData)
     glBindTexture ( GL_TEXTURE_2D, userData->textureId );
 
     glUniform1i ( userData->samplerLoc, 0 );
-    glBindBuffer(GL_ARRAY_BUFFER, gUserData.iboID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gUserData.iboID);
     glDrawElements ( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0 );
 //    glDrawElements ( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, indices );
 
@@ -322,6 +324,8 @@ void DrawTex( UserData *userData)
     glDisableVertexAttribArray ( 1 );
 
     CheckGLError("drawtex");
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 //    glDrawArrays ( GL_POINTS, 0, 6 );
 }
 
