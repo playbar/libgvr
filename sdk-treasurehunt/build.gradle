@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.google.vr.sdk.samples.treasurehunt"
@@ -42,11 +42,11 @@ android {
 dependencies {
 //    compile 'com.google.vr:sdk-audio:1.60.1'
 //    compile 'com.google.vr:sdk-base:1.60.1'
-    compile files('libs/sdk-base.jar')
-    compile files('libs/sdk-common.jar')
+//    compile files('libs/sdk-base.jar')
+//    compile files('libs/sdk-common.jar')
 //    compile files('libs/sdk-audio.jar')
-    compile(name: 'sdk-base-1.60.1', ext: 'aar')
-    compile(name: 'sdk-common-1.60.1', ext: 'aar')
-    compile(name: 'sdk-audio-1.60.1', ext: 'aar')
-//    compile files('libs/protobuf-javanano-3.1.0.jar')
+    compile(name: 'sdk-base-1.20.0', ext: 'aar')
+    compile(name: 'sdk-common-1.20.0', ext: 'aar')
+    compile(name: 'sdk-audio-1.20.0', ext: 'aar')
+    compile files('libs/protobuf-javanano-3.1.0.jar')
 }

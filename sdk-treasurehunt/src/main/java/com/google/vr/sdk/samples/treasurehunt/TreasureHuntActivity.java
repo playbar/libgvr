@@ -16,16 +16,12 @@
 
 package com.google.vr.sdk.samples.treasurehunt;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-
-import com.google.hook.GLESHook;
 import com.google.vr.sdk.audio.GvrAudioEngine;
 import com.google.vr.sdk.base.AndroidCompat;
 import com.google.vr.sdk.base.Eye;
@@ -40,39 +36,8 @@ import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.microedition.khronos.egl.EGLConfig;
-import com.google.vr.cardboard.TransitionView;
-import com.google.vr.cardboard.EglFactory;
-import com.google.vr.cardboard.ConfigUtils;
-import com.google.vr.cardboard.ContentProviderVrParamsProvider;
-import com.google.vr.cardboard.ExternalSurfaceManager;
-import com.google.vr.cardboard.PhoneParams;
-import com.google.vr.sdk.base.GvrActivity;
-import com.google.vr.cardboard.AndroidNCompat;
-import com.google.vr.ndk.base.GvrSurfaceView;
-import com.google.vr.cardboard.DisplaySynchronizer;
-import com.google.vr.ndk.base.GvrUiLayout;
-import com.google.vr.cardboard.ScanlineRacingRenderer;
-//import com.google.vr.ndk.base.VrCoreSdkClient;
-import com.google.vr.vrcore.common.api.IDaydreamListener;
-import com.google.vr.vrcore.controller.api.IControllerListener;
-import com.google.vr.cardboard.UiLayer;
-import com.google.vr.cardboard.TransitionView;
-import com.google.vr.vrcore.common.api.HeadTrackingState;
-import com.google.vr.vrcore.controller.api.ControllerEventPacket;
-import com.google.vr.vrcore.logging.api.VREventParcelable;
-import com.google.vr.vrcore.performance.api.IPerformanceService;
-import com.google.vr.cardboard.VrCoreLibraryLoader;
-import com.google.vr.ndk.base.Version;
-import com.google.vr.cardboard.VrParamsProviderFactory;
-import com.google.vr.cardboard.VrParamsProviderJni;
-import com.google.vr.internal.controller.NativeCallbacks;
-import com.google.vr.sdk.base.HeadTransform;
-import com.google.vr.sdk.base.GvrViewerParams;
-import com.google.vr.sdk.base.CardboardViewNativeImpl;
+
 /**
  * A Google VR sample application.
  *
@@ -162,40 +127,6 @@ public class TreasureHuntActivity extends GvrActivity implements GvrView.StereoR
   private volatile int sourceId = GvrAudioEngine.INVALID_ID;
   private volatile int successSourceId = GvrAudioEngine.INVALID_ID;
 
-  private boolean addPermission(List<String> permissionsList, String permission)
-  {
-    if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
-    {
-      permissionsList.add(permission);
-
-      // Check for Rationale Option
-      if (!shouldShowRequestPermissionRationale(permission))
-        return false;
-    }
-
-    return true;
-  }
-
-  public void checkRuntimePermissionsRunnable()
-  {
-    if (android.os.Build.VERSION.SDK_INT >= 23)
-    {
-      // Android 6.0+ needs runtime permission checks
-      List<String> permissionsNeeded = new ArrayList<String>();
-      final List<String> permissionsList = new ArrayList<String>();
-
-      if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
-        permissionsNeeded.add("Read External Storage");
-      if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-        permissionsNeeded.add("Write External Storage");
-
-      if (permissionsList.size() > 0)
-      {
-        requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), 124);
-      }
-    }
-  }
-
   /**
    * Converts a raw text file, saved as a resource, into an OpenGL ES shader.
    *
@@ -247,9 +178,8 @@ public class TreasureHuntActivity extends GvrActivity implements GvrView.StereoR
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    checkRuntimePermissionsRunnable();
+
     initializeGvrView();
-    GLESHook.initHook();
 
     modelCube = new float[16];
     camera = new float[16];
@@ -275,7 +205,7 @@ public class TreasureHuntActivity extends GvrActivity implements GvrView.StereoR
     gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
 
     gvrView.setRenderer(this);
-    gvrView.setTransitionViewEnabled(false);
+    gvrView.setTransitionViewEnabled(true);
 
     // Enable Cardboard-trigger feedback with Daydream headsets. This is a simple way of supporting
     // Daydream controller input for basic interactions using the existing Cardboard trigger API.
@@ -338,7 +268,8 @@ public class TreasureHuntActivity extends GvrActivity implements GvrView.StereoR
     cubeColors.put(WorldLayoutData.CUBE_COLORS);
     cubeColors.position(0);
 
-    ByteBuffer bbFoundColors = ByteBuffer.allocateDirect(WorldLayoutData.CUBE_FOUND_COLORS.length * 4);
+    ByteBuffer bbFoundColors =
+        ByteBuffer.allocateDirect(WorldLayoutData.CUBE_FOUND_COLORS.length * 4);
     bbFoundColors.order(ByteOrder.nativeOrder());
     cubeFoundColors = bbFoundColors.asFloatBuffer();
     cubeFoundColors.put(WorldLayoutData.CUBE_FOUND_COLORS);
@@ -645,7 +576,8 @@ public class TreasureHuntActivity extends GvrActivity implements GvrView.StereoR
     float angleXZ = (float) Math.random() * 180 + 90;
     Matrix.setRotateM(rotationMatrix, 0, angleXZ, 0f, 1f, 0f);
     float oldObjectDistance = objectDistance;
-    objectDistance = (float) Math.random() * (MAX_MODEL_DISTANCE - MIN_MODEL_DISTANCE) + MIN_MODEL_DISTANCE;
+    objectDistance =
+        (float) Math.random() * (MAX_MODEL_DISTANCE - MIN_MODEL_DISTANCE) + MIN_MODEL_DISTANCE;
     float objectScalingFactor = objectDistance / oldObjectDistance;
     Matrix.scaleM(rotationMatrix, 0, objectScalingFactor, objectScalingFactor, objectScalingFactor);
     Matrix.multiplyMV(posVec, 0, rotationMatrix, 0, modelCube, 12);

@@ -19,9 +19,6 @@ import android.os.RemoteException;
 import android.util.Log;
 import com.google.vr.cardboard.UiUtils;
 import com.google.vr.cardboard.R.string;
-import com.google.vr.ndk.base.DaydreamUtilsWrapper;
-import com.google.vr.ndk.base.FadeOverlayView;
-import com.google.vr.ndk.base.GvrApi;
 import com.google.vr.vrcore.base.api.VrCoreNotAvailableException;
 import com.google.vr.vrcore.base.api.VrCoreUtils;
 import com.google.vr.vrcore.common.api.HeadTrackingState;
@@ -89,8 +86,8 @@ class VrCoreSdkClient {
             HeadTrackingState var4 = null;
             boolean var12 = false;
 
-            label100: {
-                label118: {
+            label99: {
+                label117: {
                     HeadTrackingState var17;
                     int var18;
                     try {
@@ -100,7 +97,7 @@ class VrCoreSdkClient {
                             Log.e("VrCoreSdkClient", "Daydream VR preparation failed, closing VR session.");
                             VrCoreSdkClient.this.handlePrepareVrFailed();
                             var12 = false;
-                            break label100;
+                            break label99;
                         }
 
                         var12 = false;
@@ -108,7 +105,7 @@ class VrCoreSdkClient {
                         String var6 = String.valueOf(var13);
                         Log.w("VrCoreSdkClient", (new StringBuilder(61 + String.valueOf(var6).length())).append("Error while registering listener with the VrCore SDK Service:").append(var6).toString());
                         var12 = false;
-                        break label118;
+                        break label117;
                     } finally {
                         if(var12) {
                             VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);

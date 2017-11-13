@@ -34,15 +34,6 @@ import com.google.vr.cardboard.EglReadyListener;
 import com.google.vr.cardboard.MutableEglConfigChooser;
 import com.google.vr.cardboard.ScanlineRacingRenderer;
 import com.google.vr.cardboard.VrContextWrapper;
-import com.google.vr.ndk.base.CardboardEmulator;
-import com.google.vr.ndk.base.DaydreamTouchListener;
-import com.google.vr.ndk.base.DaydreamUtilsWrapper;
-import com.google.vr.ndk.base.FadeOverlayView;
-import com.google.vr.ndk.base.GvrApi;
-import com.google.vr.ndk.base.GvrSurfaceView;
-import com.google.vr.ndk.base.GvrUiLayout;
-import com.google.vr.ndk.base.TraceCompat;
-import com.google.vr.ndk.base.VrCoreSdkClient;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -359,7 +350,7 @@ public class GvrLayout extends FrameLayout {
     private void addScanlineRacingView() {
         if(this.scanlineRacingView == null) {
             this.eglFactory = new EglFactory();
-            this.eglFactory.setUsePriorityContext(false);
+            this.eglFactory.setUsePriorityContext(true);
             this.eglFactory.setUseProtectedBuffers(this.isAsyncReprojectionUsingProtectedBuffers);
             this.eglFactory.setEGLContextClientVersion(2);
             this.scanlineRacingView = new GvrLayout.AsyncReprojectionSurfaceView(this.getContext());
