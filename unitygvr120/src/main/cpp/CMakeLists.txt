@@ -3,14 +3,14 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC  -shared")
 
-add_library(gvr SHARED
+add_library(gvr_back SHARED
             gvrglobal.cpp
             gvrInter.cpp
             LogMessage.cpp
             gvrfn.cpp)
 
 # Include libraries needed for hello-jnicallback lib
-target_link_libraries(gvr log android GLESv3)
+target_link_libraries(gvr_back log android GLESv2)
 
 ###########################
 
@@ -25,5 +25,5 @@ add_library(gvrhook SHARED
             HookBase.cpp
             HookGVRTools.cpp
             )
-target_link_libraries(gvrhook gvr log)
+target_link_libraries(gvrhook lib_gvr log)
 

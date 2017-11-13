@@ -34,15 +34,14 @@ android {
         }
     }
 
-//    externalNativeBuild {
-//        cmake {
-//            path "src/main/cpp/CMakeLists.txt"
-//        }
-//    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
 }
 
 dependencies {
-//    compile project(':gvrres120')
     compile(name:'sdk-common-1.20.0', ext:'aar')
     compile files('libs/libprotobuf-java-nano.jar')
     compile files('libs/gvr.jar')
