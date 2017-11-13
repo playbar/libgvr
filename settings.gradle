@@ -1,4 +1,5 @@
-include ':sdk-treasurehunt'
+include ':ndk-treasurehunt'
+//include ':sdk-treasurehunt'
 //include ':treasurehunt120'
 //include ':treasurehunt180'
 //include ':unitygvr120'

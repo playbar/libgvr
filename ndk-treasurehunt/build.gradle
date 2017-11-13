@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion = 25
+    buildToolsVersion = '26.0.2'
+
+    defaultConfig.with {
+        applicationId = "com.google.vr.ndk.samples.treasurehunt"
+        minSdkVersion 19
+        targetSdkVersion 24
+        versionCode = 1
+        versionName = "1.0"
+        externalNativeBuild {
+            cmake {
+                abiFilters 'armeabi-v7a'
+                arguments '-DANDROID_TOOLCHAIN=clang'
+            }
+        }
+    }
+
+    android.buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles.add(file('proguard-android.txt'))
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+
+}
+
+dependencies {
+    compile(name: 'sdk-base-1.20.0', ext: 'aar')
+    compile(name: 'sdk-common-1.20.0', ext: 'aar')
+    compile(name: 'sdk-audio-1.20.0', ext: 'aar')
+    compile files('libs/protobuf-javanano-3.1.0.jar')
+}
+
