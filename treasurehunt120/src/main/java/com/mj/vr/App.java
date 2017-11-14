@@ -32,9 +32,10 @@ public class App extends Application {
 		// 程序创建的时候执行
 		Log.d(TAG, "onCreate");
 		super.onCreate();
-		GLESHook.initHook();
+//		GLESHook.initHook();
 //		GVRHook.initGraphicHook();
-		GVRHook.initHook();
+//		GVRHook.initHook();
+        GVRHook.ReprojFunc();
 	}
 	@Override
 	public void onTerminate() {

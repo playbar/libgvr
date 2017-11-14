@@ -8,7 +8,7 @@ package com.google.vr.cardboard;
 import android.net.Uri;
 
 public class VrSettingsProviderContract {
-    public static final String VRCORE_AUTHORITY = "com.google.vr.vrcore.settings";
+    public static final String VRCORE_AUTHORITY = "com.google.vr.vrcore.settings.mj";
     public static final String PROVIDER_INTENT_ACTION = "android.content.action.VR_SETTINGS_PROVIDER";
     public static final String DEVICE_PARAMS_SETTING = "device_params";
     public static final String PHONE_PARAMS_SETTING = "phone_params";

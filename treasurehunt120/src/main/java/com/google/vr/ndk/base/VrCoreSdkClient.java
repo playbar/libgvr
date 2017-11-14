@@ -19,6 +19,9 @@ import android.os.RemoteException;
 import android.util.Log;
 import com.google.vr.cardboard.UiUtils;
 import com.google.vr.cardboard.R.string;
+import com.google.vr.ndk.base.DaydreamUtilsWrapper;
+import com.google.vr.ndk.base.FadeOverlayView;
+import com.google.vr.ndk.base.GvrApi;
 import com.google.vr.vrcore.base.api.VrCoreNotAvailableException;
 import com.google.vr.vrcore.base.api.VrCoreUtils;
 import com.google.vr.vrcore.common.api.HeadTrackingState;
@@ -86,8 +89,8 @@ class VrCoreSdkClient {
             HeadTrackingState var4 = null;
             boolean var12 = false;
 
-            label99: {
-                label117: {
+            label100: {
+                label118: {
                     HeadTrackingState var17;
                     int var18;
                     try {
@@ -97,7 +100,7 @@ class VrCoreSdkClient {
                             Log.e("VrCoreSdkClient", "Daydream VR preparation failed, closing VR session.");
                             VrCoreSdkClient.this.handlePrepareVrFailed();
                             var12 = false;
-                            break label99;
+                            break label100;
                         }
 
                         var12 = false;
@@ -105,7 +108,7 @@ class VrCoreSdkClient {
                         String var6 = String.valueOf(var13);
                         Log.w("VrCoreSdkClient", (new StringBuilder(61 + String.valueOf(var6).length())).append("Error while registering listener with the VrCore SDK Service:").append(var6).toString());
                         var12 = false;
-                        break label117;
+                        break label118;
                     } finally {
                         if(var12) {
                             VrCoreSdkClient.this.resumeTracking((HeadTrackingState)null);
@@ -204,8 +207,8 @@ class VrCoreSdkClient {
         } else {
             if(this.shouldBind) {
                 Intent var1;
-                (var1 = new Intent("com.google.vr.vrcore.BIND_SDK_SERVICE")).setPackage("com.google.vr.vrcore");
-//                this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
+                (var1 = new Intent("com.google.vr.vrcore.BIND_SDK_SERVICE")).setPackage("com.baofeng.mj");
+                this.isBound = this.context.bindService(var1, this.serviceConnection, 1);
             }
 
             if(!this.isBound) {
@@ -263,6 +266,7 @@ class VrCoreSdkClient {
                 return;
             }
 
+            //todo helpCenterDialog
 //            this.helpCenterDialog = UiUtils.showDaydreamHelpCenterDialog(this.context, string.dialog_title_incompatible_phone, string.dialog_message_incompatible_phone, this.closeVrRunnable);
         }
 

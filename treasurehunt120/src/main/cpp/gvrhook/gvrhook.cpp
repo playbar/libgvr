@@ -11,6 +11,7 @@
 #include <sys/mman.h>
 #include "gvr.h"
 #include "gvrhookfn.h"
+#include "elf_eglhook.h"
 
 
 extern void gvr_get_recommended_buffer_viewports(const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list);
@@ -165,4 +166,9 @@ JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_hookTest(JNIEnv* env, jobjec
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_unInitHook(JNIEnv* env, jobject obj)
 {
     UninitHook();
+}
+
+JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_ReprojFunc(JNIEnv* env, jobject obj)
+{
+    hookEglGetProcAddress();
 }

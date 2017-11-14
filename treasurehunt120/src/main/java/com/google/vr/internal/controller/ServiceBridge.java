@@ -194,7 +194,7 @@ public class ServiceBridge implements ServiceConnection {
             Log.w(TAG, "Service is already bound.");
         } else {
             Intent var1;
-            (var1 = new Intent("com.google.vr.vrcore.controller.BIND")).setPackage("com.google.vr.vrcore");
+            (var1 = new Intent("com.google.vr.vrcore.controller.BIND")).setPackage("com.baofeng.mj");
             if(!this.context.bindService(var1, this, 1)) {
                 Log.w(TAG, "Bind failed. Service is not available.");
                 this.callbacks.onServiceUnavailable();
@@ -242,6 +242,18 @@ public class ServiceBridge implements ServiceConnection {
         }
 
         if(var3 != 0) {
+//            String var10000 = TAG;
+//            String var10002 = String.valueOf(ControllerInitResults.toString(var3));
+//            String var10001;
+//            if(var10002.length() != 0) {
+//                var10001 = "initialize() returned error: ".concat(var10002);
+//            } else {
+//                String var10003 = new String;
+//                var10001 = var10003;
+//                var10003.<init>("initialize() returned error: ");
+//            }
+//
+//            Log.e(var10000, var10001);
             this.callbacks.onServiceInitFailed(var3);
             this.doUnbind();
         } else {

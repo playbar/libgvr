@@ -71,6 +71,10 @@ add_library(gvrhook SHARED
             gvrhook/instruction.cpp
             gvrhook/gvrhookfn.cpp
             gvrhook/graphicshook.cpp
+            gvrhook/elf_common.cpp
+            gvrhook/elf_hooker.cpp
+            gvrhook/elf_eglhook.cpp
+            gvrhook/elf_module.cpp
             gvrhook/drawtex.cpp
             gvrhook/mjgvr.cc
             CallStack.cpp
@@ -80,7 +84,7 @@ target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
                           ${CMAKE_CURRENT_SOURCE_DIR}/gvrhook )
 
-target_link_libraries(gvrhook lib_gvr log texresource)
+target_link_libraries(gvrhook lib_gvr EGL log texresource)
 
 #############################################
 

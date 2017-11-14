@@ -18,6 +18,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.widget.Toast;
+import com.google.vr.cardboard.ContextUtils;
+import com.google.vr.cardboard.PackageUtils;
+import com.google.vr.cardboard.StoragePermissionUtils;
+import com.google.vr.cardboard.VrParamsProviderFactory;
 import com.google.vr.cardboard.R.string;
 import com.google.vr.cardboard.R.style;
 import java.util.ArrayList;
@@ -126,7 +130,7 @@ public class UiUtils {
                 try {
                     var0.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://google.com/cardboard/cfg")));
                 } catch (ActivityNotFoundException var3) {
-                    Toast.makeText(var0, string.no_browser_text, 1).show();
+                    Toast.makeText(var0, string.no_browser_text, Toast.LENGTH_LONG).show();
                 }
             }
         };

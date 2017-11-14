@@ -10,13 +10,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 public class PackageUtils {
-    private static final String GOOGLE_PACKAGE_PREFIX = "com.google.";
+    private static final String GOOGLE_PACKAGE_PREFIX = "com.baofeng.";
 
     public PackageUtils() {
     }
 
     public static boolean isGooglePackage(String var0) {
-        return var0 != null && var0.startsWith("com.google.");
+        return var0 != null && var0.startsWith("com.baofeng.");
     }
 
     public static boolean isSystemPackage(Context var0, String var1) {

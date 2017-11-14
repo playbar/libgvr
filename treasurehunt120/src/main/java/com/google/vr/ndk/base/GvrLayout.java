@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager.InvalidDisplayException;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout.LayoutParams;
+
 import com.google.vr.cardboard.ContextUtils;
 import com.google.vr.cardboard.DisplaySynchronizer;
 import com.google.vr.cardboard.DisplayUtils;
@@ -34,6 +35,15 @@ import com.google.vr.cardboard.EglReadyListener;
 import com.google.vr.cardboard.MutableEglConfigChooser;
 import com.google.vr.cardboard.ScanlineRacingRenderer;
 import com.google.vr.cardboard.VrContextWrapper;
+import com.google.vr.ndk.base.CardboardEmulator;
+import com.google.vr.ndk.base.DaydreamTouchListener;
+import com.google.vr.ndk.base.DaydreamUtilsWrapper;
+import com.google.vr.ndk.base.FadeOverlayView;
+import com.google.vr.ndk.base.GvrApi;
+import com.google.vr.ndk.base.GvrSurfaceView;
+import com.google.vr.ndk.base.GvrUiLayout;
+import com.google.vr.ndk.base.TraceCompat;
+import com.google.vr.ndk.base.VrCoreSdkClient;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -132,8 +142,8 @@ public class GvrLayout extends FrameLayout {
                     this.fadeOverlayView = var4 != null?var4:new FadeOverlayView(this.getContext());
                     this.addView(this.fadeOverlayView, 2);
                 }
-
-                this.vrCoreSdkClient = this.createVrCoreSdkClient(this.getContext(), var1, var5, this.fadeOverlayView);
+                //delete daydream config
+//                this.vrCoreSdkClient = this.createVrCoreSdkClient(this.getContext(), var1, var5, this.fadeOverlayView);
             }
         } finally {
             TraceCompat.endSection();
@@ -187,7 +197,7 @@ public class GvrLayout extends FrameLayout {
 
     public void onResume() {
         TraceCompat.beginSection("GvrLayout.onResume");
-
+//        MojingSDK.hookFun();
         try {
             this.gvrApi.resume();
             if(this.daydreamTouchListener != null) {
@@ -370,7 +380,7 @@ public class GvrLayout extends FrameLayout {
 
             this.scanlineRacingRenderer.setSurfaceView(this.scanlineRacingView);
             this.scanlineRacingView.setRenderer(this.scanlineRacingRenderer);
-            this.scanlineRacingView.setSwapMode(1);
+            this.scanlineRacingView.setSwapMode(0);
             this.presentationLayout.addView(this.scanlineRacingView, 0);
         }
     }
