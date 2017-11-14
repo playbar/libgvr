@@ -20,87 +20,34 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.google.hook.GLESHook;
+import android.view.WindowManager;
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
-
-import java.io.File;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-/**
- * A Google VR NDK sample application.
- *
- * <p>This app presents a scene consisting of a planar ground grid and a floating "treasure" cube.
- * When the user finds the "treasure", they can invoke the trigger action, and the cube will be
- * randomly repositioned. When in Cardboard mode, the user must gaze at the cube and use the
- * Cardboard trigger button. When in Daydream mode, the user can use the controller to position the
- * cursor, and use the controller buttons to invoke the trigger action.
- *
- * <p>This is the main Activity for the sample application. It initializes a GLSurfaceView to allow
- * rendering, a GvrLayout for GVR API access, and forwards relevant events to the native renderer
- * where rendering and interaction are handled.
- */
+/** A Gvr API sample application. */
 public class MainActivity extends Activity {
-
-  // Opaque native pointer to the native TreasureHuntRenderer instance.
-  private long nativeTreasureHuntRenderer;
-
   private GvrLayout gvrLayout;
+  private long nativeTreasureHuntRenderer;
   private GLSurfaceView surfaceView;
 
-  // Note that pause and resume signals to the native renderer are performed on the GL thread,
-  // ensuring thread-safety.
-  private final Runnable pauseNativeRunnable =
+  // This is done on the GL thread because refreshViewerProfile isn't thread-safe.
+  private final Runnable refreshViewerProfileRunnable =
       new Runnable() {
         @Override
         public void run() {
-          nativeOnPause(nativeTreasureHuntRenderer);
+          gvrLayout.getGvrApi().refreshViewerProfile();
         }
       };
 
-  private final Runnable resumeNativeRunnable =
-      new Runnable() {
-        @Override
-        public void run() {
-          nativeOnResume(nativeTreasureHuntRenderer);
-        }
-      };
 
-    private boolean isDDAPP()
-    {
-        try {
-            String path = getApplicationContext().getApplicationInfo().nativeLibraryDir+"/libgvr.so";
-            File f = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir+"/libgvr.so");
-//            File f = new File("libgvr.so ");
-            if (!f.exists()) {
-                return false;
-            }
-        }
-        catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-
-    @Override
+  @Override
   protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        GLESHook.setsDaydreamPhoneOverrideForTesting();
-        GLESHook.setsFingerprint();
-
-        if (isDDAPP())
-        {
-            Log.e("dd", "ddapp");
-        }
+    super.onCreate(savedInstanceState);
 
     // Ensure fullscreen immersion.
     setImmersiveSticky();
@@ -151,13 +98,7 @@ public class MainActivity extends Activity {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
               // Give user feedback and signal a trigger event.
               ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(50);
-              surfaceView.queueEvent(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      nativeOnTriggerEvent(nativeTreasureHuntRenderer);
-                    }
-                  });
+              nativeOnTriggerEvent(nativeTreasureHuntRenderer);
               return true;
             }
             return false;
@@ -168,9 +109,9 @@ public class MainActivity extends Activity {
     // Add the GvrLayout to the View hierarchy.
     setContentView(gvrLayout);
 
-    // Enable async reprojection.
+    // Enable scan line racing.
     if (gvrLayout.setAsyncReprojectionEnabled(true)) {
-      // Async reprojection decouples the app framerate from the display framerate,
+      // Scanline racing decouples the app framerate from the display framerate,
       // allowing immersive interaction even at the throttled clockrates set by
       // sustained performance mode.
       AndroidCompat.setSustainedPerformanceMode(this, true);
@@ -178,22 +119,26 @@ public class MainActivity extends Activity {
 
     // Enable VR Mode.
     AndroidCompat.setVrModeEnabled(this, true);
+
+    // Prevent screen from dimming/locking.
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
   }
 
   @Override
   protected void onPause() {
-    surfaceView.queueEvent(pauseNativeRunnable);
-    surfaceView.onPause();
-    gvrLayout.onPause();
     super.onPause();
+    nativeOnPause(nativeTreasureHuntRenderer);
+    gvrLayout.onPause();
+    surfaceView.onPause();
   }
 
   @Override
   protected void onResume() {
     super.onResume();
+    nativeOnResume(nativeTreasureHuntRenderer);
     gvrLayout.onResume();
     surfaceView.onResume();
-    surfaceView.queueEvent(resumeNativeRunnable);
+    surfaceView.queueEvent(refreshViewerProfileRunnable);
   }
 
   @Override
@@ -204,13 +149,6 @@ public class MainActivity extends Activity {
     // native resources from the UI thread.
     gvrLayout.shutdown();
     nativeDestroyRenderer(nativeTreasureHuntRenderer);
-    nativeTreasureHuntRenderer = 0;
-  }
-
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
-//    gvrLayout.onBackPressed();
   }
 
   @Override
@@ -245,10 +183,16 @@ public class MainActivity extends Activity {
 
   private native long nativeCreateRenderer(
       ClassLoader appClassLoader, Context context, long nativeGvrContext);
+
   private native void nativeDestroyRenderer(long nativeTreasureHuntRenderer);
+
   private native void nativeInitializeGl(long nativeTreasureHuntRenderer);
+
   private native long nativeDrawFrame(long nativeTreasureHuntRenderer);
+
   private native void nativeOnTriggerEvent(long nativeTreasureHuntRenderer);
+
   private native void nativeOnPause(long nativeTreasureHuntRenderer);
+
   private native void nativeOnResume(long nativeTreasureHuntRenderer);
 }
