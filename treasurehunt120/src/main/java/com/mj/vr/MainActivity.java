@@ -24,6 +24,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.google.hook.GLESHook;
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -48,6 +50,9 @@ public class MainActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+      GLESHook.setsDaydreamPhoneOverrideForTesting();
+      GLESHook.setsFingerprint();
 
     // Ensure fullscreen immersion.
     setImmersiveSticky();
