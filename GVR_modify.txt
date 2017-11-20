@@ -139,6 +139,16 @@ com/google/vr/ndk/base/GvrSurfaceView
 
 4，封装egl hook接口，添加位置：com/google/vr/ndk/base/GvrLayout->init-> return-void 前，
   invoke-static {}, Lcom/baofeng/mojing/MojingSDK;->hookFun()V
+  com.unity3d.unitygvr.GoogleVR->resume() 添加  MojingSDK.enableShowTip(true);
+  smali :
+  const/4 v0, 0x1
+  invoke-static {v0}, Lcom/baofeng/mojing/MojingSDK;->enableShowTip(Z)V
+
+  com.unity3d.unitygvr.GoogleVR->pause() 添加  MojingSDK.enableShowTip(false);
+  smali:
+  const/4 v0, 0x0
+  invoke-static {v0}, Lcom/baofeng/mojing/MojingSDK;->enableShowTip(Z)V
+
 
 代码并且实现如下：
 typedef EGLImageKHR (*FP_eglCreateImageKHR)(EGLDisplay dpy, EGLContext ctx, EGLenum target, EGLClientBuffer buffer, const EGLint *attrib_list);
