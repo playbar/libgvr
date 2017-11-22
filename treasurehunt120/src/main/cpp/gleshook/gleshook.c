@@ -22,15 +22,19 @@ extern int gismaligpu;
 void (*old_glShaderSource) (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) = NULL;
 void mj_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length)
 {
-    LOGITAG("mjgl","mj_glShaderSource, tid=%d", gettid());
+    char name[256] = {0};
+    static int index = 1;
+    sprintf(name, "/sdcard/shader_%d_%d.txt", gettid(), index);
+    ++index;
+    LOGITAG("mjgl","mj_glShaderSource, shader=%d, name=%s, count=%d, tid=%d", shader, name, count, gettid());
+//    FILE *pfile = fopen(name, "wb");
 //    for(int i = 0; i < count; ++i){
 //        int len = strlen(*string);
-//        FILE *pfile = fopen("/sdcard/shader.txt", "wb");
 //        fwrite(*string, len, 1, pfile);
-//        fflush(pfile);
-//        fclose(pfile);
 ////        LOGITAG("mjgl","shader: %s", *string);
 //    }
+//    fflush(pfile);
+//    fclose(pfile);
     return old_glShaderSource(shader, count, string, length);
 }
 
@@ -143,9 +147,9 @@ void mj_glEnableVertexAttribArray (GLuint index)
 }
 
 void (*old_glVertexAttribPointer)(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr) = NULL;
-void mj_glVertexAttribPointer (GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+void mj_glVertexAttribPointer (GLuint indx, GLint size,  GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
-    LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=%0X, tid=%d", indx, size, type, stride, ptr, gettid());
+    LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=0x%0X, tid=%d", indx, size, type, stride, ptr, gettid());
     return old_glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
 }
 
@@ -191,6 +195,15 @@ void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
 
     return;
 }
+
+GLuint (*old_glCreateProgram)(void) = NULL;
+GLuint mj_glCreateProgram(void)
+{
+    GLuint programid = old_glCreateProgram();
+    LOGITAG("mjgl","mj_glCreateProgram, programid=%d, tid=%d", programid, gettid());
+    return programid;
+}
+
 
 void (*old_glUseProgram) (GLuint program) = NULL;
 void mj_glUseProgram (GLuint program)
@@ -290,6 +303,7 @@ void hookESFun()
     hook((uint32_t) glDrawArrays, (uint32_t)mj_glDrawArrays, (uint32_t **) &old_glDrawArrays);
     hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
     hook((uint32_t) glUseProgram, (uint32_t)mj_glUseProgram, (uint32_t **) &old_glUseProgram);
+    hook((uint32_t) glCreateProgram, (uint32_t)mj_glCreateProgram, (uint32_t **)&old_glCreateProgram);
     hook((uint32_t) glRenderbufferStorage, (uint32_t)mj_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
     hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);

@@ -34,8 +34,8 @@ public class App extends Application {
 		super.onCreate();
 		GLESHook.initHook();
 //		GVRHook.initGraphicHook();
-		GVRHook.initHook();
-        GVRHook.ReprojFunc();
+//		GVRHook.initHook();
+//        GVRHook.ReprojFunc();
 	}
 	@Override
 	public void onTerminate() {

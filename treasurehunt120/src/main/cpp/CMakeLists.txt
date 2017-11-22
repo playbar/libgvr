@@ -78,7 +78,7 @@ add_library(gvrhook SHARED
             gvrhook/drawtex.cpp
             gvrhook/mjgvr.cc
             CallStack.cpp
-            syscallstack.cc
+            #syscallstack.cc
             )
 target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -112,7 +112,8 @@ add_library(glhook SHARED
                gleshook/dohook.c
                gleshook/hook_libc.c
                gleshook/hook_libc_arm.c
-               syscallstack.cc)
+               #syscallstack.cc
+               )
 
 target_include_directories(glhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -135,7 +136,8 @@ add_library(draw SHARED
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc
             drawtex.cpp
-             syscallstack.cc)
+             #syscallstack.cc
+             )
 
 target_include_directories(draw PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
