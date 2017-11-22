@@ -116,8 +116,12 @@ void mj_glBindBufferBase (GLenum target, GLuint index, GLuint buffer)
 void (*old_glBufferData)(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage) = NULL;
 void mj_glBufferData (GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-    LOGITAG("mjgl","mj_glBufferData, tid=%d", gettid());
-//    FILE *pfile = fopen("/sdcard/bufferdata.txt", "wb");
+    char name[256] = {0};
+    static int index = 1;
+    sprintf(name, "/sdcard/bufferdata_%d_%d.txt", gettid(), index);
+    ++index;
+    LOGITAG("mjgl","mj_glBufferData, name=%s size=%d, tid=%d", name, size, gettid());
+//    FILE *pfile = fopen(name, "wb");
 //    fwrite(data, size, 1, pfile);
 //    fflush(pfile);
 //    fclose(pfile);
