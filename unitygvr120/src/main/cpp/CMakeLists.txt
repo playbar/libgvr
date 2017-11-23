@@ -19,11 +19,19 @@ set_target_properties(lib_gvr PROPERTIES IMPORTED_LOCATION
     ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libgvr.so)
 
 add_library(gvrhook SHARED
+            eglhook/elf_common.cpp
+            eglhook/elf_hooker.cpp
+            eglhook/elf_eglhook.cpp
+            eglhook/elf_module.cpp
             gvrhook.cpp
             detour.cpp
             instruction.cpp
             HookBase.cpp
             HookGVRTools.cpp
             )
-target_link_libraries(gvrhook lib_gvr log)
+target_link_libraries(gvrhook
+                      lib_gvr
+                      log
+                      EGL
+                      GLESv2)
 

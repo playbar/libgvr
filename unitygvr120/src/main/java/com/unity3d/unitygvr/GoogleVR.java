@@ -27,6 +27,8 @@ public class GoogleVR {
 
     public static native void HookInit();
 
+    public static native void hookUnityFun();
+
     static {
         try {
             System.loadLibrary("gvrhook");

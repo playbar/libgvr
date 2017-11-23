@@ -1,6 +1,8 @@
 package com.Company.GvrProject90;
 
 import com.unity3d.player.*;
+import com.unity3d.unitygvr.GoogleVR;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,6 +27,7 @@ public class UnityPlayerActivity extends Activity
         getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
         mUnityPlayer = new UnityPlayer(this);
+        GoogleVR.hookUnityFun();
         setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
     }

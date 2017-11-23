@@ -45,7 +45,7 @@ target_link_libraries(png
 add_library(gvr_back SHARED
             gvrglobal.cpp
             gvrInter.cpp
-            syscallstack.cc
+            #syscallstack.cc
             LogMessage.cpp)
 
 target_include_directories(gvr_back PRIVATE

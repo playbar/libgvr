@@ -11,6 +11,7 @@
 #include <sys/mman.h>
 #include "gvr.h"
 #include "HookGVRTools.h"
+#include "eglhook/elf_eglhook.h"
 
 
 extern void gvr_get_recommended_buffer_viewports(const gvr_context *gvr, gvr_buffer_viewport_list *viewport_list);
@@ -28,7 +29,7 @@ void new_get_recommended_buffer_viewports(const gvr_context *gvr, gvr_buffer_vie
     return fp_get_recommended_buffer_viewports(gvr, viewport_list);
 }
 
-void* get_module_base(pid_t pid,const char* module_name)
+void* get_module_base_1(pid_t pid,const char* module_name)
 {
     FILE* fp;
     long addr = 0;
@@ -66,7 +67,7 @@ void hook_new_get_recommended_buffer_viewports()
     LOGD("Orig get_recommended_buffer_viewports = %p\n",fp_get_recommended_buffer_viewports);
     pid_t pid = getpid();
     LOGD("process pid=%d", pid);
-    void* base_addr = get_module_base(getpid(),LIBSF_NAME); //动态库地址
+    void* base_addr = get_module_base_1(getpid(),LIBSF_NAME); //动态库地址
     LOGD("libgvrhook.so address = %p\n",base_addr);
 
     int fd;
@@ -150,5 +151,10 @@ JNIEXPORT void JNICALL Java_com_unity3d_unitygvr_GoogleVR_HookInit(JNIEnv* env, 
     LOGD("Hook success, F:%s, pid = %d\n", __FUNCTION__, getpid());
     HookGVRTools::Init();
 //    hook_new_get_recommended_buffer_viewports();
+}
+
+JNIEXPORT void JNICALL Java_com_unity3d_unitygvr_GoogleVR_hookUnityFun(JNIEnv * env , jobject obj )
+{
+    hookUnityFun();
 }
 
