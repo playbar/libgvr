@@ -282,6 +282,23 @@ void mj_glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
     return old_glClearColor(red, green, blue, alpha);
 }
 
+GLint (*old_glGetUniformLocation)(GLuint program, const GLchar* name) = NULL;
+GLint mj_glGetUniformLocation (GLuint program, const GLchar* name)
+{
+    GLint locatoin = old_glGetUniformLocation(program, name);
+    LOGITAG("mjgl", "mj_glGetUniformLocation, location=%d, name=%s, tid=%d", locatoin, name, gettid());
+    return locatoin;
+}
+
+void (*old_glUniform2fv)(GLint location, GLsizei count, const GLfloat* v) = NULL;
+void mj_glUniform2fv(GLint location, GLsizei count, const GLfloat* v)
+{
+    GLfloat x = *v;
+    GLfloat y = *(v+1);
+    LOGITAG("mjgl", "mj_glUniform2fv, location=%d, x=%f, y=%f, tid=%d", location, x, y, gettid());
+    return old_glUniform2fv(location, count, v);
+}
+
 void hookESFun()
 {
     hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
@@ -313,7 +330,8 @@ void hookESFun()
 ////    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
     hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
     hook((uint32_t) glClearColor, (uint32_t)mj_glClearColor, (uint32_t **) &old_glClearColor);
-
+    hook((uint32_t) glGetUniformLocation, (uint32_t)mj_glGetUniformLocation, (uint32_t **)&old_glGetUniformLocation);
+    hook((uint32_t) glUniform2fv, (uint32_t)mj_glUniform2fv, (uint32_t **)&old_glUniform2fv);
 }
 
 void hookGLESFun()
