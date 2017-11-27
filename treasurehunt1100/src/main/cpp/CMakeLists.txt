@@ -47,7 +47,7 @@ target_link_libraries(png
 add_library(gvr_back SHARED
             gvrglobal.cpp
             gvrInter.cpp
-            syscallstack.cc
+            #syscallstack.cc
             LogMessage.cpp)
 
 target_include_directories(gvr_back PRIVATE
@@ -75,7 +75,7 @@ add_library(gvrhook SHARED
             gvrhook/graphicshook.cpp
             gvrhook/mjgvr.cc
             CallStack.cpp
-            syscallstack.cc
+            #syscallstack.cc
             )
 target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -107,7 +107,8 @@ add_library(glhook SHARED
                gleshook/exporthook.c
                gleshook/exportutil.c
                gleshook/andhook.c
-               syscallstack.cc)
+               #syscallstack.cc
+               )
 
 target_include_directories(glhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -129,12 +130,12 @@ target_link_libraries(glhook
 add_library(draw SHARED
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc
-             syscallstack.cc)
+            #syscallstack.cc
+             )
 
 target_include_directories(draw PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
                           )
-
 add_library(lib_audio SHARED IMPORTED )
 set_target_properties(lib_audio PROPERTIES IMPORTED_LOCATION
     ${CMAKE_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libgvr_audio.so)
