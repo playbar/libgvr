@@ -308,7 +308,7 @@ enum detour_status registerInlineHook( uint32_t target_addr, uint32_t new_addr, 
     memcpy( item->orig_instructions, ( void * )CLEAR_BIT0( item->target_addr ), item->length );
 
     item->trampoline_instructions = mmap( NULL, PAGE_SIZE, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0 );
-    relocateInstruction( item->target_addr, item->orig_instructions, item->length, item->trampoline_instructions, item->orig_boundaries, item->trampoline_boundaries, &item->count );
+    relocateInstruction_1( item->target_addr, item->orig_instructions, item->length, item->trampoline_instructions, item->orig_boundaries, item->trampoline_boundaries, &item->count );
 
     item->status = REGISTERED;
 

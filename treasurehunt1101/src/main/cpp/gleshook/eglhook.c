@@ -19,7 +19,7 @@ int viewport = 0;
 int swapbuffer = 0;
 int gismaligpu = false;
 
-void* get_module_base(pid_t pid,const char* module_name)
+void* get_module_base_1(pid_t pid,const char* module_name)
 {
     FILE* fp;
     long addr = 0;
@@ -51,7 +51,7 @@ void* get_module_base(pid_t pid,const char* module_name)
 bool HookToFunctionBase(int base, void * fpReplactToFunction, void ** fpOutRealFunction)
 {
     bool bRet = false;
-    void *pModule = get_module_base(getpid(), "libEGL.so");
+    void *pModule = get_module_base_1(getpid(), "libEGL.so");
     void *pFunc = (void*)((int)pModule + base + 1);
     if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == 0)
     {
@@ -237,7 +237,7 @@ EGLBoolean mj_eglSwapInterval(EGLDisplay dpy, EGLint interval)
 EGLContext (*old_eglCreateContext)(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list) = NULL;
 EGLContext mj_eglCreateContext(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list)
 {
-    void *baseadd = get_module_base(getpid(), "libEGL.so");
+    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
     EGLContext context = old_eglCreateContext(dpy, config, share_context, attrib_list);
     LOGITAG("mjgl","mj_eglCreateContext context=%0X, share_context=%0X, pid=%d", context, share_context, getpid());
     return context;
@@ -650,7 +650,7 @@ EGLClientBuffer mjeglCreateNativeClientBufferANDROID (const EGLint *attrib_list)
 EGLAPI __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
-//    void *baseadd = get_module_base(getpid(), "libEGL.so");
+//    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
 //    const char *glrender = glGetString(GL_RENDERER);
 //    sys_call_stack();
 //    old_eglGetProcAddress(procname);
@@ -810,7 +810,7 @@ EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char 
 void hookEGLFun()
 {
     LOGITAG("mjgl", "hookEGLFun, tid=%d",  gettid());
-    void *baseadd = get_module_base(getpid(), "libEGL.so");
+    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
     hook((uint32_t) eglGetError, (uint32_t)mj_eglGetError, (uint32_t **) &old_eglGetError);
     hook((uint32_t) eglGetDisplay, (uint32_t)mj_eglGetDisplay, (uint32_t **) &old_eglGetDisplay);
     hook((uint32_t) eglInitialize, (uint32_t)mj_eglInitialize, (uint32_t **) &old_eglInitialize);

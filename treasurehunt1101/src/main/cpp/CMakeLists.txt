@@ -128,9 +128,51 @@ target_link_libraries(glhook
 
 ################################
 add_library(draw SHARED
-            treasure_hunt_jni.cc
-            treasure_hunt_renderer.cc
-            #syscallstack.cc
+           gleshook/inlineHook.c
+           gleshook/hookutils.c
+           gleshook/relocate.c
+           gleshook/eglexthook.c
+           gleshook/gl2exthook.c
+           gleshook/eglhook.c
+           gleshook/gleshook.c
+           gleshook/threadhook.c
+#          gleshook/vkhook.c
+           gleshook/callstack.c
+           gleshook/elf_common.cpp
+           gleshook/elf_hooker.cpp
+           gleshook/elf_main.cpp
+           gleshook/elf_module.cpp
+           gleshook/exporthook.c
+           gleshook/exportutil.c
+           gleshook/andhook.c
+           #syscallstack.cc
+           gvrhook/gvrhook.cpp
+           gvrhook/detour.cpp
+           gvrhook/instruction.cpp
+           gvrhook/gvrhookfn.cpp
+           gvrhook/graphicshook.cpp
+           gvrhook/mjgvr.cc
+           CallStack.cpp
+           libpng/png.c
+           libpng/pngerror.c
+           libpng/pngget.c
+           libpng/pngmem.c
+           libpng/pngpread.c
+           libpng/pngread.c
+           libpng/pngrio.c
+           libpng/pngrtran.c
+           libpng/pngrutil.c
+           libpng/pngset.c
+           libpng/pngtest.c
+           libpng/pngtrans.c
+           libpng/pngwio.c
+           libpng/pngwrite.c
+           libpng/pngwtran.c
+           libpng/pngwutil.c
+           libpng/pngutils.c
+           treasure_hunt_jni.cc
+           treasure_hunt_renderer.cc
+           #syscallstack.cc
              )
 
 target_include_directories(draw PRIVATE
@@ -145,7 +187,7 @@ target_link_libraries(draw
                       log
                       android
                       EGL
-                      GLESv3
+                      GLESv2
                       lib_gvr
                       lib_audio
                       texresource)

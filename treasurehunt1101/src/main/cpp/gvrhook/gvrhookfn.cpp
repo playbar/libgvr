@@ -16,6 +16,50 @@
 
 void * g_hGVR = NULL;
 
+uint64_t GetTimeNano()
+{
+    struct timespec t;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    uint64_t result = t.tv_sec * 1000000000LL + t.tv_nsec;
+    return result;
+}
+
+void ShowFPS()
+{
+#define INTERVALTIME 1000
+    static unsigned int prevTimeMs = GetTimeNano();
+    static unsigned int lastTimeMS = GetTimeNano();
+    static unsigned int frameCounter = 0;
+    static float maxTime = 0;
+    static float minTime = 0;
+
+    unsigned int currentTimeMs = GetTimeNano();
+    float everyInterTime = (float)(currentTimeMs - lastTimeMS) * 1e-6;
+    if( everyInterTime > maxTime ){
+        maxTime = everyInterTime;
+    }
+    if( everyInterTime < minTime )
+    {
+        minTime = everyInterTime;
+    }
+    lastTimeMS = currentTimeMs;
+    frameCounter++;
+    float totalTime = (currentTimeMs - prevTimeMs) * 1e-6;
+    if (totalTime > INTERVALTIME)
+    {
+        float elapsedSec = (float)totalTime / 1000.0f;
+        float currentFPS = (float)frameCounter / elapsedSec;
+//        LOGI("submit, FPS: %0.2f, maxIntervalTime: %0.2f, minIntervalTime: %0.2f",  currentFPS, maxTime, minTime);
+        __android_log_print(ANDROID_LOG_INFO, "MJDD", "---FPS--- AvgFPS = %06.2f , Frame = [%06.2f , %06.2f] (ms)",
+                            currentFPS, minTime, maxTime);
+
+        minTime = currentFPS;
+        maxTime = currentFPS;
+        frameCounter = 0;
+        prevTimeMs = currentTimeMs;
+    }
+}
+
 #define fn_JNI_OnLoad "JNI_OnLoad"
 jint (*old_JNI_OnLoad)(JavaVM* vm, void* reserved) = NULL;
 jint GVR_JNI_OnLoad(JavaVM* vm, void* reserved)
@@ -108,11 +152,11 @@ int mj_sub_24738()
 }
 
 typedef void (*FP_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const void *indices);
-FP_glDrawElements pfun_glDrawElements = NULL;
+FP_glDrawElements pfun_glDrawElements_gvr = NULL;
 void mjglDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices)
 {
     LOGITAG("mjgl", "mjglDrawElements, count=%d, indices=%0X, tid=%d", count, indices, gettid());
-    pfun_glDrawElements(mode, count, type, indices);
+    pfun_glDrawElements_gvr(mode, count, type, indices);
     return;
 }
 
@@ -127,7 +171,7 @@ bool mj_sub_71FE8(int a1, int a2,  int a3)
     void *pfun = *(void**)a1;
     if(strcmp(pstr, "DrawElements") == 0)
     {
-        pfun_glDrawElements = (FP_glDrawElements)pfun;
+        pfun_glDrawElements_gvr = (FP_glDrawElements)pfun;
         *(void**)a1 = (void*)mjglDrawElements;
     }
 
@@ -582,6 +626,7 @@ void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list
 //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //    gvr_frame_unbind(*frame);
 
+    ShowFPS();
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
     LOGITAG("mjgvr","mj_gvr_frame_submit end, tid=%d", gettid());
     return;
