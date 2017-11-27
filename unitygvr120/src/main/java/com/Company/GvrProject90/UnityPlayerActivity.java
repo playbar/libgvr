@@ -1,5 +1,7 @@
 package com.Company.GvrProject90;
 
+import com.google.hook.GLESHook;
+import com.google.hook.GVRHook;
 import com.unity3d.player.*;
 import com.unity3d.unitygvr.GoogleVR;
 
@@ -18,6 +20,15 @@ public class UnityPlayerActivity extends Activity
 {
     protected UnityPlayer mUnityPlayer; // don't change the name of this variable; referenced from native code
 
+        static {
+        try {
+            System.loadLibrary("gvr");
+            System.loadLibrary("draw");
+        } catch (UnsatisfiedLinkError var0) {
+            ;
+        }
+    }
+
     // Setup activity layout
     @Override protected void onCreate (Bundle savedInstanceState)
     {
@@ -27,7 +38,10 @@ public class UnityPlayerActivity extends Activity
         getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
         mUnityPlayer = new UnityPlayer(this);
-        GoogleVR.hookUnityFun();
+//        GoogleVR.hookUnityFun();
+        GLESHook.initHook();
+//		GVRHook.initGraphicHook();
+        GVRHook.initHook();
         setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
     }

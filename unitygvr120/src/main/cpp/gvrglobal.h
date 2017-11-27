@@ -9,22 +9,18 @@
 
 
 // Android log function wrappers
-static const char* kTAG = "mjgvr";
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, kTAG, __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, kTAG, __VA_ARGS__))
-#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, kTAG, __VA_ARGS__))
+static const char* hooktag = "gvr";
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, hooktag, __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, hooktag, __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, hooktag, __VA_ARGS__))
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 long getimagebase();
-
-uint64_t GetTimeNano();
-
-void ShowFPS();
-
-//JNIEXPORT jint JNICALL JNI_OnLoad();
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved);
+JNIEXPORT jstring JNICALL Java_com_mj_vr_MainActivity_stringFromJNI( JNIEnv* env, jobject thiz );
 
 #ifdef __cplusplus
 }

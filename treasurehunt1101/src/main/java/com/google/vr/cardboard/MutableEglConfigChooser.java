@@ -40,7 +40,8 @@ public class MutableEglConfigChooser implements EGLConfigChooser {
                 EGL10.EGL_NONE
         };
         int[] var4 = new int[1];
-        if(!var1.eglChooseConfig(var2, var3, (EGLConfig[])null, 0, var4) && this.forceMutableBuffer && !IS_EMULATOR) {
+        EGLConfig[] configs = new EGLConfig[1];
+        if(!var1.eglChooseConfig(var2, var3, configs, 1, var4) && this.forceMutableBuffer && !IS_EMULATOR) {
             throw new IllegalArgumentException("eglChooseConfig failed");
         } else {
             var3[15] = 4;
