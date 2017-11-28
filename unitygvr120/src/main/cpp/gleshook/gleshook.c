@@ -175,7 +175,7 @@ void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
     if( gRendThread == gettid() && gNeedDraw  ) {
         gNeedDraw = false;
 //        eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
-        return;
+//        return;
     }
 
     old_glDrawElements(mode, count, type, indices);
@@ -258,22 +258,25 @@ void (*old_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
 void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
 {
     LOGITAG("mjgl", "mj_glViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
-//    if( x == 1031)
-    {
-//        x = 1031;
-        width = width;
-    }
-//    if( x == 960)
+//    if( x == 0)
+//    {
+//        width = 2880;
+//        height = 720;
+//    }
+//    if( x == 1440)
 //    {
 //        x = 0;
-//        width = width * 2;
+//        y = 720;
+//        width = 2880;
+//        height = 720;
 //    }
+
     if( gismaligpu && rendertid != gettid() && x == 0 )
     {
         swapbuffer = 1;
     }
-    return old_glViewport(0, 0, 2880, 1440);
-//    return old_glViewport(x, y, width, height);
+//    return old_glViewport(0, 0, 2880, 1440);
+    return old_glViewport(x, y, width, height);
 }
 
 void (*old_glClear)(GLbitfield mask) = NULL;

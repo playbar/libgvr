@@ -1,4 +1,4 @@
-package com.Company.GvrProject90;
+package com.unity.gvr12;
 
 import com.unity3d.player.*;
 import android.app.Activity;

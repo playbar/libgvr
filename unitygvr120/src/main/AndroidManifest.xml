@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.Company.GvrProject90"
+    package="com.unity.gvr12"
     xmlns:tools="http://schemas.android.com/tools"
     android:versionName="1.0"
     android:versionCode="1"
@@ -28,7 +28,7 @@
         android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection"
         android:enableVrMode="@string/gvr_vr_mode_component"
         android:resizeableActivity="false"
-        android:name="com.Company.GvrProject90.UnityPlayerActivity">
+        android:name="com.unity.gvr12.UnityPlayerActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
