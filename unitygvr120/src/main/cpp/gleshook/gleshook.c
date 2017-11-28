@@ -24,15 +24,19 @@ extern int gismaligpu;
 void (*old_glShaderSource) (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) = NULL;
 void mj_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length)
 {
-    LOGITAG("mjgl","mj_glShaderSource, tid=%d", gettid());
-//    for(int i = 0; i < count; ++i){
-//        int len = strlen(*string);
-//        FILE *pfile = fopen("/sdcard/shader.txt", "wb");
-//        fwrite(*string, len, 1, pfile);
-//        fflush(pfile);
-//        fclose(pfile);
-////        LOGITAG("mjgl","shader: %s", *string);
-//    }
+    char name[256] = {0};
+    static int index = 1;
+    sprintf(name, "/sdcard/shader/shader_%d_%d.txt", gettid(), index);
+    ++index;
+    LOGITAG("mjgl","mj_glShaderSource, shader=%d, name=%s, count=%d, tid=%d", shader, name, count, gettid());
+    FILE *pfile = fopen(name, "wb");
+    for(int i = 0; i < count; ++i){
+        int len = strlen(*string);
+        fwrite(*string, len, 1, pfile);
+//        LOGITAG("mjgl","shader: %s", *string);
+    }
+    fflush(pfile);
+    fclose(pfile);
     return old_glShaderSource(shader, count, string, length);
 }
 
@@ -65,7 +69,7 @@ void mj_glGenTextures (GLsizei n, GLuint *textures)
 void (*old_glBindTexture)(GLenum target, GLuint texture) = NULL;
 void mj_glBindTexture (GLenum target, GLuint texture)
 {
-    LOGITAG("mjgl", "mj_glBindTexture, texid=%d, tid=%d", texture, gettid());
+//    LOGITAG("mjgl", "mj_glBindTexture, texid=%d, tid=%d", texture, gettid());
     return old_glBindTexture(target, texture);
 }
 
@@ -129,7 +133,7 @@ void mj_glBufferData (GLenum target, GLsizeiptr size, const GLvoid* data, GLenum
 void (*old_glDisableVertexAttribArray) (GLuint index) = NULL;
 void mj_glDisableVertexAttribArray (GLuint index)
 {
-    LOGITAG("mjgl","mj_glDisableVertexAttribArray, index=%d", index);
+//    LOGITAG("mjgl","mj_glDisableVertexAttribArray, index=%d", index);
     return old_glDisableVertexAttribArray(index);
 }
 
