@@ -24,15 +24,19 @@ extern int gismaligpu;
 void (*old_glShaderSource) (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) = NULL;
 void mj_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length)
 {
-    LOGITAG("mjgl","mj_glShaderSource, tid=%d", gettid());
+    char name[256] = {0};
+    static int index = 1;
+    sprintf(name, "/sdcard/shader_%d_%d.txt", gettid(), index);
+    ++index;
+    LOGITAG("mjgl","mj_glShaderSource, shader=%d, name=%s, count=%d, tid=%d", shader, name, count, gettid());
+//    FILE *pfile = fopen(name, "wb");
 //    for(int i = 0; i < count; ++i){
 //        int len = strlen(*string);
-//        FILE *pfile = fopen("/sdcard/shader.txt", "wb");
 //        fwrite(*string, len, 1, pfile);
-//        fflush(pfile);
-//        fclose(pfile);
 ////        LOGITAG("mjgl","shader: %s", *string);
 //    }
+//    fflush(pfile);
+//    fclose(pfile);
     return old_glShaderSource(shader, count, string, length);
 }
 

@@ -309,9 +309,9 @@ void hookESFun()
 void hookGLESFun()
 {
     hookEGLFun();
-//    hookEglextFun();
-//    hookgl2extFun();
-//    hookESFun();
+    hookEglextFun();
+    hookgl2extFun();
+    hookESFun();
     return;
 }
 

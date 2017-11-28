@@ -45,7 +45,7 @@ target_link_libraries(png
 add_library(gvr_back SHARED
             gvrglobal.cpp
             gvrInter.cpp
-            syscallstack.cc
+            #syscallstack.cc
             LogMessage.cpp)
 
 target_include_directories(gvr_back PRIVATE
@@ -74,7 +74,7 @@ add_library(gvrhook SHARED
             gvrhook/drawtex.cpp
             gvrhook/mjgvr.cc
             CallStack.cpp
-            syscallstack.cc
+            #syscallstack.cc
             )
 target_include_directories(gvrhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -103,7 +103,8 @@ add_library(glhook SHARED
                gleshook/elf_hooker.cpp
                gleshook/elf_main.cpp
                gleshook/elf_module.cpp
-               syscallstack.cc)
+               #syscallstack.cc
+               )
 
 target_include_directories(glhook PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -126,7 +127,8 @@ add_library(draw SHARED
             treasure_hunt_jni.cc
             treasure_hunt_renderer.cc
             drawtex.cpp
-             syscallstack.cc)
+            #syscallstack.cc
+             )
 
 target_include_directories(draw PRIVATE
                           ${CMAKE_CURRENT_SOURCE_DIR}
