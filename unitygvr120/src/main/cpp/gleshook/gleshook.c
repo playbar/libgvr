@@ -9,6 +9,7 @@
 #include <EGL/eglext.h>
 #include <syscallstack.h>
 #include <dlfcn.h>
+#include <glresource.h>
 #include "hookutils.h"
 #include "log.h"
 #include "exporthook.h"
@@ -29,14 +30,14 @@ void mj_glShaderSource (GLuint shader, GLsizei count, const GLchar* const* strin
     sprintf(name, "/sdcard/shader/shader_%d_%d.txt", gettid(), index);
     ++index;
     LOGITAG("mjgl","mj_glShaderSource, shader=%d, name=%s, count=%d, tid=%d", shader, name, count, gettid());
-    FILE *pfile = fopen(name, "wb");
-    for(int i = 0; i < count; ++i){
-        int len = strlen(*string);
-        fwrite(*string, len, 1, pfile);
-//        LOGITAG("mjgl","shader: %s", *string);
-    }
-    fflush(pfile);
-    fclose(pfile);
+//    FILE *pfile = fopen(name, "wb");
+//    for(int i = 0; i < count; ++i){
+//        int len = strlen(*string);
+//        fwrite(*string, len, 1, pfile);
+////        LOGITAG("mjgl","shader: %s", *string);
+//    }
+//    fflush(pfile);
+//    fclose(pfile);
     return old_glShaderSource(shader, count, string, length);
 }
 
@@ -171,6 +172,12 @@ void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
 //    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
 //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //    sys_call_stack();
+    if( gRendThread == gettid() && gNeedDraw  ) {
+        gNeedDraw = false;
+//        eglSwapBuffers(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW));
+        return;
+    }
+
     old_glDrawElements(mode, count, type, indices);
 //    glFlush();
 //    glFinish();
@@ -265,7 +272,8 @@ void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
     {
         swapbuffer = 1;
     }
-    return old_glViewport(x, y, width, height);
+    return old_glViewport(0, 0, 2880, 1440);
+//    return old_glViewport(x, y, width, height);
 }
 
 void (*old_glClear)(GLbitfield mask) = NULL;
@@ -345,8 +353,8 @@ void hookExportHook()
 void hookGLESFun()
 {
     hookEGLFun();
-//    hookEglextFun();
-//    hookgl2extFun();
+    hookEglextFun();
+    hookgl2extFun();
     hookESFun();
 //    hookExportHook();
     return;

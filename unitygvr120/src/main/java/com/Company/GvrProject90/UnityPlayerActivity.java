@@ -9,7 +9,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.os.BatteryManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +40,16 @@ public class UnityPlayerActivity extends Activity
         getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
         mUnityPlayer = new UnityPlayer(this);
+
+        BatteryManager batteryManager=(BatteryManager)getSystemService(BATTERY_SERVICE);
+        int CHARGE_COUNTER = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER);
+        int CURRENT_AVERAGE = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
+        int CURRENT_NOW = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW);
+        System.out.println(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER));
+        System.out.println(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE));
+        System.out.println(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW));
+        Log.e("battery", "CHARGE_COUNTER = " + CHARGE_COUNTER + ", CURRENT_AVERAGE = " + CURRENT_AVERAGE +
+                ", CURRENT_NOW = " + CURRENT_NOW);
 //        GoogleVR.hookUnityFun();
         GLESHook.initHook();
 //		GVRHook.initGraphicHook();

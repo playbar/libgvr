@@ -8,6 +8,7 @@ GLuint gTexture;
 
 int gDrawThread = 0;
 int gRendThread = 0;
+bool gNeedDraw = false;
 
 GLuint CreateSimpleTexture2D( )
 {

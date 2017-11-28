@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.Company.GvrProject90"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         externalNativeBuild {
             cmake {
