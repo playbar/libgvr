@@ -29,7 +29,7 @@
 #include <vector>
 #endif
 
-#include "gvr_types.h"
+#include "vr/gvr/capi/include/gvr_types.h"
 
 #ifdef __cplusplus
 extern "C" {

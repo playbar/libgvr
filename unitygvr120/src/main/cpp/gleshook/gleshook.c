@@ -70,7 +70,10 @@ void mj_glGenTextures (GLsizei n, GLuint *textures)
 void (*old_glBindTexture)(GLenum target, GLuint texture) = NULL;
 void mj_glBindTexture (GLenum target, GLuint texture)
 {
-//    LOGITAG("mjgl", "mj_glBindTexture, texid=%d, tid=%d", texture, gettid());
+//    if( gRendThread == gettid())
+    {
+        LOGITAG("mjgl", "mj_glBindTexture, texid=%d, tid=%d", texture, gettid());
+    }
     return old_glBindTexture(target, texture);
 }
 

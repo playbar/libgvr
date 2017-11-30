@@ -2,6 +2,7 @@
 #define __GLRESOURCE_H__
 
 #include <GLES3/gl3.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +27,7 @@ typedef struct{
 
 extern int gDrawThread;
 extern int gRendThread;
+extern bool gNeedDraw;
 extern GLuint gTexture;
 extern int gIndex;
 extern MJTexture gMJTexture[10];

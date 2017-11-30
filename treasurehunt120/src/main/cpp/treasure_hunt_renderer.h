@@ -25,10 +25,10 @@
 #include <thread>  // NOLINT
 #include <vector>
 
-#include "gvr.h"
-#include "gvr_audio.h"
-#include "gvr_controller.h"
-#include "gvr_types.h"
+#include "vr/gvr/capi/include/gvr.h"
+#include "vr/gvr/capi/include/gvr_audio.h"
+#include "vr/gvr/capi/include/gvr_controller.h"
+#include "vr/gvr/capi/include/gvr_types.h"
 #include "world_layout_data.h"  // NOLINT
 
 class TreasureHuntRenderer {

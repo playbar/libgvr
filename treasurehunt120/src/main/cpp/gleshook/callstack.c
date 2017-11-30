@@ -182,7 +182,7 @@ uintptr_t rewind_pc_arch(const mapinfo* map_info_list, uintptr_t pc) {
     return pc;
 }
 
-_Unwind_Reason_Code trace_function(__unwind_context *context, void *arg)
+_Unwind_Reason_Code trace_function_1(__unwind_context *context, void *arg)
 {
     stack_crawl_state_t* state = (stack_crawl_state_t*)arg;
     if (state->count) {
@@ -206,7 +206,7 @@ int get_backtrace(intptr_t* addrs, size_t max_entries)
     stack_crawl_state_t state;
     state.count = max_entries;
     state.addrs = (intptr_t*)addrs;
-    _Unwind_Backtrace(trace_function, (void*)&state);
+    _Unwind_Backtrace(trace_function_1, (void*)&state);
     return max_entries - state.count;
 }
 

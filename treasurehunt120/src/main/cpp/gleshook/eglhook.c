@@ -19,7 +19,7 @@ int viewport = 0;
 int swapbuffer = 0;
 int gismaligpu = false;
 
-void* get_module_base(pid_t pid,const char* module_name)
+void* get_module_base_1(pid_t pid,const char* module_name)
 {
     FILE* fp;
     long addr = 0;
@@ -51,7 +51,7 @@ void* get_module_base(pid_t pid,const char* module_name)
 bool HookToFunctionBase(int base, void * fpReplactToFunction, void ** fpOutRealFunction)
 {
     bool bRet = false;
-    void *pModule = get_module_base(getpid(), "libEGL.so");
+    void *pModule = get_module_base_1(getpid(), "libEGL.so");
     void *pFunc = (void*)((int)pModule + base + 1);
     if (registerInlineHook((uint32_t)pFunc, (uint32_t)fpReplactToFunction, (uint32_t **)fpOutRealFunction) == 0)
     {
@@ -237,7 +237,7 @@ EGLBoolean mj_eglSwapInterval(EGLDisplay dpy, EGLint interval)
 EGLContext (*old_eglCreateContext)(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list) = NULL;
 EGLContext mj_eglCreateContext(EGLDisplay dpy, EGLConfig config, EGLContext share_context, const EGLint *attrib_list)
 {
-    void *baseadd = get_module_base(getpid(), "libEGL.so");
+    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
     EGLContext context = old_eglCreateContext(dpy, config, share_context, attrib_list);
     LOGITAG("mjgl","mj_eglCreateContext context=%0X, share_context=%0X, pid=%d", context, share_context, getpid());
     return context;
@@ -257,7 +257,7 @@ EGLBoolean mj_eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, E
     EGLBoolean re = old_eglMakeCurrent(dpy, draw, read, ctx);
     const char *glrender = glGetString(GL_RENDERER);
     if(glrender && strstr(glrender, "Mali") != NULL ){
-        gismaligpu = true;
+//        gismaligpu = true;
     }
     return re;
 }
@@ -311,6 +311,11 @@ EGLBoolean mj_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 {
     LOGITAG("mjgl","mj_eglSwapBuffers, surface=%X, tid=%d", surface, gettid());
 //    sys_call_stack();
+
+//    glViewport(0, 0, 300, 1440);
+//    glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+//    glClear(  GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+
     EGLBoolean re = true;
 //    eglMakeCurrent(eglGetCurrentDisplay(), eglGetCurrentSurface(EGL_DRAW), eglGetCurrentSurface(EGL_READ), eglGetCurrentContext());
     if( gismaligpu && rendertid != gettid())
@@ -645,8 +650,8 @@ EGLClientBuffer mjeglCreateNativeClientBufferANDROID (const EGLint *attrib_list)
 EGLAPI __eglMustCastToProperFunctionPointerType (*old_eglGetProcAddress)(const char *procname) = NULL;
 EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char *procname)
 {
-    void *baseadd = get_module_base(getpid(), "libEGL.so");
-    const char *glrender = glGetString(GL_RENDERER);
+//    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
+//    const char *glrender = glGetString(GL_RENDERER);
 //    sys_call_stack();
 //    old_eglGetProcAddress(procname);
     __eglMustCastToProperFunctionPointerType pfun = old_eglGetProcAddress(procname);
@@ -805,7 +810,7 @@ EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char 
 void hookEGLFun()
 {
     LOGITAG("mjgl", "hookEGLFun, tid=%d",  gettid());
-    void *baseadd = get_module_base(getpid(), "libEGL.so");
+    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
     hook((uint32_t) eglGetError, (uint32_t)mj_eglGetError, (uint32_t **) &old_eglGetError);
     hook((uint32_t) eglGetDisplay, (uint32_t)mj_eglGetDisplay, (uint32_t **) &old_eglGetDisplay);
     hook((uint32_t) eglInitialize, (uint32_t)mj_eglInitialize, (uint32_t **) &old_eglInitialize);
@@ -837,15 +842,15 @@ void hookEGLFun()
     hook((uint32_t) eglQueryContext, (uint32_t)mj_eglQueryContext, (uint32_t **) &old_eglQueryContext);
     hook((uint32_t) eglWaitGL, (uint32_t)mj_eglWaitGL, (uint32_t **) &old_eglWaitGL);
     hook((uint32_t) eglWaitNative, (uint32_t)mj_eglWaitNative, (uint32_t **) &old_eglWaitNative);
-//    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
+    hook((uint32_t) eglSwapBuffers, (uint32_t)mj_eglSwapBuffers, (uint32_t **) &old_eglSwapBuffers);
     hook((uint32_t) eglCopyBuffers, (uint32_t)mj_eglCopyBuffers, (uint32_t **) &old_eglCopyBuffers);
 //    hook((uint32_t) eglGetProcAddress, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);
 
 
     hookImportFunInit();
-//
-////    hookImportFun("libandroid_runtime.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
-////    hookImportFun("libunity.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+
+//    hookImportFun("libandroid_runtime.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+//    hookImportFun("libunity.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
     hookImportFun("libgvr.so", "eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
 
 //        HookToFunctionBase((uint32_t) 0x00012144, (uint32_t)mj_eglGetProcAddress, (uint32_t **) &old_eglGetProcAddress);

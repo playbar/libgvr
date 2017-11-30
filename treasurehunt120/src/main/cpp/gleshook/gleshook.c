@@ -8,9 +8,11 @@
 #include <pthread.h>
 #include <EGL/eglext.h>
 #include <syscallstack.h>
+#include <dlfcn.h>
 #include "hookutils.h"
 #include "log.h"
-#include "hook_libc.h"
+#include "exporthook.h"
+#include "andhook.h"
 
 //egl
 
@@ -120,12 +122,8 @@ void mj_glBindBufferBase (GLenum target, GLuint index, GLuint buffer)
 void (*old_glBufferData)(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage) = NULL;
 void mj_glBufferData (GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-    char name[256] = {0};
-    static int index = 1;
-    sprintf(name, "/sdcard/bufferdata_%d_%d.txt", gettid(), index);
-    ++index;
-    LOGITAG("mjgl","mj_glBufferData, name=%s size=%d, tid=%d", name, size, gettid());
-//    FILE *pfile = fopen(name, "wb");
+    LOGITAG("mjgl","mj_glBufferData, tid=%d", gettid());
+//    FILE *pfile = fopen("/sdcard/bufferdata.txt", "wb");
 //    fwrite(data, size, 1, pfile);
 //    fflush(pfile);
 //    fclose(pfile);
@@ -147,7 +145,7 @@ void mj_glEnableVertexAttribArray (GLuint index)
 }
 
 void (*old_glVertexAttribPointer)(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr) = NULL;
-void mj_glVertexAttribPointer (GLuint indx, GLint size,  GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+void mj_glVertexAttribPointer (GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
     LOGITAG("mjgl","mj_glVertexAttribPointer, indx=%d, size=%d, type=%d, stride=%d, ptr=0x%0X, tid=%d", indx, size, type, stride, ptr, gettid());
     return old_glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
@@ -170,6 +168,8 @@ void (*old_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid
 void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
 {
     LOGITAG("mjgl","mj_glDrawElements, tid=%d", gettid());
+//    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //    sys_call_stack();
     old_glDrawElements(mode, count, type, indices);
 //    glFlush();
@@ -195,15 +195,6 @@ void mj_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *in
 
     return;
 }
-
-GLuint (*old_glCreateProgram)(void) = NULL;
-GLuint mj_glCreateProgram(void)
-{
-    GLuint programid = old_glCreateProgram();
-    LOGITAG("mjgl","mj_glCreateProgram, programid=%d, tid=%d", programid, gettid());
-    return programid;
-}
-
 
 void (*old_glUseProgram) (GLuint program) = NULL;
 void mj_glUseProgram (GLuint program)
@@ -260,7 +251,16 @@ void (*old_glViewport)(GLint x, GLint y, GLsizei width, GLsizei height) = NULL;
 void mj_glViewport (GLint x, GLint y, GLsizei width, GLsizei height)
 {
     LOGITAG("mjgl", "mj_glViewport, x=%d, y=%d, w=%d, h=%d, tid=%d", x, y, width, height, gettid());
-
+//    if( x == 1031)
+    {
+//        x = 1031;
+        width = width;
+    }
+//    if( x == 960)
+//    {
+//        x = 0;
+//        width = width * 2;
+//    }
     if( gismaligpu && rendertid != gettid() && x == 0 )
     {
         swapbuffer = 1;
@@ -282,25 +282,25 @@ void mj_glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
     return old_glClearColor(red, green, blue, alpha);
 }
 
-GLint (*old_glGetUniformLocation)(GLuint program, const GLchar* name) = NULL;
-GLint mj_glGetUniformLocation (GLuint program, const GLchar* name)
+void* (*old_dlsym)(void*  handle, const char*  symbol) = NULL;
+void* mj_dlsym(void*  handle, const char*  symbol)
 {
-    GLint locatoin = old_glGetUniformLocation(program, name);
-    LOGITAG("mjgl", "mj_glGetUniformLocation, location=%d, name=%s, tid=%d", locatoin, name, gettid());
-    return locatoin;
-}
-
-void (*old_glUniform2fv)(GLint location, GLsizei count, const GLfloat* v) = NULL;
-void mj_glUniform2fv(GLint location, GLsizei count, const GLfloat* v)
-{
-    GLfloat x = *v;
-    GLfloat y = *(v+1);
-    LOGITAG("mjgl", "mj_glUniform2fv, location=%d, x=%f, y=%f, tid=%d", location, x, y, gettid());
-    return old_glUniform2fv(location, count, v);
+    LOGITAG("mjhook", "mj_dlsym, symbol=%s", symbol);
+//    sys_call_stack();
+    void *pfun = old_dlsym(handle, symbol);
+    if(strcmp(symbol, "glDrawElements") == 0)
+    {
+        old_glDrawElements = pfun;
+        pfun = mj_glDrawElements;
+    }
+    return pfun;
 }
 
 void hookESFun()
 {
+//    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
+//    hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
+//    return;
     hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
     hook((uint32_t) glBindFramebuffer, (uint32_t)mj_glBindFramebuffer, (uint32_t **) &old_glBindFramebuffer);
     hook((uint32_t) glBindRenderbuffer, (uint32_t)mj_glBindRenderbuffer, (uint32_t **) &old_glBindRenderbuffer);
@@ -309,7 +309,7 @@ void hookESFun()
     hook((uint32_t) glGenTextures, (uint32_t)mj_glGenTextures, (uint32_t**)&old_glGenTextures);
     hook((uint32_t) glBindTexture, (uint32_t)mj_glBindTexture, (uint32_t**)&old_glBindTexture);
     hook((uint32_t) glFramebufferTexture2D, (uint32_t)mj_glFramebufferTexture2D, (uint32_t**)&old_glFramebufferTexture2D);
-//
+
     hook((uint32_t) glGenRenderbuffers, (uint32_t)mj_glGenRenderbuffers, (uint32_t**)&old_glGenRenderbuffers);
 //    hook((uint32_t) glBindBufferRange, (uint32_t)mj_glBindBufferRange, (uint32_t **) &old_glBindBufferRange);
 //    hook((uint32_t) glBindBufferBase, (uint32_t)mj_glBindBufferBase, (uint32_t **) &old_glBindBufferBase);
@@ -320,18 +320,26 @@ void hookESFun()
     hook((uint32_t) glDrawArrays, (uint32_t)mj_glDrawArrays, (uint32_t **) &old_glDrawArrays);
     hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
     hook((uint32_t) glUseProgram, (uint32_t)mj_glUseProgram, (uint32_t **) &old_glUseProgram);
-    hook((uint32_t) glCreateProgram, (uint32_t)mj_glCreateProgram, (uint32_t **)&old_glCreateProgram);
     hook((uint32_t) glRenderbufferStorage, (uint32_t)mj_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
     hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
     hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
     hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
     hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
-//
-////    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
+
+//    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
     hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
     hook((uint32_t) glClearColor, (uint32_t)mj_glClearColor, (uint32_t **) &old_glClearColor);
-    hook((uint32_t) glGetUniformLocation, (uint32_t)mj_glGetUniformLocation, (uint32_t **)&old_glGetUniformLocation);
-    hook((uint32_t) glUniform2fv, (uint32_t)mj_glUniform2fv, (uint32_t **)&old_glUniform2fv);
+
+}
+
+void hookExportHook()
+{
+//    hook_lwp(getpid(), "libGLESv2.", "glDrawElements", mj_glDrawElements, (void **)&old_glDrawElements);
+//    hook_lwp(getpid(), "libgvr.", "dlsym", mj_dlsym, (void **)&old_dlsym);
+//    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
+//    void and_hook(void *orig_fcn, void* new_fcn, void **orig_fcn_ptr);
+    and_hook(glDrawElements, mj_glDrawElements, &old_glDrawElements);
+    return;
 }
 
 void hookGLESFun()
@@ -340,7 +348,7 @@ void hookGLESFun()
 //    hookEglextFun();
 //    hookgl2extFun();
     hookESFun();
-//    init_hook_libc();
+//    hookExportHook();
     return;
 }
 

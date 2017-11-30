@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gvr_types.h"
+#include "vr/gvr/capi/include/gvr_types.h"
 #include "android/log.h"
 
 //typedef struct gvr_context_ gvr_context;
@@ -15,7 +15,7 @@
 //	float m[4][4];
 //} gvr_mat4f;
 
-#define hooktag "mjgvr"
+static const char* hooktag = "mjgvr";
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, hooktag, __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, hooktag, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, hooktag, __VA_ARGS__))

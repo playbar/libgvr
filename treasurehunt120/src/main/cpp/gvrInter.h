@@ -5,10 +5,8 @@
 #ifndef UNITYINTERFACE_UNITYINTERFACE_H
 #define UNITYINTERFACE_UNITYINTERFACE_H
 #include "jni.h"
-#include "gvr_controller.h"
-#include "gvr_types.h"
-#include "gvr_gesture.h"
-
+#include "vr/gvr/capi/include/gvr_controller.h"
+#include "vr/gvr/capi/include/gvr_types.h"
 
 typedef long (*FP_CardboardViewNativeImpl_nativeSetApplicationState)(JNIEnv* env, jobject obj, jobject paramClassLoader, jobject paramContext);
 typedef void (*FP_CardboardViewNativeImpl_nativeSetScreenParams) (JNIEnv* env, jobject obj, jlong paramLong, jint paramInt1, jint paramInt2, jfloat paramFloat1, jfloat paramFloat2, jfloat paramFloat3);
@@ -343,7 +341,7 @@ typedef void (*FP_buffer_spec_destroy)(gvr_buffer_spec **spec);
 typedef gvr_mat4f (*FP_get_eye_from_head_matrix)( const gvr_context *gvr,
                                                   const int32_t eye);
 
-typedef gvr_sizei (*FP_swap_chain_get_buffer_size)( gvr_swap_chain *swap_chain, int32_t index);
+typedef gvr_sizei (*FP_swap_chain_get_buffer_size)(const gvr_swap_chain *swap_chain, int32_t index);
 
 typedef int (*FP_set_error)(int a1, int a2);
 typedef int (*FP_set_idle_listener)(int *a1, int a2, int a3);
@@ -409,16 +407,6 @@ typedef void (*FP_frame_bind_buffer)(  gvr_frame *frame,
                                        int32_t index);
 
 typedef void (*FP_frame_unbind)(gvr_frame *frame);
-typedef gvr_gesture_context* (*FP_gesture_context_create)();
-typedef void (*FP_gesture_context_destroy)(gvr_gesture_context** context);
-typedef const gvr_gesture* (*FP_gesture_get)(const gvr_gesture_context* context, int index);
-typedef int (*FP_gesture_get_count)(const gvr_gesture_context* context);
-typedef gvr_gesture_direction (*FP_gesture_get_direction)(const gvr_gesture* gesture);
-typedef gvr_vec2f (*FP_gesture_get_displacement)(const gvr_gesture* gesture);
-typedef gvr_gesture_type (*FP_gesture_get_type)(const gvr_gesture* gesture);
-typedef gvr_vec2f (*FP_gesture_get_velocity)(const gvr_gesture* gesture);
-typedef void (*FP_gesture_restart)(gvr_gesture_context* context);
-typedef void (*FP_gesture_update)(const gvr_controller_state* controller_state, gvr_gesture_context* context);
 typedef void (*FP_frame_submit)(  gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 typedef void (*FP_swap_chain_resize_buffer)(gvr_swap_chain *swap_chain, int32_t index, gvr_sizei size);
 
@@ -484,7 +472,6 @@ typedef void (*FP_refresh_viewer_profile)(gvr_context *gvr);
 typedef int (*FP_display_synchronizer_create)();
 typedef int (*FP_display_synchronizer_destroy)(int *a1);
 typedef int (*FP_get_border_size_meters)(void *a1);
-typedef bool (*FP_get_button_long_press)(const gvr_controller_state* controller_state, const gvr_gesture_context* context, gvr_controller_button button);
 typedef int (*FP_check_surface_size_changed)(int a1);
 typedef int (*FP_get_surface_size)(int a1, int a2, int a3);
 typedef int (*FP_set_display_output_rotation)(void *a1, int a2);
@@ -1280,7 +1267,7 @@ void gvr_buffer_spec_set_samples(gvr_buffer_spec *spec, int32_t num_samples);
 
 void gvr_buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t depth_stencil_format);
 
-void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers);
+//void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers);
 
 void gvr_buffer_spec_set_size(gvr_buffer_spec *spec, gvr_sizei size);
 
@@ -1295,16 +1282,12 @@ void gvr_distort_to_screen(
   gvr_mat4f head_space_from_start_space,
   gvr_clock_time_point target_presentation_time);
 
-bool gvr_is_feature_supported(const gvr_context* gvr, int32_t feature);
-
 gvr_clock_time_point gvr_get_time_point_now();
 
 
 void gvr_buffer_spec_destroy(gvr_buffer_spec **spec);
 
 gvr_mat4f gvr_get_eye_from_head_matrix(const gvr_context *gvr, const int32_t eye);
-
-gvr_sizei gvr_swap_chain_get_buffer_size(gvr_swap_chain *swap_chain, int32_t index);
 
 void gvr_compute_distorted_point(const gvr_context *gvr, const int32_t eye, const gvr_vec2f uv_in, gvr_vec2f uv_out[3]);
 
@@ -1355,27 +1338,6 @@ gvr_context * gvr_create(JNIEnv *env, jobject app_context, jobject class_loader)
 void gvr_frame_bind_buffer(gvr_frame *frame, int32_t index);
 
 void gvr_frame_unbind(gvr_frame *frame);
-
-gvr_gesture_context* gvr_gesture_context_create();
-
-void gvr_gesture_context_destroy(gvr_gesture_context** context);
-
-const gvr_gesture* gvr_gesture_get(const gvr_gesture_context* context, int index);
-
-int gvr_gesture_get_count(const gvr_gesture_context* context);
-
-gvr_gesture_direction gvr_gesture_get_direction(const gvr_gesture* gesture);
-
-gvr_vec2f gvr_gesture_get_displacement(const gvr_gesture* gesture);
-
-gvr_gesture_type gvr_gesture_get_type(const gvr_gesture* gesture);
-
-gvr_vec2f gvr_gesture_get_velocity(const gvr_gesture* gesture);
-
-void gvr_gesture_restart(gvr_gesture_context* context);
-
-void gvr_gesture_update(const gvr_controller_state* controller_state,
-                        gvr_gesture_context* context);
 
 void gvr_frame_submit(gvr_frame **frame, const gvr_buffer_viewport_list *list, gvr_mat4f head_space_from_start_space);
 
@@ -1527,9 +1489,7 @@ int gvr_set_back_gesture_event_handler(int a1, int a2, int a3);
 int gvr_display_synchronizer_create();
 int gvr_display_synchronizer_destroy(int *a1);
 int gvr_get_border_size_meters(void *a1);
-bool gvr_get_button_long_press(const gvr_controller_state* controller_state,
-                               const gvr_gesture_context* context,
-                               gvr_controller_button button);
+
 int gvr_check_surface_size_changed(int a1);
 int gvr_get_surface_size(int a1, int a2, int a3);
 int gvr_set_display_output_rotation(void *a1, int a2);

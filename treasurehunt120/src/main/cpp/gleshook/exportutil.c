@@ -30,10 +30,6 @@
 
 #include "exporthook.h"
 
-#include <android/log.h>
-#define LOG_TAG "ThomasKing"
-#define LOGI(fmt, args...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, fmt, ##args)
-
 /* memory map for libraries */
 #define MAX_NAME_LEN 256
 #define MEMORY_ONLY  "[memory]"
@@ -131,19 +127,19 @@ static int do_load(int fd, symtab_t symtab)
 	/* elf header */
 	rv = read(fd, &ehdr, sizeof(ehdr));
 	if (0 > rv) {
-		LOGI("read\n");
+		log("read\n")
 		goto out;
 	}
 	if (rv != sizeof(ehdr)) {
-		LOGI("elf error 1\n");
+		log("elf error 1\n")
 		goto out;
 	}
 	if (strncmp(ELFMAG, ehdr.e_ident, SELFMAG)) { /* sanity */
-		LOGI("not an elf\n");
+		log("not an elf\n")
 		goto out;
 	}
 	if (sizeof(Elf32_Shdr) != ehdr.e_shentsize) { /* sanity */
-		LOGI("elf error 2\n");
+		log("elf error 2\n")
 		goto out;
 	}
 
@@ -152,11 +148,11 @@ static int do_load(int fd, symtab_t symtab)
 	shdr = (Elf32_Shdr *) xmalloc(size);
 	rv = my_pread(fd, shdr, size, ehdr.e_shoff);
 	if (0 > rv) {
-		LOGI("read\n");
+		log("read\n")
 		goto out;
 	}
 	if (rv != size) {
-		LOGI("elf error 3 %d %d\n", rv, size);
+		log("elf error 3 %d %d\n", rv, size)
 		goto out;
 	}
 	
@@ -165,11 +161,11 @@ static int do_load(int fd, symtab_t symtab)
 	shstrtab = (char *) xmalloc(size);
 	rv = my_pread(fd, shstrtab, size, shdr[ehdr.e_shstrndx].sh_offset);
 	if (0 > rv) {
-		LOGI("read\n");
+		log("read\n")
 		goto out;
 	}
 	if (rv != size) {
-		LOGI("elf error 4 %d %d\n", rv, size);
+		log("elf error 4 %d %d\n", rv, size)
 		goto out;
 	}
 
@@ -179,42 +175,42 @@ static int do_load(int fd, symtab_t symtab)
 	for (i = 0, p = shdr; i < ehdr.e_shnum; i++, p++)
 		if (SHT_SYMTAB == p->sh_type) {
 			if (symh) {
-				LOGI("too many symbol tables\n");
+				log("too many symbol tables\n")
 				goto out;
 			}
 			symh = p;
 		} else if (SHT_DYNSYM == p->sh_type) {
 			if (dynsymh) {
-				LOGI("too many symbol tables\n");
+				log("too many symbol tables\n")
 				goto out;
 			}
 			dynsymh = p;
 		} else if (SHT_STRTAB == p->sh_type
 			   && !strncmp(shstrtab+p->sh_name, ".strtab", 7)) {
 			if (strh) {
-				LOGI("too many string tables\n");
+				log("too many string tables\n")
 				goto out;
 			}
 			strh = p;
 		} else if (SHT_STRTAB == p->sh_type
 			   && !strncmp(shstrtab+p->sh_name, ".dynstr", 7)) {
 			if (dynstrh) {
-				LOGI("too many string tables\n");
+				log("too many string tables\n")
 				goto out;
 			}
 			dynstrh = p;
 		}
 	/* sanity checks */
 	if ((!dynsymh && dynstrh) || (dynsymh && !dynstrh)) {
-		LOGI("bad dynamic symbol table\n");
+		log("bad dynamic symbol table\n")
 		goto out;
 	}
 	if ((!symh && strh) || (symh && !strh)) {
-		LOGI("bad symbol table\n");
+		log("bad symbol table\n")
 		goto out;
 	}
 	if (!dynsymh && !symh) {
-		LOGI("no symbol table\n");
+		log("no symbol table\n")
 		goto out;
 	}
 
@@ -240,11 +236,11 @@ static symtab_t load_symtab(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (0 > fd) {
-		LOGI("%s open\n", __func__);
+		log("%s open\n", __func__);
 		return NULL;
 	}
 	if (0 > do_load(fd, symtab)) {
-		LOGI("Error ELF parsing %s\n", filename);
+		log("Error ELF parsing %s\n", filename)
 		free(symtab);
 		symtab = NULL;
 	}
@@ -254,7 +250,7 @@ static symtab_t load_symtab(char *filename)
 
 static int load_memmap(pid_t pid, struct mm *mm, int *nmmp)
 {
-	char raw[190000]; // increase this if needed for larger "maps"
+	char raw[1024 * 1024]; // increase this if needed for larger "maps"
 	char name[MAX_NAME_LEN];
 	char *p;
 	unsigned long start, end;
@@ -266,7 +262,7 @@ static int load_memmap(pid_t pid, struct mm *mm, int *nmmp)
 	sprintf(raw, "/proc/%d/maps", pid);
 	fd = open(raw, O_RDONLY);
 	if (0 > fd) {
-		LOGI("Can't open %s for reading\n", raw);
+		//printf("Can't open %s for reading\n", raw);
 		return -1;
 	}
 
@@ -284,7 +280,7 @@ static int load_memmap(pid_t pid, struct mm *mm, int *nmmp)
 			break;
 		p += rv;
 		if (p-raw >= sizeof(raw)) {
-			LOGI("Too many memory mapping\n");
+			//printf("Too many memory mapping\n");
 			return -1;
 		}
 	}
@@ -343,13 +339,13 @@ static int find_libname(char *libn, char *name, int len, unsigned long *start, s
 	struct mm *m;
 	char *p;
 	for (i = 0, m = mm; i < nmm; i++, m++) {
-	    LOGI("name %s", m->name);
 		if (!strcmp(m->name, MEMORY_ONLY))
 			continue;
 		p = strrchr(m->name, '/');
 		if (!p)
 			continue;
 		p++;
+        log("%s", p);
 		if (strncmp(libn, p, strlen(libn)))
 			continue;
 		p += strlen(libn);
@@ -380,7 +376,7 @@ static int lookup2(struct symlist *sl, unsigned char type,
 
 	len = strlen(name);
 	for (i = 0, p = sl->sym; i < sl->num; i++, p++) {
-		//LOGI("name: %s %x\n", sl->str+p->st_name, p->st_value);
+		//log("name: %s %x\n", sl->str+p->st_name, p->st_value)
 		if (!strncmp(sl->str+p->st_name, name, len) && *(sl->str+p->st_name+len) == 0
 		    && ELF32_ST_TYPE(p->st_info) == type) {
 			//if (p->st_value != 0) {
@@ -409,28 +405,28 @@ static int lookup_func_sym(symtab_t s, char *name, unsigned long *val)
 
 int find_name(pid_t pid, char *name, char *libn, unsigned long *addr)
 {
-	struct mm mm[10000];
+	struct mm mm[1000];
 	unsigned long libcaddr;
 	int nmm;
 	char libc[1024];
 	symtab_t s;
 
 	if (0 > load_memmap(pid, mm, &nmm)) {
-		LOGI("cannot read memory map\n");
+		log("cannot read memory map\n")
 		return -1;
 	}
 	if (0 > find_libname(libn, libc, sizeof(libc), &libcaddr, mm, nmm)) {
-		LOGI("cannot find lib: %s\n", libn);
+		log("cannot find lib: %s\n", libn)
 		return -1;
 	}
-	//LOGI("lib: >%s<\n", libc);
+	//log("lib: >%s<\n", libc)
 	s = load_symtab(libc);
 	if (!s) {
-		LOGI("cannot read symbol table\n");
+		log("cannot read symbol table\n");
 		return -1;
 	}
 	if (0 > lookup_func_sym(s, name, addr)) {
-		LOGI("cannot find function: %s\n", name);
+		log("cannot find function: %s\n", name);
 		return -1;
 	}
 	*addr += libcaddr;
@@ -439,18 +435,18 @@ int find_name(pid_t pid, char *name, char *libn, unsigned long *addr)
 
 int find_libbase(pid_t pid, char *libn, unsigned long *addr)
 {
-	struct mm mm[10000];
+	struct mm mm[1000];
 	unsigned long libcaddr;
 	int nmm;
 	char libc[1024];
 	symtab_t s;
 
 	if (0 > load_memmap(pid, mm, &nmm)) {
-		LOGI("cannot read memory map\n");
+		log("cannot read memory map\n")
 		return -1;
 	}
 	if (0 > find_libname(libn, libc, sizeof(libc), &libcaddr, mm, nmm)) {
-		LOGI("cannot find lib\n");
+		log("cannot find lib\n");
 		return -1;
 	}
 	*addr = libcaddr;

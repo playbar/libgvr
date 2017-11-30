@@ -19,8 +19,8 @@
 #include <memory>
 
 #include "treasure_hunt_renderer.h"  // NOLINT
-#include "gvr.h"
-#include "gvr_audio.h"
+#include "vr/gvr/capi/include/gvr.h"
+#include "vr/gvr/capi/include/gvr_audio.h"
 
 #define JNI_METHOD(return_type, method_name) \
   JNIEXPORT return_type JNICALL              \

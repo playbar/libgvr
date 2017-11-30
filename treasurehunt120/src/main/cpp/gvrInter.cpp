@@ -80,7 +80,6 @@ FP_set_display_output_rotation g_fpset_display_output_rotation;
 FP_get_surface_size g_fpget_surface_size;
 FP_check_surface_size_changed g_fpcheck_surface_size_changed;
 FP_get_border_size_meters g_fpget_border_size_meters;
-FP_get_button_long_press g_fpget_button_long_press;
 FP_display_synchronizer_destroy g_fpdisplay_synchronizer_destroy;
 FP_display_synchronizer_create g_fpdisplay_synchronizer_create;
 FP_refresh_viewer_profile g_fprefresh_viewer_profile;
@@ -118,16 +117,6 @@ FP_buffer_viewport_list_create g_fpbuffer_viewport_list_create;
 FP_swap_chain_resize_buffer g_fpswap_chain_resize_buffer;
 FP_frame_submit g_fpframe_submit;
 FP_frame_unbind g_fpframe_unbind;
-FP_gesture_context_create g_fpgesture_context_create;
-FP_gesture_context_destroy g_fpgesture_context_destroy;
-FP_gesture_get g_fpgesture_get;
-FP_gesture_get_count g_fpgesture_get_count;
-FP_gesture_get_direction g_fpgesture_get_direction;
-FP_gesture_get_displacement g_fpgesture_get_displacement;
-FP_gesture_get_type g_fpgesture_get_type;
-FP_gesture_get_velocity g_fpgesture_get_velocity;
-FP_gesture_restart g_fpgesture_restart;
-FP_gesture_update g_fpgesture_update;
 FP_frame_bind_buffer g_fpframe_bind_buffer;
 FP_create g_fpcreate;
 FP_swap_chain_acquire_frame g_fpswap_chain_acquire_frame;
@@ -445,7 +434,6 @@ bool InitLoadFun()
         GET_DLL_FUNCION(g_hDLL,get_surface_size);
         GET_DLL_FUNCION(g_hDLL,check_surface_size_changed);
         GET_DLL_FUNCION(g_hDLL,get_border_size_meters);
-        GET_DLL_FUNCION(g_hDLL,get_button_long_press);
         GET_DLL_FUNCION(g_hDLL,display_synchronizer_destroy);
         GET_DLL_FUNCION(g_hDLL,display_synchronizer_create);
         GET_DLL_FUNCION(g_hDLL,refresh_viewer_profile);
@@ -483,16 +471,6 @@ bool InitLoadFun()
         GET_DLL_FUNCION(g_hDLL,swap_chain_resize_buffer);
         GET_DLL_FUNCION(g_hDLL,frame_submit);
         GET_DLL_FUNCION(g_hDLL,frame_unbind);
-        GET_DLL_FUNCION(g_hDLL,gesture_context_create);
-        GET_DLL_FUNCION(g_hDLL,gesture_context_destroy);
-        GET_DLL_FUNCION(g_hDLL,gesture_get);
-        GET_DLL_FUNCION(g_hDLL, gesture_get_count);
-        GET_DLL_FUNCION(g_hDLL,gesture_get_direction);
-        GET_DLL_FUNCION(g_hDLL,gesture_get_displacement);
-        GET_DLL_FUNCION(g_hDLL,gesture_get_type);
-        GET_DLL_FUNCION(g_hDLL,gesture_get_velocity);
-        GET_DLL_FUNCION(g_hDLL,gesture_restart);
-        GET_DLL_FUNCION(g_hDLL,gesture_update);
         GET_DLL_FUNCION(g_hDLL,frame_bind_buffer);
         GET_DLL_FUNCION(g_hDLL,create);
         GET_DLL_FUNCION(g_hDLL,swap_chain_acquire_frame);
@@ -749,7 +727,6 @@ bool InitLoadFun()
             && g_fpget_surface_size!= NULL
             && g_fpcheck_surface_size_changed!= NULL
             && g_fpget_border_size_meters!= NULL
-            && g_fpget_button_long_press!= NULL
             && g_fpdisplay_synchronizer_destroy!= NULL
             && g_fpdisplay_synchronizer_create!= NULL
             && g_fprefresh_viewer_profile!= NULL
@@ -787,16 +764,6 @@ bool InitLoadFun()
             && g_fpswap_chain_resize_buffer!= NULL
             && g_fpframe_submit!= NULL
             && g_fpframe_unbind!= NULL
-            && g_fpgesture_context_create!= NULL
-            && g_fpgesture_context_destroy!= NULL
-            && g_fpgesture_get!= NULL
-            && g_fpgesture_get_count!= NULL
-            && g_fpgesture_get_direction!= NULL
-            && g_fpgesture_get_displacement!= NULL
-            && g_fpgesture_get_type!= NULL
-            && g_fpgesture_get_velocity!= NULL
-            && g_fpgesture_restart!= NULL
-            && g_fpgesture_update!= NULL
             && g_fpframe_bind_buffer!= NULL
             && g_fpcreate!= NULL
             && g_fpswap_chain_acquire_frame!= NULL
@@ -1061,7 +1028,6 @@ bool InitLoadFun()
             GET_DLL_FUNCION_ERR(get_surface_size);
             GET_DLL_FUNCION_ERR(check_surface_size_changed);
             GET_DLL_FUNCION_ERR(get_border_size_meters);
-            GET_DLL_FUNCION_ERR(get_button_long_press);
             GET_DLL_FUNCION_ERR(display_synchronizer_destroy);
             GET_DLL_FUNCION_ERR(display_synchronizer_create);
             GET_DLL_FUNCION_ERR(refresh_viewer_profile);
@@ -1099,16 +1065,6 @@ bool InitLoadFun()
             GET_DLL_FUNCION_ERR(swap_chain_resize_buffer);
             GET_DLL_FUNCION_ERR(frame_submit);
             GET_DLL_FUNCION_ERR(frame_unbind);
-            GET_DLL_FUNCION_ERR(gesture_context_create);
-            GET_DLL_FUNCION_ERR(gesture_context_destroy);
-            GET_DLL_FUNCION_ERR(gesture_get);
-            GET_DLL_FUNCION_ERR(gesture_get_count);
-            GET_DLL_FUNCION_ERR(gesture_get_direction);
-            GET_DLL_FUNCION_ERR(gesture_get_displacement);
-            GET_DLL_FUNCION_ERR(gesture_get_type);
-            GET_DLL_FUNCION_ERR(gesture_get_velocity);
-            GET_DLL_FUNCION_ERR(gesture_restart);
-            GET_DLL_FUNCION_ERR(gesture_update);
             GET_DLL_FUNCION_ERR(frame_bind_buffer);
             GET_DLL_FUNCION_ERR(create);
             GET_DLL_FUNCION_ERR(swap_chain_acquire_frame);
@@ -1382,7 +1338,6 @@ void ReleaseFun()
     g_fpget_surface_size = NULL;
     g_fpcheck_surface_size_changed = NULL;
     g_fpget_border_size_meters = NULL;
-    g_fpget_button_long_press = NULL;
     g_fpdisplay_synchronizer_destroy = NULL;
     g_fpdisplay_synchronizer_create = NULL;
     g_fprefresh_viewer_profile = NULL;
@@ -1420,16 +1375,6 @@ void ReleaseFun()
     g_fpswap_chain_resize_buffer = NULL;
     g_fpframe_submit = NULL;
     g_fpframe_unbind = NULL;
-    g_fpgesture_context_create = NULL;
-    g_fpgesture_context_destroy = NULL;
-    g_fpgesture_get = NULL;
-    g_fpgesture_get_count = NULL;
-    g_fpgesture_get_direction = NULL;
-    g_fpgesture_get_displacement = NULL;
-    g_fpgesture_get_type = NULL;
-    g_fpgesture_get_velocity = NULL;
-    g_fpgesture_restart = NULL;
-    g_fpgesture_update = NULL;
     g_fpframe_bind_buffer = NULL;
     g_fpcreate = NULL;
     g_fpswap_chain_acquire_frame = NULL;
@@ -3153,14 +3098,14 @@ void gvr_buffer_spec_set_depth_stencil_format(gvr_buffer_spec *spec, int32_t dep
     return;
 }
 
-void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if(g_fpbuffer_spec_set_multiview_layer)
-        g_fpbuffer_spec_set_multiview_layer(spec, num_layers);
-    return;
-}
+//void gvr_buffer_spec_set_multiview_layers(gvr_buffer_spec* spec, int32_t num_layers)
+//{
+//    CLogMessage msg(__FUNCTION__);
+//    InitLoadFun();
+//    if(g_fpbuffer_spec_set_multiview_layer)
+//        g_fpbuffer_spec_set_multiview_layer(spec, num_layers);
+//    return;
+//}
 
 void gvr_buffer_spec_set_size(gvr_buffer_spec *spec, gvr_sizei size)
 {
@@ -3204,16 +3149,6 @@ void gvr_distort_to_screen(
     return;
 }
 
-bool gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    bool re = false;
-    if(g_fpis_feature_supported)
-        re = g_fpis_feature_supported(gvr, feature);
-    return re;
-}
-
 gvr_clock_time_point gvr_get_time_point_now()
 {
 //    gvr_clock_time_point re;
@@ -3246,7 +3181,7 @@ gvr_mat4f gvr_get_eye_from_head_matrix(const gvr_context *gvr, const int32_t eye
     return re;
 }
 
-gvr_sizei gvr_swap_chain_get_buffer_size(gvr_swap_chain *swap_chain, int32_t index)
+gvr_sizei gvr_swap_chain_get_buffer_size(const gvr_swap_chain *swap_chain, int32_t index)
 {
 //    gvr_sizei re;
     CLogMessage msg(__FUNCTION__);
@@ -3509,101 +3444,6 @@ void gvr_frame_unbind(gvr_frame *frame)
     InitLoadFun();
     if(g_fpframe_unbind)
         g_fpframe_unbind(frame);
-    return;
-}
-
-gvr_gesture_context* gvr_gesture_context_create()
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if(g_fpgesture_context_create)
-        return g_fpgesture_context_create();
-    else
-        return NULL;
-}
-
-void gvr_gesture_context_destroy(gvr_gesture_context** context)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if( g_fpgesture_context_destroy)
-        g_fpgesture_context_destroy(context);
-    return;
-}
-
-const gvr_gesture* gvr_gesture_get(const gvr_gesture_context* context, int index)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if( g_fpgesture_get)
-        return g_fpgesture_get(context, index);
-    else
-        return NULL;
-}
-
-int gvr_gesture_get_count(const gvr_gesture_context* context)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if(g_fpgesture_get_count)
-        return g_fpgesture_get_count(context);
-    return 0;
-}
-
-gvr_gesture_direction gvr_gesture_get_direction(const gvr_gesture* gesture)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if(g_fpgesture_get_direction)
-        return g_fpgesture_get_direction(gesture);
-    return GVR_GESTURE_DIRECTION_UP;
-}
-
-gvr_vec2f gvr_gesture_get_displacement(const gvr_gesture* gesture)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    gvr_vec2f re;
-    if(g_fpgesture_get_displacement)
-        re = g_fpgesture_get_displacement(gesture);
-    return re;
-}
-
-gvr_gesture_type gvr_gesture_get_type(const gvr_gesture* gesture)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    gvr_gesture_type re = GVR_GESTURE_SWIPE;
-    if(g_fpgesture_get_type)
-        re = g_fpgesture_get_type(gesture);
-    return  re;
-}
-
-gvr_vec2f gvr_gesture_get_velocity(const gvr_gesture* gesture)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    gvr_vec2f re;
-    if(g_fpgesture_get_velocity)
-        re = g_fpgesture_get_velocity(gesture);
-    return re;
-}
-
-void gvr_gesture_restart(gvr_gesture_context* context)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if(g_fpgesture_restart)
-        g_fpgesture_restart(context);
-    return;
-}
-
-void gvr_gesture_update(const gvr_controller_state* controller_state, gvr_gesture_context* context)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    if(g_fpgesture_update)
-        g_fpgesture_update(controller_state, context);
     return;
 }
 
@@ -4308,16 +4148,6 @@ int gvr_get_border_size_meters(void *a1)
     if(g_fpget_border_size_meters)
         return g_fpget_border_size_meters( a1);
     return 0;
-}
-
-bool gvr_get_button_long_press(const gvr_controller_state* controller_state, const gvr_gesture_context* context, gvr_controller_button button)
-{
-    CLogMessage msg(__FUNCTION__);
-    InitLoadFun();
-    bool re = false;
-    if(g_fpget_button_long_press)
-        re = g_fpget_button_long_press(controller_state, context, button);
-    return re;
 }
 
 int gvr_check_surface_size_changed(int a1)

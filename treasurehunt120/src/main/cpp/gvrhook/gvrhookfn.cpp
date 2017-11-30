@@ -8,14 +8,57 @@
 #include <pthread.h>
 #include <gleshook/log.h>
 #include <glresource.h>
-#include <gvr.h>
+#include <vr/gvr/capi/include/gvr.h>
 #include "gvrhookfn.h"
 #include "detour.h"
 #include "mjgvr.h"
-#include "drawtex.h"
 
 
 void * g_hGVR = NULL;
+
+uint64_t GetTimeNano()
+{
+    struct timespec t;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    uint64_t result = t.tv_sec * 1000000000LL + t.tv_nsec;
+    return result;
+}
+
+void ShowFPS()
+{
+#define INTERVALTIME 1000
+    static unsigned int prevTimeMs = GetTimeNano();
+    static unsigned int lastTimeMS = GetTimeNano();
+    static unsigned int frameCounter = 0;
+    static float maxTime = 0;
+    static float minTime = 0;
+
+    unsigned int currentTimeMs = GetTimeNano();
+    float everyInterTime = (float)(currentTimeMs - lastTimeMS) * 1e-6;
+    if( everyInterTime > maxTime ){
+        maxTime = everyInterTime;
+    }
+    if( everyInterTime < minTime )
+    {
+        minTime = everyInterTime;
+    }
+    lastTimeMS = currentTimeMs;
+    frameCounter++;
+    float totalTime = (currentTimeMs - prevTimeMs) * 1e-6;
+    if (totalTime > INTERVALTIME)
+    {
+        float elapsedSec = (float)totalTime / 1000.0f;
+        float currentFPS = (float)frameCounter / elapsedSec;
+//        LOGI("submit, FPS: %0.2f, maxIntervalTime: %0.2f, minIntervalTime: %0.2f",  currentFPS, maxTime, minTime);
+        __android_log_print(ANDROID_LOG_INFO, "MJDD", "---FPS--- AvgFPS = %06.2f , Frame = [%06.2f , %06.2f] (ms)",
+                            currentFPS, minTime, maxTime);
+
+        minTime = currentFPS;
+        maxTime = currentFPS;
+        frameCounter = 0;
+        prevTimeMs = currentTimeMs;
+    }
+}
 
 #define fn_JNI_OnLoad "JNI_OnLoad"
 jint (*old_JNI_OnLoad)(JavaVM* vm, void* reserved) = NULL;
@@ -42,8 +85,6 @@ int mj_gvr_set_async_reprojection_enabled(gvr_context *a1, int a2)
     // sub_28DC8  sub_95960
     LOGITAG("mjgvr","mj_gvr_set_async_reprojection_enabled, a1=%x, tid=%d", a1, gettid());
 //    return  true;
-    const char *vendor = gvr_get_viewer_vendor(a1);
-    LOGITAG("mjgvr","gvr_get_viewer_vendor, vendor=%s, tid=%d", vendor, gettid());
     int re = old_gvr_set_async_reprojection_enabled(a1, a2);
 //    fn_set_async_reprojection_enabled pfun = a1->user_prefs->p001->pfun04;
 //    int re = pfun(a1->user_prefs);
@@ -93,11 +134,47 @@ bool mj_Java_com_google_vr_ndk_base_GvrApi_nativeUsingVrDisplayService(JNIEnv* e
     return re;
 }
 
+#define fn_gvr_using_dynamic_library "gvr_using_dynamic_library"
+bool (*old_gvr_using_dynamic_library)() = NULL;
+bool mj_gvr_using_dynamic_library()
+{
+	LOGITAG("mjgvr","mj_gvr_using_dynamic_library, tid=%d", gettid());
+    bool re = old_gvr_using_dynamic_library();
+	return re;
+}
+
 int (*old_sub_24738)() = NULL;
 int mj_sub_24738()
 {
     LOGITAG("mjgvr","mj_sub_24738, tid=%d", gettid());
     int re = old_sub_24738();
+    return re;
+}
+
+typedef void (*FP_glDrawElements)(GLenum mode, GLsizei count, GLenum type, const void *indices);
+FP_glDrawElements pfun_glDrawElements_gvr = NULL;
+void mjglDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices)
+{
+    LOGITAG("mjgl", "mjglDrawElements, count=%d, indices=%0X, tid=%d", count, indices, gettid());
+    pfun_glDrawElements_gvr(mode, count, type, indices);
+    return;
+}
+
+bool (*old_sub_71FE8)(int a1, int a2,  int a3) = NULL;
+bool mj_sub_71FE8(int a1, int a2,  int a3)
+{
+    LOGITAG("mjgvr","mj_sub_71FE8, tid=%d", gettid());
+    void *p = (void*)a1;
+    void *p1 = *(void**)a1;
+    char *pstr = *(char**)((char*)p + 4);
+    bool re = old_sub_71FE8(a1, a2, a3);
+    void *pfun = *(void**)a1;
+    if(strcmp(pstr, "DrawElements") == 0)
+    {
+        pfun_glDrawElements_gvr = (FP_glDrawElements)pfun;
+        *(void**)a1 = (void*)mjglDrawElements;
+    }
+
     return re;
 }
 
@@ -278,9 +355,7 @@ void mj_gvr_initialize_gl(gvr_context* gvr)
     LOGITAG("mjgvr","mj_gvr_initialize_gl, tid=%d", gettid());
 //    fn_initialize_gl initgl = gvr->user_prefs->p001->pfun06;
 //    return initgl(gvr->user_prefs);
-    old_gvr_initialize_gl(gvr);
-    InitTex(&gUserData, 1);
-	return;
+	return old_gvr_initialize_gl(gvr);
 }
 
 #define fn_gvr_get_async_reprojection_enabled "gvr_get_async_reprojection_enabled"
@@ -335,6 +410,14 @@ void mj_gvr_distort_to_screen(gvr_context* gvr, int32_t texture_id, const gvr_bu
     LOGITAG("mjgvr","mj_gvr_distort_to_screen, tid=%d", gettid());
     old_gvr_distort_to_screen(gvr, texture_id, viewport_list, head_space_from_start_space, target_presentation_time);
     return;
+}
+
+#define fn_gvr_is_feature_supported "gvr_is_feature_supported"
+bool (*old_gvr_is_feature_supported)(const gvr_context* gvr, int32_t feature) = NULL;
+bool mj_gvr_is_feature_supported(const gvr_context* gvr, int32_t feature)
+{
+    LOGITAG("mjgvr","mj_gvr_is_feature_supported, tid=%d", gettid());
+    return old_gvr_is_feature_supported(gvr, feature);
 }
 
 #define fn_gvr_buffer_viewport_create "gvr_buffer_viewport_create"
@@ -536,19 +619,16 @@ int32_t mj_gvr_frame_get_framebuffer_object(const gvr_frame* frame, int32_t inde
 void (*old_gvr_frame_submit)(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space) = NULL;
 void mj_gvr_frame_submit(gvr_frame** frame, const gvr_buffer_viewport_list* list, gvr_mat4f head_space_from_start_space)
 {
-    LOGITAG("mjgvr","mj_gvr_frame_submit, tid=%d", gettid());
+    LOGITAG("mjgvr","mj_gvr_frame_submit begin, tid=%d", gettid());
 
-    gvr_frame_bind_buffer(*frame, 0);
-    DrawTex(&gUserData);
-//        glViewport(gwidth, 0, gwidth, gheight);
-//        DrawTex(&gUserData);
-        glViewport(0, 0, 800, 1000);
-    DrawTex(&gUserData);
+//    gvr_frame_bind_buffer(*frame, 1 );
+//    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);  // Transparent background.
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    gvr_frame_unbind(*frame);
 
-
-    gvr_frame_unbind(*frame);
-
+    ShowFPS();
     old_gvr_frame_submit(frame, list, head_space_from_start_space);
+    LOGITAG("mjgvr","mj_gvr_frame_submit end, tid=%d", gettid());
     return;
 }
 
@@ -685,7 +765,7 @@ bool InitHook()
                &&HookToFunction(g_hGVR, fn_JNI_OnLoad, (void*)GVR_JNI_OnLoad, (void**)&old_JNI_OnLoad)
 //           &&HookToFunctionBase(g_hGVR, 0x9B37E, (void*)mj_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled, (void**)&old_Java_com_google_vr_ndk_base_GvrApi_nativeSetAsyncReprojectionEnabled)
 			   &&HookToFunction(g_hGVR, fn_gvr_create_with_tracker_for_testing, (void*)mj_gvr_create_with_tracker_for_testing, (void**)&old_gvr_create_with_tracker_for_testing)
-//		   &&HookToFunctionBase(g_hGVR, 0x6722, (void*)mj_sub_24738, (void**)&old_sub_24738)
+//		   &&HookToFunctionBase(0x71FE8, (void*)mj_sub_71FE8, (void**)&old_sub_71FE8)
 //               &&HookToFunctionBase( 0x68CA4,(void*)mj_sub_68CA4, (void**)&old_sub_68CA4)
 //			   &&HookToFunction(g_hGVR, fn_gvr_create, (void*)mj_gvr_create, (void**)&old_gvr_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_get_error, (void*)mj_gvr_get_error, (void**)&old_gvr_get_error)
@@ -699,6 +779,7 @@ bool InitHook()
 			   &&HookToFunction(g_hGVR, fn_gvr_get_maximum_effective_render_target_size, (void*)mj_gvr_get_maximum_effective_render_target_size, (void**)&old_gvr_get_maximum_effective_render_target_size)
 			   &&HookToFunction(g_hGVR, fn_gvr_get_screen_target_size, (void*)mj_gvr_get_screen_target_size, (void**)&old_gvr_get_screen_target_size)
 			   &&HookToFunction(g_hGVR, fn_gvr_distort_to_screen, (void*)mj_gvr_distort_to_screen, (void**)&old_gvr_distort_to_screen)
+//               &&HookToFunction(g_hGVR, fn_gvr_is_feature_supported, (void*)mj_gvr_is_feature_supported, (void**)&old_gvr_is_feature_supported)
 			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_create, (void*)mj_gvr_buffer_viewport_create, (void**)&old_gvr_buffer_viewport_create)
                &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_create, (void*)mj_gvr_buffer_viewport_list_create, (void**)&old_gvr_buffer_viewport_list_create)
 			   &&HookToFunction(g_hGVR, fn_gvr_buffer_viewport_list_get_item, (void*)mj_gvr_buffer_viewport_list_get_item, (void**)&old_gvr_buffer_viewport_list_get_item)

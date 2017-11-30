@@ -8,12 +8,11 @@
  *
  */
 
+#include <android/log.h>
+
 void (*log_function)(char *logmsg);
 
-#define log(...) \
-        {char __msg[1024] = {0};\
-        snprintf(__msg, sizeof(__msg)-1, __VA_ARGS__);\
-        log_function(__msg); }
+#define log(...) __android_log_print(3, "LWP", __VA_ARGS__);
 
 struct hook_t {
 	unsigned int jump[3];
@@ -33,4 +32,5 @@ void hook_cacheflush(unsigned int begin, unsigned int end);
 void hook_precall(struct hook_t *h);
 void hook_postcall(struct hook_t *h);
 int exporthook(struct hook_t *h, int pid, char *libname, char *funcname, void *hook_arm, void *hook_thumb);
+int hook_lwp(int pid, char *libname, char *funcname, void *hookFunc, void **origFunc);
 void unhook(struct hook_t *h);
