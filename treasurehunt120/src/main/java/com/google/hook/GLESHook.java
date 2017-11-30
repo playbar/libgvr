@@ -10,9 +10,7 @@ import java.lang.reflect.Field;
  */
 
 public class GLESHook {
-    static {
-        System.loadLibrary("glhook");
-    }
+
     public static native void printMapInfo();
     public static native void initHook();
     public static native void unInitHook();

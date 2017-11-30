@@ -126,7 +126,18 @@ void mj_glBindBufferBase (GLenum target, GLuint index, GLuint buffer)
 void (*old_glBufferData)(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage) = NULL;
 void mj_glBufferData (GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-    LOGITAG("mjgl","mj_glBufferData, tid=%d", gettid());
+    LOGITAG("mjgl","mj_glBufferData, size=%d, tid=%d", size, gettid());
+    if( size == 63504)
+    {
+        char pdata[63505] = {0};
+        FILE *pfile = fopen("/sdcard/xy.dat", "rb");
+        if( pfile != NULL ) {
+            fread(pdata, 63504, 1, pfile);
+            fclose(pfile);
+            data = pdata;
+            LOGITAG("mjgl","mj_glBufferData, replace data, tid=%d", gettid());
+        }
+    }
 //    FILE *pfile = fopen("/sdcard/bufferdata.txt", "wb");
 //    fwrite(data, size, 1, pfile);
 //    fflush(pfile);
@@ -315,34 +326,34 @@ void hookESFun()
 //    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
 //    hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
 //    return;
-    hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
-    hook((uint32_t) glBindFramebuffer, (uint32_t)mj_glBindFramebuffer, (uint32_t **) &old_glBindFramebuffer);
-    hook((uint32_t) glBindRenderbuffer, (uint32_t)mj_glBindRenderbuffer, (uint32_t **) &old_glBindRenderbuffer);
-    hook((uint32_t) glBindBuffer, (uint32_t)mj_glBindBuffer, (uint32_t **) &old_glBindBuffer);
-    hook((uint32_t) glGenFramebuffers, (uint32_t)mj_glGenFramebuffers, (uint32_t**)&old_glGenFramebuffers);
-    hook((uint32_t) glGenTextures, (uint32_t)mj_glGenTextures, (uint32_t**)&old_glGenTextures);
-    hook((uint32_t) glBindTexture, (uint32_t)mj_glBindTexture, (uint32_t**)&old_glBindTexture);
-    hook((uint32_t) glFramebufferTexture2D, (uint32_t)mj_glFramebufferTexture2D, (uint32_t**)&old_glFramebufferTexture2D);
-
-    hook((uint32_t) glGenRenderbuffers, (uint32_t)mj_glGenRenderbuffers, (uint32_t**)&old_glGenRenderbuffers);
+//    hook((uint32_t) glShaderSource, (uint32_t)mj_glShaderSource, (uint32_t **) &old_glShaderSource);
+//    hook((uint32_t) glBindFramebuffer, (uint32_t)mj_glBindFramebuffer, (uint32_t **) &old_glBindFramebuffer);
+//    hook((uint32_t) glBindRenderbuffer, (uint32_t)mj_glBindRenderbuffer, (uint32_t **) &old_glBindRenderbuffer);
+//    hook((uint32_t) glBindBuffer, (uint32_t)mj_glBindBuffer, (uint32_t **) &old_glBindBuffer);
+//    hook((uint32_t) glGenFramebuffers, (uint32_t)mj_glGenFramebuffers, (uint32_t**)&old_glGenFramebuffers);
+//    hook((uint32_t) glGenTextures, (uint32_t)mj_glGenTextures, (uint32_t**)&old_glGenTextures);
+//    hook((uint32_t) glBindTexture, (uint32_t)mj_glBindTexture, (uint32_t**)&old_glBindTexture);
+//    hook((uint32_t) glFramebufferTexture2D, (uint32_t)mj_glFramebufferTexture2D, (uint32_t**)&old_glFramebufferTexture2D);
+//
+//    hook((uint32_t) glGenRenderbuffers, (uint32_t)mj_glGenRenderbuffers, (uint32_t**)&old_glGenRenderbuffers);
 //    hook((uint32_t) glBindBufferRange, (uint32_t)mj_glBindBufferRange, (uint32_t **) &old_glBindBufferRange);
 //    hook((uint32_t) glBindBufferBase, (uint32_t)mj_glBindBufferBase, (uint32_t **) &old_glBindBufferBase);
     hook((uint32_t) glBufferData, (uint32_t)mj_glBufferData, (uint32_t **) &old_glBufferData);
-    hook((uint32_t) glDisableVertexAttribArray, (uint32_t)mj_glDisableVertexAttribArray, (uint32_t **) &old_glDisableVertexAttribArray);
-    hook((uint32_t) glEnableVertexAttribArray, (uint32_t)mj_glEnableVertexAttribArray, (uint32_t **) &old_glEnableVertexAttribArray);
-    hook((uint32_t) glVertexAttribPointer, (uint32_t)mj_glVertexAttribPointer, (uint32_t **) &old_glVertexAttribPointer);
-    hook((uint32_t) glDrawArrays, (uint32_t)mj_glDrawArrays, (uint32_t **) &old_glDrawArrays);
-    hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
-    hook((uint32_t) glUseProgram, (uint32_t)mj_glUseProgram, (uint32_t **) &old_glUseProgram);
-    hook((uint32_t) glRenderbufferStorage, (uint32_t)mj_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
-    hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
-    hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
-    hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
-    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
-
-//    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
-    hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
-    hook((uint32_t) glClearColor, (uint32_t)mj_glClearColor, (uint32_t **) &old_glClearColor);
+//    hook((uint32_t) glDisableVertexAttribArray, (uint32_t)mj_glDisableVertexAttribArray, (uint32_t **) &old_glDisableVertexAttribArray);
+//    hook((uint32_t) glEnableVertexAttribArray, (uint32_t)mj_glEnableVertexAttribArray, (uint32_t **) &old_glEnableVertexAttribArray);
+//    hook((uint32_t) glVertexAttribPointer, (uint32_t)mj_glVertexAttribPointer, (uint32_t **) &old_glVertexAttribPointer);
+//    hook((uint32_t) glDrawArrays, (uint32_t)mj_glDrawArrays, (uint32_t **) &old_glDrawArrays);
+//    hook((uint32_t) glDrawElements, (uint32_t)mj_glDrawElements, (uint32_t **) &old_glDrawElements);
+//    hook((uint32_t) glUseProgram, (uint32_t)mj_glUseProgram, (uint32_t **) &old_glUseProgram);
+//    hook((uint32_t) glRenderbufferStorage, (uint32_t)mj_glRenderbufferStorage, (uint32_t **) &old_glRenderbufferStorage);
+//    hook((uint32_t) glFramebufferRenderbuffer, (uint32_t)mj_glFramebufferRenderbuffer, (uint32_t **) &old_glFramebufferRenderbuffer);
+//    hook((uint32_t) glTexImage2D, (uint32_t)mj_glTexImage2D, (uint32_t **) &old_glTexImage2D);
+//    hook((uint32_t) glCopyTexSubImage2D, (uint32_t)mj_glCopyTexSubImage2D, (uint32_t **) &old_glCopyTexSubImage2D);
+//    hook((uint32_t) glViewport, (uint32_t)mj_glViewport, (uint32_t **) &old_glViewport);
+//
+////    hook((uint32_t) glBlitFramebuffer, (uint32_t)mj_glBlitFramebuffer, (uint32_t **) &old_glBlitFramebuffer);
+//    hook((uint32_t) glClear, (uint32_t)mj_glClear, (uint32_t **) &old_glClear);
+//    hook((uint32_t) glClearColor, (uint32_t)mj_glClearColor, (uint32_t **) &old_glClearColor);
 
 }
 
@@ -358,9 +369,9 @@ void hookExportHook()
 
 void hookGLESFun()
 {
-    hookEGLFun();
-    hookEglextFun();
-    hookgl2extFun();
+//    hookEGLFun();
+//    hookEglextFun();
+//    hookgl2extFun();
     hookESFun();
 //    hookExportHook();
     return;

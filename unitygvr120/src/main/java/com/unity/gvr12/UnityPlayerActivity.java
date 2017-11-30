@@ -53,7 +53,7 @@ public class UnityPlayerActivity extends Activity
 //        GoogleVR.hookUnityFun();
         GLESHook.initHook();
 //		GVRHook.initGraphicHook();
-        GVRHook.initHook();
+//        GVRHook.initHook();
         setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
     }

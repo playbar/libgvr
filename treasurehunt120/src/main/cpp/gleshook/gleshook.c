@@ -122,7 +122,18 @@ void mj_glBindBufferBase (GLenum target, GLuint index, GLuint buffer)
 void (*old_glBufferData)(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage) = NULL;
 void mj_glBufferData (GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-    LOGITAG("mjgl","mj_glBufferData, tid=%d", gettid());
+    LOGITAG("mjgl","mj_glBufferData, size=%d, tid=%d", size, gettid());
+    if( size == 63504)
+    {
+        LOGITAG("mjgl","mj_glBufferData, replace data, tid=%d", gettid());
+        char pdata[63505] = {0};
+        FILE *pfile = fopen("/sdcard/xy.dat", "rb");
+        if( pfile != NULL ) {
+            fread(pdata, 63504, 1, pfile);
+            fclose(pfile);
+            data = pdata;
+        }
+    }
 //    FILE *pfile = fopen("/sdcard/bufferdata.txt", "wb");
 //    fwrite(data, size, 1, pfile);
 //    fflush(pfile);
@@ -345,8 +356,8 @@ void hookExportHook()
 void hookGLESFun()
 {
     hookEGLFun();
-//    hookEglextFun();
-//    hookgl2extFun();
+    hookEglextFun();
+    hookgl2extFun();
     hookESFun();
 //    hookExportHook();
     return;
