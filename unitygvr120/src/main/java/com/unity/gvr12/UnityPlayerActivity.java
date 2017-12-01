@@ -5,6 +5,7 @@ import com.google.hook.GVRHook;
 import com.unity3d.player.*;
 import com.unity3d.unitygvr.GoogleVR;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -37,6 +38,16 @@ public class UnityPlayerActivity extends Activity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
+        if(PermissionUtils.checkPermission( UnityPlayerActivity.this,new String[]{
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        },200))
+        {
+
+
+        }
+
         getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
         mUnityPlayer = new UnityPlayer(this);
@@ -53,7 +64,7 @@ public class UnityPlayerActivity extends Activity
 //        GoogleVR.hookUnityFun();
         GLESHook.initHook();
 //		GVRHook.initGraphicHook();
-//        GVRHook.initHook();
+        GVRHook.initHook();
         setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
     }
