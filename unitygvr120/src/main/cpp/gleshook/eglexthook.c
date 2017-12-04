@@ -73,25 +73,31 @@ EGLSyncKHR mj_eglCreateSyncKHR(EGLDisplay dpy, EGLenum type, const EGLint *attri
 //    gtype = type;
 //    gattrib_list = attrib_list;
     EGLSyncKHR sync = NULL;
+    int i = 0;
+    while( attrib_list != NULL && attrib_list[i] != EGL_NONE )
+    {
+        LOGITAG("mjgl","value=%d", attrib_list[i]);
+        ++i;
+    }
 //    if( rendertid == gettid())
     {
         sync = old_eglCreateSyncKHR(dpy, type, attrib_list);
     }
-    LOGITAG("mjgl", "mj_eglCreateSyncKHR, sync=%0X, tid=%d", sync, gettid());
+    LOGITAG("mjgl", "mj_eglCreateSyncKHR, sync=0x%0X, attrib_list=0x%0X, tid=%d", sync, attrib_list, gettid());
     return sync;
 }
 
 EGLBoolean (*old_eglDestroySyncKHR)(EGLDisplay dpy, EGLSyncKHR sync) = NULL;
 EGLBoolean mj_eglDestroySyncKHR(EGLDisplay dpy, EGLSyncKHR sync)
 {
-    LOGITAG("mjgl", "mj_eglDestroySyncKHR, sync=%0X, tid=%d", sync, gettid());
+    LOGITAG("mjgl", "mj_eglDestroySyncKHR, sync=0x%0X, tid=%d", sync, gettid());
     return old_eglDestroySyncKHR(dpy, sync);
 }
 
 EGLint (*old_eglClientWaitSyncKHR)(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EGLTimeKHR timeout) = NULL;
 EGLint mj_eglClientWaitSyncKHR(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags, EGLTimeKHR timeout)
 {
-    LOGITAG("mjgl", "eglClientWaitSyncKHR, sync=%0X, tid=%d", sync, gettid());
+    LOGITAG("mjgl", "eglClientWaitSyncKHR, sync=0x%0X, timeout=%d, tid=%d", sync, timeout, gettid());
     return old_eglClientWaitSyncKHR(dpy, sync, flags, timeout);
 }
 
@@ -142,7 +148,7 @@ EGLBoolean mj_eglFenceNV(EGLSyncNV sync)
 EGLint (*old_eglClientWaitSyncNV)(EGLSyncNV sync, EGLint flags, EGLTimeNV timeout) = NULL;
 EGLint mj_eglClientWaitSyncNV(EGLSyncNV sync, EGLint flags, EGLTimeNV timeout)
 {
-    LOGITAG("mjgl", "eglClientWaitSyncNV, tid=%d", gettid());
+    LOGITAG("mjgl", "eglClientWaitSyncNV, timeout=%d tid=%d", timeout, gettid());
     return old_eglClientWaitSyncNV(sync, flags, timeout);
 }
 

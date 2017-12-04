@@ -810,7 +810,7 @@ EGLAPI __eglMustCastToProperFunctionPointerType mj_eglGetProcAddress(const char 
 void hookEGLFun()
 {
     LOGITAG("mjgl", "hookEGLFun, tid=%d",  gettid());
-    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
+//    void *baseadd = get_module_base_1(getpid(), "libEGL.so");
     hook((uint32_t) eglGetError, (uint32_t)mj_eglGetError, (uint32_t **) &old_eglGetError);
     hook((uint32_t) eglGetDisplay, (uint32_t)mj_eglGetDisplay, (uint32_t **) &old_eglGetDisplay);
     hook((uint32_t) eglInitialize, (uint32_t)mj_eglInitialize, (uint32_t **) &old_eglInitialize);

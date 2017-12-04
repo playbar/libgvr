@@ -1,9 +1,11 @@
 #include <android/log.h>
 #include <string.h>
 #include <pthread.h>
+#include "semaphore.h"
 #include <stdio.h>
 #include <dlfcn.h>
 #include <syscallstack.h>
+#include <sys/epoll.h>
 #include "log.h"
 #include "callstack.h"
 #include "hookutils.h"
@@ -109,18 +111,110 @@ int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*st
     return re;
 }
 
+unsigned int (*old_sleep)(unsigned int) = NULL;
+unsigned int mj_sleep(unsigned int timeout)
+{
+    LOGITAG("mjhook", "mj_sleep, timeout=%d, tid=%d", timeout, gettid());
+    unsigned int re = 0;
+    re = old_sleep(timeout);
+    return re;
+}
+
+int (*old_usleep)(useconds_t) = NULL;
+int mj_usleep(useconds_t timeout)
+{
+    LOGITAG("mjhook", "mj_usleep, timeout=%d, tid=%d", timeout, gettid());
+    int re = 0;
+//    timeout = 1;
+    re = old_usleep(timeout);
+    return re;
+}
+
+int (*old_nanosleep)(const struct timespec*, struct timespec*) = NULL;
+int mj_nanosleep(const struct timespec* tspec1, struct timespec* tspec2)
+{
+    LOGITAG("mjhook", "mj_nanosleep, tid=%d", gettid());
+    int re = 0;
+    re = old_nanosleep( tspec1, tspec2 );
+    return  re;
+}
+
+int (*old_pthread_cond_wait)(pthread_cond_t *cond, pthread_mutex_t *mutex) = NULL;
+int mj_pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
+{
+    LOGITAG("mjhook", "mj_pthread_cond_wait, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_cond_wait(cond, mutex);
+    return re;
+}
+
+int (*old_pthread_cond_timedwait)(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime) = NULL;
+int mj_pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime)
+{
+    LOGITAG("mjhook", "mj_pthread_cond_timedwait, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_cond_timedwait(cond, mutex, abstime);
+    return re;
+}
+
+int (*old_epoll_wait)(int epfd, struct epoll_event *events, int maxevents, int timeout) = NULL;
+int mj_epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
+{
+    LOGITAG("mjhook", "mj_epoll_wait, tid=%d", gettid());
+    int re = 0;
+    re = old_epoll_wait(epfd, events, maxevents, timeout);
+    return  re;
+}
+
+int (*old_sem_trywait)(sem_t *sem) = NULL;
+int mj_sem_trywait(sem_t *sem)
+{
+    LOGITAG("mjhook", "mj_sem_trywait, tid=%d", gettid());
+    int re = 0;
+    re = old_sem_trywait(sem);
+    return re;
+}
+
+int (*old_sem_wait)(sem_t *sem) = NULL;
+int mj_sem_wait(sem_t *sem)
+{
+    LOGITAG("mjhook", "mj_sem_wait, tid=%d", gettid());
+    int re = 0;
+    re = old_sem_wait(sem);
+    return re;
+}
+
+int (*old_sem_timedwait)(sem_t *sem, const struct timespec *abstime) = NULL;
+int mj_sem_timedwait(sem_t *sem, const struct timespec *abstime)
+{
+    LOGITAG("mjhook", "mj_sem_timedwait, tid=%d", gettid());
+    int re = 0;
+    re = old_sem_timedwait( sem, abstime);
+    return  re;
+}
+
 
 void hookThreadFun()
 {
-//    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
-    hook((uint32_t) fopen, (uint32_t)mj_fopen, (uint32_t **) &old_fopen);
-    hook((uint32_t) dlopen, (uint32_t)mj_dlopen, (uint32_t **) &old_dlopen);
-//    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
-    hook((uint32_t) dlclose, (uint32_t)mj_dlclose, (uint32_t **) &old_dlclose);
-//    hook((uint32_t) malloc, (uint32_t)mj_malloc, (uint32_t **) &old_malloc);
-    hook((uint32_t) calloc, (uint32_t)mj_calloc, (uint32_t **) &old_calloc);
-//    hook((uint32_t) realloc, (uint32_t)mj_realloc, (uint32_t **) &old_realloc);
-//    hook((uint32_t) free, (uint32_t)mj_free, (uint32_t **) &old_free);
-//    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
+////    hook((uint32_t) __android_log_print, (uint32_t)mj__android_log_print, (uint32_t **) &old__android_log_print);
+//    hook((uint32_t) fopen, (uint32_t)mj_fopen, (uint32_t **) &old_fopen);
+//    hook((uint32_t) dlopen, (uint32_t)mj_dlopen, (uint32_t **) &old_dlopen);
+////    hook((uint32_t) dlsym, (uint32_t)mj_dlsym, (uint32_t **) &old_dlsym);
+//    hook((uint32_t) dlclose, (uint32_t)mj_dlclose, (uint32_t **) &old_dlclose);
+////    hook((uint32_t) malloc, (uint32_t)mj_malloc, (uint32_t **) &old_malloc);
+//    hook((uint32_t) calloc, (uint32_t)mj_calloc, (uint32_t **) &old_calloc);
+////    hook((uint32_t) realloc, (uint32_t)mj_realloc, (uint32_t **) &old_realloc);
+////    hook((uint32_t) free, (uint32_t)mj_free, (uint32_t **) &old_free);
+////    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
     hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
+    hook((uint32_t) pthread_cond_wait, (uint32_t)mj_pthread_cond_wait, (uint32_t **) &old_pthread_cond_wait);
+    hook((uint32_t) pthread_cond_timedwait, (uint32_t)mj_pthread_cond_timedwait, (uint32_t **) &old_pthread_cond_timedwait);
+    hook((uint32_t) epoll_wait, (uint32_t) mj_epoll_wait, (uint32_t **) &old_epoll_wait);
+    hook((uint32_t) sem_trywait, (uint32_t) mj_sem_trywait, (uint32_t **) &old_sem_trywait);
+    hook((uint32_t) sem_wait, (uint32_t) mj_sem_wait, (uint32_t **) &old_sem_wait);
+    hook((uint32_t) sem_timedwait, (uint32_t) mj_sem_timedwait, (uint32_t **) &old_sem_timedwait);
+
+    hook((uint32_t) sleep, (uint32_t)mj_sleep, (uint32_t **)&old_sleep);
+    hook((uint32_t) usleep, (uint32_t)mj_usleep, (uint32_t **)&old_usleep);
+    hook((uint32_t) nanosleep, (uint32_t)mj_nanosleep, (uint32_t **)&old_nanosleep);
 }
