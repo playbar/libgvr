@@ -160,7 +160,7 @@ void elf_hooker::hook_module(const char* module_name_arg,const char* func_name, 
         unsigned int loc=a.find(module_name_arg,0);
         if(loc!= std::string::npos)
         {
-            log_info("Hook Module : %s\n", itor->second.get_module_name());
+            log_info("Hook Module : %s, func_name=%s\n", itor->second.get_module_name(), func_name);
             this->hook(&itor->second, func_name, pfn_new, ppfn_old);
         }
     }

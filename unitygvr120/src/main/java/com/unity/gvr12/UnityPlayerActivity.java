@@ -23,15 +23,6 @@ public class UnityPlayerActivity extends Activity
 {
     protected UnityPlayer mUnityPlayer; // don't change the name of this variable; referenced from native code
 
-        static {
-        try {
-            System.loadLibrary("gvr");
-            System.loadLibrary("draw");
-        } catch (UnsatisfiedLinkError var0) {
-            ;
-        }
-    }
-
     // Setup activity layout
     @Override protected void onCreate (Bundle savedInstanceState)
     {
@@ -62,9 +53,9 @@ public class UnityPlayerActivity extends Activity
         Log.e("battery", "CHARGE_COUNTER = " + CHARGE_COUNTER + ", CURRENT_AVERAGE = " + CURRENT_AVERAGE +
                 ", CURRENT_NOW = " + CURRENT_NOW);
 //        GoogleVR.hookUnityFun();
-        GLESHook.initHook();
+//        GLESHook.initHook();
 //		GVRHook.initGraphicHook();
-        GVRHook.initHook();
+//        GVRHook.initHook();
         setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
     }

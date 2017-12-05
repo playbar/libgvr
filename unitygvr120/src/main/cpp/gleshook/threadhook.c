@@ -153,7 +153,11 @@ int mj_pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, cons
 {
     LOGITAG("mjhook", "mj_pthread_cond_timedwait, tid=%d", gettid());
     int re = 0;
-    re = old_pthread_cond_timedwait(cond, mutex, abstime);
+    struct timespec tspe;
+    tspe.tv_nsec = 0;
+    tspe.tv_sec = 0;
+    re = old_pthread_cond_timedwait(cond, mutex, &tspe);
+//    re = old_pthread_cond_timedwait(cond, mutex, abstime);
     return re;
 }
 
@@ -193,6 +197,50 @@ int mj_sem_timedwait(sem_t *sem, const struct timespec *abstime)
     return  re;
 }
 
+int (*old_pthread_mutex_lock)(pthread_mutex_t *mutex) = NULL;
+int mj_pthread_mutex_lock(pthread_mutex_t *mutex)
+{
+    LOGITAG("mjhook", "mj_pthread_mutex_lock, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_mutex_lock( mutex );
+    return re;
+}
+
+int (*old_pthread_mutex_unlock)(pthread_mutex_t *mutex) = NULL;
+int mj_pthread_mutex_unlock(pthread_mutex_t *mutex)
+{
+    LOGITAG("mjhook", "mj_pthread_mutex_unlock, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_mutex_unlock(mutex);
+    return re;
+}
+
+int (*old_pthread_mutex_destroy)(pthread_mutex_t *mutex) = NULL;
+int mj_pthread_mutex_destroy(pthread_mutex_t *mutex)
+{
+    LOGITAG("mjhook", "mj_pthread_mutex_destroy, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_mutex_destroy(mutex);
+    return re;
+}
+
+int (*old_pthread_mutex_init)(pthread_mutex_t *mutex, const pthread_mutexattr_t *mutexattr) = NULL;
+int mj_pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *mutexattr)
+{
+    LOGITAG("mjhook", "mj_pthread_mutex_init, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_mutex_init( mutex, mutexattr);
+    return re;
+}
+
+int (*old_pthread_mutex_trylock)(pthread_mutex_t *mutex) = NULL;
+int mj_pthread_mutex_trylock(pthread_mutex_t *mutex)
+{
+    LOGITAG("mjhook", "mj_pthread_mutex_trylock, tid=%d", gettid());
+    int re = 0;
+    re = old_pthread_mutex_trylock(mutex);
+    return re;
+}
 
 void hookThreadFun()
 {
@@ -207,14 +255,25 @@ void hookThreadFun()
 ////    hook((uint32_t) free, (uint32_t)mj_free, (uint32_t **) &old_free);
 ////    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
     hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
-    hook((uint32_t) pthread_cond_wait, (uint32_t)mj_pthread_cond_wait, (uint32_t **) &old_pthread_cond_wait);
+//    hook((uint32_t) pthread_cond_wait, (uint32_t)mj_pthread_cond_wait, (uint32_t **) &old_pthread_cond_wait);
     hook((uint32_t) pthread_cond_timedwait, (uint32_t)mj_pthread_cond_timedwait, (uint32_t **) &old_pthread_cond_timedwait);
     hook((uint32_t) epoll_wait, (uint32_t) mj_epoll_wait, (uint32_t **) &old_epoll_wait);
     hook((uint32_t) sem_trywait, (uint32_t) mj_sem_trywait, (uint32_t **) &old_sem_trywait);
     hook((uint32_t) sem_wait, (uint32_t) mj_sem_wait, (uint32_t **) &old_sem_wait);
     hook((uint32_t) sem_timedwait, (uint32_t) mj_sem_timedwait, (uint32_t **) &old_sem_timedwait);
+//    hook((uint32_t) pthread_mutex_lock, (uint32_t) mj_pthread_mutex_lock, (uint32_t **) &old_pthread_mutex_lock);
+//    hook((uint32_t) pthread_mutex_unlock, (uint32_t) mj_pthread_mutex_unlock, (uint32_t **) &old_pthread_mutex_unlock);
+//    hook((uint32_t) pthread_mutex_destroy, (uint32_t) mj_pthread_mutex_destroy, (uint32_t **) &old_pthread_mutex_destroy);
+//    hook((uint32_t) pthread_mutex_init, (uint32_t) mj_pthread_mutex_init, (uint32_t **) &old_pthread_mutex_init);
+//    hook((uint32_t) pthread_mutex_trylock, (uint32_t) mj_pthread_mutex_trylock, (uint32_t **) &old_pthread_mutex_trylock);
 
     hook((uint32_t) sleep, (uint32_t)mj_sleep, (uint32_t **)&old_sleep);
     hook((uint32_t) usleep, (uint32_t)mj_usleep, (uint32_t **)&old_usleep);
     hook((uint32_t) nanosleep, (uint32_t)mj_nanosleep, (uint32_t **)&old_nanosleep);
+
+//    hookImportFunInit();
+//    hookImportFun("libgvr.so", "pthread_cond_wait", (void *) mj_pthread_cond_wait, (void **) &old_pthread_cond_wait);
+//    hookImportFun("libgvr.so", "pthread_cond_timedwait", (void *) mj_pthread_cond_timedwait, (void **) &old_pthread_cond_timedwait);
+//    hookImportFun("libunity.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
+//    hookImportFun("libgvr.so", "eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
 }
