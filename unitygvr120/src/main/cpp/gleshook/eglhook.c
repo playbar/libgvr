@@ -11,7 +11,7 @@
 #include <EGL/eglext.h>
 #include <stdlib.h>
 #include "hookutils.h"
-#include "log.h"
+#include "gvrlog.h"
 
 int rendertid = 0;
 int reprojectiontid = 0;

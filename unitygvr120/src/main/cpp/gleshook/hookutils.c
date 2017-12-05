@@ -1,6 +1,6 @@
 #include "hookutils.h"
 #include "callstack.h"
-#include "log.h"
+#include "gvrlog.h"
 
 int hook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr)
 {

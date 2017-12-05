@@ -6,7 +6,7 @@
 #include <dlfcn.h>
 #include <syscallstack.h>
 #include <sys/epoll.h>
-#include "log.h"
+#include "gvrlog.h"
 #include "callstack.h"
 #include "hookutils.h"
 
@@ -104,10 +104,20 @@ int mj_pthread_attr_init(pthread_attr_t * attr)
 int (*old_pthread_create)(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg) = NULL;
 int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*start_routine)(void *), void * arg)
 {
-    LOGITAG("mjhook", "mj_pthread_create");
 //    print_callstack();
     int re = 0;
     re = old_pthread_create(thread, attr, start_routine, arg);
+    LOGITAG("mjhook", "mj_pthread_create re=%d, tid=%d", re, gettid());
+    return re;
+}
+
+int (*old_pthread_setname_np)(pthread_t pid, const char* name) = NULL;
+int mj_pthread_setname_np(pthread_t pid, const char* name)
+{
+    LOGITAG("mjhook", "mj_pthread_setname_np, tid=%d", gettid());
+//    LOGE("mj_pthread_setname_np, name=%s", name);
+    int re = 0;
+    re = old_pthread_setname_np(pid, name);
     return re;
 }
 
@@ -153,11 +163,11 @@ int mj_pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, cons
 {
     LOGITAG("mjhook", "mj_pthread_cond_timedwait, tid=%d", gettid());
     int re = 0;
-    struct timespec tspe;
-    tspe.tv_nsec = 0;
-    tspe.tv_sec = 0;
-    re = old_pthread_cond_timedwait(cond, mutex, &tspe);
-//    re = old_pthread_cond_timedwait(cond, mutex, abstime);
+//    struct timespec tspe;
+//    tspe.tv_nsec = 0;
+//    tspe.tv_sec = 0;
+//    re = old_pthread_cond_timedwait(cond, mutex, &tspe);
+    re = old_pthread_cond_timedwait(cond, mutex, abstime);
     return re;
 }
 
@@ -255,12 +265,14 @@ void hookThreadFun()
 ////    hook((uint32_t) free, (uint32_t)mj_free, (uint32_t **) &old_free);
 ////    hook((uint32_t) pthread_attr_init, (uint32_t)mj_pthread_attr_init, (uint32_t **) &old_pthread_attr_init);
     hook((uint32_t) pthread_create, (uint32_t)mj_pthread_create, (uint32_t **) &old_pthread_create);
+    hook((uint32_t) pthread_setname_np, (uint32_t) mj_pthread_setname_np, (uint32_t **) &old_pthread_setname_np);
+
 //    hook((uint32_t) pthread_cond_wait, (uint32_t)mj_pthread_cond_wait, (uint32_t **) &old_pthread_cond_wait);
-    hook((uint32_t) pthread_cond_timedwait, (uint32_t)mj_pthread_cond_timedwait, (uint32_t **) &old_pthread_cond_timedwait);
-    hook((uint32_t) epoll_wait, (uint32_t) mj_epoll_wait, (uint32_t **) &old_epoll_wait);
-    hook((uint32_t) sem_trywait, (uint32_t) mj_sem_trywait, (uint32_t **) &old_sem_trywait);
-    hook((uint32_t) sem_wait, (uint32_t) mj_sem_wait, (uint32_t **) &old_sem_wait);
-    hook((uint32_t) sem_timedwait, (uint32_t) mj_sem_timedwait, (uint32_t **) &old_sem_timedwait);
+//    hook((uint32_t) pthread_cond_timedwait, (uint32_t)mj_pthread_cond_timedwait, (uint32_t **) &old_pthread_cond_timedwait);
+//    hook((uint32_t) epoll_wait, (uint32_t) mj_epoll_wait, (uint32_t **) &old_epoll_wait);
+//    hook((uint32_t) sem_trywait, (uint32_t) mj_sem_trywait, (uint32_t **) &old_sem_trywait);
+//    hook((uint32_t) sem_wait, (uint32_t) mj_sem_wait, (uint32_t **) &old_sem_wait);
+//    hook((uint32_t) sem_timedwait, (uint32_t) mj_sem_timedwait, (uint32_t **) &old_sem_timedwait);
 //    hook((uint32_t) pthread_mutex_lock, (uint32_t) mj_pthread_mutex_lock, (uint32_t **) &old_pthread_mutex_lock);
 //    hook((uint32_t) pthread_mutex_unlock, (uint32_t) mj_pthread_mutex_unlock, (uint32_t **) &old_pthread_mutex_unlock);
 //    hook((uint32_t) pthread_mutex_destroy, (uint32_t) mj_pthread_mutex_destroy, (uint32_t **) &old_pthread_mutex_destroy);

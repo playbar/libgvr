@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <dlfcn.h>
 #include "gvrhookfn.h"
-#include "../gleshook/log.h"
+#include "gvrlog.h"
 
 static void * g_hGraphics = NULL;
 

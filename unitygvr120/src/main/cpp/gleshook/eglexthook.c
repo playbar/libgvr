@@ -8,7 +8,7 @@
 #include <pthread.h>
 //#include <glresource.h>
 #include "hookutils.h"
-#include "log.h"
+#include "gvrlog.h"
 
 //eglext
 

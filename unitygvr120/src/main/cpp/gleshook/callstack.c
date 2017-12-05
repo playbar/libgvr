@@ -5,7 +5,7 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 #include "callstack.h"
-#include "log.h"
+#include "gvrlog.h"
 
 #define CALLSTACK_TAG "callstack"
 #define BACKTRACE_SIZE  64

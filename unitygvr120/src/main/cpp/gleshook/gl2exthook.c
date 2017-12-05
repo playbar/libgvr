@@ -6,7 +6,7 @@
 #include <string.h>
 #include <pthread.h>
 #include "hookutils.h"
-#include "log.h"
+#include "gvrlog.h"
 
 void (*old_glTexImage3DOES)(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border,
                             GLenum format, GLenum type, const void *pixels) = NULL;

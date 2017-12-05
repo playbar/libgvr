@@ -11,7 +11,7 @@
 #include <dlfcn.h>
 #include <glresource.h>
 #include "hookutils.h"
-#include "log.h"
+#include "gvrlog.h"
 #include "exporthook.h"
 #include "andhook.h"
 

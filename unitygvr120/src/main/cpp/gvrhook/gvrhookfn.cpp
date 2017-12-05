@@ -6,7 +6,7 @@
 #include <syscallstack.h>
 #include <mjtype.h>
 #include <pthread.h>
-#include <gleshook/log.h>
+#include "gvrlog.h"
 #include <glresource.h>
 #include <vr/gvr/capi/include/gvr.h>
 #include <EGL/egl.h>
@@ -672,8 +672,8 @@ int mj_gvr_render_reprojection_thread(const gvr_context *gvr)
 int (*old_gvr_on_surface_created_reprojection_thread)(const gvr_context *gvr) = NULL;
 int mj_gvr_on_surface_created_reprojection_thread(const gvr_context *gvr)
 {
-    LOGITAG("mjgvr","mj_gvr_on_surface_created_reprojection_thread, tid=%d", gettid());
     int re = old_gvr_on_surface_created_reprojection_thread(gvr);
+    LOGITAG("mjgvr","mj_gvr_on_surface_created_reprojection_thread, re=%d, tid=%d", re, gettid());
     return re;
 }
 
