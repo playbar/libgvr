@@ -107,7 +107,7 @@ int mj_pthread_create(pthread_t *thread, pthread_attr_t const * attr, void *(*st
 //    print_callstack();
     int re = 0;
     re = old_pthread_create(thread, attr, start_routine, arg);
-    LOGITAG("mjhook", "mj_pthread_create re=%d, tid=%d", re, gettid());
+    LOGITAG("mjhook", "mj_pthread_create thread_t=%d, tid=%d", *thread, gettid());
     return re;
 }
 
@@ -115,7 +115,7 @@ int (*old_pthread_setname_np)(pthread_t pid, const char* name) = NULL;
 int mj_pthread_setname_np(pthread_t pid, const char* name)
 {
     LOGITAG("mjhook", "mj_pthread_setname_np, tid=%d", gettid());
-//    LOGE("mj_pthread_setname_np, name=%s", name);
+    LOGE("mj_pthread_setname_np, name=%s", name);
     int re = 0;
     re = old_pthread_setname_np(pid, name);
     return re;
@@ -289,3 +289,4 @@ void hookThreadFun()
 //    hookImportFun("libunity.so", "eglSwapBuffers", (void *) mj_eglSwapBuffers, (void **) &old_eglSwapBuffers);
 //    hookImportFun("libgvr.so", "eglGetProcAddress", (void *) mj_eglGetProcAddress, (void **) &old_eglGetProcAddress);
 }
+

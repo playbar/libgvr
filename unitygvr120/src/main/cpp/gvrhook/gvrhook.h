@@ -11,6 +11,8 @@ JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_initHook(JNIEnv* env, jobjec
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_initGraphicHook(JNIEnv* env, jobject obj);
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_hookTest(JNIEnv* env, jobject obj);
 JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_unInitHook(JNIEnv* env, jobject obj);
+JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_hookUnityFun(JNIEnv* env, jobject obj);
+
 
 #ifdef __cplusplus
 }

@@ -397,9 +397,9 @@ void hookExportHook()
 void hookGLESFun()
 {
     hookEGLFun();
-    hookEglextFun();
-    hookgl2extFun();
-    hookESFun();
+//    hookEglextFun();
+//    hookgl2extFun();
+//    hookESFun();
     hookThreadFun();
 //    hookExportHook();
     return;

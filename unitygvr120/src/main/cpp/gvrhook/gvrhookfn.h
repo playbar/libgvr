@@ -32,6 +32,7 @@ bool InitGraphicHook();
 bool UninitHook();
 bool LoadGVR();
 bool LoadGraphics();
+void hookUnityFun();
 bool UninitGraphicsHook();
 
 #ifdef __cplusplus

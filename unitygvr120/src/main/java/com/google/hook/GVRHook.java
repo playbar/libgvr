@@ -12,4 +12,5 @@ public class GVRHook {
     public static native void initGraphicHook();
     public static native void unInitHook();
     public static native void hookTest();
+    public static native void hookUnityFun();
 }

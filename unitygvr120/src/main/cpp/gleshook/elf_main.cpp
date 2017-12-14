@@ -4,12 +4,10 @@
 #include <assert.h>
 #include <pthread.h>
 #include <dlfcn.h>
-//#include "vrapi.h"
 #include <EGL/egl.h>
 #include <GLES/gl.h>
-//#include "../statistics/MojingTemperature.h"
-
-
+#include <sys/system_properties.h>
+#include "gvrhook/gvrhookfn.h"
 #include "elf_hooker.h"
 
 static void *(*__old_impl_dlopen)(const char *filename, int flag);
@@ -144,6 +142,7 @@ int main(int argc, char* argv[])
 #else
 
 #include <jni.h>
+#include <gvrlog.h>
 
 static char *__class_name = "com/wadahana/testhook/ElfHooker";
 static elf_hooker __hooker;
@@ -190,6 +189,33 @@ static int __set_hook(JNIEnv *env, jobject thiz) {
     return 0;
 }
 
+char*  (*old_strncpy)(char* __restrict, const char* __restrict, size_t) = NULL;
+/*
+ * daydream unity游戏，以cardboard模式运行，就替换一下string
+ */
+char*  my_strncpy(char* __restrict dest, const char* __restrict src, size_t s){
+//    LOGE("my_strncpy, dest=%s, src=%s, size=%d", dest, src, s);
+    if(strcmp("cardboard",src)==0){
+        LOGI("my_strncpy,src:cardboard,new src daydream");
+        return old_strncpy(dest,"daydream",s);
+    }
+
+    return old_strncpy(dest,src,s);
+}
+
+void hookUnityFun()
+{
+    LOGE("hookUnityFun");
+    char sdkIntStr[PROP_VALUE_MAX];
+    memset(sdkIntStr,'\0',PROP_VALUE_MAX);
+    __system_property_get("ro.build.version.sdk", sdkIntStr);
+    int sdkInt=atoi(sdkIntStr);
+//    if(sdkInt < 20)
+    {
+        __hooker.phrase_proc_maps();
+        __hooker.hook_module("libunity.so", "strncpy", (void *) my_strncpy, (void **) &old_strncpy);
+    }
+}
 
 
 //void hsiu() {

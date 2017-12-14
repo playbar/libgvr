@@ -52,7 +52,7 @@ public class UnityPlayerActivity extends Activity
         System.out.println(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW));
         Log.e("battery", "CHARGE_COUNTER = " + CHARGE_COUNTER + ", CURRENT_AVERAGE = " + CURRENT_AVERAGE +
                 ", CURRENT_NOW = " + CURRENT_NOW);
-//        GoogleVR.hookUnityFun();
+        GVRHook.hookUnityFun();
 //        GLESHook.initHook();
 //		GVRHook.initGraphicHook();
 //        GVRHook.initHook();

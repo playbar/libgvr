@@ -78,3 +78,8 @@ JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_unInitHook(JNIEnv* env, jobj
 {
     UninitHook();
 }
+
+JNIEXPORT void JNICALL Java_com_google_hook_GVRHook_hookUnityFun(JNIEnv* env, jobject obj)
+{
+    hookUnityFun();
+}
